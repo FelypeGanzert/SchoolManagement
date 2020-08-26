@@ -1,0 +1,95 @@
+.root{
+	-fx-background-color: #fff;
+}
+
+.no-focus-color{
+	-fx-focus-color: #ccc; 
+	-fx-faint-focus-color: transparent;
+}
+
+.input-field{
+	-fx-padding: 10.0px 15.0px;
+}
+
+.border-error {
+	-fx-border-width:  0.0px 0.0px 1.0px 0.0px; -fx-border-color: red;
+}
+
+.noheader .column-header-background {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+
+
+/* set default fill of svg path */
+.grayIcon .button-icon{
+    -fx-fill: #888888;
+}
+.redIcon .button-icon{
+    -fx-fill: #D00000;
+}
+/* modify svg path fill for hovered/pressed button */
+.grayIcon:pressed .button-icon,
+.grayIcon:hover .button-icon {
+    -fx-fill: #444444;
+}
+.redIcon:pressed .button-icon,
+.redIcon:hover .button-icon {
+    -fx-fill: #9d0208;
+}
+
+.icon-button:hover{
+	-fx-cursor: hand;	
+}
+
+/* set default fill of svg path */
+.icon-button:focused {
+    -fx-background-radius: 0.0;
+}
+
+/* remove default button style & set size */
+.icon-button {
+    -fx-background-color: transparent, transparent, transparent, transparent, transparent;
+    -fx-pref-height: 30.0;
+    -fx-pref-width: 30.0;
+    -fx-min-height: 30.0;
+    -fx-min-width: 30.0;
+    -fx-max-height: 30.0;
+    -fx-max-width: 30.0;
+}
+
+.text-field-with-label{
+	 -fx-font-size: 14px;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #edf2f4;
+    -fx-table-cell-border-color: #E3E3E3;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: black ;
+}
+
+.table-column-center-left{
+	-fx-alignment: CENTER_LEFT;
+	-fx-padding: 2.0px 5.0px;
+}
+
+/* Full background birthday image */
+#cake{
+    -fx-background-image: url("../images/birthday-cake.jpg");
+    -fx-background-repeat: no-repeat;   
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}

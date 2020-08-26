@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
+   <content>
+      <VBox minHeight="500.0" minWidth="700.0" prefHeight="373.0" prefWidth="667.0">
+         <children>
+            <HBox spacing="10.0" style="-fx-background-color: #1261A0;">
+               <children>
+                  <HBox prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="INÍCIO" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                 <image>
+                                    <Image url="@../png_icons/home_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="ALUNOS" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                 <image>
+                                    <Image url="@../png_icons/person_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Felype Aurélio Ganzert" textFill="WHITE" />
+                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="MUDAR USUÁRIO" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                 <image>
+                                    <Image url="@../png_icons/change_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="SAIR" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                 <image>
+                                    <Image url="@../png_icons/logout_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </HBox>
+            <ScrollPane fx:id="content" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
