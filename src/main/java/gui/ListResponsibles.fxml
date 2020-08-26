@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane prefHeight="567.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<GridPane alignment="CENTER" minHeight="400.0" minWidth="1250.0" prefHeight="400.0" prefWidth="1250.0">
+			<columnConstraints>
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="560.0" minWidth="560.0" prefWidth="560.0" />
+				<ColumnConstraints hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
+			</columnConstraints>
+			<rowConstraints>
+            <RowConstraints valignment="CENTER" vgrow="NEVER" />
+				<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+						<HBox alignment="CENTER_LEFT" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);" GridPane.columnSpan="2">
+							<children>
+								<Label text="RESPONSÁVEIS" textFill="WHITE">
+									<font>
+										<Font name="System Bold" size="25.0" />
+									</font>
+								</Label>
+							</children>
+							<padding>
+								<Insets left="20.0" right="20.0" />
+							</padding>
+						</HBox>
+				<VBox prefHeight="501.0" spacing="15.0" GridPane.rowIndex="1">
+					<children>
+						<HBox alignment="CENTER_LEFT" spacing="10.0">
+							<children>
+								<ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../png_icons/search.png" />
+									</image>
+								</ImageView>
+								<JFXTextField maxWidth="350.0" minWidth="250.0" prefWidth="300.0" promptText="Filtrar" />
+							</children>
+							<padding>
+								<Insets left="20.0" right="20.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER_LEFT" spacing="20.0">
+							<children>
+								<Label text="Tipo do Filtro:" />
+								<JFXRadioButton text="contém">
+									<toggleGroup>
+										<ToggleGroup fx:id="tipo_filtro" />
+									</toggleGroup>
+								</JFXRadioButton>
+								<JFXRadioButton selected="true" text="inicia com" toggleGroup="$tipo_filtro" />
+							</children>
+							<padding>
+								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+							</padding>
+						</HBox>
+						<HBox spacing="25.0">
+							<children>
+								<Label text="Status do aluno:" />
+								<JFXRadioButton text="Todos">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="status_aluno" />
+                           </toggleGroup>
+								</JFXRadioButton>
+								<JFXRadioButton selected="true" text="Ativo" toggleGroup="$status_aluno" />
+								<JFXRadioButton text="Aguardando" toggleGroup="$status_aluno" />
+								<JFXRadioButton text="Inativo" toggleGroup="$status_aluno" />
+							</children>
+							<padding>
+								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+							</padding>
+						</HBox>
+						<TableView prefHeight="200.0" VBox.vgrow="ALWAYS">
+							<placeholder>
+								<Label text="Não há alunos matriculados" />
+							</placeholder>
+							<columns>
+								<TableColumn maxWidth="350.0" minWidth="300.0" prefWidth="300.0" text="Nome" />
+								<TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Alunos" />
+								<TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Contato 1" />
+								<TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+							</columns>
+							<VBox.margin>
+								<Insets bottom="20.0" left="20.0" right="20.0" />
+							</VBox.margin>
+						</TableView>
+					</children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+				</VBox>
+            <VBox prefHeight="421.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Label text="Clique em um responsável para exibir por quem ele responde">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="20.0">
+                     <children>
+                        <Label text="Responsável por:" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <TableView prefHeight="200.0" VBox.vgrow="ALWAYS">
+                     <placeholder>
+                        <Label text="Não há alunos matriculados" />
+                     </placeholder>
+                     <columns>
+                        <TableColumn maxWidth="80.0" minWidth="80.0" text="Código" />
+                        <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Nome" />
+                        <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Situação" />
+                        <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Contato 1" />
+                        <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                     </columns>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </TableView>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+			</children>
+		</GridPane>
+	</content>
+</ScrollPane>

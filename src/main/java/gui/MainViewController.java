@@ -17,7 +17,7 @@ public class MainViewController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListResponsibles.fxml"));
 			ScrollPane content = loader.load();
 			ScrollPane contentMainScene = this.content; //...lookup("#content");
 			contentMainScene.setContent(content.getContent());
