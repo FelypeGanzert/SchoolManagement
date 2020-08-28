@@ -18,7 +18,7 @@
                <children>
                   <HBox prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="INÍCIO" textFill="#fffdfd">
+                        <JFXButton fx:id="btnHome" onAction="#handleBtnHome" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="INÍCIO" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -30,7 +30,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="ALUNOS" textFill="#fffdfd">
+                        <JFXButton fx:id="btnStudents" onAction="#handleBtnStudents" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="ALUNOS" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>

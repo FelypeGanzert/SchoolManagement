@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,9 +24,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
+@Entity(name = "Pessoa")
+@Table(name = "pessoa")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Pessoa {
+public class Person {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -69,9 +71,9 @@ public class Pessoa {
 	private Date dataCadastro;
 	
 	@OneToMany(mappedBy = "pessoa")
-	private List<Contato> contatos;
+	private List<Contact> contatos;
 
-	public Pessoa(Integer id, String nome) {
+	public Person(Integer id, String nome) {
 		this.id = id;
 		this.nome = nome;
 	}

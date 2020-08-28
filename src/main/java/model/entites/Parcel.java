@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -21,8 +22,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-public class Parcela {
+@Entity(name = "Parcela")
+@Table(name = "parcela")
+public class Parcel {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -32,7 +34,7 @@ public class Parcela {
 	
 	@ManyToOne
 	@JoinColumn(name = "matricula_codigo")
-	private Matricula matricula;
+	private Registry matricula;
 	
 	@Column(columnDefinition = "int default null")
 	private Integer parcela;

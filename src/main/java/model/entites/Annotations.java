@@ -1,7 +1,6 @@
 package model.entites;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,33 +22,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-public class Matricula {
+@Entity(name = "Anotacoes")
+@Table(name = "anotacoes")
+public class Annotations {
 	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer codigo;
+	private Integer id;
 	
 	@ManyToOne
 	@JoinColumn(name="aluno_id")
-	private Aluno aluno;
+	private Student aluno;
 	
-	@ManyToOne
-	@JoinColumn(name="responsavel_financeiro_id")
-	private Responsavel responsavelFinaceiro;
+	@Column (columnDefinition = "text default null")
+	private String descricao;
 	
-	@Column(name="data_matricula", columnDefinition = "date default null")
-	private Date dataMatricula;
-
-	@Column(name="matriculado_por", columnDefinition = "varchar(50) default null")
-	private String matriculadoPor;
+	@Column (columnDefinition = "date default null")
+	private Date dataAnotacao;
 	
-	@Column(name="motivo", columnDefinition = "varchar(50) default null")
-	private String motivo;
-	
-	@OneToMany(mappedBy = "matricula")
-	private List<Parcela> parcelas;
-
+	@Column(name = "funcionario_responsavel", columnDefinition = "varchar(50) default null")
+	private String funcionarioResponsavel;
 
 }

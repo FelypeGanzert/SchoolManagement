@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,8 +20,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-public class Contato {
+@Entity(name = "Contato")
+@Table(name = "contato")
+public class Contact {
 	
 	@EqualsAndHashCode.Include
 	@Id
@@ -29,7 +31,7 @@ public class Contato {
 	
 	@ManyToOne
 	@JoinColumn(name="pessoa_id")
-	private Pessoa pessoa;
+	private Person pessoa;
 	
 	@Column (columnDefinition = "varchar(50) default null")
 	private String numero;

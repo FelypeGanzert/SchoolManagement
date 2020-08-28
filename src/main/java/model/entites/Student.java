@@ -21,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name = "Aluno")
 @Table(name = "aluno")
-public class Aluno extends Pessoa {
+public class Student extends Person {
 
 	@Column(columnDefinition = "varchar(50) default null")
 	private String situacao;
@@ -29,23 +29,23 @@ public class Aluno extends Pessoa {
 	@OneToMany(mappedBy = "aluno",
 		cascade = CascadeType.ALL,
 		orphanRemoval = true)
-	private List<ResponsavelAluno> responsaveis = new ArrayList<>();
+	private List<ResponsibleStudent> responsaveis = new ArrayList<>();
 
 	@OneToMany(mappedBy = "aluno")
-	private List<Matricula> matriculas;
+	private List<Registry> matriculas;
 	
 	@OneToMany(mappedBy = "aluno")
-	private List<Anotacoes> anotacoes;
+	private List<Annotations> anotacoes;
 
-	public void addResponsavel(Responsavel responsavel, String parentesco) {
-		ResponsavelAluno responsavelAluno = new ResponsavelAluno(this, responsavel, parentesco);
+	public void addResponsavel(Responsible responsavel, String parentesco) {
+		ResponsibleStudent responsavelAluno = new ResponsibleStudent(this, responsavel, parentesco);
 		this.responsaveis.add(responsavelAluno);
 		responsavel.getAlunos().add(responsavelAluno);
 	}
 
-	public void removeResponsavel(Responsavel responsavel) {
-		for (Iterator<ResponsavelAluno> iterator = responsaveis.iterator(); iterator.hasNext();) {
-			ResponsavelAluno responsavelAluno = iterator.next();
+	public void removeResponsavel(Responsible responsavel) {
+		for (Iterator<ResponsibleStudent> iterator = responsaveis.iterator(); iterator.hasNext();) {
+			ResponsibleStudent responsavelAluno = iterator.next();
 			if (responsavelAluno.getAluno().equals(this) && responsavelAluno.getResponsavel().equals(responsavel)) {
 				iterator.remove();
 				responsavelAluno.getAluno().getResponsaveis().remove(responsavelAluno);

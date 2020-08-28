@@ -47,12 +47,12 @@
 			<version>9.0.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/io.github.typhon0/AnimateFX -->
 		<dependency>
 			<groupId>io.github.typhon0</groupId>
 			<artifactId>AnimateFX</artifactId>
-			<version>1.2.1</version>
-			<type>pom</type>
+			<version>1.2.0</version>
 		</dependency>
+
 	</dependencies>
-	
 </project>

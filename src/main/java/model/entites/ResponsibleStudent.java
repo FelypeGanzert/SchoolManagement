@@ -22,7 +22,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "ResponsavelAluno")
 @Table(name = "responsavel_aluno")
-public class ResponsavelAluno {
+public class ResponsibleStudent {
 
 	@EqualsAndHashCode.Include
 	@EmbeddedId
@@ -30,16 +30,16 @@ public class ResponsavelAluno {
 	
 	@ManyToOne
 	@MapsId("aluno_id")
-	private Aluno aluno;
+	private Student aluno;
 	
 	@ManyToOne
 	@MapsId("responsavel_id")
-	private Responsavel responsavel;
+	private Responsible responsavel;
 	
 	@Column (columnDefinition = "varchar(50) default null")
 	private String parentesco;
 	
-    public ResponsavelAluno(Aluno aluno, Responsavel responsavel, String parentesco) {
+    public ResponsibleStudent(Student aluno, Responsible responsavel, String parentesco) {
         this.aluno = aluno;
         this.responsavel= responsavel;
         this.parentesco = parentesco;

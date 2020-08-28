@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,16 +18,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Responsavel extends Pessoa {
+@Entity(name = "Responsavel")
+@Table(name = "responsavel")
+public class Responsible extends Person {
 	
     @OneToMany(
         mappedBy = "responsavel",
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-	private List<ResponsavelAluno> alunos = new ArrayList<>();;
+	private List<ResponsibleStudent> alunos = new ArrayList<>();;
 
 	@OneToMany(mappedBy = "responsavelFinaceiro")
-	private List<Matricula> responsavelPelaMatriculas;
+	private List<Registry> responsavelPelaMatriculas;
 }

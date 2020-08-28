@@ -6,17 +6,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainMenuController">
    <content>
       <VBox alignment="CENTER" prefHeight="322.0" prefWidth="533.0" spacing="20.0">
          <children>
-            <JFXButton style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
+            <JFXButton fx:id="btnListStudents" onAction="#showListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </JFXButton>
-            <JFXButton style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
+            <JFXButton fx:id="btnListResponsibles" onAction="#showListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
