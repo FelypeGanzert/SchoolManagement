@@ -23,7 +23,7 @@
                   <Font size="15.0" />
                </font>
             </JFXTextField>
-            <JFXButton ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Conectar" textFill="WHITE">
+            <JFXButton defaultButton="true" ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Conectar" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
