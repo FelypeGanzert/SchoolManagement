@@ -34,48 +34,51 @@ public class Person {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column (columnDefinition = "varchar(50) default null")
-	private String nome;
+	@Column (name = "nome", columnDefinition = "varchar(50) default null")
+	private String name;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "cpf", columnDefinition = "varchar(50) default null")
 	private String cpf;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "rg", columnDefinition = "varchar(50) default null")
 	private String rg;
 	
 	@Column (name = "data_nascimento", columnDefinition = "date default null")
-	private Date dataNascimento;
+	private Date dateBirth;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "email", columnDefinition = "varchar(50) default null")
 	private String email;
 	
-	@Column (columnDefinition = "varchar(20) default null")
-	private String sexo;
+	@Column (name = "sexo", columnDefinition = "varchar(20) default null")
+	private String gender;
 	
-	@Column (columnDefinition = "varchar(50) default null")
-	private String endereco;
+	@Column (name = "endereco", columnDefinition = "varchar(50) default null")
+	private String adress;
 	
-	@Column (columnDefinition = "varchar(50) default null")
-	private String bairro;
+	@Column (name = "bairro", columnDefinition = "varchar(50) default null")
+	private String neighborhood;
 	
-	@Column (columnDefinition = "varchar(50) default null")
-	private String cidade;
+	@Column (name = "cidade", columnDefinition = "varchar(50) default null")
+	private String city;
 	
-	@Column ( columnDefinition = "varchar(20) default null")
+	@Column (name = "uf", columnDefinition = "varchar(20) default null")
 	private String uf;
 	
 	@Column (name = "cadastrado_por", columnDefinition = "varchar(50) default null")
-	private String cadastradoPor;
+	private String registeredBy;
 	
 	@Column (name = "data_cadastro", columnDefinition = "date default null")
-	private Date dataCadastro;
+	private Date dateRegistry;
 	
-	@OneToMany(mappedBy = "pessoa")
-	private List<Contact> contatos;
+	@Column (name = "data_ultima_edicao", columnDefinition = "date default null")
+	private Date dateLastRegistryEdit;
+	
+	@OneToMany(mappedBy = "person")
+	private List<Contact> contacts;
 
-	public Person(Integer id, String nome) {
+	public Person(Integer id, String name) {
 		this.id = id;
-		this.nome = nome;
+		this.name = name;
 	}
 
 }

@@ -30,20 +30,20 @@ public class ResponsibleStudent {
 	
 	@ManyToOne
 	@MapsId("aluno_id")
-	private Student aluno;
+	private Student student;
 	
 	@ManyToOne
 	@MapsId("responsavel_id")
-	private Responsible responsavel;
+	private Responsible responsible;
 	
 	@Column (columnDefinition = "varchar(50) default null")
-	private String parentesco;
+	private String relationship;
 	
-    public ResponsibleStudent(Student aluno, Responsible responsavel, String parentesco) {
-        this.aluno = aluno;
-        this.responsavel= responsavel;
-        this.parentesco = parentesco;
-        this.id = new ResponsavelAlunoId(aluno.getId(), responsavel.getId());
+    public ResponsibleStudent(Student student, Responsible responsible, String relationship) {
+        this.student = student;
+        this.responsible= responsible;
+        this.relationship = relationship;
+        this.id = new ResponsavelAlunoId(student.getId(), responsible.getId());
     }
 
 	@Getter
@@ -57,11 +57,11 @@ public class ResponsibleStudent {
 		
 		@EqualsAndHashCode.Include
 		@Column(name = "aluno_id")
-		private Integer AlunoId;
+		private Integer StudentId;
 		
 		@EqualsAndHashCode.Include
 		@Column(name = "responsavel_id")
-		private Integer ResponsavelId;
+		private Integer ResponsibleId;
 	}
 	
 }

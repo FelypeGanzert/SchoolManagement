@@ -23,12 +23,12 @@ import lombok.Setter;
 public class Responsible extends Person {
 	
     @OneToMany(
-        mappedBy = "responsavel",
+        mappedBy = "responsible",
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
 	private List<ResponsibleStudent> alunos = new ArrayList<>();;
 
-	@OneToMany(mappedBy = "responsavelFinaceiro")
-	private List<Registry> responsavelPelaMatriculas;
+	@OneToMany(mappedBy = "responsible")
+	private List<Matriculation> responsavelPelaMatriculas;
 }

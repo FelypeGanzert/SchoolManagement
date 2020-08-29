@@ -60,6 +60,7 @@ public class DBConnectionURLController implements Initializable{
 					Utils.currentStage(event).close();
 				});
 			} catch (HibernateException e) {
+				e.printStackTrace();
 				Platform.runLater(() -> {
 					showErrorMessage("Erro ao se conectar com o banco de dados.");
 				});

@@ -12,7 +12,7 @@
 
 			<property
 				name="javax.persistence.schema-generation.database.action"
-				value="none" />
+				value="drop-and-create" />
 				
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.MySQL8Dialect" />

@@ -31,12 +31,12 @@ public class Contact {
 	
 	@ManyToOne
 	@JoinColumn(name="pessoa_id")
-	private Person pessoa;
+	private Person person;
 	
 	@Column (columnDefinition = "varchar(50) default null")
-	private String numero;
+	private String number;
 	
 	@Column (columnDefinition = "varchar(50) default null")
-	private String descricao;
+	private String description;
 
 }

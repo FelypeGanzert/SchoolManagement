@@ -33,15 +33,15 @@ public class Annotations {
 	
 	@ManyToOne
 	@JoinColumn(name="aluno_id")
-	private Student aluno;
+	private Student student;
 	
 	@Column (columnDefinition = "text default null")
-	private String descricao;
+	private String description;
 	
 	@Column (columnDefinition = "date default null")
-	private Date dataAnotacao;
+	private Date dateAnnotation;
 	
 	@Column(name = "funcionario_responsavel", columnDefinition = "varchar(50) default null")
-	private String funcionarioResponsavel;
+	private String responsibleEmployee;
 
 }

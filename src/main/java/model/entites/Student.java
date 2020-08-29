@@ -26,31 +26,31 @@ public class Student extends Person {
 	@Column(columnDefinition = "varchar(50) default null")
 	private String situacao;
 
-	@OneToMany(mappedBy = "aluno",
+	@OneToMany(mappedBy = "student",
 		cascade = CascadeType.ALL,
 		orphanRemoval = true)
 	private List<ResponsibleStudent> responsaveis = new ArrayList<>();
 
-	@OneToMany(mappedBy = "aluno")
-	private List<Registry> matriculas;
+	@OneToMany(mappedBy = "student")
+	private List<Matriculation> matriculas;
 	
-	@OneToMany(mappedBy = "aluno")
+	@OneToMany(mappedBy = "student")
 	private List<Annotations> anotacoes;
 
-	public void addResponsavel(Responsible responsavel, String parentesco) {
-		ResponsibleStudent responsavelAluno = new ResponsibleStudent(this, responsavel, parentesco);
-		this.responsaveis.add(responsavelAluno);
-		responsavel.getAlunos().add(responsavelAluno);
+	public void addResponsavel(Responsible responsible, String relationship) {
+		ResponsibleStudent responsibleStudent = new ResponsibleStudent(this, responsible, relationship);
+		this.responsaveis.add(responsibleStudent);
+		responsible.getAlunos().add(responsibleStudent);
 	}
 
-	public void removeResponsavel(Responsible responsavel) {
+	public void removeResponsavel(Responsible responsible) {
 		for (Iterator<ResponsibleStudent> iterator = responsaveis.iterator(); iterator.hasNext();) {
-			ResponsibleStudent responsavelAluno = iterator.next();
-			if (responsavelAluno.getAluno().equals(this) && responsavelAluno.getResponsavel().equals(responsavel)) {
+			ResponsibleStudent responsibleStudent = iterator.next();
+			if (responsibleStudent.getStudent().equals(this) && responsibleStudent.getResponsible().equals(responsible)) {
 				iterator.remove();
-				responsavelAluno.getAluno().getResponsaveis().remove(responsavelAluno);
-				responsavelAluno.setAluno(null);
-				responsavelAluno.setResponsavel(null);
+				responsibleStudent.getStudent().getResponsaveis().remove(responsibleStudent);
+				responsibleStudent.setStudent(null);
+				responsibleStudent.setResponsible(null);
 			}
 		}
 	}

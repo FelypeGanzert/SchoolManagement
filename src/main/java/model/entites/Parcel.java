@@ -30,31 +30,31 @@ public class Parcel {
 	@Id
 	@Column(name = "numero_documento")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer numeroDocumento;
+	private Integer documentNumber;
 	
 	@ManyToOne
 	@JoinColumn(name = "matricula_codigo")
-	private Registry matricula;
+	private Matriculation matriculation;
 	
 	@Column(columnDefinition = "int default null")
-	private Integer parcela;
+	private Integer parcelNumber;
 	
 	@Column(name = "data_parcela", columnDefinition = "date default null")
-	private Date dataParcela;
+	private Date dateParcel;
 	
 	@Column(name = "data_pagamento", columnDefinition = "date default null")
-	private Date dataPagamento;
+	private Date datePayment;
 	
 	@Column(columnDefinition = "numeric(19,4) default null")
-	private Double valor;
+	private Double value;
 	
 	@Column(columnDefinition = "numeric(19,4) default null")
-	private Double desconto;
+	private Double descont;
 	
 	@Column(name = "dias_desconto", columnDefinition = "numeric(19,4) default null")
 	private Integer diasDesconto;
 	
 	@Column(columnDefinition = "varchar(50) default null")
-	private String situacao;
+	private String situation;
 	
 }

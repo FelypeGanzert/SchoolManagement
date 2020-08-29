@@ -26,32 +26,32 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "Matricula")
 @Table(name = "matricula")
-public class Registry {
+public class Matriculation {
 	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer codigo;
+	private Integer code;
 	
 	@ManyToOne
 	@JoinColumn(name="aluno_id")
-	private Student aluno;
+	private Student student;
 	
 	@ManyToOne
 	@JoinColumn(name="responsavel_financeiro_id")
-	private Responsible responsavelFinaceiro;
+	private Responsible responsible;
 	
 	@Column(name="data_matricula", columnDefinition = "date default null")
-	private Date dataMatricula;
+	private Date dateMatriculation;
 
 	@Column(name="matriculado_por", columnDefinition = "varchar(50) default null")
-	private String matriculadoPor;
+	private String matriculatedBy;
 	
 	@Column(name="motivo", columnDefinition = "varchar(50) default null")
-	private String motivo;
+	private String reason;
 	
-	@OneToMany(mappedBy = "matricula")
-	private List<Parcel> parcelas;
+	@OneToMany(mappedBy = "matriculation")
+	private List<Parcel> parcels;
 
 
 }
