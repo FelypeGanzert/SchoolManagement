@@ -23,7 +23,7 @@
                         <Image url="@../png_icons/database_color.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="txtURL" labelFloat="true" prefWidth="200.0" promptText="IP do Banco de Dados">
+                  <JFXTextField fx:id="txtURL" labelFloat="true" prefWidth="200.0" promptText="IP do Banco de Dados" text="localhost">
                      <font>
                         <Font size="15.0" />
                      </font>

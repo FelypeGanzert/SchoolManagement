@@ -3,11 +3,14 @@ package application;
 import java.io.IOException;
 
 import gui.DBConnectionURLController;
+import gui.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
+import model.entites.Collaborator;
 
 public class Main extends Application {
 
@@ -49,8 +52,6 @@ public class Main extends Application {
 			primaryStage.setTitle("Conexão com o Banco de Dados");
 			primaryStage.show();
 
-			// scrollPane.setFitToHeight(true);
-			// scrollPane.setFitToWidth(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,6 +66,28 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Login.fxml"));
 			Parent scrollPane = null;
 			scrollPane = loader.load();
+			// Se this Main to allow he to call in future to show Main View
+			LoginController controller = loader.getController();
+			controller.setMain(this);
+
+			mainScene = new Scene(scrollPane);
+			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage primaryStage = new Stage();
+			primaryStage.setScene(mainScene);
+			primaryStage.setTitle("Login");
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showMainView(Collaborator collaborator) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
+			ScrollPane scrollPane = null;
+			scrollPane = loader.load();
+			scrollPane.setFitToHeight(true);
+			scrollPane.setFitToWidth(true);
 
 			mainScene = new Scene(scrollPane);
 			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -76,7 +99,6 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 }

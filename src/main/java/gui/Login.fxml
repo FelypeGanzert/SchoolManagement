@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="400.0" maxWidth="450.0" minHeight="400.0" minWidth="450.0" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="400.0" maxWidth="450.0" minHeight="400.0" minWidth="450.0" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -18,17 +18,17 @@
                   <Font name="System Bold" size="29.0" />
                </font>
             </Label>
-            <JFXTextField labelFloat="true" promptText="Usuário">
+            <JFXTextField fx:id="txtUser" labelFloat="true" promptText="Usuário">
                <font>
                   <Font size="15.0" />
                </font>
             </JFXTextField>
-            <JFXPasswordField labelFloat="true" promptText="Senha">
+            <JFXPasswordField fx:id="txtPassword" labelFloat="true" promptText="Senha">
                <font>
                   <Font size="15.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton defaultButton="true" ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Entrar" textFill="WHITE">
+            <JFXButton fx:id="btnLogin" defaultButton="true" onAction="#handleBtnLogin" ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Entrar" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -36,7 +36,7 @@
                   <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                </padding>
             </JFXButton>
-            <Label text="Mensagem de erro" textFill="#970101" />
+            <Label fx:id="labelError" text="Mensagem de erro" textFill="#970101" visible="false" />
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
