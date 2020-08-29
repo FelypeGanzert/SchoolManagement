@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="350.0" maxWidth="450.0" minHeight="350.0" minWidth="450.0" prefHeight="350.0" prefWidth="450.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane maxHeight="400.0" maxWidth="450.0" minHeight="400.0" minWidth="450.0" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -37,6 +36,7 @@
                   <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                </padding>
             </JFXButton>
+            <Label text="Mensagem de erro" textFill="#970101" />
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />

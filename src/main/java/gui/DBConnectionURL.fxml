@@ -3,35 +3,47 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="200.0" maxWidth="450.0" minHeight="200.0" minWidth="450.0" prefHeight="200.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="200.0" maxWidth="450.0" minHeight="200.0" minWidth="450.0" prefHeight="200.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DBConnectionURLController">
    <children>
-      <HBox alignment="CENTER" layoutX="25.0" layoutY="14.0" prefHeight="171.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../png_icons/database_color.png" />
-               </image>
-            </ImageView>
-            <JFXTextField labelFloat="true" prefWidth="200.0" promptText="IP do Banco de Dados">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </JFXTextField>
-            <JFXButton defaultButton="true" ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Conectar" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </JFXButton>
+            <HBox alignment="CENTER" spacing="25.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../png_icons/database_color.png" />
+                     </image>
+                  </ImageView>
+                  <JFXTextField fx:id="txtURL" labelFloat="true" prefWidth="200.0" promptText="IP do Banco de Dados">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXButton fx:id="btnConnect" defaultButton="true" onAction="#handleBtnConnect" ripplerFill="#122765" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Conectar" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </HBox>
+            <ProgressBar fx:id="progressConnection" minHeight="15.0" minWidth="250.0" prefHeight="30.0" prefWidth="250.0" progress="0.0" visible="false" />
+            <Label fx:id="labelError" text="Mensagem de erro" textFill="#a10303" visible="false" />
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

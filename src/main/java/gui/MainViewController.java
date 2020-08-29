@@ -35,24 +35,20 @@ public class MainViewController implements Initializable {
 	
 	public void handleBtnHome(ActionEvent action) {
 		try {
-			new animatefx.animation.SlideOutLeft(this.content).play();;	
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
 			ScrollPane newContent = loader.load();
 			this.content.setContent(newContent.getContent());
 			this.content.setStyle(newContent.getStyle());	
-			new animatefx.animation.SlideInRight(this.content).play();		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	public void handleBtnStudents(ActionEvent action) {
 		try {
-			new animatefx.animation.SlideOutLeft(this.content).play();	
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListStudents.fxml"));
 			ScrollPane newContent = loader.load();
 			this.content.setContent(newContent.getContent());
 			this.content.setStyle(newContent.getStyle());
-			new animatefx.animation.SlideInRight(this.content).play();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
