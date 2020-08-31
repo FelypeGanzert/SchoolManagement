@@ -17,29 +17,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.image.ImageView;
 
 public class DBConnectionURLController implements Initializable{
 
 	@FXML private JFXTextField txtURL;
 	@FXML private JFXButton btnConnect;
-	@FXML private ProgressBar progressConnection;
+	@FXML private ImageView imageLoading;
 	@FXML private Label labelError;
 	private Main main; // To call the login screen
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		
 	}
 	
 	public void setMain(Main main) {
 		this.main = main;
-	}
-
-	private void updateProgressConnection(int value) {
-		// User will entry with a value beetwen 0 - 100 and we convert to 0 -1
-		double progress = Double.valueOf(value) / 100;
-		progressConnection.setProgress(progress);
 	}
 	
 	private void showErrorMessage(String message) {
@@ -48,7 +41,13 @@ public class DBConnectionURLController implements Initializable{
 		btnConnect.setDisable(false);
 	}
 	
+	private void changeLoadingVisible() {
+		boolean visibility = imageLoading.isVisible() ? false : true;
+		imageLoading.setVisible(visibility);
+	}
+	
 	private void tryToConnect(ActionEvent event) {
+		changeLoadingVisible();
 		DB.setUnits(txtURL.getText());
 		// In threads to not freeze the UI
 		Thread threadConnection = new Thread(() -> {
@@ -64,30 +63,10 @@ public class DBConnectionURLController implements Initializable{
 				Platform.runLater(() -> {
 					showErrorMessage("Erro ao se conectar com o banco de dados.");
 				});
+			} finally {
+				changeLoadingVisible();
 			}
 		});
-		Thread threadProgress = new Thread(() -> {
-			boolean connectionThreadEnded = false; // Flag
-			progressConnection.setVisible(true);
-			for (int i = 0; i <= 100; i++) {
-				try {
-					Thread.sleep(400);
-					final int iFinal = i;
-					// Update progress bar
-					Platform.runLater(() -> {
-						updateProgressConnection(iFinal);
-					});
-					// Set progress bar to the end 
-					if (!threadConnection.isAlive() && !connectionThreadEnded) {
-						connectionThreadEnded = true;
-						i = 98;
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		threadProgress.start();
 		threadConnection.start();
 	}
 
@@ -98,6 +77,5 @@ public class DBConnectionURLController implements Initializable{
 			btnConnect.setDisable(true);
 			tryToConnect(event);
 		}
-	}
-	
+	}	
 }

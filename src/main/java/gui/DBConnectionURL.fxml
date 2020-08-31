@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -38,8 +37,16 @@
                   <Insets bottom="20.0" />
                </padding>
             </HBox>
-            <ProgressBar fx:id="progressConnection" minHeight="15.0" minWidth="250.0" prefHeight="30.0" prefWidth="250.0" progress="0.0" visible="false" />
-            <Label fx:id="labelError" text="Mensagem de erro" textFill="#a10303" visible="false" />
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imageLoading" fitHeight="50.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../images/loading.gif" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="labelError" text="Mensagem de erro" textFill="#a10303" visible="false" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
+import application.Main;
+import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,8 @@ public class MainViewController implements Initializable {
 	@FXML private ScrollPane content;
 	@FXML private JFXButton btnHome;
 	@FXML private JFXButton btnStudents;
+	@FXML private JFXButton btnChangeUser;
+	private Main main;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
@@ -33,6 +37,10 @@ public class MainViewController implements Initializable {
 		}
 	}
 	
+	public void setMain(Main main) {
+		this.main = main;
+	}
+	
 	public void handleBtnHome(ActionEvent action) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
@@ -42,6 +50,12 @@ public class MainViewController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void handleChangeUser(ActionEvent action) {
+		main.showLoginForm();
+		Utils.currentStage(action).close();
+		
 	}
 	public void handleBtnStudents(ActionEvent action) {
 		try {
@@ -53,5 +67,4 @@ public class MainViewController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
 }

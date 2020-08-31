@@ -37,7 +37,16 @@ public class LoginController implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		txtUser.getValidators().add(Validators.getRequiredFieldValidator());
+		txtPassword.getValidators().add(Validators.getRequiredFieldValidator());
 		
+		// Listeners to hidden error message
+		txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
+			labelError.setVisible(false);
+		});
+		txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+			labelError.setVisible(false);
+		});
 	}
 	
 	public void setMain(Main main) {
@@ -46,8 +55,7 @@ public class LoginController implements Initializable {
 	
 	public void handleBtnLogin(ActionEvent event) {
 		labelError.setVisible(false);
-		txtUser.getValidators().add(Validators.getRequiredFieldValidator());
-		if(txtUser.validate()) {
+		if(txtUser.validate() && txtPassword.validate()) {
 			Collaborator collaborator = login();
 			if(collaborator != null) {
 				Utils.currentStage(event).close();
@@ -59,18 +67,16 @@ public class LoginController implements Initializable {
 	private Collaborator login() {
 		String user = txtUser.getText();
 		String password = txtPassword.getText();
-		System.out.println(user + ", " +password);
-		
+		// Settings to find a Collaborator with the same user and password in database
 		EntityManager entityManager = DB.getFactory().createEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Collaborator> criteriaQuery = criteriaBuilder.createQuery(Collaborator.class);
         Root<Collaborator> root = criteriaQuery.from(Collaborator.class);
-
         criteriaQuery.select(root);
         Predicate userPredicate = criteriaBuilder.equal(root.get("userLogin"), user);
         Predicate passwordPredicate = criteriaBuilder.equal(root.get("passwordLogin"), password);
         criteriaQuery.where(criteriaBuilder.and(userPredicate, passwordPredicate));
-        
+        // Try to find a correspondent result
         try {
         	TypedQuery<Collaborator> typedQuery = entityManager.createQuery(criteriaQuery);
         	Collaborator collaborator = typedQuery.getSingleResult();
@@ -78,11 +84,12 @@ public class LoginController implements Initializable {
         } catch(NoResultException e) {
         	labelError.setVisible(true);
         	labelError.setText("Usuário ou senha incorretos");
+        	// Animations to call atention to error
         	new Tada(labelError).play();
         	new Shake(txtUser).play();
         	new Shake(txtPassword).play();
         }
-        return null;
+        return null; // in case of doens't find one correspondence
 	}
 	
 }

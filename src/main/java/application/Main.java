@@ -1,9 +1,11 @@
 package application;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import gui.DBConnectionURLController;
 import gui.LoginController;
+import gui.MainViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,87 +18,63 @@ public class Main extends Application {
 
 	private static Scene mainScene;
 
+	public static Scene getMainScene() {
+		return Main.mainScene;
+	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
-
-//		EntityManagerFactory emf= Persistence.createEntityManagerFactory("school");
-//		EntityManager entityManager = emf.createEntityManager();
-//		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//
-//        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
-//        Root<Student> root = criteriaQuery.from(Student.class);
-//        criteriaQuery.select(root);
-//
-//        TypedQuery<Student> typedQuery = entityManager.createQuery(criteriaQuery);
-//        List<Student> lista = typedQuery.getResultList();
-//        System.out.println("=========== ALUNOS ============");
-//        lista.forEach(a -> System.out.println(a.getId() + ", " + a.getNome() + ", " + a.getSituacao()));
-//        System.out.println("===============================");
-//        entityManager.close();
-//		emf.close();
-
-		try {
-			// First we load the screen to user entry the url of database
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/DBConnectionURL.fxml"));
-			Parent scrollPane = loader.load();
-			// dbController will need to call this to show Login Form
-			DBConnectionURLController dbController = loader.getController();
-			dbController.setMain(this);
-			mainScene = new Scene(scrollPane);
-			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(mainScene);
-			primaryStage.setTitle("Conexão com o Banco de Dados");
-			primaryStage.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// First we load the screen to user entry the url of database
+		// that will try to connect with the database
+		loadMainScreen("/gui/DBConnectionURL.fxml", primaryStage, "Conexão com o Banco de Dados", false,
+				(DBConnectionURLController controller) -> {
+					// Set this Main to allow he to call in future to show Login
+					controller.setMain(this);
+				});
 	}
 
-	public static Scene getMainScene() {
-		return Main.mainScene;
-	}
-
+	// This method is called by DBConnectionURLController after established connection with database,
+	// and when we need to change current user
 	public void showLoginForm() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/Login.fxml"));
-			Parent scrollPane = null;
-			scrollPane = loader.load();
-			// Se this Main to allow he to call in future to show Main View
-			LoginController controller = loader.getController();
+		loadMainScreen("/gui/Login.fxml", new Stage(), "Login", false, (LoginController controller) -> {
+			// Set this Main to allow he to call in future to show Main View
 			controller.setMain(this);
+		});
 
-			mainScene = new Scene(scrollPane);
-			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Stage primaryStage = new Stage();
-			primaryStage.setScene(mainScene);
-			primaryStage.setTitle("Login");
-			primaryStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
-	
-	public void showMainView(Collaborator collaborator) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-			ScrollPane scrollPane = null;
-			scrollPane = loader.load();
-			scrollPane.setFitToHeight(true);
-			scrollPane.setFitToWidth(true);
 
-			mainScene = new Scene(scrollPane);
+	// This is method is called by Login
+	public void showMainView(Collaborator collaborator) {
+		loadMainScreen("/gui/MainView.fxml", new Stage(), "Gerenciamento Escolar (?)", true,
+				(MainViewController controller) -> {
+					controller.setMain(this);
+				});
+	}
+
+	// Auxiliar method to show: DBConnectionURL, Login, MainView
+	private <T> void loadMainScreen(String FXMLPath, Stage stage, String stageTitle,
+			boolean resizable, Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+			Parent parent = loader.load();
+			if (parent instanceof ScrollPane) {
+				((ScrollPane) parent).setFitToHeight(true);
+				((ScrollPane) parent).setFitToWidth(true);
+			}
+			mainScene = new Scene(parent);
 			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Stage primaryStage = new Stage();
-			primaryStage.setScene(mainScene);
-			primaryStage.setTitle("Login");
-			primaryStage.show();
+			stage.setScene(mainScene);
+			stage.setTitle(stageTitle);
+			stage.setResizable(resizable);
+			stage.show();
+
+			T controller = loader.getController();
+			initializingAction.accept(controller);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
