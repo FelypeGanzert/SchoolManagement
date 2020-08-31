@@ -35,10 +35,10 @@ public class Annotations {
 	@JoinColumn(name="aluno_id")
 	private Student student;
 	
-	@Column (columnDefinition = "text default null")
+	@Column (name = "descricao", columnDefinition = "text default null")
 	private String description;
 	
-	@Column (columnDefinition = "date default null")
+	@Column (name = "data_anotacao", columnDefinition = "date default null")
 	private Date dateAnnotation;
 	
 	@Column(name = "funcionario_responsavel", columnDefinition = "varchar(50) default null")

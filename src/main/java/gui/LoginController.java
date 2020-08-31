@@ -18,7 +18,7 @@ import com.jfoenix.controls.JFXTextField;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
 import application.Main;
-import db.DB;
+import db.DBFactory;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.event.ActionEvent;
@@ -68,7 +68,7 @@ public class LoginController implements Initializable {
 		String user = txtUser.getText();
 		String password = txtPassword.getText();
 		// Settings to find a Collaborator with the same user and password in database
-		EntityManager entityManager = DB.getFactory().createEntityManager();
+		EntityManager entityManager = DBFactory.getFactory().createEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Collaborator> criteriaQuery = criteriaBuilder.createQuery(Collaborator.class);
         Root<Collaborator> root = criteriaQuery.from(Collaborator.class);

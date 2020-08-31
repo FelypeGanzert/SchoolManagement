@@ -7,6 +7,4 @@ public class DbConnectionError extends RuntimeException {
 	public DbConnectionError(String msg) {
 		super(msg);
 	}
-	
-	
 }

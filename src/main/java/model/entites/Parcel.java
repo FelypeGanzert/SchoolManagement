@@ -36,7 +36,7 @@ public class Parcel {
 	@JoinColumn(name = "matricula_codigo")
 	private Matriculation matriculation;
 	
-	@Column(columnDefinition = "int default null")
+	@Column(name = "parcela_numero", columnDefinition = "int default null")
 	private Integer parcelNumber;
 	
 	@Column(name = "data_parcela", columnDefinition = "date default null")
@@ -45,16 +45,16 @@ public class Parcel {
 	@Column(name = "data_pagamento", columnDefinition = "date default null")
 	private Date datePayment;
 	
-	@Column(columnDefinition = "numeric(19,4) default null")
+	@Column(name = "valor", columnDefinition = "numeric(19,4) default null")
 	private Double value;
 	
-	@Column(columnDefinition = "numeric(19,4) default null")
+	@Column(name = "desconto", columnDefinition = "numeric(19,4) default null")
 	private Double descont;
 	
 	@Column(name = "dias_desconto", columnDefinition = "numeric(19,4) default null")
 	private Integer diasDesconto;
 	
-	@Column(columnDefinition = "varchar(50) default null")
+	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
 	private String situation;
 	
 }

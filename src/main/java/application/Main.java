@@ -46,7 +46,7 @@ public class Main extends Application {
 		});
 
 	}
-
+	
 	// This is method is called by Login
 	public void showMainView(Collaborator collaborator) {
 		loadMainScreen("/gui/MainView.fxml", new Stage(), "Gerenciamento Escolar (?)", true,

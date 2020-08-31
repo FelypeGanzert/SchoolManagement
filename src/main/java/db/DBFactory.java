@@ -3,14 +3,15 @@ package db;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class DB {
+public class DBFactory {
 	
 	private static EntityManagerFactory entityManagerFactory = null;
 	private static Map<String, String> persistenceMap = new HashMap<String, String>();
-	private static String url;
+	private static EntityManager entityManager = null;
 	private static String username = "student";
 	private static String password = "student";
 	private static String driver = "com.mysql.cj.jdbc.Driver";
@@ -26,16 +27,28 @@ public class DB {
 	public static EntityManagerFactory getFactory() {
 		if(entityManagerFactory == null) {
 			if(persistenceMap.size() == 0) { throw new DbMissingUnitsException("Units not initialized"); }
-			System.out.println(2);
 			entityManagerFactory = Persistence.createEntityManagerFactory("school", persistenceMap);
 		}
 		return entityManagerFactory;
 	}
 	
 	public static void closeFactory() {
+		if(entityManager != null) {
+			entityManager.close();
+		}
 		if(entityManagerFactory != null) {
 			entityManagerFactory.close();
 		}
+	}
+	
+	public static EntityManager getConnection() {
+		if(entityManagerFactory == null) {
+			DBFactory.getFactory();
+		}
+		if(entityManager == null) {
+			entityManager = entityManagerFactory.createEntityManager();
+		}
+		return entityManager;
 	}
 
 }

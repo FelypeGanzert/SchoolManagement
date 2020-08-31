@@ -6,7 +6,5 @@ public class DbMissingUnitsException extends RuntimeException {
 	
 	public DbMissingUnitsException(String msg) {
 		super(msg);
-	}
-	
-	
+	}	
 }

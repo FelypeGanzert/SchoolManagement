@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -30,13 +31,15 @@ public class ResponsibleStudent {
 	
 	@ManyToOne
 	@MapsId("aluno_id")
+	@JoinColumn(name = "aluno_id")
 	private Student student;
 	
 	@ManyToOne
 	@MapsId("responsavel_id")
+	@JoinColumn(name = "responsavel_id")
 	private Responsible responsible;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "parentesco", columnDefinition = "varchar(50) default null")
 	private String relationship;
 	
     public ResponsibleStudent(Student student, Responsible responsible, String relationship) {

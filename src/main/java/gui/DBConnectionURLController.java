@@ -9,7 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import application.Main;
-import db.DB;
+import db.DBFactory;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.application.Platform;
@@ -48,11 +48,11 @@ public class DBConnectionURLController implements Initializable{
 	
 	private void tryToConnect(ActionEvent event) {
 		changeLoadingVisible();
-		DB.setUnits(txtURL.getText());
+		DBFactory.setUnits(txtURL.getText());
 		// In threads to not freeze the UI
 		Thread threadConnection = new Thread(() -> {
 			try {
-				DB.getFactory(); // Try to connect
+				DBFactory.getConnection(); // Try to connect
 				// Close dialog when connect
 				Platform.runLater(() -> {
 					main.showLoginForm();

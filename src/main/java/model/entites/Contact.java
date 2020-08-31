@@ -33,10 +33,10 @@ public class Contact {
 	@JoinColumn(name="pessoa_id")
 	private Person person;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "numero", columnDefinition = "varchar(50) default null")
 	private String number;
 	
-	@Column (columnDefinition = "varchar(50) default null")
+	@Column (name = "descricao", columnDefinition = "varchar(50) default null")
 	private String description;
 
 }
