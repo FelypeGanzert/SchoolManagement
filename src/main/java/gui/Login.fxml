@@ -18,12 +18,12 @@
                   <Font name="System Bold" size="29.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="txtUser" labelFloat="true" promptText="Usuário">
+            <JFXTextField fx:id="txtUser" labelFloat="true" promptText="Usuário" text="feh">
                <font>
                   <Font size="15.0" />
                </font>
             </JFXTextField>
-            <JFXPasswordField fx:id="txtPassword" labelFloat="true" promptText="Senha">
+            <JFXPasswordField fx:id="txtPassword" labelFloat="true" promptText="Senha" text="feh@123">
                <font>
                   <Font size="15.0" />
                </font>

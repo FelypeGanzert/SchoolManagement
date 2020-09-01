@@ -23,32 +23,32 @@ import lombok.Setter;
 @Table(name = "aluno")
 public class Student extends Person {
 
-	@Column(columnDefinition = "varchar(50) default null")
-	private String situacao;
+	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
+	private String status;
 
 	@OneToMany(mappedBy = "student",
 		cascade = CascadeType.ALL,
 		orphanRemoval = true)
-	private List<ResponsibleStudent> responsaveis = new ArrayList<>();
+	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student")
-	private List<Matriculation> matriculas;
+	private List<Matriculation> matriculations;
 	
 	@OneToMany(mappedBy = "student")
-	private List<Annotations> anotacoes;
+	private List<Annotations> annotations;
 
 	public void addResponsavel(Responsible responsible, String relationship) {
 		ResponsibleStudent responsibleStudent = new ResponsibleStudent(this, responsible, relationship);
-		this.responsaveis.add(responsibleStudent);
-		responsible.getAlunos().add(responsibleStudent);
+		this.responsibles.add(responsibleStudent);
+		responsible.getStudents().add(responsibleStudent);
 	}
 
 	public void removeResponsavel(Responsible responsible) {
-		for (Iterator<ResponsibleStudent> iterator = responsaveis.iterator(); iterator.hasNext();) {
+		for (Iterator<ResponsibleStudent> iterator = responsibles.iterator(); iterator.hasNext();) {
 			ResponsibleStudent responsibleStudent = iterator.next();
 			if (responsibleStudent.getStudent().equals(this) && responsibleStudent.getResponsible().equals(responsible)) {
 				iterator.remove();
-				responsibleStudent.getStudent().getResponsaveis().remove(responsibleStudent);
+				responsibleStudent.getStudent().getResponsibles().remove(responsibleStudent);
 				responsibleStudent.setStudent(null);
 				responsibleStudent.setResponsible(null);
 			}

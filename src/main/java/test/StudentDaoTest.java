@@ -31,7 +31,7 @@ public class StudentDaoTest {
 			
 			System.out.println("=== Find all ===");
 			List<Student> students = studentDao.findAll();
-			students.forEach(s -> System.out.println(s.getId() + ", " + s.getName() + ", " + s.getSituacao()));
+			students.forEach(s -> System.out.println(s.getId() + ", " + s.getName() + ", " + s.getStatus()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -27,8 +27,8 @@ public class Responsible extends Person {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-	private List<ResponsibleStudent> alunos = new ArrayList<>();;
+	private List<ResponsibleStudent> students = new ArrayList<>();;
 
 	@OneToMany(mappedBy = "responsible")
-	private List<Matriculation> responsavelPelaMatriculas;
+	private List<Matriculation> matriculationsThatIsResponsible;
 }

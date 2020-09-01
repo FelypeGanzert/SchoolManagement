@@ -46,7 +46,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="Felype Aurélio Ganzert" textFill="WHITE" />
+                        <Label fx:id="labelCurrentUser" text="Usuário atual" textFill="WHITE" />
                         <JFXButton fx:id="btnChangeUser" onAction="#handleChangeUser" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="MUDAR USUÁRIO" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">

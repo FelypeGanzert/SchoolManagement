@@ -7,16 +7,19 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import application.Main;
+import db.DBFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import model.dao.StudentDao;
 
 public class MainMenuController implements Initializable {
 
 	@FXML JFXButton btnListStudents;
 	@FXML JFXButton btnListResponsibles;
+	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -27,6 +30,8 @@ public class MainMenuController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListStudents.fxml"));
 			ScrollPane newContent = loader.load();
+			ListStudentsController controller = loader.getController();
+			controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 			
 			ScrollPane mainContent = (ScrollPane) Main.getMainScene().lookup("#content");
 			mainContent.setContent(newContent.getContent());

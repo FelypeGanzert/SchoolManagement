@@ -17,9 +17,14 @@ import model.entites.Collaborator;
 public class Main extends Application {
 
 	private static Scene mainScene;
+	private static Collaborator currentUser;
 
 	public static Scene getMainScene() {
 		return Main.mainScene;
+	}
+	
+	public static Collaborator getCurrentUser() {
+		return Main.currentUser;
 	}
 
 	public static void main(String[] args) {
@@ -40,6 +45,7 @@ public class Main extends Application {
 	// This method is called by DBConnectionURLController after established connection with database,
 	// and when we need to change current user
 	public void showLoginForm() {
+		currentUser = null;
 		loadMainScreen("/gui/Login.fxml", new Stage(), "Login", false, (LoginController controller) -> {
 			// Set this Main to allow he to call in future to show Main View
 			controller.setMain(this);
@@ -49,6 +55,7 @@ public class Main extends Application {
 	
 	// This is method is called by Login
 	public void showMainView(Collaborator collaborator) {
+		Main.currentUser = collaborator;
 		loadMainScreen("/gui/MainView.fxml", new Stage(), "Gerenciamento Escolar (?)", true,
 				(MainViewController controller) -> {
 					controller.setMain(this);

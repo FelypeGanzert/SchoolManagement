@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 import db.DbException;
 import model.entites.Student;
@@ -59,6 +63,20 @@ public class StudentDao {
 		}
 		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s", Student.class);
 		return query.getResultList();
+	}
+	
+	public List<Student> findAllWithContactsLoaded() throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}
+		
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Student> criteria = builder.createQuery(Student.class);
+        Root<Student> root = criteria.from(Student.class);
+        // This will simulate a EAGER loading, solving the problem of n+1
+        root.fetch("contacts", JoinType.LEFT);
+        TypedQuery<Student> query = manager.createQuery(criteria);
+        return query.getResultList();
 	}
 	
 

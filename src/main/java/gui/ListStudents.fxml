@@ -112,11 +112,11 @@
 								<Label text="Não há alunos matriculados" />
 							</placeholder>
 							<columns>
-								<TableColumn fx:id="columnStudentStatus" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
-								<TableColumn fx:id="columnStudentCode" maxWidth="80.0" minWidth="80.0" text="Código" />
-								<TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="250.0" prefWidth="300.0" text="Nome" />
-								<TableColumn fx:id="columnStudentContact1" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Contato 1" />
-								<TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+								<TableColumn fx:id="columnStudentStatus" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+								<TableColumn fx:id="columnStudentCode" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center-right;" text="Código" />
+								<TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="250.0" prefWidth="300.0" style="-fx-alignment: center-left;" text="Nome" />
+								<TableColumn fx:id="columnStudentContact1" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" style="-fx-alignment: center;" text="Contato 1" />
+								<TableColumn fx:id="columnStudentInfo" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" style="-fx-alignment: center;" />
 							</columns>
 							<VBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" />
