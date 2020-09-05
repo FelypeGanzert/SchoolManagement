@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import model.entites.Collaborator;
 
 public class MainViewController implements Initializable {
 
@@ -46,6 +47,11 @@ public class MainViewController implements Initializable {
 		this.main = main;
 	}
 	
+	public void setCurrentUser(Collaborator collaborator) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void handleBtnHome(ActionEvent action) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
@@ -65,4 +71,5 @@ public class MainViewController implements Initializable {
 	public void handleBtnStudents(ActionEvent action) {
 		this.mainMenuController.showListStudents(action);
 	}
+
 }

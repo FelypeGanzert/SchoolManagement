@@ -39,7 +39,6 @@ public class LoginController implements Initializable {
 	public void initialize(URL url, ResourceBundle resources) {
 		txtUser.getValidators().add(Validators.getRequiredFieldValidator());
 		txtPassword.getValidators().add(Validators.getRequiredFieldValidator());
-		
 		// Listeners to hidden error message
 		txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
 			labelError.setVisible(false);

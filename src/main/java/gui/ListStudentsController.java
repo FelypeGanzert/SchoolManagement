@@ -4,9 +4,7 @@ package gui;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
@@ -21,6 +19,8 @@ import com.jfoenix.controls.JFXTextField;
 import db.DbException;
 import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.ParcelStatusEnum;
+import gui.util.enums.StudentStatusEnum;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -91,8 +91,6 @@ public class ListStudentsController implements Initializable {
 	
 	private final Integer ICON_SIZE = 15;
 	private final Integer COLUMN_ICON_SPACE = 20;
-	private Map<String, String> statusColors = new HashMap<>();
-	private Map<String, String> parcelStatusColors = new HashMap<>();
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -100,14 +98,6 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
-		statusColors.put("ATIVO", "#a2d6f9");
-		statusColors.put("AGUARDANDO", "#b7e4c7");
-		statusColors.put("INATIVO", "#BFBFBF");
-
-		parcelStatusColors.put("CANCELADA", "#F63C41");
-		parcelStatusColors.put("ATRASADA", "#FB6D4C");
-		parcelStatusColors.put("ABERTA", "#FFFFFF");
-		parcelStatusColors.put("PAGA", "#a2d6f9");
 	}
 	
 	public void setStudentDao(StudentDao studentDao) {
@@ -132,7 +122,7 @@ public class ListStudentsController implements Initializable {
 					setText("");
 					setGraphic(null);
 					if (!isEmpty()) {
-						this.setStyle("-fx-background-color:" + statusColors.get(getItem().toUpperCase()));
+						this.setStyle("-fx-background-color:" + StudentStatusEnum.fromString(getItem()).getHexColor());
 					}
 				}
 			};
@@ -225,7 +215,7 @@ public class ListStudentsController implements Initializable {
 					setText("");
 					setGraphic(null);
 					if (!isEmpty()) {
-						this.setStyle("-fx-background-color:" + parcelStatusColors.get(getItem().toUpperCase()));
+						this.setStyle("-fx-background-color:" + ParcelStatusEnum.fromString(getItem()).getHexColor());
 					}
 				}
 			};
@@ -281,6 +271,10 @@ public class ListStudentsController implements Initializable {
 						e.printStackTrace();
 					}
 				});
+	}
+	
+	public void handleBtnAddAnnotation(ActionEvent event) {
+		System.out.println("You will add a new annotation");
 	}
 	
 	public void handleBtnEditAnnotation(ActionEvent event){

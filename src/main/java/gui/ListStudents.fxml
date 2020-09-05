@@ -214,7 +214,7 @@
 										<Font size="20.0" />
 									</font>
 								</Label>
-                        <Button fx:id="btnAddAnnotation" mnemonicParsing="false" style="-fx-background-color: #0077b6; -fx-cursor: hand;" GridPane.columnIndex="1">
+                        <Button fx:id="btnAddAnnotation" mnemonicParsing="false" onAction="#handleBtnAddAnnotation" style="-fx-background-color: #0077b6; -fx-cursor: hand;" GridPane.columnIndex="1">
                            <graphic>
                               <ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

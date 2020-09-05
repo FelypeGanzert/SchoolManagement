@@ -56,9 +56,10 @@ public class Main extends Application {
 	// This is method is called by Login
 	public void showMainView(Collaborator collaborator) {
 		Main.currentUser = collaborator;
-		loadMainScreen("/gui/MainView.fxml", new Stage(), "Gerenciamento Escolar (?)", true,
+		loadMainScreen("/gui/MainView.fxml", new Stage(), "Gerenciamento Escolar", true,
 				(MainViewController controller) -> {
 					controller.setMain(this);
+					controller.setCurrentUser(collaborator);
 				});
 	}
 
