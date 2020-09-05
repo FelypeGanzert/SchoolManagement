@@ -25,13 +25,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "Pessoa")
-@Table(name = "pessoa")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Person {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Person {
 
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Integer id;
 	
 	@Column (name = "nome", columnDefinition = "varchar(50) default null")
@@ -75,10 +74,5 @@ public class Person {
 	
 	@OneToMany(mappedBy = "person")
 	private List<Contact> contacts;
-
-	public Person(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-	}
 
 }

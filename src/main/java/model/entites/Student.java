@@ -35,7 +35,7 @@ public class Student extends Person {
 	private List<Matriculation> matriculations;
 	
 	@OneToMany(mappedBy = "student")
-	private List<Annotations> annotations;
+	private List<Annotation> annotations;
 
 	public void addResponsavel(Responsible responsible, String relationship) {
 		ResponsibleStudent responsibleStudent = new ResponsibleStudent(this, responsible, relationship);

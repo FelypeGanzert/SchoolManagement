@@ -72,6 +72,7 @@ public class StudentDao {
 		
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Student> criteria = builder.createQuery(Student.class);
+        criteria.distinct(true);
         Root<Student> root = criteria.from(Student.class);
         // This will simulate a EAGER loading, solving the problem of n+1
         root.fetch("contacts", JoinType.LEFT);

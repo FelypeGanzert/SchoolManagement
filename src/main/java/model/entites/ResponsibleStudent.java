@@ -1,17 +1,15 @@
 package model.entites;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +24,9 @@ import lombok.Setter;
 public class ResponsibleStudent {
 
 	@EqualsAndHashCode.Include
-	@EmbeddedId
-	private ResponsavelAlunoId id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
 	@ManyToOne
 	@MapsId("aluno_id")
@@ -46,25 +45,5 @@ public class ResponsibleStudent {
         this.student = student;
         this.responsible= responsible;
         this.relationship = relationship;
-        this.id = new ResponsavelAlunoId(student.getId(), responsible.getId());
     }
-
-	@Getter
-	@Setter
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-	@Embeddable
-	public static class ResponsavelAlunoId implements Serializable{
-		private static final long serialVersionUID = 1L;
-		
-		@EqualsAndHashCode.Include
-		@Column(name = "aluno_id")
-		private Integer StudentId;
-		
-		@EqualsAndHashCode.Include
-		@Column(name = "responsavel_id")
-		private Integer ResponsibleId;
-	}
-	
 }

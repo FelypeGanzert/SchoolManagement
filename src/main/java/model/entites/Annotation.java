@@ -24,7 +24,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "Anotacoes")
 @Table(name = "anotacoes")
-public class Annotations {
+public class Annotation {
 	
 	@EqualsAndHashCode.Include
 	@Id

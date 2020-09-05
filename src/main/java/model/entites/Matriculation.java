@@ -50,6 +50,9 @@ public class Matriculation {
 	@Column(name="motivo", columnDefinition = "varchar(50) default null")
 	private String reason;
 	
+	@Column(name="situacao", columnDefinition = "varchar(50) default null")
+	private String status;
+	
 	@OneToMany(mappedBy = "matriculation")
 	private List<Parcel> parcels;
 
