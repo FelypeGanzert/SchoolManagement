@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
@@ -17,11 +16,11 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import db.DbException;
+import gui.util.Alerts;
 import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
 import gui.util.enums.StudentStatusEnum;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,7 +38,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.dao.StudentDao;
@@ -88,9 +86,7 @@ public class ListStudentsController implements Initializable {
 	private StudentDao studentDao;
 	private ObservableList<Student> studentsList;
 	
-	
 	private final Integer ICON_SIZE = 15;
-	private final Integer COLUMN_ICON_SPACE = 20;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -104,16 +100,15 @@ public class ListStudentsController implements Initializable {
 		this.studentDao = studentDao;
 		try {
 			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
+			tableStudents.setItems(studentsList);
+			tableStudents.getSelectionModel().selectFirst();
 		} catch (DbException e) {
-			e.printStackTrace();
+			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR);
 		}
-		tableStudents.setItems(studentsList);
-		tableStudents.getSelectionModel().selectFirst();
-		tableMatriculations.getSelectionModel().selectFirst();
 	}
 	
 	private void initializeTableStudentsNodes() {
-		columnStudentStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		Utils.setCellValueFactory(columnStudentStatus, "status");
 		columnStudentStatus.setCellFactory(column -> {
 			return new TableCell<Student, String>() {
 				@Override
@@ -127,8 +122,8 @@ public class ListStudentsController implements Initializable {
 				}
 			};
 	    });
-		columnStudentCode.setCellValueFactory(new PropertyValueFactory<>("id"));
-		columnStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		Utils.setCellValueFactory(columnStudentCode, "id");
+		Utils.setCellValueFactory(columnStudentName, "name");
 		columnStudentContact1.setCellValueFactory(cellData -> {
 			try {
 				return new SimpleStringProperty(cellData.getValue().getContacts().get(0).getNumber());
@@ -137,7 +132,7 @@ public class ListStudentsController implements Initializable {
 			}
 		});
 		// Info button
-		initButtons(columnStudentInfo, ICON_SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
+		Utils.initButtons(columnStudentInfo, ICON_SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
 			showStudentInfo(student, "/gui/SomeFile.fxml", Utils.currentStage(event));
 		});
 		// Listener to selected student
@@ -160,10 +155,10 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	private void initializeTableMatriculationsNodes() {
-		columnMatriculationCode.setCellValueFactory(new PropertyValueFactory<>("code"));
-		columnMatriculationDate.setCellValueFactory(new PropertyValueFactory<>("dateMatriculation"));
+		Utils.setCellValueFactory(columnMatriculationCode, "code");
+		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
 		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
-		columnMatriculationStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		Utils.setCellValueFactory(columnMatriculationStatus, "status");
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
 				// Total of parcels ignoring matriculation tax (parcel 0)
@@ -184,8 +179,9 @@ public class ListStudentsController implements Initializable {
 					labelSelectedMatriculation.setText("");
 					if (newSelection != null && newSelection.getParcels().size() > 0) {
 						try {
-							labelSelectedMatriculation.setText(Integer.toString(newSelection.getCode()));
 							tableParcels.setItems(FXCollections.observableList(newSelection.getParcels()));
+							String matriculationCode = Integer.toString(newSelection.getCode());
+							setCurrentMatriculationId(matriculationCode);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -220,11 +216,10 @@ public class ListStudentsController implements Initializable {
 				}
 			};
 	    });
-
-		columnParcelParcel.setCellValueFactory(new PropertyValueFactory<>("parcelNumber"));
-		columnParcelDate.setCellValueFactory(new PropertyValueFactory<>("dateParcel"));
+		Utils.setCellValueFactory(columnParcelParcel, "parcelNumber");
+		Utils.setCellValueFactory(columnParcelDate, "dateParcel");
 		Utils.formatTableColumnDate(columnParcelDate, "dd/MM/yyyy");
-		columnParcelValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+		Utils.setCellValueFactory(columnParcelValue, "value");
 		Utils.formatTableColumnDoubleCurrency(columnParcelValue);
 	}
 	
@@ -251,26 +246,25 @@ public class ListStudentsController implements Initializable {
 		// Listener to selected Annotation
 		listViewAnnotation.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {
-
 					try {
-					labelSelectedAnnotationDate.setText("");
-					textAreaAnnotation.setText("");
-					labelSelectedAnnotationCollaborator.setText("");
-					tableParcels.refresh();
-					labelSelectedMatriculation.setText("");
-					if (newSelection != null) {
+						labelSelectedAnnotationDate.setText("");
+						textAreaAnnotation.setText("");
+						labelSelectedAnnotationCollaborator.setText("");
+						tableParcels.refresh();
+						if (newSelection != null) {
 							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 							labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDateAnnotation()));
 							textAreaAnnotation.setText(newSelection.getDescription());
 							labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleEmployee());
-						
-					}
-					
-					
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				});
+	}
+	
+	public void handleBtnMatriculate(ActionEvent event) {
+		
 	}
 	
 	public void handleBtnAddAnnotation(ActionEvent event) {
@@ -299,30 +293,12 @@ public class ListStudentsController implements Initializable {
 		}
 	}
 	
-	
-	private <T, T2> void initButtons(TableColumn<Student, Student> tableColumn,
-			int size, String svgIcon, String className, BiConsumer<Student, ActionEvent> buttonAction) {
-		tableColumn.setMinWidth(size+COLUMN_ICON_SPACE);
-		tableColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
-		tableColumn.setCellFactory(param -> new TableCell<Student, Student>() {
-			private final Button button = Utils.createIconButton(svgIcon, size, className);
-			@Override
-			protected void updateItem(Student student, boolean empty) {
-				super.updateItem(student, empty);
-				if (student == null) {
-					setGraphic(null);
-					return;
-				}
-				setGraphic(button);
-				button.setOnAction(event -> {
-					buttonAction.accept(student, event);
-				});
-			}
-		});
-	}
-	
 	private void showStudentInfo(Student student, String string, Stage stage) {
 		System.out.println("Will show info of: " + student.getName());
+	}
+	
+	private void setCurrentMatriculationId(String matriculationCode) {
+		labelSelectedMatriculation.setText("Matrícula: " + matriculationCode);
 	}
 
 }

@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.BiConsumer;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
@@ -17,9 +19,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import model.entites.Student;
 
 public class Utils {
 
@@ -28,6 +32,8 @@ public class Utils {
 	private static final Locale BRAZIL = new Locale("pt", "BR");
 	private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRAZIL);
 	public static final DecimalFormat DINHEIRO_REAL = new DecimalFormat("¤ ###,###,##0.00", REAL);
+	
+	private static final int COLUMN_ICON_SPACE = 20;
 
 	public static String pointSeparator(Integer value) {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
@@ -56,6 +62,10 @@ public class Utils {
 			return null;
 		}
 	}
+	
+	public static <T, T2> void setCellValueFactory(TableColumn<T, T2> tableColumn, String property) {
+		tableColumn.setCellValueFactory(new PropertyValueFactory<>(property));
+	}
 
 	public static Button createIconButton(String svgAbsolutePath, int size, String iconClass) {
 		SVGPath path = new SVGPath();
@@ -75,6 +85,27 @@ public class Utils {
 		button.getStyleClass().add("icon-button");
 		button.getStyleClass().add(iconClass);
 		return button;
+	}
+	
+	public static <T, T2> void initButtons(TableColumn<Student, Student> tableColumn,
+			int size, String svgIcon, String className, BiConsumer<Student, ActionEvent> buttonAction) {
+		tableColumn.setMinWidth(size+COLUMN_ICON_SPACE);
+		tableColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+		tableColumn.setCellFactory(param -> new TableCell<Student, Student>() {
+			private final Button button = Utils.createIconButton(svgIcon, size, className);
+			@Override
+			protected void updateItem(Student student, boolean empty) {
+				super.updateItem(student, empty);
+				if (student == null) {
+					setGraphic(null);
+					return;
+				}
+				setGraphic(button);
+				button.setOnAction(event -> {
+					buttonAction.accept(student, event);
+				});
+			}
+		});
 	}
 
 	public static <T> void formatTableColumnDate(TableColumn<T, Date> tableColumn, String format) {
@@ -105,7 +136,7 @@ public class Utils {
 					if (empty) {
 						setText(null);
 					} else {
-						setText(mascaraDinheiro(item, DINHEIRO_REAL));
+						setText(formatCurrentMoney(item, DINHEIRO_REAL));
 					}
 				}
 			};
@@ -141,8 +172,8 @@ public class Utils {
 		});
 	}
 
-	public static String mascaraDinheiro(double valor, DecimalFormat moeda) {
-		return moeda.format(valor);
+	public static String formatCurrentMoney(Double value, DecimalFormat coin) {
+		return coin.format(value);
 	}
 
 }
