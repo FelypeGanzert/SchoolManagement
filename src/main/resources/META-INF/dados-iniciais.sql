@@ -18,12 +18,12 @@ insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (3, 7, "Tia");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 9, "Sobinho");
 
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (1, '2020-11-01', "uma nova anotação que será adicionada", "Felype", 1);
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (2, '2020-10-01', "segunda anotação", "Felype", 3);
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (3, '2020-09-01', "terceira anotação\n\n\ncom quebra de linhas", "Felype", 1);
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (4, '2020-07-01', "quinta anotação", "Felype", 3);
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (5, '2020-02-01', "sexta anotação", "Felype", 2);
-insert into anotacoes (id, data_anotacao, descricao, funcionario_responsavel, aluno_id) value (6, '2020-03-01', "sétima anotação com uma quantidade tremendamente um pouquinho maior do que as anotações anteriores, sendo que essa também possui quebra de linhas.\n\n\n Quebras inseridas com barras e a letra n, vamos ver se irá funcionar ou não", "Felype", 2);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (1, '2020-11-01', "uma nova anotação que será adicionada", "Felype", 1);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (2, '2020-10-01', "segunda anotação", "Felype", 3);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (3, '2020-09-01', "terceira anotação\n\n\ncom quebra de linhas", "Felype", 1);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (4, '2020-07-01', "quinta anotação", "Felype", 3);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (5, '2020-02-01', "sexta anotação", "Felype", 2);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (6, '2020-03-01', "sétima anotação com uma quantidade tremendamente um pouquinho maior do que as anotações anteriores, sendo que essa também possui quebra de linhas.\n\n\n Quebras inseridas com barras e a letra n, vamos ver se irá funcionar ou não", "Felype", 2);
     
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(1, 'Ativa', '2020-09-01', "Feh", "Teste sem resp.", null, 1);
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(2, 'Cancelada', '2010-10-01', "Feh", "Teste sem resp.", 6, 1);

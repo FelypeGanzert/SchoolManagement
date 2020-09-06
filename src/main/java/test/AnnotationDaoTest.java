@@ -43,7 +43,7 @@ public class AnnotationDaoTest {
 	
 	public static void printAnnotation(Annotation a) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println(a.getId() + ", " + sdf.format(a.getDateAnnotation()) + ", " + a.getDescription());
+		System.out.println(a.getId() + ", " + sdf.format(a.getDate()) + ", " + a.getDescription());
 	}
 
 }

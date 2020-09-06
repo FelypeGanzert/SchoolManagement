@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXButton;
 
 import application.Main;
 import db.DBFactory;
+import gui.util.FxmlPath;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +29,7 @@ public class MainMenuController implements Initializable {
 	
 	public void showListStudents(ActionEvent action) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListStudents.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.LIST_STUDENTS));
 			ScrollPane newContent = loader.load();
 			ListStudentsController controller = loader.getController();
 			controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
@@ -43,7 +44,7 @@ public class MainMenuController implements Initializable {
 
 	public void showListResponsibles(ActionEvent action) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/ListResponsibles.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.LIST_RESPONSIBLES));
 			ScrollPane newContent = loader.load();
 			ScrollPane mainContent = (ScrollPane) Main.getMainScene().lookup("#content");
 			mainContent.setContent(newContent.getContent());

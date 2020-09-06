@@ -1,12 +1,14 @@
 
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,8 +17,11 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
+import application.Main;
+import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.FxmlPath;
 import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
@@ -26,8 +31,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -39,7 +47,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.dao.AnnotationDao;
 import model.dao.StudentDao;
 import model.entites.Annotation;
 import model.entites.Matriculation;
@@ -236,7 +246,7 @@ public class ListStudentsController implements Initializable {
 					hBox.setAlignment(Pos.CENTER);
 					// Create centered Label
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					Label label = new Label(sdf.format(item.getDateAnnotation()));
+					Label label = new Label(sdf.format(item.getDate()));
 		            label.setAlignment(Pos.CENTER);
 		            hBox.getChildren().add(label);
 					setGraphic(hBox);
@@ -253,9 +263,9 @@ public class ListStudentsController implements Initializable {
 						tableParcels.refresh();
 						if (newSelection != null) {
 							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-							labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDateAnnotation()));
+							labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDate()));
 							textAreaAnnotation.setText(newSelection.getDescription());
-							labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleEmployee());
+							labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleCollaborator());
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -274,17 +284,22 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnEditAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
 		if(itemSelected != null) {
-			System.out.println("You will edit annotation from day " + itemSelected.getDateAnnotation());
+			loadView(FxmlPath.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
+				AnnotationController annotationController = (AnnotationController) controller;
+				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
+				annotationController.setDependences(itemSelected, Main.getCurrentUser().getName());
+				
+			});
 		}
 	}
 	
 	public void handleBtnDeleteAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
 		if(itemSelected != null) {
-			System.out.println("You will delete annotation from day " + itemSelected.getDateAnnotation());
+			System.out.println("You will delete annotation from day " + itemSelected.getDate());
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar anotação");
-			alert.setHeaderText("Deletear a anotação do dia " + itemSelected.getDateAnnotation() + " ?");
+			alert.setHeaderText("Deletear a anotação do dia " + itemSelected.getDate() + " ?");
 			
 			Optional<ButtonType> result =alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -300,5 +315,31 @@ public class ListStudentsController implements Initializable {
 	private void setCurrentMatriculationId(String matriculationCode) {
 		labelSelectedMatriculation.setText("Matrícula: " + matriculationCode);
 	}
+	
+	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
+			boolean resizable, Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+			Parent parent = loader.load();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle(windowTitle);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(parentStage);
+			dialogStage.setResizable(resizable);
+			
+			Scene scene = new Scene(parent);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
+			dialogStage.setScene(scene);
+			
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		} catch(IllegalStateException e) {
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
+	}	
 
 }

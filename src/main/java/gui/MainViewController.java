@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import application.Main;
+import gui.util.FxmlPath;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +31,7 @@ public class MainViewController implements Initializable {
 	public void initialize(URL url, ResourceBundle resource) {
 		try {
 			// Load the menu screen and show
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.MAIN_MENU));
 			ScrollPane newContent = loader.load();
 			this.mainMenuController = loader.getController();
 			this.content.setContent(newContent.getContent());
@@ -54,7 +55,7 @@ public class MainViewController implements Initializable {
 	
 	public void handleBtnHome(ActionEvent action) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainMenu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.MAIN_MENU));
 			ScrollPane newContent = loader.load();
 			this.content.setContent(newContent.getContent());
 			this.content.setStyle(newContent.getStyle());	

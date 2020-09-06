@@ -38,10 +38,10 @@ public class Annotation {
 	@Column (name = "descricao", columnDefinition = "text default null")
 	private String description;
 	
-	@Column (name = "data_anotacao", columnDefinition = "date default null")
-	private Date dateAnnotation;
+	@Column (name = "data", columnDefinition = "date default null")
+	private Date date;
 	
-	@Column(name = "funcionario_responsavel", columnDefinition = "varchar(50) default null")
-	private String responsibleEmployee;
+	@Column(name = "colaborador_responsavel", columnDefinition = "varchar(50) default null")
+	private String responsibleCollaborator;
 
 }
