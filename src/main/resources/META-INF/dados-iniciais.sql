@@ -1,4 +1,4 @@
-insert into aluno(id, situacao, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (1, "Ativo", "Estação", "Felype", "Lapa", "07565617964", "caio@gmail.com", "Rua Carlos Pedro", "Caio", "145645", "M", "PR");
+insert into aluno(id, situacao, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (1, "Ativo", "Estação", "Felype", "Lapa", "07565617964", "caio@gmail.com", "Rua Carlos Pedro", "Caio de Fernando de Abreu e Souza Alburquerque", "145645", "M", "PR");
 insert into aluno(id, situacao, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (2, "Aguardando", "Lacerda", "Felype", "Lapa", "123456789", "pedro@gmail.com", "Rua Carlos Pedro", "Pedro", "123456", "M", "PR");
 insert into aluno(id, situacao, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (3, "Ativo", "Souza Naves", "Felype", "Lapa", "222222222", "eduarda@gmail.com", "Rua Carlos Pedro", "Eduarda", "22222", "F", "PR");
 insert into aluno(id, situacao, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (4, "Inativo", "Vila do Principe", "Felype", "Lapa", "333333333", "bruno@gmail.com", "Rua Carlos Pedro", "Bruno", "3333", "M", "PR");
@@ -8,9 +8,9 @@ insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (8, "Aldeia da Folha", "Felype", "São Paulo", "53453", "camile@gmail.com", "Rua Carlos Pereiras", "Chritian de Oliveira Pereiras", "242", "M", "PR");
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf) values (9, "Vila Nova Fibrurgo", "Felype", "Petrolina", "444444444", "camile@gmail.com", "Rua Bermudas", "Triangulo das Bermudas", "34234", "M", "PR");
  
-insert into contato(id, descricao, numero, pessoa_id) values(1,"Número do aluno","911112223", 1);
+insert into contato(id, descricao, numero, pessoa_id) values(1,"Número do aluno","(41) 98868-0206", 1);
 insert into contato(id, descricao, numero, pessoa_id) values(2,"Número da mãe", "912345678", 1);
-insert into contato(id, descricao, numero, pessoa_id) values(3, "--", "987654321", 2);
+insert into contato(id, descricao, numero, pessoa_id) values(3, "--", "9123456781234567890", 2);
 insert into contato(id, descricao, numero, pessoa_id) values(4,"Namorado", "988888877", 3);
 insert into contato(id, descricao, numero, pessoa_id) values(5,"Vó", "123456791", 4);
  

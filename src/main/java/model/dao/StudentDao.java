@@ -40,7 +40,7 @@ public class StudentDao {
 		
 	}
 	
-	public void remove(Student student) throws DbException {
+	public void delete(Student student) throws DbException {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}

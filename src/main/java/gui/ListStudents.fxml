@@ -24,11 +24,11 @@
 
 <ScrollPane prefHeight="567.0" prefWidth="1506.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ListStudentsController">
 	<content>
-		<GridPane alignment="CENTER" minHeight="420.0" minWidth="1220.0" prefHeight="501.0" prefWidth="1000.0">
+		<GridPane alignment="CENTER" minHeight="420.0" minWidth="1200.0" prefHeight="501.0" prefWidth="1000.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="NEVER" maxWidth="630.0" minWidth="630.0" prefWidth="630.0" />
+				<ColumnConstraints hgrow="NEVER" maxWidth="590.0" minWidth="590.0" prefWidth="590.0" />
 				<ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -55,9 +55,9 @@
 										<Image url="@../png_icons/search.png" />
 									</image>
 								</ImageView>
-								<JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="300.0" promptText="Filtrar" />
+								<JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="250.0" promptText="Filtrar" />
 								<JFXComboBox fx:id="comboBoxfiledFilter" prefWidth="100.0" />
-								<JFXButton fx:id="btnRegister" alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="cadastrar" textAlignment="CENTER" textFill="WHITE">
+								<JFXButton fx:id="btnRegister" alignment="CENTER" onAction="#handleBtnAddNewStudent" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="cadastrar" textAlignment="CENTER" textFill="WHITE">
 									<graphic>
 										<ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7">
 											<image>
@@ -113,7 +113,7 @@
 							</placeholder>
 							<columns>
 								<TableColumn fx:id="columnStudentStatus" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-								<TableColumn fx:id="columnStudentCode" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center-right;" text="Código" />
+								<TableColumn fx:id="columnStudentCode" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center-right;" text="Código" />
 								<TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="250.0" prefWidth="300.0" style="-fx-alignment: center-left;" text="Nome" />
 								<TableColumn fx:id="columnStudentContact1" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" style="-fx-alignment: center;" text="Contato 1" />
 								<TableColumn fx:id="columnStudentInfo" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" style="-fx-alignment: center;" />
@@ -143,7 +143,7 @@
 								<Label text="Não há matrículas" />
 							</placeholder>
 							<columns>
-								<TableColumn fx:id="columnMatriculationCode" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" style="-fx-alignment: center;" text="ID" />
+								<TableColumn fx:id="columnMatriculationCode" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="ID" />
                         <TableColumn fx:id="columnMatriculationDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Data" />
 								<TableColumn fx:id="columnMatriculationStatus" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Situação" />
 								<TableColumn fx:id="columnMatriculationParcels" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" style="-fx-alignment: center;" text="Parcelas" />

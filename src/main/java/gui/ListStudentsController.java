@@ -263,8 +263,8 @@ public class ListStudentsController implements Initializable {
 				});
 	}
 	
-	public void handleBtnMatriculate(ActionEvent event) {
-		
+	public void handleBtnAddNewStudent(ActionEvent event) {
+		System.out.println("You will matriculate a new person");
 	}
 	
 	public void handleBtnAddAnnotation(ActionEvent event) {
