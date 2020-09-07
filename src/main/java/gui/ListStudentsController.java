@@ -149,15 +149,15 @@ public class ListStudentsController implements Initializable {
 		tableStudents.getSelectionModel().selectedItemProperty().addListener(
 	            (observable, oldSelection, newSelection) -> {
 					tableMatriculations.setItems(null);
-					listViewAnnotation.setItems(null);
-					if (newSelection != null && newSelection.getMatriculations().size() > 0) {
-						try {
-							tableMatriculations.setItems(FXCollections.observableList(newSelection.getMatriculations()));
-							tableMatriculations.getSelectionModel().selectFirst();
-							listViewAnnotation.setItems(FXCollections.observableList(newSelection.getAnnotations()));
-							listViewAnnotation.getSelectionModel().selectFirst();
-						} catch (Exception e) {
-							e.printStackTrace();
+					if (newSelection != null) {
+						updateAnnotations(null);
+						if(newSelection.getMatriculations().size() > 0) {
+							try {
+								tableMatriculations.setItems(FXCollections.observableList(newSelection.getMatriculations()));
+								tableMatriculations.getSelectionModel().selectFirst();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -278,7 +278,14 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	public void handleBtnAddAnnotation(ActionEvent event) {
-		System.out.println("You will add a new annotation");
+		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
+		if (studentSelected != null) {
+			loadView(FxmlPath.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (controller) -> {
+				AnnotationController annotationController = (AnnotationController) controller;
+				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
+				annotationController.setDependences(null, studentSelected, Main.getCurrentUser().getName(), this);
+			});
+		}
 	}
 	
 	public void handleBtnEditAnnotation(ActionEvent event){
@@ -287,7 +294,7 @@ public class ListStudentsController implements Initializable {
 			loadView(FxmlPath.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
 				AnnotationController annotationController = (AnnotationController) controller;
 				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
-				annotationController.setDependences(itemSelected, Main.getCurrentUser().getName());
+				annotationController.setDependences(itemSelected, Main.getCurrentUser().getName(), this);
 				
 			});
 		}
@@ -296,14 +303,20 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnDeleteAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
 		if(itemSelected != null) {
-			System.out.println("You will delete annotation from day " + itemSelected.getDate());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar anotação");
-			alert.setHeaderText("Deletear a anotação do dia " + itemSelected.getDate() + " ?");
-			
+			alert.setHeaderText("Deletar a anotação do dia " + sdf.format(itemSelected.getDate()) + " ?");
 			Optional<ButtonType> result =alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
-			    System.out.println("You confirmed te deletation...");
+				AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
+				try {
+					annotationDao.delete(itemSelected);
+					itemSelected.getStudent().getAnnotations().remove(itemSelected);
+					updateAnnotations(null);
+				} catch (DbException e) {
+					Alerts.showAlert("Erro ao deletar anotação", "DbException", e.getMessage(), AlertType.ERROR);
+				}
 			}
 		}
 	}
@@ -314,6 +327,25 @@ public class ListStudentsController implements Initializable {
 	
 	private void setCurrentMatriculationId(String matriculationCode) {
 		labelSelectedMatriculation.setText("Matrícula: " + matriculationCode);
+	}
+	
+	public void updateAnnotations(Annotation annotation) {
+		listViewAnnotation.setItems(null);
+		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
+		if (studentSelected != null && studentSelected.getAnnotations().size() > 0) {
+			try {
+				ObservableList<Annotation> annotations = FXCollections.observableList(studentSelected.getAnnotations());
+				annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
+				listViewAnnotation.setItems(annotations);
+				if(annotation != null) {
+					listViewAnnotation.getSelectionModel().select(annotation);
+				} else {
+					listViewAnnotation.getSelectionModel().selectFirst();;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,

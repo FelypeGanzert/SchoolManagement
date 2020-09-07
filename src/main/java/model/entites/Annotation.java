@@ -38,7 +38,7 @@ public class Annotation {
 	@Column (name = "descricao", columnDefinition = "text default null")
 	private String description;
 	
-	@Column (name = "data", columnDefinition = "date default null")
+	@Column (name = "data", columnDefinition = "DATETIME default null")
 	private Date date;
 	
 	@Column(name = "colaborador_responsavel", columnDefinition = "varchar(50) default null")

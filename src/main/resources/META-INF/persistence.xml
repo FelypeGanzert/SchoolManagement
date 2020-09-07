@@ -7,6 +7,8 @@
 
 	<persistence-unit name="school">
 		<properties>
+			<property name="hibernate.jdbc.time_zone" value="UTC"/>
+		
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://localhost/cadastroprojetos?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />
 

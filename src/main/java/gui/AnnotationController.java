@@ -15,8 +15,8 @@ import gui.util.Validators;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import model.dao.AnnotationDao;
 import model.entites.Annotation;
 import model.entites.Student;
@@ -35,12 +35,16 @@ public class AnnotationController implements Initializable{
 	private Student student;
 	private String responsibleCollaborator;
 	
+
+	private ListStudentsController listStudentsController;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		textAreaDescription.setValidators(Validators.getRequiredFieldValidator());
 	}
 	
-	public void setDependences(Annotation annotation, Student student, String responsibleCollaborator) {
+	public void setDependences(Annotation annotation, Student student, String responsibleCollaborator, ListStudentsController listStudentsController) {
+		this.listStudentsController = listStudentsController;
 		this.annotation = annotation;
 		this.student = student;
 		this.responsibleCollaborator = responsibleCollaborator;
@@ -48,7 +52,8 @@ public class AnnotationController implements Initializable{
 		this.setLabels();
 	}
 	
-	public void setDependences(Annotation annotation, String responsibleCollaborator) {
+	public void setDependences(Annotation annotation, String responsibleCollaborator, ListStudentsController listStudentsController) {
+		this.listStudentsController = listStudentsController;
 		this.annotation = annotation;
 		this.student = annotation.getStudent();
 		this.responsibleCollaborator = responsibleCollaborator;
@@ -74,11 +79,12 @@ public class AnnotationController implements Initializable{
 				} else {
 					annotationDao.update(annotation);
 				}
+				listStudentsController.updateAnnotations(annotation);
+				Utils.currentStage(event).close();
 			} catch (DbException e) {
 				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
 						AlertType.ERROR);
 			}
-			Utils.currentStage(event).close();
 		}
 	}
 	
@@ -92,11 +98,12 @@ public class AnnotationController implements Initializable{
 			annotation.setDate(new Date());
 			annotation.setStudent(student);
 			annotation.setResponsibleCollaborator(responsibleCollaborator);
+			student.getAnnotations().add(annotation);
 		}
 	}
 	
 	private void setLabels() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 		labelStudentName.setText(student.getName());
 		labelResponsibleEmployee.setText(annotation.getResponsibleCollaborator());
 		labelDate.setText(sdf.format(annotation.getDate()));
