@@ -42,6 +42,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -323,6 +324,17 @@ public class ListStudentsController implements Initializable {
 	
 	private void showStudentInfo(Student student, String string, Stage stage) {
 		System.out.println("Will show info of: " + student.getName());
+		// I still have to work on this...
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.INFO_STUDENT));
+			ScrollPane newContent = loader.load();
+			
+			ScrollPane mainContent = (ScrollPane) Main.getMainScene().lookup("#content");
+			mainContent.setContent(newContent.getContent());
+			mainContent.setStyle(newContent.getStyle());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void setCurrentMatriculationId(String matriculationCode) {
