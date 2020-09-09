@@ -96,6 +96,8 @@ public class ListStudentsController implements Initializable {
 	
 	private StudentDao studentDao;
 	private ObservableList<Student> studentsList;
+
+	private MainViewController mainView;	
 	
 	private final Integer ICON_SIZE = 15;
 	
@@ -105,6 +107,10 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
+	}
+	
+	public void setMainViewController(MainViewController mainView) {
+		this.mainView = mainView;
 	}
 	
 	public void setStudentDao(StudentDao studentDao) {
@@ -323,15 +329,9 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	private void showStudentInfo(Student student, String string, Stage stage) {
-		System.out.println("Will show info of: " + student.getName());
 		// I still have to work on this...
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPath.INFO_STUDENT));
-			ScrollPane newContent = loader.load();
-			
-			ScrollPane mainContent = (ScrollPane) Main.getMainScene().lookup("#content");
-			mainContent.setContent(newContent.getContent());
-			mainContent.setStyle(newContent.getStyle());
+			mainView.setContent(FxmlPath.INFO_STUDENT, x -> {});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

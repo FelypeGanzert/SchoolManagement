@@ -51,6 +51,9 @@ public abstract class Person {
 	@Column (name = "sexo", columnDefinition = "varchar(20) default null")
 	private String gender;
 	
+	@Column (name = "estado_civil", columnDefinition = "varchar(20) default null")
+	private String civilStatus;
+	
 	@Column (name = "endereco", columnDefinition = "varchar(50) default null")
 	private String adress;
 	
@@ -71,6 +74,9 @@ public abstract class Person {
 	
 	@Column (name = "data_ultima_edicao", columnDefinition = "date default null")
 	private Date dateLastRegistryEdit;
+	
+	@Column (name = "observacao", columnDefinition = "text default null")
+	private Date observation;
 	
 	@OneToMany(mappedBy = "person")
 	private List<Contact> contacts;

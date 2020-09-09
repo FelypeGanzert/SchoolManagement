@@ -23,6 +23,9 @@ import lombok.Setter;
 @Table(name = "aluno")
 public class Student extends Person {
 
+	@Column(name = "ra_antigo", columnDefinition = "int default null")
+	private String oldRA; // old Registro Aluno
+	
 	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 
