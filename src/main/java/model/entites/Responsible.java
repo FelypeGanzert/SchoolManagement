@@ -31,4 +31,13 @@ public class Responsible extends Person {
 
 	@OneToMany(mappedBy = "responsible")
 	private List<Matriculation> matriculationsThatIsResponsible;
+	
+	public String getRelationship(Student student) {
+		for(ResponsibleStudent rs : students) {
+			if(rs.getStudent().equals(student) || rs.getResponsible().equals(this)) {
+				return rs.getRelationship();
+			}
+		}
+		return null;
+	}
 }

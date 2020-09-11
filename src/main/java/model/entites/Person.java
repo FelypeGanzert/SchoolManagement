@@ -1,6 +1,8 @@
 package model.entites;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -46,6 +48,9 @@ public abstract class Person {
 	
 	@Column (name = "email", columnDefinition = "varchar(50) default null")
 	private String email;
+
+	@Column (name = "send_email", columnDefinition = "boolean default null")
+	private boolean sendEmail;
 	
 	@Column (name = "sexo", columnDefinition = "varchar(20) default null")
 	private String gender;
@@ -75,9 +80,24 @@ public abstract class Person {
 	private Date dateLastRegistryEdit;
 	
 	@Column (name = "observacao", columnDefinition = "text default null")
-	private Date observation;
+	private String observation;
 	
 	@OneToMany(mappedBy = "person")
 	private List<Contact> contacts;
 
+	public int getAge(){
+		if (dateBirth == null) {
+			return 0;
+		}
+		Calendar dateOfBirth = new GregorianCalendar();
+		dateOfBirth.setTime(this.dateBirth);
+		// Hour now
+		Calendar today = Calendar.getInstance();
+		int age = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);
+		dateOfBirth.add(Calendar.YEAR, age);
+		if (today.before(dateOfBirth)) {
+			age--;
+		}
+		return age;
+	}
 }

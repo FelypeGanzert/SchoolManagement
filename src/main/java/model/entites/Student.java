@@ -3,6 +3,7 @@ package model.entites;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,6 +57,10 @@ public class Student extends Person {
 				responsibleStudent.setResponsible(null);
 			}
 		}
+	}
+	
+	public List<Responsible> getAllResponsibles() {
+		return responsibles.stream().map(responsibleStudent -> responsibleStudent.getResponsible()).collect(Collectors.toList());
 	}
 
 }

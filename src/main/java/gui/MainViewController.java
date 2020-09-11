@@ -88,5 +88,9 @@ public class MainViewController implements Initializable {
 			T controller = loader.getController();
 			initializingAction.accept(controller);
 	}
+	
+	public ScrollPane getMainContent() {
+		return this.content;
+	}
 
 }

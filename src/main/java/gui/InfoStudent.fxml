@@ -32,11 +32,11 @@
             <RowConstraints maxHeight="-Infinity" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="40.0" style="-fx-background-color: #0077b6;" GridPane.columnSpan="2" GridPane.vgrow="NEVER">
+            <HBox alignment="CENTER_LEFT" spacing="30.0" style="-fx-background-color: #0077b6;" GridPane.columnSpan="2" GridPane.vgrow="NEVER">
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <JFXButton fx:id="btnReturn" ripplerFill="#06416f" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="VOLTAR PARA ???" textFill="#fffdfd">
+                        <JFXButton fx:id="btnReturn" onAction="#handleBtnReturn" ripplerFill="#06416f" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="VOLTAR PARA ???" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -57,6 +57,10 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" spacing="30.0" HBox.hgrow="ALWAYS">
+                     <children>
                         <HBox fx:id="hBoxStaus" alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #1167B1; -fx-background-radius: 3px;">
                            <children>
                               <Label text="STATUS" textFill="WHITE">
@@ -84,10 +88,6 @@
                               <Insets left="15.0" right="15.0" />
                            </padding>
                         </HBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" prefWidth="200.0" spacing="50.0" HBox.hgrow="ALWAYS">
-                     <children>
                         <JFXButton fx:id="btnEditStudent" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="EDITAR" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
@@ -381,7 +381,7 @@
                   </HBox>
                   <TableView fx:id="tableResponsibles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="columnReponsibleName" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Nome" />
+                        <TableColumn fx:id="columnReponsibleName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" text="Nome" />
                         <TableColumn fx:id="columnReponsibleRelationship" maxWidth="120.0" minWidth="120.0" prefWidth="12.0" text="Parentesco" />
                         <TableColumn fx:id="columnResponsibleEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                         <TableColumn fx:id="columnResponsibleRemove" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />

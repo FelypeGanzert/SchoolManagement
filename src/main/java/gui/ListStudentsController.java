@@ -95,7 +95,6 @@ public class ListStudentsController implements Initializable {
 	
 	private StudentDao studentDao;
 	private ObservableList<Student> studentsList;
-
 	private MainViewController mainView;	
 	
 	private final Integer ICON_SIZE = 15;
@@ -149,7 +148,7 @@ public class ListStudentsController implements Initializable {
 		});
 		// Info button
 		Utils.initButtons(columnStudentInfo, ICON_SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
-			showStudentInfo(student, "/gui/SomeFile.fxml", Utils.currentStage(event));
+			showStudentInfo(student, FxmlPath.INFO_STUDENT);
 		});
 		// Listener to selected student
 		tableStudents.getSelectionModel().selectedItemProperty().addListener(
@@ -157,9 +156,10 @@ public class ListStudentsController implements Initializable {
 					tableMatriculations.setItems(null);
 					if (newSelection != null) {
 						updateAnnotations(null);
-						if(newSelection.getMatriculations().size() > 0) {
+						if (newSelection.getMatriculations().size() > 0) {
 							try {
-								tableMatriculations.setItems(FXCollections.observableList(newSelection.getMatriculations()));
+								tableMatriculations
+										.setItems(FXCollections.observableList(newSelection.getMatriculations()));
 								tableMatriculations.getSelectionModel().selectFirst();
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -327,10 +327,12 @@ public class ListStudentsController implements Initializable {
 		}
 	}
 	
-	private void showStudentInfo(Student student, String string, Stage stage) {
-		// I still have to work on this...
+	private void showStudentInfo(Student student, String FxmlPath) {
 		try {
-			mainView.setContent(FxmlPath.INFO_STUDENT, x -> {});
+			mainView.setContent(FxmlPath, (InfoStudentController controller) -> {
+				controller.setMainViewController(mainView, "Alunos");
+				controller.setCurrentStudent(student);
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -343,19 +345,18 @@ public class ListStudentsController implements Initializable {
 	public void updateAnnotations(Annotation annotation) {
 		listViewAnnotation.setItems(null);
 		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
-		if (studentSelected != null && studentSelected.getAnnotations().size() > 0) {
-			try {
-				ObservableList<Annotation> annotations = FXCollections.observableList(studentSelected.getAnnotations());
-				annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
-				listViewAnnotation.setItems(annotations);
-				if(annotation != null) {
-					listViewAnnotation.getSelectionModel().select(annotation);
-				} else {
-					listViewAnnotation.getSelectionModel().selectFirst();;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			System.out.println("======================   " + 1);
+			ObservableList<Annotation> annotations = FXCollections.observableList(studentSelected.getAnnotations());
+			annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
+			listViewAnnotation.setItems(annotations);
+			if (annotation != null) {
+				listViewAnnotation.getSelectionModel().select(annotation);
+			} else {
+				listViewAnnotation.getSelectionModel().selectFirst();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
