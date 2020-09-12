@@ -9,7 +9,7 @@ import com.jfoenix.controls.JFXButton;
 
 import application.Main;
 import db.DBFactory;
-import gui.util.FxmlPath;
+import gui.util.FxmlPaths;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +36,7 @@ public class MainViewController implements Initializable {
 		this.content.setFitToWidth(true);
 		this.labelCurrentUser.setText(Main.getCurrentUser().getName());
 		try {
-			setContent(FxmlPath.MAIN_MENU, (MainMenuController controller) -> {
+			setContent(FxmlPaths.MAIN_MENU, (MainMenuController controller) -> {
 				controller.setMainViewController(this);
 			});
 		} catch (IOException e) {
@@ -50,12 +50,11 @@ public class MainViewController implements Initializable {
 	
 	public void setCurrentUser(Collaborator collaborator) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public void handleBtnHome(ActionEvent action) {
 		try {
-			setContent(FxmlPath.MAIN_MENU, (MainMenuController controller) -> {
+			setContent(FxmlPaths.MAIN_MENU, (MainMenuController controller) -> {
 				controller.setMainViewController(this);
 			});
 		} catch (IOException e) {
@@ -70,7 +69,7 @@ public class MainViewController implements Initializable {
 	}
 	public void handleBtnStudents(ActionEvent action) {
 		try {
-			setContent(FxmlPath.LIST_STUDENTS, (ListStudentsController controller) -> {
+			setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(this);
 			});

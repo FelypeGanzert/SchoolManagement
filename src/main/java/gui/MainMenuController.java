@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
-import gui.util.FxmlPath;
+import gui.util.FxmlPaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +31,7 @@ public class MainMenuController implements Initializable {
 	
 	public void showListStudents(ActionEvent action) {
 		try {
-			mainView.setContent(FxmlPath.LIST_STUDENTS, (ListStudentsController controller) -> {
+			mainView.setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(mainView);
 			});
@@ -42,7 +42,7 @@ public class MainMenuController implements Initializable {
 
 	public void showListResponsibles(ActionEvent action) {
 		try {
-			mainView.setContent(FxmlPath.LIST_RESPONSIBLES, (ListStudentsController controller) -> {
+			mainView.setContent(FxmlPaths.LIST_RESPONSIBLES, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 			});
 		} catch (IOException e) {

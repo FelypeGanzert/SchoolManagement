@@ -50,7 +50,7 @@ public abstract class Person {
 	private String email;
 
 	@Column (name = "send_email", columnDefinition = "boolean default null")
-	private boolean sendEmail;
+	private Boolean sendEmail;
 	
 	@Column (name = "sexo", columnDefinition = "varchar(20) default null")
 	private String gender;

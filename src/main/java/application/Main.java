@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import gui.DBConnectionURLController;
 import gui.LoginController;
 import gui.MainViewController;
-import gui.util.FxmlPath;
+import gui.util.FxmlPaths;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +36,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		// First we load the screen to user entry the url of database
 		// that will try to connect with the database
-		loadMainScreen(FxmlPath.DB_CONNECTION_URL, primaryStage, "Conexão com o Banco de Dados", false,
+		loadMainScreen(FxmlPaths.DB_CONNECTION_URL, primaryStage, "Conexão com o Banco de Dados", false,
 				(DBConnectionURLController controller) -> {
 					// Set this Main to allow he to call in future to show Login
 					controller.setMain(this);
@@ -47,7 +47,7 @@ public class Main extends Application {
 	// and when we need to change current user
 	public void showLoginForm() {
 		currentUser = null;
-		loadMainScreen(FxmlPath.LOGIN, new Stage(), "Login", false, (LoginController controller) -> {
+		loadMainScreen(FxmlPaths.LOGIN, new Stage(), "Login", false, (LoginController controller) -> {
 			// Set this Main to allow he to call in future to show Main View
 			controller.setMain(this);
 		});
@@ -57,7 +57,7 @@ public class Main extends Application {
 	// This is method is called by Login
 	public void showMainView(Collaborator collaborator) {
 		Main.currentUser = collaborator;
-		loadMainScreen(FxmlPath.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
+		loadMainScreen(FxmlPaths.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
 				(MainViewController controller) -> {
 					controller.setMain(this);
 					controller.setCurrentUser(collaborator);

@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -14,9 +12,10 @@ import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
 import gui.util.Alerts;
-import gui.util.FxmlPath;
+import gui.util.FxmlPaths;
 import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -56,7 +55,7 @@ public class InfoStudentController implements Initializable {
 	@FXML TextField textCPF;
 	@FXML TextField textGender;
 	@FXML TextField textBirthDate;
-	@FXML TextField textYears;
+	@FXML TextField textAge;
 	@FXML TextField textCivilStatus;
 	@FXML TextField textRG;
 	@FXML TextField textEmail;
@@ -91,19 +90,19 @@ public class InfoStudentController implements Initializable {
 	@FXML TableColumn<Responsible, Responsible> columnResponsibleEdit;
 	@FXML TableColumn<Responsible, Responsible> columnResponsibleRemove;
 	@FXML Button btnAddResponsible;
-	
 
 	private final Integer ICON_SIZE = 15;
 	private Student student;
+	private String returnPath;
+	private Responsible responsibleReturn;
+	private Matriculation matriculationReturn;
+	
 
 	private ObservableList<Matriculation> matriculationsList;
 	private ObservableList<Contact> contactsList;
 	private ObservableList<Responsible> responsiblesList;
 	
-	MainViewController mainView;
-	
-	Map<String, String> valuesOfStudent = new HashMap<>();
-	
+	MainViewController mainView;	
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -112,10 +111,13 @@ public class InfoStudentController implements Initializable {
 		initiliazeTableResponsibles();
 	}
 	
-	public void setCurrentStudent(Student student) {
+	public void setCurrentStudent(Student student, String returnPath, Responsible responsibleReturn, Matriculation matriculationReturn) {
 		this.student = student;
-		parseStudentInformationToMap();
-		
+		this.returnPath = returnPath;
+		this.responsibleReturn = responsibleReturn;
+		this.matriculationReturn = matriculationReturn;
+		setStudentInformationsToUI();
+		;
 		try {
 			matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
 			contactsList = FXCollections.observableArrayList(this.student.getContacts());
@@ -126,100 +128,64 @@ public class InfoStudentController implements Initializable {
 		} catch (Exception e) {
 			Alerts.showAlert("Erro ao carregar as informações do aluno", "DBException", e.getMessage(), AlertType.ERROR);
 		}
-		// I think i can reduce this on future
-		labelStudentName.setText(valuesOfStudent.get("name"));
-		textName.setText(valuesOfStudent.get("name"));
-		textEmail.setText(valuesOfStudent.get("email"));
-		hBoxStaus.setStyle("-fx-background-color: " + valuesOfStudent.get("colorStatus"));
-		textStatus.setText(valuesOfStudent.get("status"));
-		textID.setText(valuesOfStudent.get("id"));
-		textOldRA.setText(valuesOfStudent.get("oldRA"));
-		textCPF.setText(valuesOfStudent.get("cpf"));
-		textGender.setText(valuesOfStudent.get("gender"));
-		textCivilStatus.setText(valuesOfStudent.get("civilStatus"));
-		textNeighborhood.setText(valuesOfStudent.get("neighborhood"));
-		textAdress.setText(valuesOfStudent.get("adress"));
-		textCity.setText(valuesOfStudent.get("city"));
-		textUF.setText(valuesOfStudent.get("uf"));
-		textRG.setText(valuesOfStudent.get("rg"));
-		textYears.setText(valuesOfStudent.get("years"));
-		textAreaObservation.setText(valuesOfStudent.get("observation"));
-		labelDateCadastryAndModify.setText(valuesOfStudent.get("dateCadastryAndModify"));
-		textBirthDate.setText(valuesOfStudent.get("birthDate"));
-		checkBoxPromotionsEmail.selectedProperty().setValue(student.isSendEmail());
-		
-		
-		
 	}
 	
-	public void parseStudentInformationToMap() {
-		String name, email, colorStatus, status, id, oldRA, cpf, gender, birthDate, years, civilStatus, rg,
-			adress, neighborhood, city, uf, dateCadastryAndModify, observation;
-		// I think I can reduce this on future...
-		name = student.getName() != null ? student.getName() : "-";
-		email = student.getEmail() != null ? student.getEmail() : "-";	
-		
-		colorStatus = student.getStatus() != null ? StudentStatusEnum.fromString(student.getStatus()).getHexColor() : "white";
-		status = student.getStatus() != null ? student.getStatus() : "-";
-		
-		id = student.getId() != null ? Integer.toString(student.getId()) : "-";
-		oldRA = student.getOldRA() != null ? student.getOldRA() : "-";
-		cpf = student.getCpf() != null ? student.getCpf() : "-";
-		gender = student.getGender() != null ? student.getGender() : "-";
-		civilStatus = student.getCivilStatus() != null ? student.getCivilStatus() : "-";
-		neighborhood = student.getNeighborhood() != null ? student.getNeighborhood() : "-";
-		adress = student.getAdress() != null ? student.getAdress() : "-";
-		city = student.getCity() != null ? student.getCity() : "-";
-		uf = student.getUf() != null ? student.getUf() : "-";
-		rg = student.getRg() != null ? student.getRg() : "-";
-		observation = student.getObservation();
-		years = student.getAge() > 0 ? Integer.toString(student.getAge()) : "-";
-		
-		
+	public void setCurrentStudent(Student student, String returnPath) {
+		setCurrentStudent(student, returnPath, null, null);
+	}
+	
+	public void setStudentInformationsToUI() {
+		labelStudentName.setText(student.getName());
+		textStatus.setText(student.getStatus());
+		hBoxStaus.setStyle("-fx-background-color: " + StudentStatusEnum.fromString(student.getStatus()).getHexColor());
+
+		textID.setText(Integer.toString(student.getId()));
+		textOldRA.setText(student.getOldRA());
+		textName.setText(student.getName());
+		textEmail.setText(student.getEmail());
+		checkBoxPromotionsEmail.selectedProperty().setValue(student.getSendEmail());
+		textCPF.setText(student.getCpf());
+		textRG.setText(student.getRg());
+		textGender.setText(GenderEnum.fromString(student.getGender()).getfullGender());
+		textCivilStatus.setText(student.getCivilStatus());
+		textNeighborhood.setText(student.getNeighborhood());
+		textAdress.setText(student.getAdress());
+		textCity.setText(student.getCity());
+		textUF.setText(student.getUf());
+		textAreaObservation.setText(student.getObservation());
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		birthDate = student.getDateBirth() != null ? sdf.format(student.getDateBirth()) : "-";
-		try {
-			dateCadastryAndModify =  "Cadastrado por " + student.getRegisteredBy() + ", em + " + 
-					sdf.format(student.getDateRegistry()) + ". Última edição em: " + sdf.format(student.getDateLastRegistryEdit());
-		} catch(Exception e) {
-			dateCadastryAndModify = "-";
+		if(student.getDateBirth() != null) {
+			textBirthDate.setText(sdf.format(student.getDateBirth()));
 		}
-		
-		valuesOfStudent.put("name", name);
-		valuesOfStudent.put("email", email);
-		valuesOfStudent.put("colorStatus", colorStatus);
-		valuesOfStudent.put("status", status);
-		valuesOfStudent.put("id", id);
-		valuesOfStudent.put("oldRA", oldRA);
-		valuesOfStudent.put("cpf", cpf);
-		valuesOfStudent.put("gender", gender);
-		valuesOfStudent.put("civilStatus", civilStatus);
-		valuesOfStudent.put("neighborhood", neighborhood);
-		valuesOfStudent.put("adress", adress);
-		valuesOfStudent.put("city", city);
-		valuesOfStudent.put("uf", uf);
-		valuesOfStudent.put("rg", rg);
-		valuesOfStudent.put("observation", observation);
-		valuesOfStudent.put("years", years);
-		valuesOfStudent.put("birthDate", birthDate);
-		valuesOfStudent.put("dateCadastryAndModify", dateCadastryAndModify);
-		
+		textAge.setText(Integer.toString(student.getAge()) + " anos");
+		String dateCadastryAndModify = "";
+		if (student.getRegisteredBy() != null && student.getDateRegistry() != null) {
+			dateCadastryAndModify = "Cadastrado por " + student.getRegisteredBy();
+			dateCadastryAndModify += ", em " + sdf.format(student.getDateRegistry()) + ".";
+			if (student.getDateLastRegistryEdit() != null) {
+				dateCadastryAndModify += " Última edição em: " + sdf.format(student.getDateLastRegistryEdit());
+			}
+		}
+		labelDateCadastryAndModify.setText(dateCadastryAndModify);
 	}
 	
 
 	public void handleBtnReturn(ActionEvent event) {
 		try {
-			mainView.setContent(FxmlPath.LIST_STUDENTS, (ListStudentsController controller) -> {
-				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
-				controller.setMainViewController(mainView);
-				controller.tableStudents.getSelectionModel().select(student);
-			});
+			if(returnPath == FxmlPaths.LIST_STUDENTS) {
+				mainView.setContent(returnPath, (ListStudentsController controller) -> {
+					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+					controller.setMainViewController(mainView);
+					controller.tableStudents.getSelectionModel().select(student);
+				});
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setMainViewController(MainViewController mainView, String returnBtnText) {
+	public void setMainViewControllerAndReturnName(MainViewController mainView, String returnBtnText) {
 		this.mainView = mainView;
 		btnReturn.setText("Voltar para " + returnBtnText);
 		
