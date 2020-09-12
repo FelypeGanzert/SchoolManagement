@@ -80,12 +80,12 @@
 						<HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
 							<children>
 								<Label text="Tipo do Filtro:" />
-								<JFXRadioButton text="contém">
+								<JFXRadioButton style="-fx-cursor: hand;" text="contém">
                            <toggleGroup>
                               <ToggleGroup fx:id="filterType" />
                            </toggleGroup>
 								</JFXRadioButton>
-								<JFXRadioButton selected="true" text="inicia com" toggleGroup="$filterType" />
+								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="inicia com" toggleGroup="$filterType" />
 							</children>
 							<padding>
 								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
@@ -94,14 +94,14 @@
 						<HBox spacing="25.0">
 							<children>
 								<Label text="Exibir:" />
-								<JFXRadioButton text="Todos">
+								<JFXRadioButton style="-fx-cursor: hand;" text="Todos">
                            <toggleGroup>
                               <ToggleGroup fx:id="StudentStatus" />
                            </toggleGroup>
 								</JFXRadioButton>
-								<JFXRadioButton selected="true" text="Ativos" toggleGroup="$StudentStatus" />
-								<JFXRadioButton text="Aguardando" toggleGroup="$StudentStatus" />
-								<JFXRadioButton text="Inativos" toggleGroup="$StudentStatus" />
+								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="Ativos" toggleGroup="$StudentStatus" />
+								<JFXRadioButton style="-fx-cursor: hand;" text="Aguardando" toggleGroup="$StudentStatus" />
+								<JFXRadioButton style="-fx-cursor: hand;" text="Inativos" toggleGroup="$StudentStatus" />
 							</children>
 							<padding>
 								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

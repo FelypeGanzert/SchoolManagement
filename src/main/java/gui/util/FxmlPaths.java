@@ -10,5 +10,6 @@ public class FxmlPaths {
 	public static final String LIST_RESPONSIBLES = "/gui/ListResponsibles.fxml";
 	public static final String ANNOTATION = "/gui/Annotation.fxml";
 	public static final String INFO_STUDENT = "/gui/InfoStudent.fxml";
+	public static final String PERSON_FORM = "/gui/PersonForm.fxml";
 
 }

@@ -70,6 +70,9 @@ public abstract class Person {
 	@Column (name = "uf", columnDefinition = "varchar(20) default null")
 	private String uf;
 	
+	@Column (name = "local_referencia", columnDefinition = "varchar(50) default null")
+	private String adressReference;
+	
 	@Column (name = "cadastrado_por", columnDefinition = "varchar(50) default null")
 	private String registeredBy;
 	

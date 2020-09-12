@@ -22,7 +22,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -32,6 +35,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Matriculation;
@@ -150,6 +155,7 @@ public class InfoStudentController implements Initializable {
 		textCivilStatus.setText(student.getCivilStatus());
 		textNeighborhood.setText(student.getNeighborhood());
 		textAdress.setText(student.getAdress());
+		textAdressReference.setText(student.getAdressReference());
 		textCity.setText(student.getCity());
 		textUF.setText(student.getUf());
 		textAreaObservation.setText(student.getObservation());
@@ -183,6 +189,10 @@ public class InfoStudentController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void handleBtnEdit(ActionEvent event) {
+		createPersonDialogForm(Utils.currentStage(event));
 	}
 
 	public void setMainViewControllerAndReturnName(MainViewController mainView, String returnBtnText) {
@@ -258,6 +268,33 @@ public class InfoStudentController implements Initializable {
 			System.out.println("remove responsible");
 		});
 	}
+	
+	private void createPersonDialogForm(Stage parentStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPaths.PERSON_FORM));
+			Parent parent= loader.load();
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Informações da Pessoa");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(parentStage);
+			dialogStage.setResizable(false);
+			
+			PersonFormController controller = loader.getController();
+			controller.setPersonEntity(student);
+			controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+			
+			Scene PersonFormScene = new Scene(parent);
+			PersonFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+			dialogStage.setScene(PersonFormScene);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	
 	
 
 }
