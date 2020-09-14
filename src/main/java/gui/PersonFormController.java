@@ -11,9 +11,12 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import animatefx.animation.ZoomIn;
+import db.DbException;
+import gui.util.Alerts;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -22,6 +25,7 @@ import javafx.scene.layout.HBox;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Person;
+import model.entites.Student;
 
 public class PersonFormController implements Initializable {
 	// Search Bar
@@ -77,10 +81,28 @@ public class PersonFormController implements Initializable {
 			HBoxInformations.setVisible(true);
 		}
 	}
+	
+	public void handleBtnSave(ActionEvent event) {
+		getFormData();
+		try {
+			if (entity.getId() != 0) {
+				if (entity instanceof Student) {
+					studentDao.update((Student) entity);
+				}
+			} else {
+				if (entity instanceof Student) {
+					studentDao.insert((Student) entity);
+				}
+			}
+		} catch (DbException e) {
+			e.printStackTrace();
+			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
+		}
+	}
 
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
-		setEntityInformationsToUI();
+		updateFormData();
 		if(entity.getId() != null) {
 			btnFindRegistry.setVisible(false);
 			HBoxRegistryInformations.setVisible(false);
@@ -94,7 +116,7 @@ public class PersonFormController implements Initializable {
 		this.studentDao = studentDao;
 	}
 	
-	public void setEntityInformationsToUI() {
+	public void updateFormData() {
 		//comboBoxRegisteredBy
 		textName.setText(entity.getName());
 		textEmail.setText(entity.getEmail());
@@ -114,5 +136,30 @@ public class PersonFormController implements Initializable {
 			textBirthDate.setText(sdf.format(entity.getDateBirth()));
 			textDateRegistry.setText(sdf.format(entity.getDateRegistry()));
 		}
+	}
+	
+	public void getFormData() {
+		// comboBoxRegisteredBy
+		entity.setName(textName.getText());
+		entity.setEmail(textEmail.getText());
+		entity.setSendEmail(checkBoxSendEmail.isSelected());
+		entity.setCpf(textCPF.getText());
+		entity.setRg(textRG.getText());
+		// comboBoxGender
+		// comboBoxCivilStatus
+		entity.setNeighborhood(textNeighborhood.getText());
+		entity.setAdress(textAdress.getText());
+		entity.setAdressReference(textAdressReference.getText());
+		entity.setCity(textCity.getText());
+		entity.setUf(textUF.getText());
+		entity.setObservation(textAreaObservation.getText());
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//		try {
+//			entity.setDateBirth(sdf.parse(textBirthDate.getText()));
+//			entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+
 	}
 }

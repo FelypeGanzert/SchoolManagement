@@ -121,7 +121,7 @@ public class InfoStudentController implements Initializable {
 		this.returnPath = returnPath;
 		this.responsibleReturn = responsibleReturn;
 		this.matriculationReturn = matriculationReturn;
-		setStudentInformationsToUI();
+		updateFormData();
 		;
 		try {
 			matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
@@ -139,7 +139,7 @@ public class InfoStudentController implements Initializable {
 		setCurrentStudent(student, returnPath, null, null);
 	}
 	
-	public void setStudentInformationsToUI() {
+	public void updateFormData() {
 		labelStudentName.setText(student.getName());
 		textStatus.setText(student.getStatus());
 		hBoxStaus.setStyle("-fx-background-color: " + StudentStatusEnum.fromString(student.getStatus()).getHexColor());
@@ -183,6 +183,7 @@ public class InfoStudentController implements Initializable {
 				mainView.setContent(returnPath, (ListStudentsController controller) -> {
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 					controller.setMainViewController(mainView);
+					controller.updateTableView();
 					controller.tableStudents.getSelectionModel().select(student);
 				});
 			}

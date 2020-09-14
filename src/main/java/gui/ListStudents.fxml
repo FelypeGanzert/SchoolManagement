@@ -36,13 +36,14 @@
 			<children>
 				<VBox prefHeight="501.0" spacing="15.0" GridPane.halignment="RIGHT">
 					<children>
-						<HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);">
+						<HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
 							<children>
 								<Label text="ALUNOS" textFill="WHITE">
 									<font>
 										<Font name="System Bold" size="25.0" />
 									</font>
 								</Label>
+                        <Label fx:id="labelTotalStudents" textFill="WHITE" />
 							</children>
 							<padding>
 								<Insets left="20.0" right="20.0" />
@@ -56,7 +57,7 @@
 									</image>
 								</ImageView>
 								<JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="250.0" promptText="Filtrar" />
-								<JFXComboBox fx:id="comboBoxfiledFilter" prefWidth="100.0" />
+								<JFXComboBox fx:id="comboBoxFieldFilter" prefWidth="100.0" />
 								<JFXButton fx:id="btnRegister" alignment="CENTER" onAction="#handleBtnAddNewStudent" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="cadastrar" textAlignment="CENTER" textFill="WHITE">
 									<graphic>
 										<ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7">
@@ -96,12 +97,12 @@
 								<Label text="Exibir:" />
 								<JFXRadioButton style="-fx-cursor: hand;" text="Todos">
                            <toggleGroup>
-                              <ToggleGroup fx:id="StudentStatus" />
+                              <ToggleGroup fx:id="filterStudentStatus" />
                            </toggleGroup>
 								</JFXRadioButton>
-								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="Ativos" toggleGroup="$StudentStatus" />
-								<JFXRadioButton style="-fx-cursor: hand;" text="Aguardando" toggleGroup="$StudentStatus" />
-								<JFXRadioButton style="-fx-cursor: hand;" text="Inativos" toggleGroup="$StudentStatus" />
+								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="Ativos" toggleGroup="$filterStudentStatus" />
+								<JFXRadioButton style="-fx-cursor: hand;" text="Aguardando" toggleGroup="$filterStudentStatus" />
+								<JFXRadioButton style="-fx-cursor: hand;" text="Inativos" toggleGroup="$filterStudentStatus" />
 							</children>
 							<padding>
 								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

@@ -4,6 +4,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -60,9 +62,10 @@ public class ListStudentsController implements Initializable {
 
 	// Filter Student and Register
 	@FXML JFXTextField textFilter;
-	@FXML JFXComboBox<String> comboBoxfiledFilter;
+	@FXML JFXComboBox<String> comboBoxFieldFilter;
 	@FXML ToggleGroup filterType;
-	@FXML ToggleGroup StudentStatus;
+	@FXML ToggleGroup filterStudentStatus;
+	@FXML Label labelTotalStudents;
 	@FXML JFXButton btnRegister;
 	// Table Students
 	@FXML TableView<Student> tableStudents;
@@ -97,6 +100,7 @@ public class ListStudentsController implements Initializable {
 	private ObservableList<Student> studentsList;
 	private MainViewController mainView;	
 	
+	
 	private final Integer ICON_SIZE = 15;
 	
 	@Override
@@ -105,6 +109,9 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
+		filterStudentStatus.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+			filterStudents();
+		});
 	}
 	
 	public void setMainViewController(MainViewController mainView) {
@@ -113,10 +120,47 @@ public class ListStudentsController implements Initializable {
 	
 	public void setStudentDao(StudentDao studentDao) {
 		this.studentDao = studentDao;
+	}
+	
+	public void filterStudents() {
+		String statusSelected = ((RadioButton) filterStudentStatus.getSelectedToggle()).getText();
+		String statusSearch = null;
+		if(statusSelected.equalsIgnoreCase("TODOS")) {
+			statusSearch = null;
+		} else if(statusSelected.equalsIgnoreCase("ATIVOS")) {
+			statusSearch = "ATIVO";
+		} else if(statusSelected.equalsIgnoreCase("AGUARDANDO")) {
+			statusSearch = "AGUARDANDO";
+		} else if(statusSelected.equalsIgnoreCase("INATIVOS")) {
+			statusSearch = "INATIVO";
+		}
+		
+		if (statusSearch != null) {
+			List<Student> filteredList = new ArrayList<>();
+			final String statusSearchFinal = statusSearch;
+			filteredList = studentsList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusSearchFinal))
+					.collect(Collectors.toList());
+			ObservableList<Student> filteredObsList = FXCollections.observableArrayList(filteredList);
+			tableStudents.setItems(filteredObsList);
+			labelTotalStudents.setText("(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")");
+		} else {
+			tableStudents.setItems(studentsList);
+			labelTotalStudents.setText("(Total de: " + Utils.pointSeparator(studentsList.size()) + " alunos)");
+		}
+		tableStudents.refresh();
+		tableStudents.getSelectionModel().selectFirst();
+		
+			
+	}
+	
+	public void updateTableView() {
+		if(studentDao == null) {
+			throw new IllegalStateException("StudentDao service not initialized");
+		}
 		try {
 			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
-			tableStudents.setItems(studentsList);
-			tableStudents.getSelectionModel().selectFirst();
+			studentsList.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
+			filterStudents();
 		} catch (DbException e) {
 			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR);
 		}

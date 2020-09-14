@@ -72,6 +72,7 @@ public class MainViewController implements Initializable {
 			setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(this);
+				controller.updateTableView();
 			});
 		} catch (IOException e) {
 			e.printStackTrace();

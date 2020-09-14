@@ -142,7 +142,7 @@
 		</HBox>
 		<HBox alignment="CENTER_RIGHT" spacing="50.0">
 			<children>
-				<JFXButton fx:id="btnSave" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
+				<JFXButton fx:id="btnSave" onAction="#handleBtnSave" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
 					<padding>
 						<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 					</padding>
