@@ -23,7 +23,7 @@
 	<children>
       <VBox prefWidth="100.0">
          <children>
-      		<HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0" spacing="20.0">
+      		<HBox prefWidth="200.0" spacing="20.0">
       			<children>
                   <JFXTextField fx:id="textCPF" labelFloat="true" promptText="CPF" styleClass="text-field-with-label" />
                   <JFXTextField fx:id="textName" labelFloat="true" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" promptText="NOME" styleClass="text-field-with-label" />
@@ -35,13 +35,16 @@
       						<Font name="System Bold" size="15.0" />
       					</font>
       				</JFXButton>
-                  <HBox fx:id="HBoxRegistryInformations" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox fx:id="HBoxRegistryInformations" alignment="CENTER" prefWidth="200.0" spacing="10.0">
                      <children>
                         <JFXComboBox fx:id="comboBoxRegisteredBy" labelFloat="true" maxWidth="126.0" minWidth="160.0" prefHeight="25.0" prefWidth="160.0" promptText="CADASTRADO POR" styleClass="text-field-with-label" />
                         <JFXTextField fx:id="textDateRegistry" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="130.0" promptText="DATA CADASTRO" styleClass="text-field-with-label" />
                      </children>
                   </HBox>
       			</children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
       		</HBox>
 				<Label fx:id="labelFindRegistryResponse" text="Registro encontrado. Confira as informações e clique em Salvar" />
          </children>
@@ -51,7 +54,7 @@
       </VBox>
 		<HBox fx:id="HBoxInformations" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
 			<children>
-				<GridPane hgap="10.0" vgap="10.0">
+				<GridPane hgap="10.0" vgap="5.0">
 					<columnConstraints>
 						<ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
 						<ColumnConstraints hgrow="ALWAYS" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" />
@@ -150,7 +153,7 @@
 						<Font name="System Bold" size="16.0" />
 					</font>
 				</JFXButton>
-				<JFXButton fx:id="btnCancel" ripplerFill="#b51b12" style="-fx-background-color: #ee6055; -fx-cursor: hand;" text="CANCELAR" textFill="WHITE">
+				<JFXButton fx:id="btnCancel" onAction="#handleBtnCancel" ripplerFill="#b51b12" style="-fx-background-color: #ee6055; -fx-cursor: hand;" text="CANCELAR" textFill="WHITE">
 					<padding>
 						<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 					</padding>

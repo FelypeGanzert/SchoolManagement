@@ -73,6 +73,7 @@ public class MainViewController implements Initializable {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(this);
 				controller.updateTableView();
+				controller.filterStudents();
 			});
 		} catch (IOException e) {
 			e.printStackTrace();

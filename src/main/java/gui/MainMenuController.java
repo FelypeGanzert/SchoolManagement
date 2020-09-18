@@ -35,6 +35,7 @@ public class MainMenuController implements Initializable {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(mainView);
 				controller.updateTableView();
+				controller.filterStudents();
 			});
 		} catch (IOException e) {
 			e.printStackTrace();

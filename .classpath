@@ -38,6 +38,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AnimateFX"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jFoenix"/>
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="ignore_optional_problems" value="true"/>

@@ -6,7 +6,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -109,6 +111,12 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
+		textFilter.textProperty().addListener((observable, oldValue, newValue) -> {
+			filterStudents();
+		});
+		filterType.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+			filterStudents();
+		});
 		filterStudentStatus.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
 		});
@@ -123,34 +131,42 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	public void filterStudents() {
+		List<Student> filteredList = new ArrayList<>();
+		String totalStudentsText = "";
+		// Filter by status
 		String statusSelected = ((RadioButton) filterStudentStatus.getSelectedToggle()).getText();
-		String statusSearch = null;
-		if(statusSelected.equalsIgnoreCase("TODOS")) {
-			statusSearch = null;
-		} else if(statusSelected.equalsIgnoreCase("ATIVOS")) {
-			statusSearch = "ATIVO";
-		} else if(statusSelected.equalsIgnoreCase("AGUARDANDO")) {
-			statusSearch = "AGUARDANDO";
-		} else if(statusSelected.equalsIgnoreCase("INATIVOS")) {
-			statusSearch = "INATIVO";
-		}
-		
-		if (statusSearch != null) {
-			List<Student> filteredList = new ArrayList<>();
-			final String statusSearchFinal = statusSearch;
+		Map<String, String> statusMap = new HashMap<>();
+		statusMap.put("TODOS", null);
+		statusMap.put("ATIVOS", "ATIVO");
+		statusMap.put("AGUARDANDO", "AGUARDANDO");
+		statusMap.put("INATIVOS", "INATIVO");
+		if (statusMap.get(statusSelected.toUpperCase()) != null) {
+			final String statusSearchFinal = statusMap.get(statusSelected.toUpperCase());
 			filteredList = studentsList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusSearchFinal))
 					.collect(Collectors.toList());
-			ObservableList<Student> filteredObsList = FXCollections.observableArrayList(filteredList);
-			tableStudents.setItems(filteredObsList);
-			labelTotalStudents.setText("(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")");
+			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")";
 		} else {
-			tableStudents.setItems(studentsList);
-			labelTotalStudents.setText("(Total de: " + Utils.pointSeparator(studentsList.size()) + " alunos)");
+			filteredList = studentsList;
+			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
 		}
+		// Filter to search bar
+		String value = textFilter.getText();
+		String filterTypeSelected = ((RadioButton) filterType.getSelectedToggle()).getText();
+		if(filterTypeSelected.equalsIgnoreCase("inicia com")) {
+			filteredList = filteredList.stream()
+					.filter(student -> student.getName().toUpperCase().startsWith(value.toUpperCase()))
+					.collect(Collectors.toList());
+		} else {
+			filteredList = filteredList.stream()
+					.filter(student -> student.getName().toUpperCase().contains(value.toUpperCase()))
+					.collect(Collectors.toList());
+		}
+		
+		labelTotalStudents.setText(totalStudentsText);
+		ObservableList<Student> filteredObsList = FXCollections.observableArrayList(filteredList);
+		tableStudents.setItems(filteredObsList);
 		tableStudents.refresh();
 		tableStudents.getSelectionModel().selectFirst();
-		
-			
 	}
 	
 	public void updateTableView() {
@@ -185,7 +201,12 @@ public class ListStudentsController implements Initializable {
 		Utils.setCellValueFactory(columnStudentName, "name");
 		columnStudentContact1.setCellValueFactory(cellData -> {
 			try {
-				return new SimpleStringProperty(cellData.getValue().getContacts().get(0).getNumber());
+				if(!(cellData.getValue().getContacts() == null)) {
+					return new SimpleStringProperty(cellData.getValue().getContacts().get(0).getNumber());
+				} else {
+					return new SimpleStringProperty("-");
+				}
+				
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {
 				return new SimpleStringProperty("-");
 			}
@@ -200,7 +221,7 @@ public class ListStudentsController implements Initializable {
 					tableMatriculations.setItems(null);
 					if (newSelection != null) {
 						updateAnnotations(null);
-						if (newSelection.getMatriculations().size() > 0) {
+						if (newSelection.getMatriculations() != null && newSelection.getMatriculations().size() > 0) {
 							try {
 								tableMatriculations
 										.setItems(FXCollections.observableList(newSelection.getMatriculations()));
@@ -324,7 +345,14 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	public void handleBtnAddNewStudent(ActionEvent event) {
-		System.out.println("You will matriculate a new person");
+		loadView(FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
+				(PersonFormController controller) -> {
+					Student student = new Student();
+					controller.setPersonEntity(student);
+					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+					controller.setInfoStudentController(null);
+					controller.setMainView(this.mainView);
+				});
 	}
 	
 	public void handleBtnAddAnnotation(ActionEvent event) {
@@ -376,7 +404,7 @@ public class ListStudentsController implements Initializable {
 			
 			mainView.setContent(FxmlPath, (InfoStudentController controller) -> {
 				controller.setMainViewControllerAndReturnName(mainView, "Alunos");
-				controller.setCurrentStudent(student, FxmlPaths.LIST_STUDENTS);
+				controller.setCurrentStudent(student);
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -391,6 +419,9 @@ public class ListStudentsController implements Initializable {
 		listViewAnnotation.setItems(null);
 		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
 		try {
+			if(studentSelected.getAnnotations() == null) {
+				return;
+			}
 			ObservableList<Annotation> annotations = FXCollections.observableList(studentSelected.getAnnotations());
 			annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
 			listViewAnnotation.setItems(annotations);
@@ -429,5 +460,5 @@ public class ListStudentsController implements Initializable {
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}	
-
+	
 }

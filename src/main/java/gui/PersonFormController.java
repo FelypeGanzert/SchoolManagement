@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
@@ -9,10 +10,15 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RegexValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 
 import animatefx.animation.ZoomIn;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.Constraints;
+import gui.util.FxmlPaths;
+import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,12 +70,33 @@ public class PersonFormController implements Initializable {
 	@FXML JFXButton btnCancel;
 	
 	private Person entity;
-	private StudentDao studentDao;	
+	private StudentDao studentDao;
+	
+	private InfoStudentController infoStudentController;
+	private MainViewController mainView;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		HBoxInformations.setVisible(false);
 		HBoxRegistryInformations.setVisible(true);
+		setMasksAndValidators();
+	}
+	
+	private void setMasksAndValidators() {
+		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+		requiredValidator.setMessage("Campo necessário");
+		
+		textName.setValidators(requiredValidator);
+		
+		Constraints.cpf(textCPF);
+		RegexValidator cpfValidator = new RegexValidator("Insira um CPF válido");
+		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
+		textCPF.setValidators(requiredValidator, cpfValidator);
+		
+		Constraints.rg(textRG);
+		RegexValidator rgValidator = new RegexValidator("Insira um RG válido");
+		rgValidator.setRegexPattern("^\\d{2}\\.\\d{3}\\.\\d{3}\\-\\d{1}$");
+		textRG.setValidators(rgValidator);
 	}
 	
 	public void handleBtnFindRegistry(ActionEvent event) {
@@ -83,21 +110,48 @@ public class PersonFormController implements Initializable {
 	}
 	
 	public void handleBtnSave(ActionEvent event) {
+		if(studentDao == null) {
+			throw new IllegalStateException("StudentDao is null");
+		}
 		getFormData();
 		try {
-			if (entity.getId() != 0) {
-				if (entity instanceof Student) {
-					studentDao.update((Student) entity);
+			if(entity instanceof Student) {
+				if(!textCPF.validate() || !textName.validate() || (textRG.getText().length() > 0 && !textRG.validate())) {
+					return;
 				}
-			} else {
-				if (entity instanceof Student) {
+				if (entity.getId() != null) {
+					studentDao.update((Student) entity);
+				} else {
+					((Student) entity).setStatus("ATIVO");
+					((Student) entity).setGender("M");
 					studentDao.insert((Student) entity);
 				}
+				
+				if (this.infoStudentController != null) {
+					this.infoStudentController.onDataChanged((Student) entity);
+				} else {
+					try {
+						mainView.setContent(FxmlPaths.INFO_STUDENT, (InfoStudentController controller) -> {
+							controller.setMainViewControllerAndReturnName(mainView, "Alunos");
+							controller.setCurrentStudent((Student) entity);
+						});
+					} catch (IOException e) {
+						e.printStackTrace();
+						Alerts.showAlert("IOException", "Erro ao exibir tela prncipal para sair", e.getMessage(), AlertType.ERROR);
+					}
+				}
 			}
+			Utils.currentStage(event).close();
 		} catch (DbException e) {
 			e.printStackTrace();
 			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
 		}
+	}
+	
+	public void handleBtnCancel(ActionEvent event) {
+		//Utils.currentStage(event).close();
+		textCPF.validate();
+		textRG.validate();
 	}
 
 	public void setPersonEntity(Person entity) {
@@ -109,18 +163,27 @@ public class PersonFormController implements Initializable {
 			labelFindRegistryResponse.setVisible(false);
 			HBoxInformations.setVisible(true);
 		}
-		System.out.println(" ================== Person name: " + entity.getName());
 	}
 
 	public void setStudentDao(StudentDao studentDao) {
 		this.studentDao = studentDao;
 	}
 	
+	public void setMainView(MainViewController mainView){
+		this.mainView = mainView;
+	}
+	
+	public void setInfoStudentController(InfoStudentController infoStudentController) {
+		this.infoStudentController = infoStudentController;
+	}
+	
 	public void updateFormData() {
 		//comboBoxRegisteredBy
 		textName.setText(entity.getName());
 		textEmail.setText(entity.getEmail());
-		checkBoxSendEmail.setSelected(entity.getSendEmail());
+		if(entity.getSendEmail() != null) {
+			checkBoxSendEmail.setSelected(entity.getSendEmail());
+		}
 		textCPF.setText(entity.getCpf());
 		textRG.setText(entity.getRg());
 		//comboBoxGender
@@ -162,4 +225,5 @@ public class PersonFormController implements Initializable {
 //		}
 
 	}
+
 }

@@ -98,10 +98,7 @@ public class InfoStudentController implements Initializable {
 
 	private final Integer ICON_SIZE = 15;
 	private Student student;
-	private String returnPath;
-	private Responsible responsibleReturn;
-	private Matriculation matriculationReturn;
-	
+	private String returnPath;	
 
 	private ObservableList<Matriculation> matriculationsList;
 	private ObservableList<Contact> contactsList;
@@ -114,29 +111,29 @@ public class InfoStudentController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableContactsNodes();
 		initiliazeTableResponsibles();
+		this.returnPath = FxmlPaths.LIST_STUDENTS;
 	}
 	
-	public void setCurrentStudent(Student student, String returnPath, Responsible responsibleReturn, Matriculation matriculationReturn) {
+	public void setCurrentStudent(Student student) {
 		this.student = student;
-		this.returnPath = returnPath;
-		this.responsibleReturn = responsibleReturn;
-		this.matriculationReturn = matriculationReturn;
 		updateFormData();
-		;
 		try {
-			matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
-			contactsList = FXCollections.observableArrayList(this.student.getContacts());
-			responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
-			tableMatriculations.setItems(matriculationsList);
-			tableContacts.setItems(contactsList);
-			tableResponsibles.setItems(responsiblesList);
+			if (this.student.getMatriculations() != null) {
+				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
+				tableMatriculations.setItems(matriculationsList);
+			}
+			if (this.student.getContacts() != null) {
+				contactsList = FXCollections.observableArrayList(this.student.getContacts());
+				tableContacts.setItems(contactsList);
+			}
+			if (this.student.getAllResponsibles() != null) {
+				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
+				tableResponsibles.setItems(responsiblesList);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			Alerts.showAlert("Erro ao carregar as informações do aluno", "DBException", e.getMessage(), AlertType.ERROR);
 		}
-	}
-	
-	public void setCurrentStudent(Student student, String returnPath) {
-		setCurrentStudent(student, returnPath, null, null);
 	}
 	
 	public void updateFormData() {
@@ -184,6 +181,7 @@ public class InfoStudentController implements Initializable {
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 					controller.setMainViewController(mainView);
 					controller.updateTableView();
+					controller.filterStudents();
 					controller.tableStudents.getSelectionModel().select(student);
 				});
 			}
@@ -284,6 +282,8 @@ public class InfoStudentController implements Initializable {
 			PersonFormController controller = loader.getController();
 			controller.setPersonEntity(student);
 			controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+			controller.setInfoStudentController(this);
+			controller.setMainView(this.mainView);
 			
 			Scene PersonFormScene = new Scene(parent);
 			PersonFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
@@ -295,7 +295,10 @@ public class InfoStudentController implements Initializable {
 		}
 	}
 	
-	
+	public void onDataChanged(Student student) {
+		this.student = student;
+		updateFormData();
+	}
 	
 
 }

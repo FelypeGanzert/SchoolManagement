@@ -9,19 +9,26 @@ import model.entites.Annotation;
 public class Tests {
 
 	public static void main(String[] args) {
-		DBFactory.setUnits("localhost");
-		DBFactory.getConnection();
-		try {
-			AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
-			
-			System.out.println("=== Find by Id ===");
-			Annotation a1 = annotationDao.findById(2);
-			printAnnotation(a1);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		DBFactory.setUnits("localhost");
+//		DBFactory.getConnection();
+//		try {
+//			AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
+//			
+//			System.out.println("=== Find by Id ===");
+//			Annotation a1 = annotationDao.findById(2);
+//			printAnnotation(a1);
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
+		String value = "8419592498";
+		value = value.replaceAll("[^0-9]", "");
+		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
+		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
+		value = value.replaceFirst("(\\d{3})(\\d)", "$1-$2");
+		System.out.println(value);
+		
 	}
 	
 	public static void printAnnotation(Annotation a) {
