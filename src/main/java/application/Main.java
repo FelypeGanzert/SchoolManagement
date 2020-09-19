@@ -27,7 +27,7 @@ public class Main extends Application {
 	public static Collaborator getCurrentUser() {
 		return Main.currentUser;
 	}
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -60,7 +60,6 @@ public class Main extends Application {
 		loadMainScreen(FxmlPaths.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
 				(MainViewController controller) -> {
 					controller.setMain(this);
-					controller.setCurrentUser(collaborator);
 				});
 	}
 

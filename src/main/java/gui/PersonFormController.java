@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
@@ -18,7 +19,11 @@ import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FxmlPaths;
+import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.StudentStatusEnum;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,77 +40,111 @@ import model.entites.Student;
 
 public class PersonFormController implements Initializable {
 	// Search Bar
-	@FXML JFXTextField textCPF;
-	@FXML JFXTextField textName;
-	@FXML JFXButton btnFindRegistry;
-	@FXML Label labelFindRegistryResponse;
+	@FXML private JFXTextField textCPF;
+	@FXML private JFXTextField textName;
+	@FXML private JFXButton btnFindRegistry;
+	@FXML private Label labelFindRegistryResponse;
 	// Registry Informations
-	@FXML HBox HBoxRegistryInformations;
-	@FXML JFXComboBox comboBoxRegisteredBy;
-	@FXML JFXTextField textDateRegistry;
+	@FXML private HBox HBoxRegistryInformations;
+	@FXML private JFXComboBox comboBoxRegisteredBy;
+	@FXML private JFXTextField textDateRegistry;
 	// Person Informations
-	@FXML HBox HBoxInformations;
-	@FXML JFXTextField textRG;
-	@FXML JFXTextField textEmail;
-	@FXML JFXComboBox comboBoxCivilStatus;
-	@FXML JFXCheckBox checkBoxSendEmail;
-	@FXML JFXTextField textBirthDate;
-	@FXML JFXTextField textAdress;
-	@FXML JFXComboBox comboBoxGender;
-	@FXML JFXTextField textNeighborhood;
-	@FXML JFXTextField textCity;
-	@FXML JFXTextField textUF;
-	@FXML JFXComboBox comboBoxStatus;
-	@FXML JFXTextField textAdressReference;
-	@FXML JFXTextArea textAreaObservation;
+	@FXML private HBox HBoxInformations;
+	@FXML private JFXTextField textRG;
+	@FXML private JFXTextField textEmail;
+	@FXML private JFXComboBox comboBoxCivilStatus;
+	@FXML private JFXCheckBox checkBoxSendEmail;
+	@FXML private JFXTextField textBirthDate;
+	@FXML private JFXTextField textAdress;
+	@FXML private JFXComboBox comboBoxGender;
+	@FXML private JFXTextField textNeighborhood;
+	@FXML private JFXTextField textCity;
+	@FXML private JFXTextField textUF;
+	@FXML private JFXComboBox<StudentStatusEnum> comboBoxStatus;
+	@FXML private JFXTextField textAdressReference;
+	@FXML private JFXTextArea textAreaObservation;
 	// Table Contacts
-	@FXML TableView<Contact> tableContacts;
-	@FXML TableColumn<Contact, String> columnContactNumber;
-	@FXML TableColumn<Contact, String> columnContactDescription;
-	@FXML TableColumn<Contact, Contact> columnContactEdit;
-	@FXML TableColumn<Contact, Contact> columnContactDelete;
-	@FXML Button btnAddContact;
+	@FXML private TableView<Contact> tableContacts;
+	@FXML private TableColumn<Contact, String> columnContactNumber;
+	@FXML private TableColumn<Contact, String> columnContactDescription;
+	@FXML private TableColumn<Contact, Contact> columnContactEdit;
+	@FXML private TableColumn<Contact, Contact> columnContactDelete;
+	@FXML private Button btnAddContact;
 	// Buttons
-	@FXML JFXButton btnSave;
-	@FXML JFXButton btnCancel;
+	@FXML private JFXButton btnSave;
+	@FXML private JFXButton btnCancel;
 	
 	private Person entity;
 	private StudentDao studentDao;
+	private ObservableList<Contact> contactsList;
 	
 	private InfoStudentController infoStudentController;
 	private MainViewController mainView;
 	
+	private final Integer ICON_SIZE = 15;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		btnFindRegistry.setVisible(false);
+		HBoxRegistryInformations.setVisible(false);
+		labelFindRegistryResponse.setVisible(false); // Registro encontrado. Confira as informações e clique em Salvar
 		HBoxInformations.setVisible(false);
-		HBoxRegistryInformations.setVisible(true);
-		setMasksAndValidators();
+		btnSave.setVisible(false);
+		initializeFields();
+		initiliazeTableContactsNodes();
 	}
 	
-	private void setMasksAndValidators() {
+	private void initializeFields() {
+		// Required validator
 		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
 		requiredValidator.setMessage("Campo necessário");
-		
+		// Name
 		textName.setValidators(requiredValidator);
-		
+		Constraints.alwaysUpperCase(textName);
+		// CPF
 		Constraints.cpf(textCPF);
-		RegexValidator cpfValidator = new RegexValidator("Insira um CPF válido");
+		RegexValidator cpfValidator = new RegexValidator("CPF inválido");
 		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
 		textCPF.setValidators(requiredValidator, cpfValidator);
-		
+		// RG
 		Constraints.rg(textRG);
-		RegexValidator rgValidator = new RegexValidator("Insira um RG válido");
+		RegexValidator rgValidator = new RegexValidator("RG inválido");
 		rgValidator.setRegexPattern("^\\d{2}\\.\\d{3}\\.\\d{3}\\-\\d{1}$");
 		textRG.setValidators(rgValidator);
+		// Date Validator
+		RegexValidator dateValidator = new RegexValidator("Ex: 21/10/1990");
+		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
+		textBirthDate.setValidators(dateValidator);
+		textDateRegistry.setValidators(dateValidator);
+		// Email Validator
+		RegexValidator emailValidator = new RegexValidator("Email inválido");
+		emailValidator.setRegexPattern("^(.+)@(.+)$");
+		textEmail.setValidators(emailValidator);
+		//textDateRegistry.setValidators(requiredValidator, dateValidator);
+		// Max length for fields
+		Constraints.setTextFieldMaxLength(textUF, 2);
+		Constraints.setTextFieldMaxLength(textName, 50);
+		Constraints.setTextFieldMaxLength(textEmail, 50);
+		Constraints.noWhiteSpace(textEmail);
+		Constraints.setTextFieldMaxLength(textAdress, 50);
+		Constraints.setTextFieldMaxLength(textNeighborhood, 50);
+		Constraints.setTextFieldMaxLength(textCity, 50);
+		Constraints.setTextFieldMaxLength(textBirthDate, 10);
+		Constraints.setTextFieldMaxLength(textDateRegistry, 10);
+		// ComboBox
+		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
+		comboBoxStatus.getSelectionModel().selectFirst();
 	}
 	
 	public void handleBtnFindRegistry(ActionEvent event) {
 		// Just testing...
 		if(HBoxInformations.isVisible()) {
 			HBoxInformations.setVisible(false);
+			btnSave.setVisible(false);
 		} else {
 			new ZoomIn(HBoxInformations).play();
 			HBoxInformations.setVisible(true);
+			btnSave.setVisible(true);
 		}
 	}
 	
@@ -115,18 +154,21 @@ public class PersonFormController implements Initializable {
 		}
 		getFormData();
 		try {
-			if(entity instanceof Student) {
-				if(!textCPF.validate() || !textName.validate() || (textRG.getText().length() > 0 && !textRG.validate())) {
+			if(entity instanceof Student) {		
+				// check if fields is valid, only cpf and name is always required
+				if(!textCPF.validate() || !textName.validate() ||
+						(textDateRegistry.getText()  != null && textDateRegistry.getText().length() > 0 && !textDateRegistry.validate()) || 
+						(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
+						(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
+						(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
 					return;
 				}
 				if (entity.getId() != null) {
 					studentDao.update((Student) entity);
 				} else {
-					((Student) entity).setStatus("ATIVO");
 					((Student) entity).setGender("M");
 					studentDao.insert((Student) entity);
 				}
-				
 				if (this.infoStudentController != null) {
 					this.infoStudentController.onDataChanged((Student) entity);
 				} else {
@@ -149,19 +191,18 @@ public class PersonFormController implements Initializable {
 	}
 	
 	public void handleBtnCancel(ActionEvent event) {
-		//Utils.currentStage(event).close();
-		textCPF.validate();
-		textRG.validate();
+		Utils.currentStage(event).close();
 	}
 
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
 		updateFormData();
 		if(entity.getId() != null) {
-			btnFindRegistry.setVisible(false);
-			HBoxRegistryInformations.setVisible(false);
-			labelFindRegistryResponse.setVisible(false);
 			HBoxInformations.setVisible(true);
+			btnSave.setVisible(true);
+		} else {
+			btnFindRegistry.setVisible(true);
+			HBoxRegistryInformations.setVisible(true);
 		}
 	}
 
@@ -197,7 +238,17 @@ public class PersonFormController implements Initializable {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		if(entity.getDateBirth() != null) {
 			textBirthDate.setText(sdf.format(entity.getDateBirth()));
+		}
+		if(entity.getDateRegistry() != null) {
 			textDateRegistry.setText(sdf.format(entity.getDateRegistry()));
+		}
+		if (this.entity.getContacts() != null) {
+			contactsList = FXCollections.observableArrayList(this.entity.getContacts());
+			tableContacts.setItems(contactsList);
+		}
+		// Only student have status
+		if(entity instanceof Student && ((Student) entity).getStatus() != null) {
+			comboBoxStatus.getSelectionModel().select(StudentStatusEnum.fromString(((Student) entity).getStatus()));
 		}
 	}
 	
@@ -206,8 +257,8 @@ public class PersonFormController implements Initializable {
 		entity.setName(textName.getText());
 		entity.setEmail(textEmail.getText());
 		entity.setSendEmail(checkBoxSendEmail.isSelected());
-		entity.setCpf(textCPF.getText());
-		entity.setRg(textRG.getText());
+		entity.setCpf(Constraints.onlyDigitsValue(textCPF));
+		entity.setRg(Constraints.onlyDigitsValue(textRG));
 		// comboBoxGender
 		// comboBoxCivilStatus
 		entity.setNeighborhood(textNeighborhood.getText());
@@ -216,14 +267,33 @@ public class PersonFormController implements Initializable {
 		entity.setCity(textCity.getText());
 		entity.setUf(textUF.getText());
 		entity.setObservation(textAreaObservation.getText());
-//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//		try {
-//			entity.setDateBirth(sdf.parse(textBirthDate.getText()));
-//			entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			if(textBirthDate.getText().length() > 0) {
+				entity.setDateBirth(sdf.parse(textBirthDate.getText()));
+			}
+			if(textDateRegistry.getText().length() > 0) {
+				entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
+			}
+		} catch (ParseException e) {
+		}
+		// Only student have status
+		if (entity instanceof Student) {
+			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
+		}
+	}
+	
+	private void initiliazeTableContactsNodes() {
+		Utils.setCellValueFactory(columnContactNumber, "number");
+		Utils.setCellValueFactory(columnContactDescription, "description");
+		// Edit button
+		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
+			System.out.println("edit contact");
+		});
+		// Remove button
+		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
+			System.out.println("remove contact");
+		});
 	}
 
 }

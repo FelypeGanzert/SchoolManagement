@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
@@ -63,40 +64,44 @@ import model.entites.Student;
 public class ListStudentsController implements Initializable {
 
 	// Filter Student and Register
-	@FXML JFXTextField textFilter;
-	@FXML JFXComboBox<String> comboBoxFieldFilter;
-	@FXML ToggleGroup filterType;
-	@FXML ToggleGroup filterStudentStatus;
-	@FXML Label labelTotalStudents;
-	@FXML JFXButton btnRegister;
+	@FXML private JFXTextField textFilter;
+	@FXML private JFXComboBox<String> comboBoxFieldFilter;
+	@FXML private ToggleGroup filterType;
+	@FXML private ToggleGroup filterStudentStatus;
+	@FXML private JFXRadioButton statusTODOS;
+	@FXML private JFXRadioButton statusATIVOS;
+	@FXML private JFXRadioButton statusAGUARDANDO;
+	@FXML private JFXRadioButton statusINATIVOS;
+	@FXML private Label labelTotalStudents;
+	@FXML private JFXButton btnRegister;
 	// Table Students
 	@FXML TableView<Student> tableStudents;
-	@FXML TableColumn<Student, String> columnStudentStatus;
-	@FXML TableColumn<Student, Integer> columnStudentCode;
-	@FXML TableColumn<Student, String> columnStudentName;
-	@FXML TableColumn<Student, String> columnStudentContact1;
-	@FXML TableColumn<Student, Student> columnStudentInfo;
+	@FXML private TableColumn<Student, String> columnStudentStatus;
+	@FXML private TableColumn<Student, Integer> columnStudentCode;
+	@FXML private TableColumn<Student, String> columnStudentName;
+	@FXML private TableColumn<Student, String> columnStudentContact1;
+	@FXML private TableColumn<Student, Student> columnStudentInfo;
 	// Table Matriculations
-	@FXML TableView<Matriculation> tableMatriculations;
-	@FXML TableColumn<Matriculation, Integer> columnMatriculationCode;
-	@FXML TableColumn<Matriculation, Date> columnMatriculationDate;
-	@FXML TableColumn<Matriculation, String> columnMatriculationStatus;
-	@FXML TableColumn<Matriculation, String> columnMatriculationParcels;
+	@FXML private TableView<Matriculation> tableMatriculations;
+	@FXML private TableColumn<Matriculation, Integer> columnMatriculationCode;
+	@FXML private TableColumn<Matriculation, Date> columnMatriculationDate;
+	@FXML private TableColumn<Matriculation, String> columnMatriculationStatus;
+	@FXML private TableColumn<Matriculation, String> columnMatriculationParcels;
 	// Table Parcels
-	@FXML Label labelSelectedMatriculation;
-	@FXML TableView<Parcel> tableParcels;
-	@FXML TableColumn<Parcel, String> columnParcelStatus;
-	@FXML TableColumn<Parcel, Integer> columnParcelParcel;
-	@FXML TableColumn<Parcel, Date> columnParcelDate;
-	@FXML TableColumn<Parcel, Double> columnParcelValue;
+	@FXML private Label labelSelectedMatriculation;
+	@FXML private TableView<Parcel> tableParcels;
+	@FXML private TableColumn<Parcel, String> columnParcelStatus;
+	@FXML private TableColumn<Parcel, Integer> columnParcelParcel;
+	@FXML private TableColumn<Parcel, Date> columnParcelDate;
+	@FXML private TableColumn<Parcel, Double> columnParcelValue;
 	// Annotations
-	@FXML Button btnAddAnnotation;
-	@FXML JFXListView<Annotation> listViewAnnotation;
-	@FXML Label labelSelectedAnnotationDate;
-	@FXML JFXTextArea textAreaAnnotation;
-	@FXML Button btnEditSelectedAnnotation;
-	@FXML Button btnDeleteSelectedAnnottion;
-	@FXML Label labelSelectedAnnotationCollaborator;
+	@FXML private Button btnAddAnnotation;
+	@FXML private JFXListView<Annotation> listViewAnnotation;
+	@FXML private Label labelSelectedAnnotationDate;
+	@FXML private JFXTextArea textAreaAnnotation;
+	@FXML private Button btnEditSelectedAnnotation;
+	@FXML private Button btnDeleteSelectedAnnottion;
+	@FXML private Label labelSelectedAnnotationCollaborator;
 	
 	private StudentDao studentDao;
 	private ObservableList<Student> studentsList;
@@ -130,7 +135,7 @@ public class ListStudentsController implements Initializable {
 		this.studentDao = studentDao;
 	}
 	
-	public void filterStudents() {
+	public void filterStudents(String status) {
 		List<Student> filteredList = new ArrayList<>();
 		String totalStudentsText = "";
 		// Filter by status
@@ -140,8 +145,23 @@ public class ListStudentsController implements Initializable {
 		statusMap.put("ATIVOS", "ATIVO");
 		statusMap.put("AGUARDANDO", "AGUARDANDO");
 		statusMap.put("INATIVOS", "INATIVO");
-		if (statusMap.get(statusSelected.toUpperCase()) != null) {
-			final String statusSearchFinal = statusMap.get(statusSelected.toUpperCase());
+		String statusToFilter;
+		if (status != null) {
+			statusToFilter = status;
+			if (statusToFilter.equalsIgnoreCase("ATIVO")) {
+				statusATIVOS.setSelected(true);
+			}
+			if (statusToFilter.equalsIgnoreCase("AGUARDANDO")) {
+				statusAGUARDANDO.setSelected(true);
+			}
+			if (statusToFilter.equalsIgnoreCase("INATIVO")) {
+				statusINATIVOS.setSelected(true);
+			}
+		} else {
+			statusToFilter = statusMap.get(statusSelected.toUpperCase());
+		}
+		if (statusToFilter != null) {
+			final String statusSearchFinal = statusToFilter;
 			filteredList = studentsList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusSearchFinal))
 					.collect(Collectors.toList());
 			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")";
@@ -167,6 +187,10 @@ public class ListStudentsController implements Initializable {
 		tableStudents.setItems(filteredObsList);
 		tableStudents.refresh();
 		tableStudents.getSelectionModel().selectFirst();
+	}
+	
+	public void filterStudents() {
+		filterStudents(null);
 	}
 	
 	public void updateTableView() {
@@ -389,9 +413,11 @@ public class ListStudentsController implements Initializable {
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
 				try {
+					Alert alertProcessing = Alerts.showProcessingScreen();
 					annotationDao.delete(itemSelected);
 					itemSelected.getStudent().getAnnotations().remove(itemSelected);
 					updateAnnotations(null);
+					alertProcessing.close();
 				} catch (DbException e) {
 					Alerts.showAlert("Erro ao deletar anotação", "DbException", e.getMessage(), AlertType.ERROR);
 				}

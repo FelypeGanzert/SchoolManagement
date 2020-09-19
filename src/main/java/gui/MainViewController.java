@@ -9,16 +9,17 @@ import com.jfoenix.controls.JFXButton;
 
 import application.Main;
 import db.DBFactory;
+import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import model.dao.StudentDao;
-import model.entites.Collaborator;
 
 public class MainViewController implements Initializable {
 
@@ -48,10 +49,6 @@ public class MainViewController implements Initializable {
 		this.main = main;
 	}
 	
-	public void setCurrentUser(Collaborator collaborator) {
-		// TODO Auto-generated method stub
-	}
-	
 	public void handleBtnHome(ActionEvent action) {
 		try {
 			setContent(FxmlPaths.MAIN_MENU, (MainMenuController controller) -> {
@@ -65,15 +62,17 @@ public class MainViewController implements Initializable {
 	public void handleChangeUser(ActionEvent action) {
 		main.showLoginForm();
 		Utils.currentStage(action).close();
-		
 	}
+	
 	public void handleBtnStudents(ActionEvent action) {
 		try {
+			Alert alertProcessing = Alerts.showProcessingScreen();
 			setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(this);
 				controller.updateTableView();
 				controller.filterStudents();
+			alertProcessing.close();
 			});
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -293,7 +293,7 @@
                         </HBox>
                         <TableView fx:id="tableContacts" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
                            <columns>
-                              <TableColumn fx:id="columnContactNumber" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center-right;" text="Número" />
+                              <TableColumn fx:id="columnContactNumber" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: center-right;" text="Número" />
                               <TableColumn fx:id="columnContactDescription" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="75.0" style="-fx-alignment: center-left;" text="Descrição" />
                               <TableColumn fx:id="columnContactEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                               <TableColumn fx:id="columnContactDelete" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />

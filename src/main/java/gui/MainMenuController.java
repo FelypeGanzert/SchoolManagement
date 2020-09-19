@@ -7,10 +7,12 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
+import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import model.dao.StudentDao;
 
 public class MainMenuController implements Initializable {
@@ -31,12 +33,14 @@ public class MainMenuController implements Initializable {
 	
 	public void showListStudents(ActionEvent action) {
 		try {
+			Alert alertProcessing = Alerts.showProcessingScreen();
 			mainView.setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
 				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 				controller.setMainViewController(mainView);
 				controller.updateTableView();
 				controller.filterStudents();
 			});
+			alertProcessing.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

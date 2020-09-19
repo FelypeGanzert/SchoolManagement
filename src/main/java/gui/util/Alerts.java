@@ -9,4 +9,13 @@ public class Alerts {
 		alert.setContentText(content);
 		alert.show();
 	}
+	
+	public static Alert showProcessingScreen() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Processando...");
+		alert.setHeaderText("Aguarde");
+		alert.setContentText("Trabalhando nisso");
+		alert.show();
+		return alert;
+	}
 }

@@ -95,14 +95,14 @@
 						<HBox spacing="25.0">
 							<children>
 								<Label text="Exibir:" />
-								<JFXRadioButton style="-fx-cursor: hand;" text="Todos">
+								<JFXRadioButton fx:id="statusTODOS" style="-fx-cursor: hand;" text="Todos">
                            <toggleGroup>
                               <ToggleGroup fx:id="filterStudentStatus" />
                            </toggleGroup>
 								</JFXRadioButton>
-								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="Ativos" toggleGroup="$filterStudentStatus" />
-								<JFXRadioButton style="-fx-cursor: hand;" text="Aguardando" toggleGroup="$filterStudentStatus" />
-								<JFXRadioButton style="-fx-cursor: hand;" text="Inativos" toggleGroup="$filterStudentStatus" />
+								<JFXRadioButton fx:id="statusATIVOS" selected="true" style="-fx-cursor: hand;" text="Ativos" toggleGroup="$filterStudentStatus" />
+								<JFXRadioButton fx:id="statusAGUARDANDO" style="-fx-cursor: hand;" text="Aguardando" toggleGroup="$filterStudentStatus" />
+								<JFXRadioButton fx:id="statusINATIVOS" style="-fx-cursor: hand;" text="Inativos" toggleGroup="$filterStudentStatus" />
 							</children>
 							<padding>
 								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

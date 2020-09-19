@@ -56,7 +56,7 @@
 			<children>
 				<GridPane hgap="10.0" vgap="5.0">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" />
+						<ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
 						<ColumnConstraints hgrow="ALWAYS" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" />
 					</columnConstraints>
 					<rowConstraints>
@@ -68,7 +68,7 @@
 						<RowConstraints maxHeight="90.0" minHeight="90.0" prefHeight="90.0" valignment="CENTER" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-                  <JFXTextField fx:id="textRG" labelFloat="true" promptText="RG" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textRG" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="RG" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" />
 						<JFXCheckBox fx:id="checkBoxSendEmail" style="-fx-cursor: hand;" text="Receber promoções no email" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
 							<font>
 								<Font size="11.0" />
@@ -77,17 +77,17 @@
                   <JFXTextField fx:id="textEmail" labelFloat="true" promptText="EMAIL (opcional)" styleClass="text-field-with-label" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
                   <JFXTextField fx:id="textBirthDate" labelFloat="true" promptText="NASCIMENTO" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
                   <JFXTextField fx:id="textAdress" labelFloat="true" promptText="ENDEREÇO" styleClass="text-field-with-label" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                  <JFXComboBox fx:id="comboBoxGender" labelFloat="true" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" promptText="SEXO" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                  <JFXComboBox fx:id="comboBoxGender" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" promptText="SEXO" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
 						<HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <children>
                         <JFXTextField fx:id="textNeighborhood" labelFloat="true" promptText="BAIRRO" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
                         <JFXTextField fx:id="textCity" labelFloat="true" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" promptText="CIDADE" styleClass="text-field-with-label" />
                         <JFXTextField fx:id="textUF" labelFloat="true" minWidth="50.0" prefWidth="50.0" promptText="UF" style="-fx-alignment: center;" styleClass="text-field-with-label" />
                      </children></HBox>
-                  <JFXComboBox fx:id="comboBoxStatus" labelFloat="true" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" promptText="STATUS" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <JFXComboBox fx:id="comboBoxStatus" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" promptText="STATUS" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                   <JFXTextField fx:id="textAdressReference" labelFloat="true" promptText="LOCAL DE REFERÊNCIA (opcional)" styleClass="text-field-with-label" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                   <JFXTextArea fx:id="textAreaObservation" labelFloat="true" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" promptText="OBSERVAÇÃO (opcional)" styleClass="text-field-with-label" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                  <JFXComboBox fx:id="comboBoxCivilStatus" labelFloat="true" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" promptText="ESTADO CIVIL" styleClass="text-field-with-label" GridPane.rowIndex="1" />
+                  <JFXComboBox fx:id="comboBoxCivilStatus" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" promptText="ESTADO CIVIL" styleClass="text-field-with-label" GridPane.rowIndex="1" />
 					</children>
 				</GridPane>
 				<VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
@@ -127,17 +127,17 @@
 						</HBox>
 						<TableView fx:id="tableContacts" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
 							<columns>
-								<TableColumn fx:id="columnContactNumber" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Número" />
-								<TableColumn fx:id="columnContactDescription" prefWidth="75.0" text="Descrição" />
+								<TableColumn fx:id="columnContactNumber" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Número" />
+								<TableColumn fx:id="columnContactDescription" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="-1.0" text="Descrição" />
 								<TableColumn fx:id="columnContactEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
 								<TableColumn fx:id="columnContactDelete" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
 							</columns>
-							<columnResizePolicy>
-								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-							</columnResizePolicy>
 							<VBox.margin>
 								<Insets bottom="5.0" />
 							</VBox.margin>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
 						</TableView>
 					</children>
 				</VBox>

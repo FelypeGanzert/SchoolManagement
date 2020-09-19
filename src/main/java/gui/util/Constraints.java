@@ -56,6 +56,39 @@ public class Constraints {
 			}
 		});
 	}
+	
+	public static void date(TextField txt) {
+		maxField(txt, 12);
+		txt.lengthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						if (newValue.intValue() <= 14) {
+							String value = txt.getText();
+							value = value.replaceAll("[^0-9]", "");
+							value = value.replaceFirst("(\\d{2})(\\d)", "$1.$2");
+							value = value.replaceFirst("(\\d{2})\\.(\\d{3})(\\d)", "$1.$2.$3");
+							value = value.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})(\\d)", "$1.$2.$3-$4");
+							value = value.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})\\-(\\d{1})(\\d)", "$1.$2.$3.$4");
+							txt.setText(value);
+							positionCaret(txt);
+						}
+
+					}
+				});
+			}
+		});
+	}
+	
+	public static String onlyDigitsValue(TextField field) {
+		String result = field.getText();
+		if (result == null) {
+			return null;
+		}
+		return result.replaceAll("[^0-9]", "");
+	}
 
 	public static void maxField(TextField txt, Integer length) {
 		txt.textProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -74,6 +107,22 @@ public class Constraints {
 				}
 			} catch (Exception e) {
 
+			}
+		});
+	}
+	
+	public static void noWhiteSpace(TextField txt) {
+		txt.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null && newValue.contains(" ")) {
+				txt.setText(oldValue);
+			}
+		});
+	}
+	
+	public static void alwaysUpperCase(TextField txt) {
+		txt.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null) {
+				txt.setText(newValue.toUpperCase());
 			}
 		});
 	}

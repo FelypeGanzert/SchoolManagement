@@ -46,55 +46,55 @@ import model.entites.Student;
 
 public class InfoStudentController implements Initializable {
 	// Menu
-	@FXML JFXButton btnReturn;
-	@FXML Label labelStudentName;
-	@FXML HBox hBoxStaus;
-	@FXML TextField textStatus;
-	@FXML Button btnEditStatus;
-	@FXML Button btnEditStudent;
-	@FXML Button btnDeleteStudent;
+	@FXML private JFXButton btnReturn;
+	@FXML private Label labelStudentName;
+	@FXML private HBox hBoxStaus;
+	@FXML private TextField textStatus;
+	@FXML private Button btnEditStatus;
+	@FXML private Button btnEditStudent;
+	@FXML private Button btnDeleteStudent;
 	// Student infos
-	@FXML TextField textID;
-	@FXML TextField textName;
-	@FXML TextField textOldRA;
-	@FXML TextField textCPF;
-	@FXML TextField textGender;
-	@FXML TextField textBirthDate;
-	@FXML TextField textAge;
-	@FXML TextField textCivilStatus;
-	@FXML TextField textRG;
-	@FXML TextField textEmail;
-	@FXML CheckBox checkBoxPromotionsEmail;
-	@FXML TextField textAdress;
-	@FXML TextField textNeighborhood;
-	@FXML TextField textAdressReference;
-	@FXML TextField textCity;
-	@FXML TextField textUF;
-	@FXML Label labelDateCadastryAndModify;
-	@FXML TextArea textAreaObservation;
+	@FXML private TextField textID;
+	@FXML private TextField textName;
+	@FXML private TextField textOldRA;
+	@FXML private TextField textCPF;
+	@FXML private TextField textGender;
+	@FXML private TextField textBirthDate;
+	@FXML private TextField textAge;
+	@FXML private TextField textCivilStatus;
+	@FXML private TextField textRG;
+	@FXML private TextField textEmail;
+	@FXML private CheckBox checkBoxPromotionsEmail;
+	@FXML private TextField textAdress;
+	@FXML private TextField textNeighborhood;
+	@FXML private TextField textAdressReference;
+	@FXML private TextField textCity;
+	@FXML private TextField textUF;
+	@FXML private Label labelDateCadastryAndModify;
+	@FXML private TextArea textAreaObservation;
 	// Table Matriculations
-	@FXML TableView<Matriculation> tableMatriculations;
-	@FXML TableColumn<Matriculation, Integer> columnMatriculationCode;
-	@FXML TableColumn<Matriculation, Date> columnMatriculationDate;
-	@FXML TableColumn<Matriculation, String> columnMatriculationStatus;
-	@FXML TableColumn<Matriculation, String> columnMatriculationParcels;
-	@FXML TableColumn<Matriculation, String> columnMatriculationResponsible;
-	@FXML TableColumn<Matriculation, Matriculation> columnMatriculationInfo;
-	@FXML Button btnAddMatriculation;
+	@FXML private TableView<Matriculation> tableMatriculations;
+	@FXML private TableColumn<Matriculation, Integer> columnMatriculationCode;
+	@FXML private TableColumn<Matriculation, Date> columnMatriculationDate;
+	@FXML private TableColumn<Matriculation, String> columnMatriculationStatus;
+	@FXML private TableColumn<Matriculation, String> columnMatriculationParcels;
+	@FXML private TableColumn<Matriculation, String> columnMatriculationResponsible;
+	@FXML private TableColumn<Matriculation, Matriculation> columnMatriculationInfo;
+	@FXML private Button btnAddMatriculation;
 	// Table Contacts
-	@FXML TableView<Contact> tableContacts;
-	@FXML TableColumn<Contact, String> columnContactNumber;
-	@FXML TableColumn<Contact, String> columnContactDescription;
-	@FXML TableColumn<Contact, Contact> columnContactEdit;
-	@FXML TableColumn<Contact, Contact> columnContactDelete;
-	@FXML Button btnAddContact;
+	@FXML private TableView<Contact> tableContacts;
+	@FXML private TableColumn<Contact, String> columnContactNumber;
+	@FXML private TableColumn<Contact, String> columnContactDescription;
+	@FXML private TableColumn<Contact, Contact> columnContactEdit;
+	@FXML private TableColumn<Contact, Contact> columnContactDelete;
+	@FXML private Button btnAddContact;
 	// Table Responsibles
-	@FXML TableView<Responsible> tableResponsibles;
-	@FXML TableColumn<Responsible, String> columnReponsibleName;
-	@FXML TableColumn<Responsible, String> columnReponsibleRelationship;
-	@FXML TableColumn<Responsible, Responsible> columnResponsibleEdit;
-	@FXML TableColumn<Responsible, Responsible> columnResponsibleRemove;
-	@FXML Button btnAddResponsible;
+	@FXML private TableView<Responsible> tableResponsibles;
+	@FXML private TableColumn<Responsible, String> columnReponsibleName;
+	@FXML private TableColumn<Responsible, String> columnReponsibleRelationship;
+	@FXML private TableColumn<Responsible, Responsible> columnResponsibleEdit;
+	@FXML private TableColumn<Responsible, Responsible> columnResponsibleRemove;
+	@FXML private Button btnAddResponsible;
 
 	private final Integer ICON_SIZE = 15;
 	private Student student;
@@ -110,7 +110,7 @@ public class InfoStudentController implements Initializable {
 	public void initialize(URL url, ResourceBundle resources) {
 		initializeTableMatriculationsNodes();
 		initiliazeTableContactsNodes();
-		initiliazeTableResponsibles();
+		initiliazeTableResponsiblesNodes();
 		this.returnPath = FxmlPaths.LIST_STUDENTS;
 	}
 	
@@ -181,7 +181,7 @@ public class InfoStudentController implements Initializable {
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 					controller.setMainViewController(mainView);
 					controller.updateTableView();
-					controller.filterStudents();
+					controller.filterStudents(student.getStatus());
 					controller.tableStudents.getSelectionModel().select(student);
 				});
 			}
@@ -233,7 +233,7 @@ public class InfoStudentController implements Initializable {
 		});
 	}
 	
-	private void initiliazeTableResponsibles() {
+	private void initiliazeTableContactsNodes() {
 		Utils.setCellValueFactory(columnContactNumber, "number");
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
@@ -246,7 +246,7 @@ public class InfoStudentController implements Initializable {
 		});
 	}
 	
-	private void initiliazeTableContactsNodes() {
+	private void initiliazeTableResponsiblesNodes() {
 		Utils.setCellValueFactory(columnReponsibleName, "name");
 		columnReponsibleRelationship.setCellValueFactory(cellData -> {
 			try {

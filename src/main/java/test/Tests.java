@@ -3,12 +3,18 @@ package test;
 import java.text.SimpleDateFormat;
 
 import db.DBFactory;
+import gui.util.Alerts;
+import javafx.scene.control.Alert;
 import model.dao.AnnotationDao;
 import model.entites.Annotation;
 
 public class Tests {
 
 	public static void main(String[] args) {
+		
+
+		Alert alertProcessing = Alerts.showProcessingScreen();
+		
 //		DBFactory.setUnits("localhost");
 //		DBFactory.getConnection();
 //		try {
@@ -22,12 +28,12 @@ public class Tests {
 //			e.printStackTrace();
 //		}
 
-		String value = "8419592498";
-		value = value.replaceAll("[^0-9]", "");
-		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
-		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
-		value = value.replaceFirst("(\\d{3})(\\d)", "$1-$2");
-		System.out.println(value);
+//		String value = "8419592498";
+//		value = value.replaceAll("[^0-9]", "");
+//		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
+//		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
+//		value = value.replaceFirst("(\\d{3})(\\d)", "$1-$2");
+//		System.out.println(value);
 		
 	}
 	

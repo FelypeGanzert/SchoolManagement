@@ -23,12 +23,12 @@ import model.entites.Student;
 
 public class AnnotationController implements Initializable{
 
-	@FXML Label labelStudentName;
-	@FXML Label labelDate;
-	@FXML Label labelResponsibleEmployee;
-	@FXML JFXTextArea textAreaDescription;
-	@FXML JFXButton btnSave;
-	@FXML JFXButton btnCancel;
+	@FXML private Label labelStudentName;
+	@FXML private Label labelDate;
+	@FXML private Label labelResponsibleEmployee;
+	@FXML private JFXTextArea textAreaDescription;
+	@FXML private JFXButton btnSave;
+	@FXML private JFXButton btnCancel;
 	
 	private AnnotationDao annotationDao;
 	private Annotation annotation;
