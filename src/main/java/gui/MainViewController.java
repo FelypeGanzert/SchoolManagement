@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -9,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 
 import application.Main;
 import db.DBFactory;
+import db.DbException;
 import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Utils;
@@ -17,9 +19,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import model.dao.StudentDao;
+import javafx.scene.control.Alert.AlertType;
+import model.dao.AnnotationDao;
 
 public class MainViewController implements Initializable {
 
@@ -49,34 +53,27 @@ public class MainViewController implements Initializable {
 		this.main = main;
 	}
 	
-	public void handleBtnHome(ActionEvent action) {
-		try {
-			setContent(FxmlPaths.MAIN_MENU, (MainMenuController controller) -> {
-				controller.setMainViewController(this);
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void handleBtnHome(ActionEvent event) {
+		Roots.home(this);
 	}
 	
-	public void handleChangeUser(ActionEvent action) {
+	public void handleChangeUser(ActionEvent event) {
 		main.showLoginForm();
-		Utils.currentStage(action).close();
+		Utils.currentStage(event).close();
 	}
 	
-	public void handleBtnStudents(ActionEvent action) {
-		try {
-			Alert alertProcessing = Alerts.showProcessingScreen();
-			setContent(FxmlPaths.LIST_STUDENTS, (ListStudentsController controller) -> {
-				controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
-				controller.setMainViewController(this);
-				controller.updateTableView();
-				controller.filterStudents();
-			alertProcessing.close();
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void handleBtnExit(ActionEvent event) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Sair");
+		alert.setHeaderText("Clique em OK para encerrar o sistema");
+		Optional<ButtonType> result =alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			Utils.currentStage(event).close();			
 		}
+	}
+	
+	public void handleBtnStudents(ActionEvent event) {
+		Roots.listStudents(this);
 	}
 	
 	public <T> void setContent(String path, Consumer<T> initializingAction) throws IOException {

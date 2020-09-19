@@ -2,10 +2,8 @@ package test;
 
 import java.text.SimpleDateFormat;
 
-import db.DBFactory;
 import gui.util.Alerts;
 import javafx.scene.control.Alert;
-import model.dao.AnnotationDao;
 import model.entites.Annotation;
 
 public class Tests {
