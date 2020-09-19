@@ -2,7 +2,7 @@ package gui.util.enums;
 
 public enum GenderEnum {
 
-	M("Masculino"), F("Feminino");
+	MASCULINO("Masculino"), FEMININO("Feminino");
 
 	private String fullGender;
 
@@ -14,7 +14,6 @@ public enum GenderEnum {
 		return this.fullGender;
 	}
 
-
 	public static GenderEnum fromString(String gender) {
 		for (GenderEnum g : GenderEnum.values()) {
 			if (g.toString().equalsIgnoreCase(gender)) {
@@ -23,5 +22,5 @@ public enum GenderEnum {
 		}
 		return null;
 	}
-
+	
 }

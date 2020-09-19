@@ -15,6 +15,7 @@ import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
 import javafx.beans.property.SimpleStringProperty;
@@ -148,8 +149,14 @@ public class InfoStudentController implements Initializable {
 		checkBoxPromotionsEmail.selectedProperty().setValue(student.getSendEmail());
 		textCPF.setText(student.getCpf());
 		textRG.setText(student.getRg());
+		// Gender and CivilStatus
 		textGender.setText(GenderEnum.fromString(student.getGender()).getfullGender());
-		textCivilStatus.setText(student.getCivilStatus());
+		textCivilStatus.setText(CivilStatusEnum.fromFullCivilStatus(student.getCivilStatus()).getFullCivilStatus());
+		if(student.getGender() != null && student.getGender().equalsIgnoreCase("Feminino")) {
+			int civilStatusLength = textCivilStatus.getText().length();
+			String feminineCivilStatus = textCivilStatus.getText().substring(0, civilStatusLength-1) + "a";
+			textCivilStatus.setText(feminineCivilStatus);
+		}
 		textNeighborhood.setText(student.getNeighborhood());
 		textAdress.setText(student.getAdress());
 		textAdressReference.setText(student.getAdressReference());

@@ -21,6 +21,8 @@ import gui.util.Constraints;
 import gui.util.FxmlPaths;
 import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.CivilStatusEnum;
+import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,11 +54,11 @@ public class PersonFormController implements Initializable {
 	@FXML private HBox HBoxInformations;
 	@FXML private JFXTextField textRG;
 	@FXML private JFXTextField textEmail;
-	@FXML private JFXComboBox comboBoxCivilStatus;
+	@FXML private JFXComboBox<CivilStatusEnum> comboBoxCivilStatus;
 	@FXML private JFXCheckBox checkBoxSendEmail;
 	@FXML private JFXTextField textBirthDate;
 	@FXML private JFXTextField textAdress;
-	@FXML private JFXComboBox comboBoxGender;
+	@FXML private JFXComboBox<GenderEnum> comboBoxGender;
 	@FXML private JFXTextField textNeighborhood;
 	@FXML private JFXTextField textCity;
 	@FXML private JFXTextField textUF;
@@ -134,6 +136,10 @@ public class PersonFormController implements Initializable {
 		// ComboBox
 		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
 		comboBoxStatus.getSelectionModel().selectFirst();
+		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
+		comboBoxCivilStatus.getSelectionModel().selectFirst();
+		comboBoxGender.getItems().addAll(GenderEnum.values());
+		comboBoxGender.getSelectionModel().selectFirst();
 	}
 	
 	public void handleBtnFindRegistry(ActionEvent event) {
@@ -166,7 +172,6 @@ public class PersonFormController implements Initializable {
 				if (entity.getId() != null) {
 					studentDao.update((Student) entity);
 				} else {
-					((Student) entity).setGender("M");
 					studentDao.insert((Student) entity);
 				}
 				if (this.infoStudentController != null) {
@@ -227,8 +232,6 @@ public class PersonFormController implements Initializable {
 		}
 		textCPF.setText(entity.getCpf());
 		textRG.setText(entity.getRg());
-		//comboBoxGender
-		//comboBoxCivilStatus
 		textNeighborhood.setText(entity.getNeighborhood());
 		textAdress.setText(entity.getAdress());
 		textAdressReference.setText(entity.getAdressReference());
@@ -250,6 +253,14 @@ public class PersonFormController implements Initializable {
 		if(entity instanceof Student && ((Student) entity).getStatus() != null) {
 			comboBoxStatus.getSelectionModel().select(StudentStatusEnum.fromString(((Student) entity).getStatus()));
 		}
+		//ComboBox's
+		if(entity.getGender() != null) {
+			comboBoxGender.getSelectionModel().select(GenderEnum.fromString(entity.getGender()));
+		}
+		if(entity.getCivilStatus() != null) {
+			comboBoxCivilStatus.getSelectionModel().select(CivilStatusEnum.fromFullCivilStatus(entity.getCivilStatus()));
+		}		
+		
 	}
 	
 	public void getFormData() {
@@ -259,8 +270,6 @@ public class PersonFormController implements Initializable {
 		entity.setSendEmail(checkBoxSendEmail.isSelected());
 		entity.setCpf(Constraints.onlyDigitsValue(textCPF));
 		entity.setRg(Constraints.onlyDigitsValue(textRG));
-		// comboBoxGender
-		// comboBoxCivilStatus
 		entity.setNeighborhood(textNeighborhood.getText());
 		entity.setAdress(textAdress.getText());
 		entity.setAdressReference(textAdressReference.getText());
@@ -281,6 +290,9 @@ public class PersonFormController implements Initializable {
 		if (entity instanceof Student) {
 			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
 		}
+		// Combo Box's
+		entity.setGender(comboBoxGender.getSelectionModel().getSelectedItem().getfullGender());
+		entity.setCivilStatus(comboBoxCivilStatus.getSelectionModel().getSelectedItem().getFullCivilStatus());
 	}
 	
 	private void initiliazeTableContactsNodes() {

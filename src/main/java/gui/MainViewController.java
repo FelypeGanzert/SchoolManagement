@@ -9,9 +9,6 @@ import java.util.function.Consumer;
 import com.jfoenix.controls.JFXButton;
 
 import application.Main;
-import db.DBFactory;
-import db.DbException;
-import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
@@ -19,11 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert.AlertType;
-import model.dao.AnnotationDao;
 
 public class MainViewController implements Initializable {
 
