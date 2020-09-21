@@ -38,7 +38,7 @@
                   <HBox fx:id="HBoxRegistryInformations" alignment="CENTER" prefWidth="200.0" spacing="10.0">
                      <children>
                         <JFXComboBox fx:id="comboBoxRegisteredBy" labelFloat="true" maxWidth="126.0" minWidth="160.0" prefHeight="25.0" prefWidth="160.0" promptText="CADASTRADO POR" styleClass="text-field-with-label" />
-                        <JFXTextField fx:id="textDateRegistry" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="130.0" promptText="DATA CADASTRO" styleClass="text-field-with-label" />
+                        <JFXTextField fx:id="textDateRegistry" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="130.0" promptText="DATA CADASTRO" style="-fx-alignment: CENTER;" styleClass="text-field-with-label" />
                      </children>
                   </HBox>
       			</children>
@@ -46,7 +46,10 @@
                   <Insets bottom="20.0" top="20.0" />
                </padding>
       		</HBox>
-				<Label fx:id="labelFindRegistryResponse" text="Registro encontrado. Confira as informações e clique em Salvar" />
+				<Label fx:id="labelFindRegistryResponse">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
          </children>
          <padding>
             <Insets bottom="5.0" />

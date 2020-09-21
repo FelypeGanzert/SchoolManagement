@@ -3,6 +3,7 @@ package model.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,7 +38,6 @@ public class StudentDao {
 		manager.getTransaction().begin();;
 		student = manager.merge(student);
 		manager.getTransaction().commit();
-		
 	}
 	
 	public void delete(Student student) throws DbException {
@@ -69,7 +69,6 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Student> criteria = builder.createQuery(Student.class);
         criteria.distinct(true);
@@ -80,5 +79,26 @@ public class StudentDao {
         return query.getResultList();
 	}
 	
+	public List<Student> findAllWithNameLike(String name) throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}			
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where nome like :nome", Student.class);
+		query.setParameter("nome", name + "%");
+		return query.getResultList();
+	}
+	
+	public Student findByCPF(String cpf) throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}			
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where cpf = :cpf", Student.class);
+		query.setParameter("cpf", cpf);
+		try {
+			return query.getSingleResult();
+		} catch(NoResultException e) {
+		}
+		return null;
+	}
 
 }

@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -14,6 +18,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
+import animatefx.animation.Shake;
 import animatefx.animation.ZoomIn;
 import db.DbException;
 import gui.util.Alerts;
@@ -28,13 +33,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Person;
@@ -89,7 +99,9 @@ public class PersonFormController implements Initializable {
 	public void initialize(URL url, ResourceBundle resources) {
 		btnFindRegistry.setVisible(false);
 		HBoxRegistryInformations.setVisible(false);
-		labelFindRegistryResponse.setVisible(false); // Registro encontrado. Confira as informações e clique em Salvar
+		comboBoxRegisteredBy.setVisible(false);
+		textDateRegistry.setVisible(false);
+		labelFindRegistryResponse.setVisible(false);
 		HBoxInformations.setVisible(false);
 		btnSave.setVisible(false);
 		initializeFields();
@@ -143,15 +155,64 @@ public class PersonFormController implements Initializable {
 	}
 	
 	public void handleBtnFindRegistry(ActionEvent event) {
-		// Just testing...
-		if(HBoxInformations.isVisible()) {
-			HBoxInformations.setVisible(false);
-			btnSave.setVisible(false);
-		} else {
-			new ZoomIn(HBoxInformations).play();
-			HBoxInformations.setVisible(true);
-			btnSave.setVisible(true);
+		//Check if cpf is valide
+		if(!textCPF.validate()) {
+			return;
 		}
+		Student student;
+		try {
+			// Try to find a Student with same cpf informed
+			student = studentDao.findByCPF(Constraints.onlyDigitsValue(textCPF));
+			if (student != null) {
+				this.entity = student;
+				this.updateFormData();
+				HBoxInformations.setVisible(true);
+				new ZoomIn(HBoxInformations).play();
+				labelFindRegistryResponse.setVisible(true);
+				labelFindRegistryResponse.setText("Registro encontrado a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
+				new Shake(labelFindRegistryResponse).play();
+				btnSave.setVisible(true);
+				return;
+			}
+			// Check if Name is valide
+			if(!textName.validate()) {
+				return;
+			}
+			// Try to students with name like the one informed
+			List<Student> studentsNameLike = studentDao.findAllWithNameLike(textName.getText().trim());
+			if(studentsNameLike.size() > 0) {
+				List<Person> peopleList = studentsNameLike.stream().map(s -> (Person) s).collect(Collectors.toList());
+				// Show Screen to person see students finded
+				loadView(FxmlPaths.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event), "Registros semelhantes", false,
+						(PersonFormFindRegistryController controller) -> {
+							controller.setPeopleList(peopleList);
+							controller.setPersonFormController(this);
+						});
+				return;
+			}
+		} catch (DbException e) {
+			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro", AlertType.ERROR);
+			e.printStackTrace();
+		}
+		labelFindRegistryResponse.setText("A pessoa ainda não possui registro.");
+		addNewRegistry();
+	}
+	
+
+	public void addNewRegistry() {
+		textCPF.setDisable(true);
+		textName.setDisable(true);
+		btnFindRegistry.setVisible(false);
+		comboBoxRegisteredBy.setVisible(true);
+		// Registry Date
+		textDateRegistry.setVisible(true);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		textDateRegistry.setText(sdf.format(new Date()));
+		HBoxInformations.setVisible(true);
+		new ZoomIn(HBoxInformations).play();
+		labelFindRegistryResponse.setVisible(true);
+		new Shake(labelFindRegistryResponse).play();
+		btnSave.setVisible(true);		
 	}
 	
 	public void handleBtnSave(ActionEvent event) {
@@ -203,6 +264,7 @@ public class PersonFormController implements Initializable {
 		this.entity = entity;
 		updateFormData();
 		if(entity.getId() != null) {
+			btnFindRegistry.setVisible(false);
 			HBoxInformations.setVisible(true);
 			btnSave.setVisible(true);
 		} else {
@@ -265,7 +327,7 @@ public class PersonFormController implements Initializable {
 	
 	public void getFormData() {
 		// comboBoxRegisteredBy
-		entity.setName(textName.getText());
+		entity.setName(textName.getText().trim());
 		entity.setEmail(textEmail.getText());
 		entity.setSendEmail(checkBoxSendEmail.isSelected());
 		entity.setCpf(Constraints.onlyDigitsValue(textCPF));
@@ -307,5 +369,31 @@ public class PersonFormController implements Initializable {
 			System.out.println("remove contact");
 		});
 	}
+	
+	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
+			boolean resizable, Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+			Parent parent = loader.load();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle(windowTitle);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(parentStage);
+			dialogStage.setResizable(resizable);
+			
+			Scene scene = new Scene(parent);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
+			dialogStage.setScene(scene);
+			
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		} catch(IllegalStateException e) {
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
+	}	
 
 }

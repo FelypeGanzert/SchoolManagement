@@ -51,7 +51,6 @@ public class Main extends Application {
 			// Set this Main to allow he to call in future to show Main View
 			controller.setMain(this);
 		});
-
 	}
 	
 	// This is method is called by Login
