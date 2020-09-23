@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ContactFormController">
    <children>
       <VBox layoutX="-3.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -33,7 +32,7 @@
                </padding>
                <children>
                   <Label text="Número:" />
-                  <JFXTextField prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textNumber" prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
@@ -42,12 +41,12 @@
                </padding>
                <children>
                   <Label text="Descrição:" />
-                  <JFXTextField prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textDescription" prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" spacing="30.0">
                <children>
-                  <JFXButton ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="Salvar" textFill="WHITE">
+                  <JFXButton fx:id="btnSave" defaultButton="true" onAction="#handleBtnSave" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="Salvar" textFill="WHITE">
                      <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                      </padding>
@@ -55,7 +54,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton ripplerFill="#b51b12" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Cancelar" textFill="WHITE">
+                  <JFXButton fx:id="btnCancel" cancelButton="true" onAction="#handleBtnCancel" ripplerFill="#b51b12" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Cancelar" textFill="WHITE">
                      <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                      </padding>

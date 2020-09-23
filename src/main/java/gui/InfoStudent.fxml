@@ -103,7 +103,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </JFXButton>
-                        <JFXButton fx:id="btnDeleteStudent" ripplerFill="#ff7575" style="-fx-background-color: #fff; -fx-cursor: hand;" text="EXCLUIR">
+                        <JFXButton fx:id="btnDeleteStudent" onAction="#handleBtnRemove" ripplerFill="#ff7575" style="-fx-background-color: #fff; -fx-cursor: hand;" text="EXCLUIR">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -277,7 +277,7 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="btnAddContact" mnemonicParsing="false" style="-fx-background-color: #0077b6; -fx-cursor: hand;">
+                              <Button fx:id="btnAddContact" mnemonicParsing="false" onAction="#handleBtnAddContact" style="-fx-background-color: #0077b6; -fx-cursor: hand;">
                                  <graphic>
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

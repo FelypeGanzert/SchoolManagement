@@ -3,6 +3,7 @@ package model.entites;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,7 +54,7 @@ public class Matriculation {
 	@Column(name="situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 	
-	@OneToMany(mappedBy = "matriculation")
+	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Parcel> parcels;
 
 

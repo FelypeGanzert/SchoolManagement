@@ -12,5 +12,6 @@ public class FxmlPaths {
 	public static final String INFO_STUDENT = "/gui/InfoStudent.fxml";
 	public static final String PERSON_FORM = "/gui/PersonForm.fxml";
 	public static final String PERSON_FORM_FIND_REGISTRY = "/gui/PersonFormFindRegistry.fxml";
+	public static final String CONTACT_FORM = "/gui/ContactForm.fxml";
 
 }

@@ -91,7 +91,7 @@ public class Student extends Person{
 	@Column (name = "observacao", columnDefinition = "text default null")
 	private String observation;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_student")
 	private List<Contact> contacts;
 
@@ -119,15 +119,13 @@ public class Student extends Person{
 	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 
-	@OneToMany(mappedBy = "student",
-		cascade = CascadeType.ALL,
-		orphanRemoval = true)
+	@OneToMany(mappedBy = "student")
 	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Matriculation> matriculations;
 	
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Annotation> annotations;
 
 	public void addResponsavel(Responsible responsible, String relationship) {

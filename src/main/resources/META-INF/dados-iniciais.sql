@@ -29,6 +29,7 @@ insert into contato(id, descricao, numero, contact_id_responsible) values(5,"V√≥
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 1,  "M„e");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (3, 2, "Tia");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 3, "Sobinho");
+insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (2, 3, "Amigo");
 
 insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (1, '2020-11-01 01:00:00', "uma nova anota√ß„o que ser· adicionada", "Felype", 1);
 insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (2, '2020-10-01 02:00:00', "segunda anota√ß„o", "Felype", 3);
@@ -39,7 +40,7 @@ insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) v
     
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(1, 'Ativa', '2020-09-01', "Feh", "Teste sem resp.", null, 1);
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(2, 'Cancelada', '2010-10-01', "Feh", "Teste sem resp.", 1, 1);
-insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(3, 'Ativa', '2020-11-01', "Feh", "Teste com resp.", 3, 3);
+insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(3, 'Ativa', '2020-11-01', "Feh", "Teste com resp.", 2, 3);
  
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(1,  '2020-09-01', '2020-09-01', 5, 3, 0, "Paga", 89.90, 1);
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(2,  '2020-09-02', '2020-09-02', 5, 3, 1, "Paga", 89.90, 1);
@@ -49,6 +50,7 @@ insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, di
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(6,  '2020-09-06', null, 5, 3, 5, "Aberta", 89.90, 1);
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(7,  '2020-09-07', null, 5, 3, 6, "Aberta", 89.90, 1);
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(8,  '2020-09-08', null, 5, 3, 7, "Cancelada", 89.90, 1);
+insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(9,  '2020-09-07', null, 5, 3, 6, "Aberta", 89.90, 3);
  
  
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(9,  '2020-09-07', null, 5, 3, 1, "Aberta", 200.90, 2);

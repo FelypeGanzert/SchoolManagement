@@ -27,10 +27,10 @@ public class Contact {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 		
-	@Column (name = "numero", columnDefinition = "varchar(50) default null")
+	@Column (name = "numero", columnDefinition = "varchar(20) default null")
 	private String number;
 	
-	@Column (name = "descricao", columnDefinition = "varchar(50) default null")
+	@Column (name = "descricao", columnDefinition = "varchar(30) default null")
 	private String description;
 
 }

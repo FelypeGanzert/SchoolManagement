@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -90,7 +92,7 @@ public class Responsible extends Person {
 	@Column (name = "observacao", columnDefinition = "text default null")
 	private String observation;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_responsible")
 	private List<Contact> contacts;
 
@@ -129,5 +131,21 @@ public class Responsible extends Person {
 			}
 		}
 		return null;
+	}
+	
+	public void removeStudent(Student student) {
+		for (Iterator<ResponsibleStudent> iterator = students.iterator(); iterator.hasNext();) {
+			ResponsibleStudent responsibleStudent = iterator.next();
+			if (responsibleStudent.getResponsible().equals(this) && responsibleStudent.getStudent().equals(student)) {
+				iterator.remove();
+				responsibleStudent.getResponsible().getStudents().remove(responsibleStudent);
+				responsibleStudent.setResponsible(null);
+				responsibleStudent.setStudent(null);
+			}
+		}
+	}
+	
+	public List<Student> getAllStudents() {
+		return students.stream().map(responsibleStudent -> responsibleStudent.getStudent()).collect(Collectors.toList());
 	}
 }

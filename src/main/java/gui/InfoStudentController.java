@@ -5,12 +5,15 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
+import db.DbException;
 import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Icons;
@@ -27,8 +30,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -198,7 +203,43 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnEdit(ActionEvent event) {
-		createPersonDialogForm(Utils.currentStage(event));
+		loadView(FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
+				(PersonFormController controller) -> {
+					controller.setPersonEntity(student);
+					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+					controller.setInfoStudentController(this);
+					controller.setMainView(this.mainView);
+				});
+	}
+	
+	public void handleBtnRemove(ActionEvent event) {
+		// Confirmation Alert to delete
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Deletar Estudante?");
+		alert.setHeaderText("Tem certeza que deseja deletar as informações de " + student.getName() + "?\n" +
+				"Todos os seus dados serão excluídos e não será possível reverter tal ação.");
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			// Call studentDao to delete
+			StudentDao studentDao = new StudentDao(DBFactory.getConnection());
+			try {
+				Alert alertProcessing = Alerts.showProcessingScreen();
+				studentDao.deleteById(student.getId());
+				alertProcessing.close();
+				// Return to List of students
+				Roots.listStudents(mainView);
+			} catch (DbException e) {
+				e.printStackTrace();
+				Alerts.showAlert("Erro ao deletar o estudante...", "DbException", e.getMessage(), AlertType.ERROR);
+			}
+		}
+	}
+	
+	public void handleBtnAddContact(ActionEvent event) {
+		loadView(FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
+				(ContactFormController controller) -> {
+					System.out.println("You clicked to add a new contact");
+				});
 	}
 
 	public void setMainViewControllerAndReturnName(MainViewController mainView, String returnBtnText) {
@@ -244,12 +285,15 @@ public class InfoStudentController implements Initializable {
 		Utils.setCellValueFactory(columnContactNumber, "number");
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
-		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("edit contact");
+		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
+			loadView(FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
+					(ContactFormController controller) -> {
+						System.out.println("You clicked to edit " + contact.getNumber() + " - " + contact.getDescription());
+					});
 		});
 		// Remove button
-		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
-			System.out.println("remove contact");
+		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (contact, event) -> {
+			System.out.println("You clicked to remove " + contact.getNumber() + " - " + contact.getDescription());
 		});
 	}
 	
@@ -274,31 +318,31 @@ public class InfoStudentController implements Initializable {
 			System.out.println("remove responsible");
 		});
 	}
-	
-	private void createPersonDialogForm(Stage parentStage) {
+		
+	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
+			boolean resizable, Consumer<T> initializingAction) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlPaths.PERSON_FORM));
-			Parent parent= loader.load();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
+			Parent parent = loader.load();
 			
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Informações da Pessoa");
+			dialogStage.setTitle(windowTitle);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(parentStage);
-			dialogStage.setResizable(false);
+			dialogStage.setResizable(resizable);
 			
-			PersonFormController controller = loader.getController();
-			controller.setPersonEntity(student);
-			controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
-			controller.setInfoStudentController(this);
-			controller.setMainView(this.mainView);
+			Scene scene = new Scene(parent);
+			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
+			dialogStage.setScene(scene);
 			
-			Scene PersonFormScene = new Scene(parent);
-			PersonFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
-			dialogStage.setScene(PersonFormScene);
+			T controller = loader.getController();
+			initializingAction.accept(controller);
 			dialogStage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		} catch(IllegalStateException e) {
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
 	

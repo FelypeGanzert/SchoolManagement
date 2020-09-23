@@ -427,7 +427,6 @@ public class ListStudentsController implements Initializable {
 	
 	private void showStudentInfo(Student student, String FxmlPath) {
 		try {
-			
 			mainView.setContent(FxmlPath, (InfoStudentController controller) -> {
 				controller.setMainViewControllerAndReturnName(mainView, "Alunos");
 				controller.setCurrentStudent(student);
