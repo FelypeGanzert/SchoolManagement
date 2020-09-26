@@ -40,24 +40,20 @@ public class Main extends Application {
 		mainContext.putState("main", mainState);
 		Globe.getGlobe().putContext("main", mainContext);
 
-		// 1: we load the screen to user entry the url of database to connect with the
-		// database
+		// 1: user entry the url of database to try to connect
 		Utils.loadView(this, false, FXMLPath.DB_CONNECTION_URL, primaryStage, "Conexão com o Banco de Dados", false,
 				x -> {});
 	}
 
-	// This method is called by DBConnectionURLController after established
-	// connection with database,
+	// Called by DBConnectionURLController after connected with database
 	// and when we need to change current user
 	public void showLoginForm() {
-		currentUser = null;
-		Utils.loadView(this, false, FXMLPath.LOGIN, new Stage(), "Login", false, (LoginController controller) -> {
-			// Set this Main to allow he to call in future to show Main View
-			controller.setMain(this);
-		});
+		// Remove currentUser from Globe data
+		Globe.getState("main", "main").removeItem("currentUser");
+		Utils.loadView(this, false, FXMLPath.LOGIN, new Stage(), "Login", false, x -> {});
 	}
 
-	// This is method is called by Login
+	// Is called after user logged
 	public void showMainView(Collaborator collaborator) {
 		Main.currentUser = collaborator;
 		Utils.loadView(this, false, FXMLPath.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,

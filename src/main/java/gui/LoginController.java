@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import model.entites.Collaborator;
+import sharedData.Globe;
 
 public class LoginController implements Initializable {
 
@@ -33,12 +34,15 @@ public class LoginController implements Initializable {
 	@FXML private JFXPasswordField txtPassword;
 	@FXML private JFXButton btnLogin;
 	@FXML private Label labelError;
-	private Main main; // To call Main Screen
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		txtUser.getValidators().add(Validators.getRequiredFieldValidator());
 		txtPassword.getValidators().add(Validators.getRequiredFieldValidator());
+		addListeners();
+	}
+	
+	public void addListeners() {
 		// Listeners to hidden error message
 		txtUser.textProperty().addListener((observable, oldValue, newValue) -> {
 			labelError.setVisible(false);
@@ -48,26 +52,37 @@ public class LoginController implements Initializable {
 		});
 	}
 	
-	public void setMain(Main main) {
-		this.main = main;
-	}
-	
 	public void handleBtnLogin(ActionEvent event) {
 		labelError.setVisible(false);
-		if(txtUser.validate() && txtPassword.validate()) {
-			Collaborator collaborator = login();
-			if(collaborator != null) {
-				Utils.currentStage(event).close();
-				main.showMainView(collaborator);
-			}
+		if (!txtUser.validate() || !txtPassword.validate()) {
+			// return of fields aren't valid
+			return;
+		}
+		// Try to find a Collaborator with the same user and password in database
+		try {
+			Collaborator collaborator = getCollaboratorFromDB();
+			// set currentCollaborator (User) to Globe
+			Globe.getState("main", "main").putItem("currentUser", collaborator);
+			// Close Login dialogStage if find a collaborator
+			Utils.currentStage(event).close();
+			// Call mainClass to show MainView
+			Globe.getStateItem(Main.class, "main", "main", "mainClass").showMainView(collaborator);
+		} catch (NoResultException e) {
+			// Show login error message in case we don't find any
+			// collaborator with same name and password in DB
+			labelError.setVisible(true);
+			labelError.setText("Usuário ou senha incorretos");
+			// Animations to call atention to error
+			new Tada(labelError).play();
+			new Shake(txtUser).play();
+			new Shake(txtPassword).play();
 		}
 	}
 	
-	private Collaborator login() {
+	private Collaborator getCollaboratorFromDB()  throws NoResultException{
 		String user = txtUser.getText();
 		String password = txtPassword.getText();
-		// Settings to find a Collaborator with the same user and password in database
-		EntityManager entityManager = DBFactory.getFactory().createEntityManager();
+		EntityManager entityManager = DBFactory.getConnection();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Collaborator> criteriaQuery = criteriaBuilder.createQuery(Collaborator.class);
         Root<Collaborator> root = criteriaQuery.from(Collaborator.class);
@@ -76,19 +91,9 @@ public class LoginController implements Initializable {
         Predicate passwordPredicate = criteriaBuilder.equal(root.get("passwordLogin"), password);
         criteriaQuery.where(criteriaBuilder.and(userPredicate, passwordPredicate));
         // Try to find a correspondent result
-        try {
-        	TypedQuery<Collaborator> typedQuery = entityManager.createQuery(criteriaQuery);
-        	Collaborator collaborator = typedQuery.getSingleResult();
-        	return collaborator;
-        } catch(NoResultException e) {
-        	labelError.setVisible(true);
-        	labelError.setText("Usuário ou senha incorretos");
-        	// Animations to call atention to error
-        	new Tada(labelError).play();
-        	new Shake(txtUser).play();
-        	new Shake(txtPassword).play();
-        }
-        return null; // in case of doens't find one correspondence
+		TypedQuery<Collaborator> typedQuery = entityManager.createQuery(criteriaQuery);
+		Collaborator collaborator = typedQuery.getSingleResult();
+		return collaborator;
 	}
 	
 }

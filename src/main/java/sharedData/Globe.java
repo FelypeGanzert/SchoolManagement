@@ -40,4 +40,8 @@ public class Globe {
 			return null;
 		}
 	}
+
+	public static State getState(String contextKey, String stateName) {
+		return Globe.getGlobe().getContext(contextKey).getState(stateName);
+	}
 }
