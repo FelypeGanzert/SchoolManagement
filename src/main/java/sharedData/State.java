@@ -3,7 +3,6 @@ package sharedData;
 import java.util.HashMap;
 
 public class State {
-	private String stateName;
 	private HashMap<String, Object> items;
 
 	public State() {

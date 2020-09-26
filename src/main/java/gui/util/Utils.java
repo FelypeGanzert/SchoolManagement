@@ -1,5 +1,6 @@
 package gui.util;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -9,23 +10,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class Utils {
 
+	// To numbers
 	private static final DecimalFormatSymbols DOLAR = new DecimalFormatSymbols(Locale.US);
 	public static final DecimalFormat DINHEIRO_DOLAR = new DecimalFormat("¤ ###,###,##0.00", DOLAR);
 	private static final Locale BRAZIL = new Locale("pt", "BR");
@@ -40,8 +49,8 @@ public class Utils {
 		return formatter.format(value);
 	}
 
-	public static Stage currentStage(ActionEvent event) {
-		return (Stage) ((Node) event.getSource()).getScene().getWindow();
+	public static String formatCurrentMoney(Double value, DecimalFormat coin) {
+		return coin.format(value);
 	}
 
 	public static Integer tryParseToInt(String value) {
@@ -51,7 +60,7 @@ public class Utils {
 			return null;
 		}
 	}
-	
+
 	public static Double tryParseToDouble(String value) {
 		try {
 			return Double.parseDouble(value);
@@ -59,62 +68,50 @@ public class Utils {
 			return null;
 		}
 	}
-	
+
+	// To Screens
+	public static Stage currentStage(ActionEvent event) {
+		return (Stage) ((Node) event.getSource()).getScene().getWindow();
+	}
+
+	public static synchronized <Tclass, T> void loadView(Tclass currentClass, boolean showAndWait, String FXMLPath,
+			Stage parentStage, String windowTitle, boolean resizable, Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(currentClass.getClass().getResource(FXMLPath));
+			Parent parent = loader.load();
+			if (parent instanceof ScrollPane) {
+				((ScrollPane) parent).setFitToHeight(true);
+				((ScrollPane) parent).setFitToWidth(true);
+			}
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle(windowTitle);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(parentStage);
+			dialogStage.setResizable(resizable);
+
+			Scene scene = new Scene(parent);
+			scene.getStylesheets()
+					.add(currentClass.getClass().getResource("/application/application.css").toExternalForm());
+			dialogStage.setScene(scene);
+
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+			if(showAndWait) {
+				dialogStage.showAndWait();
+			} else {
+				dialogStage.show();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		} catch (IllegalStateException e) {
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
+	}
+
+	// To Tables
 	public static <T, T2> void setCellValueFactory(TableColumn<T, T2> tableColumn, String property) {
 		tableColumn.setCellValueFactory(new PropertyValueFactory<>(property));
-	}
-
-	public static Button createIconButton(String svgAbsolutePath, int size, String iconClass) {
-		SVGPath path = new SVGPath();
-		path.setContent(svgAbsolutePath);
-		Bounds bounds = path.getBoundsInLocal();
-
-		// scale to size size x size (max)
-		double scaleFactor = size / Math.max(bounds.getWidth(), bounds.getHeight());
-		path.setScaleX(scaleFactor);
-		path.setScaleY(scaleFactor);
-		path.getStyleClass().add("button-icon");
-
-		Button button = new Button();
-		button.setPickOnBounds(true); // make sure transparent parts of the button register clicks too
-		button.setGraphic(path);
-		button.setAlignment(Pos.CENTER);
-		button.getStyleClass().add("icon-button");
-		button.getStyleClass().add(iconClass);
-		return button;
-	}
-	
-	public static <T> void initButtons(TableColumn<T, T> tableColumn, int size, String svgIcon, String className,
-			BiConsumer<T, ActionEvent> buttonAction) {
-		final int COLUMN_ICON_SPACE = 20;
-		tableColumn.setMinWidth(size + COLUMN_ICON_SPACE);
-
-		Callback<TableColumn<T, T>, TableCell<T, T>> cellFactory = new Callback<TableColumn<T, T>, TableCell<T, T>>() {
-			@Override
-			public TableCell<T, T> call(final TableColumn<T, T> param) {
-				final TableCell<T, T> cell = new TableCell<T, T>() {
-					private final Button btn = Utils.createIconButton(svgIcon, size, className);
-					{
-						btn.setOnAction((ActionEvent event) -> {
-							T data = getTableView().getItems().get(getIndex());
-							buttonAction.accept(data, event);
-						});
-					}
-
-					@Override
-					public void updateItem(T item, boolean empty) {
-						super.updateItem(item, empty);
-						if (empty) {
-							setGraphic(null);
-						} else {
-							setGraphic(btn);
-						}
-					}
-				};
-				return cell;
-			}
-		};
-		tableColumn.setCellFactory(cellFactory);
 	}
 
 	public static <T> void formatTableColumnDate(TableColumn<T, Date> tableColumn, String format) {
@@ -153,6 +150,61 @@ public class Utils {
 		});
 	}
 
+	public static <T> void initButtons(TableColumn<T, T> tableColumn, int size, String svgIcon, String className,
+			BiConsumer<T, ActionEvent> buttonAction) {
+		final int COLUMN_ICON_SPACE = 20;
+		tableColumn.setMinWidth(size + COLUMN_ICON_SPACE);
+
+		Callback<TableColumn<T, T>, TableCell<T, T>> cellFactory = new Callback<TableColumn<T, T>, TableCell<T, T>>() {
+			@Override
+			public TableCell<T, T> call(final TableColumn<T, T> param) {
+				final TableCell<T, T> cell = new TableCell<T, T>() {
+					private final Button btn = Utils.createIconButton(svgIcon, size, className);
+					{
+						btn.setOnAction((ActionEvent event) -> {
+							T data = getTableView().getItems().get(getIndex());
+							buttonAction.accept(data, event);
+						});
+					}
+
+					@Override
+					public void updateItem(T item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+						} else {
+							setGraphic(btn);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+		tableColumn.setCellFactory(cellFactory);
+	}
+
+	// To Buttons
+	public static Button createIconButton(String svgAbsolutePath, int size, String iconClass) {
+		SVGPath path = new SVGPath();
+		path.setContent(svgAbsolutePath);
+		Bounds bounds = path.getBoundsInLocal();
+
+		// scale to size size x size (max)
+		double scaleFactor = size / Math.max(bounds.getWidth(), bounds.getHeight());
+		path.setScaleX(scaleFactor);
+		path.setScaleY(scaleFactor);
+		path.getStyleClass().add("button-icon");
+
+		Button button = new Button();
+		button.setPickOnBounds(true); // make sure transparent parts of the button register clicks too
+		button.setGraphic(path);
+		button.setAlignment(Pos.CENTER);
+		button.getStyleClass().add("icon-button");
+		button.getStyleClass().add(iconClass);
+		return button;
+	}
+
+	// To UI fields
 	public static void formatDatePicker(DatePicker datePicker, String format) {
 		datePicker.setConverter(new StringConverter<LocalDate>() {
 
@@ -179,10 +231,6 @@ public class Utils {
 				}
 			}
 		});
-	}
-
-	public static String formatCurrentMoney(Double value, DecimalFormat coin) {
-		return coin.format(value);
 	}
 
 }

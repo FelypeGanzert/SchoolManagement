@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
@@ -27,10 +26,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -42,8 +38,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Matriculation;
@@ -205,7 +199,7 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnEdit(ActionEvent event) {
-		loadView(FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
+		Utils.loadView(this, true, FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
 				(PersonFormController controller) -> {
 					controller.setPersonEntity(student);
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
@@ -238,7 +232,7 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnAddContact(ActionEvent event) {
-		loadView(FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
+		Utils.loadView(this, true, FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
 				(ContactFormController controller) -> {
 					System.out.println("You clicked to add a new contact");
 				});
@@ -288,7 +282,7 @@ public class InfoStudentController implements Initializable {
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
 		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
-			loadView(FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
+			Utils.loadView(this, true, FxmlPaths.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
 					(ContactFormController controller) -> {
 						System.out.println("You clicked to edit " + contact.getNumber() + " - " + contact.getDescription());
 					});
@@ -320,38 +314,10 @@ public class InfoStudentController implements Initializable {
 			System.out.println("remove responsible");
 		});
 	}
-		
-	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
-			boolean resizable, Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
-			Parent parent = loader.load();
-			
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle(windowTitle);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(parentStage);
-			dialogStage.setResizable(resizable);
-			
-			Scene scene = new Scene(parent);
-			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
-			dialogStage.setScene(scene);
-			
-			T controller = loader.getController();
-			initializingAction.accept(controller);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		} catch(IllegalStateException e) {
-			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		}
-	}
 	
 	public void onDataChanged(Student student) {
 		this.student = student;
 		updateFormData();
 	}
-	
 
 }

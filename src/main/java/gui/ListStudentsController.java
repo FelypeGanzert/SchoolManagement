@@ -1,7 +1,6 @@
 
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
@@ -36,11 +34,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -53,8 +48,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.dao.AnnotationDao;
 import model.dao.StudentDao;
 import model.entites.Annotation;
@@ -377,7 +370,7 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	public void handleBtnAddNewStudent(ActionEvent event) {
-		loadView(FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
+		Utils.loadView(this, true, FxmlPaths.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
 				(PersonFormController controller) -> {
 					Student student = new Student();
 					controller.setPersonEntity(student);
@@ -390,7 +383,7 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnAddAnnotation(ActionEvent event) {
 		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
 		if (studentSelected != null) {
-			loadView(FxmlPaths.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (controller) -> {
+			Utils.loadView(this, true, FxmlPaths.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (controller) -> {
 				AnnotationController annotationController = (AnnotationController) controller;
 				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
 				annotationController.setDependences(null, studentSelected, Main.getCurrentUser().getName(), this);
@@ -401,7 +394,7 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnEditAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
 		if(itemSelected != null) {
-			loadView(FxmlPaths.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
+			Utils.loadView(this, true, FxmlPaths.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
 				AnnotationController annotationController = (AnnotationController) controller;
 				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
 				annotationController.setDependences(itemSelected, Main.getCurrentUser().getName(), this);
@@ -471,31 +464,5 @@ public class ListStudentsController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
-	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
-			boolean resizable, Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
-			Parent parent = loader.load();
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle(windowTitle);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(parentStage);
-			dialogStage.setResizable(resizable);
-			
-			Scene scene = new Scene(parent);
-			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
-			dialogStage.setScene(scene);
-			
-			T controller = loader.getController();
-			initializingAction.accept(controller);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		} catch(IllegalStateException e) {
-			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		}
-	}	
 	
 }

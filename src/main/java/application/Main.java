@@ -1,22 +1,18 @@
 package application;
 
-import java.io.IOException;
-import java.util.function.Consumer;
-
 import gui.DBConnectionURLController;
 import gui.LoginController;
 import gui.MainViewController;
 import gui.util.FxmlPaths;
+import gui.util.Utils;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import model.entites.Collaborator;
 
 public class Main extends Application {
 
+	
 	private static Scene mainScene;
 	private static Collaborator currentUser;
 
@@ -34,9 +30,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		// First we load the screen to user entry the url of database
-		// that will try to connect with the database
-		loadMainScreen(FxmlPaths.DB_CONNECTION_URL, primaryStage, "Conexão com o Banco de Dados", false,
+		// First we load the screen to user entry the url of database to connect with the database
+		Utils.loadView(this, false, FxmlPaths.DB_CONNECTION_URL, primaryStage, "Conexão com o Banco de Dados", false,
 				(DBConnectionURLController controller) -> {
 					// Set this Main to allow he to call in future to show Login
 					controller.setMain(this);
@@ -47,7 +42,7 @@ public class Main extends Application {
 	// and when we need to change current user
 	public void showLoginForm() {
 		currentUser = null;
-		loadMainScreen(FxmlPaths.LOGIN, new Stage(), "Login", false, (LoginController controller) -> {
+		Utils.loadView(this, false, FxmlPaths.LOGIN, new Stage(), "Login", false, (LoginController controller) -> {
 			// Set this Main to allow he to call in future to show Main View
 			controller.setMain(this);
 		});
@@ -56,34 +51,10 @@ public class Main extends Application {
 	// This is method is called by Login
 	public void showMainView(Collaborator collaborator) {
 		Main.currentUser = collaborator;
-		loadMainScreen(FxmlPaths.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
+		Utils.loadView(this, false, FxmlPaths.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
 				(MainViewController controller) -> {
 					controller.setMain(this);
 				});
-	}
-
-	// Auxiliar method to show: DBConnectionURL, Login, MainView
-	private <T> void loadMainScreen(String FXMLPath, Stage stage, String stageTitle,
-			boolean resizable, Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
-			Parent parent = loader.load();
-			if (parent instanceof ScrollPane) {
-				((ScrollPane) parent).setFitToHeight(true);
-				((ScrollPane) parent).setFitToWidth(true);
-			}
-			mainScene = new Scene(parent);
-			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			stage.setScene(mainScene);
-			stage.setTitle(stageTitle);
-			stage.setResizable(resizable);
-			stage.show();
-
-			T controller = loader.getController();
-			initializingAction.accept(controller);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
