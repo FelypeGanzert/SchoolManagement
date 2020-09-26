@@ -52,8 +52,6 @@ insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, di
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(8,  '2020-09-08', null, 5, 3, 7, "Cancelada", 89.90, 1);
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(9,  '2020-09-07', null, 5, 3, 6, "Aberta", 89.90, 3);
  
- 
-insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(9,  '2020-09-07', null, 5, 3, 1, "Aberta", 200.90, 2);
 insert into parcela(numero_documento, data_parcela, data_pagamento, desconto, dias_desconto, parcela_numero, situacao, valor, matricula_codigo) values(10,  '2020-09-08', null, 5, 3, 2, "Aberta", 200.90, 2);   
     
 insert into colaborador (id, nome, sigla, email, cargo, numero_contato, usuario_login, senha_login) values (1, "Felype Aurélio Ganzert", "Felype", "felipe.ganzert", "professor", "41988680806", "feh", "feh@123");

@@ -49,6 +49,7 @@ public class StudentDao {
 		}
 		manager.getTransaction().begin();
 		Student student = manager.find(Student.class, id);
+		manager.refresh(student);
 		Query query;
 		// get all responsibles that respond only for this student
 		query = manager.createNativeQuery(

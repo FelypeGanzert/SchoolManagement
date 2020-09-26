@@ -24,6 +24,7 @@ public enum CivilStatusEnum {
 		return null;
 	}
 	
+	// Full is because portuguese-br accent, like VIUVO = Viúvo
 	public static CivilStatusEnum fromFullCivilStatus(String civilStatus) {
 		for (CivilStatusEnum cs : CivilStatusEnum.values()) {
 			if (cs.getFullCivilStatus().equalsIgnoreCase(civilStatus)) {

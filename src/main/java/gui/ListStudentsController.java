@@ -24,6 +24,7 @@ import com.jfoenix.controls.JFXTextField;
 import application.Main;
 import db.DBFactory;
 import db.DbException;
+import db.DbUtil;
 import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Icons;
@@ -106,8 +107,6 @@ public class ListStudentsController implements Initializable {
 	private StudentDao studentDao;
 	private ObservableList<Student> studentsList;
 	private MainViewController mainView;	
-	
-	
 	private final Integer ICON_SIZE = 15;
 	
 	@Override
@@ -116,6 +115,10 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
+		addListeners();
+	}
+	
+	public void addListeners() {
 		textFilter.textProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
 		});
@@ -244,6 +247,11 @@ public class ListStudentsController implements Initializable {
 	            (observable, oldSelection, newSelection) -> {
 					tableMatriculations.setItems(null);
 					if (newSelection != null) {
+						// Reflesh student data
+						DBFactory.getConnection().getTransaction().begin();
+						DbUtil.refleshData(newSelection);
+						DBFactory.getConnection().getTransaction().commit();
+		            	tableStudents.refresh();
 						updateAnnotations(null);
 						if (newSelection.getMatriculations() != null && newSelection.getMatriculations().size() > 0) {
 							try {
@@ -270,7 +278,7 @@ public class ListStudentsController implements Initializable {
 				List<Parcel> parcels = cellData.getValue().getParcels().stream()
 						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());
 				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation()
-						.equalsIgnoreCase("PAGO")).collect(Collectors.toList()).size();
+						.equalsIgnoreCase("PAGA")).collect(Collectors.toList()).size();
 				return new SimpleStringProperty(paidParcels + "/" + parcels.size());
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {
 				return new SimpleStringProperty("-");
@@ -429,6 +437,9 @@ public class ListStudentsController implements Initializable {
 		try {
 			mainView.setContent(FxmlPath, (InfoStudentController controller) -> {
 				controller.setMainViewControllerAndReturnName(mainView, "Alunos");
+				// Reflesh student data
+				DbUtil.refleshData(student);
+				tableStudents.refresh();
 				controller.setCurrentStudent(student);
 			});
 		} catch (Exception e) {
@@ -450,6 +461,7 @@ public class ListStudentsController implements Initializable {
 			ObservableList<Annotation> annotations = FXCollections.observableList(studentSelected.getAnnotations());
 			annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
 			listViewAnnotation.setItems(annotations);
+			listViewAnnotation.refresh();
 			if (annotation != null) {
 				listViewAnnotation.getSelectionModel().select(annotation);
 			} else {

@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
 import db.DbException;
+import db.DbUtil;
 import gui.util.Alerts;
 import gui.util.FxmlPaths;
 import gui.util.Icons;
@@ -122,6 +123,7 @@ public class InfoStudentController implements Initializable {
 	
 	public void setCurrentStudent(Student student) {
 		this.student = student;
+		DbUtil.refleshData(student);
 		updateFormData();
 		try {
 			if (this.student.getMatriculations() != null) {
