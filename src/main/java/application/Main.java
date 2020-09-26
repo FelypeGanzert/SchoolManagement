@@ -1,8 +1,5 @@
 package application;
 
-import gui.DBConnectionURLController;
-import gui.LoginController;
-import gui.MainViewController;
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import javafx.application.Application;
@@ -53,13 +50,9 @@ public class Main extends Application {
 		Utils.loadView(this, false, FXMLPath.LOGIN, new Stage(), "Login", false, x -> {});
 	}
 
-	// Is called after user logged
-	public void showMainView(Collaborator collaborator) {
-		Main.currentUser = collaborator;
-		Utils.loadView(this, false, FXMLPath.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,
-				(MainViewController controller) -> {
-					controller.setMain(this);
-				});
+	// Called after user logged
+	public void showMainView() {
+		Utils.loadView(this, false, FXMLPath.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true,	x -> {});
 	}
 
 }

@@ -66,7 +66,7 @@ public class LoginController implements Initializable {
 			// Close Login dialogStage if find a collaborator
 			Utils.currentStage(event).close();
 			// Call mainClass to show MainView
-			Globe.getStateItem(Main.class, "main", "main", "mainClass").showMainView(collaborator);
+			Globe.getStateItem(Main.class, "main", "main", "mainClass").showMainView();
 		} catch (NoResultException e) {
 			// Show login error message in case we don't find any
 			// collaborator with same name and password in DB
