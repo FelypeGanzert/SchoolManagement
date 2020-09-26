@@ -1,6 +1,6 @@
 package gui.util;
 
-public class FxmlPaths {
+public class FxmlPath {
 	
 	public static final String LOGIN = "/gui/Login.fxml";
 	public static final String DB_CONNECTION_URL = "/gui/DBConnectionURL.fxml";
