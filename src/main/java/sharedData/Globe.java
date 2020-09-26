@@ -32,4 +32,12 @@ public class Globe {
 	public void emptyGlobe() {
 		contextCollection.clear();
 	}
+
+	public static <T> T getStateItem(Class<T> returnClass, String contextKey, String stateName, String itemKey) {
+		try {
+			return returnClass.cast(Globe.getGlobe().getContext(contextKey).getState(stateName).getItem(itemKey));
+		} catch (ClassCastException e) {
+			return null;
+		}
+	}
 }

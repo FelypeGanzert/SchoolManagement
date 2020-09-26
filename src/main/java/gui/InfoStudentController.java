@@ -15,7 +15,7 @@ import db.DBFactory;
 import db.DbException;
 import db.DbUtil;
 import gui.util.Alerts;
-import gui.util.FxmlPath;
+import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.CivilStatusEnum;
@@ -112,7 +112,7 @@ public class InfoStudentController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableContactsNodes();
 		initiliazeTableResponsiblesNodes();
-		this.returnPath = FxmlPath.LIST_STUDENTS;
+		this.returnPath = FXMLPath.LIST_STUDENTS;
 	}
 	
 	public void setCurrentStudent(Student student) {
@@ -184,7 +184,7 @@ public class InfoStudentController implements Initializable {
 
 	public void handleBtnReturn(ActionEvent event) {
 		try {
-			if(returnPath == FxmlPath.LIST_STUDENTS) {
+			if(returnPath == FXMLPath.LIST_STUDENTS) {
 				mainView.setContent(returnPath, (ListStudentsController controller) -> {
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
 					controller.setMainViewController(mainView);
@@ -199,7 +199,7 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnEdit(ActionEvent event) {
-		Utils.loadView(this, true, FxmlPath.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
+		Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
 				(PersonFormController controller) -> {
 					controller.setPersonEntity(student);
 					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
@@ -232,7 +232,7 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnAddContact(ActionEvent event) {
-		Utils.loadView(this, true, FxmlPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
+		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
 				(ContactFormController controller) -> {
 					System.out.println("You clicked to add a new contact");
 				});
@@ -282,7 +282,7 @@ public class InfoStudentController implements Initializable {
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
 		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
-			Utils.loadView(this, true, FxmlPath.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
+			Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
 					(ContactFormController controller) -> {
 						System.out.println("You clicked to edit " + contact.getNumber() + " - " + contact.getDescription());
 					});

@@ -24,7 +24,7 @@ import db.DBFactory;
 import db.DbException;
 import db.DbUtil;
 import gui.util.Alerts;
-import gui.util.FxmlPath;
+import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
@@ -233,7 +233,7 @@ public class ListStudentsController implements Initializable {
 		});
 		// Info button
 		Utils.initButtons(columnStudentInfo, ICON_SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
-			showStudentInfo(student, FxmlPath.INFO_STUDENT);
+			showStudentInfo(student, FXMLPath.INFO_STUDENT);
 		});
 		// Listener to selected student
 		tableStudents.getSelectionModel().selectedItemProperty().addListener(
@@ -370,7 +370,7 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	public void handleBtnAddNewStudent(ActionEvent event) {
-		Utils.loadView(this, true, FxmlPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
+		Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
 				(PersonFormController controller) -> {
 					Student student = new Student();
 					controller.setPersonEntity(student);
@@ -383,7 +383,7 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnAddAnnotation(ActionEvent event) {
 		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
 		if (studentSelected != null) {
-			Utils.loadView(this, true, FxmlPath.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (controller) -> {
+			Utils.loadView(this, true, FXMLPath.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (controller) -> {
 				AnnotationController annotationController = (AnnotationController) controller;
 				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
 				annotationController.setDependences(null, studentSelected, Main.getCurrentUser().getName(), this);
@@ -394,7 +394,7 @@ public class ListStudentsController implements Initializable {
 	public void handleBtnEditAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
 		if(itemSelected != null) {
-			Utils.loadView(this, true, FxmlPath.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
+			Utils.loadView(this, true, FXMLPath.ANNOTATION, Utils.currentStage(event), "Editar Anotação", false, (controller) -> {
 				AnnotationController annotationController = (AnnotationController) controller;
 				annotationController.setAnnotationDao(new AnnotationDao(DBFactory.getConnection()));
 				annotationController.setDependences(itemSelected, Main.getCurrentUser().getName(), this);

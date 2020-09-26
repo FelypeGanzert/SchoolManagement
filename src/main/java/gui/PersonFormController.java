@@ -23,7 +23,7 @@ import animatefx.animation.ZoomIn;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
-import gui.util.FxmlPath;
+import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.CivilStatusEnum;
@@ -183,7 +183,7 @@ public class PersonFormController implements Initializable {
 			if(studentsNameLike.size() > 0) {
 				List<Person> peopleList = studentsNameLike.stream().map(s -> (Person) s).collect(Collectors.toList());
 				// Show Screen to person see students finded
-				loadView(FxmlPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event), "Registros semelhantes", false,
+				loadView(FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event), "Registros semelhantes", false,
 						(PersonFormFindRegistryController controller) -> {
 							controller.setPeopleList(peopleList);
 							controller.setPersonFormController(this);
@@ -239,7 +239,7 @@ public class PersonFormController implements Initializable {
 					this.infoStudentController.onDataChanged((Student) entity);
 				} else {
 					try {
-						mainView.setContent(FxmlPath.INFO_STUDENT, (InfoStudentController controller) -> {
+						mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 							controller.setMainViewControllerAndReturnName(mainView, "Alunos");
 							controller.setCurrentStudent((Student) entity);
 						});

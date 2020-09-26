@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import com.jfoenix.controls.JFXButton;
 
 import application.Main;
-import gui.util.FxmlPath;
+import gui.util.FXMLPath;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +37,7 @@ public class MainViewController implements Initializable {
 		this.content.setFitToWidth(true);
 		this.labelCurrentUser.setText(Main.getCurrentUser().getName());
 		try {
-			setContent(FxmlPath.MAIN_MENU, (MainMenuController controller) -> {
+			setContent(FXMLPath.MAIN_MENU, (MainMenuController controller) -> {
 				controller.setMainViewController(this);
 			});
 		} catch (IOException e) {

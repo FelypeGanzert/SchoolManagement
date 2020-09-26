@@ -18,44 +18,44 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import sharedData.Globe;
 
-public class DBConnectionURLController implements Initializable{
+public class DBConnectionURLController implements Initializable {
 
 	@FXML private JFXTextField txtURL;
 	@FXML private JFXButton btnConnect;
 	@FXML private ImageView imageLoading;
 	@FXML private Label labelError;
-	private Main main; // To call the login screen
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 	}
-	
-	public void setMain(Main main) {
-		this.main = main;
+
+	private void changeLoadingVisibility() {
+		imageLoading.setVisible(!imageLoading.isVisible());
 	}
-	
-	private void showErrorMessage(String message) {
-		labelError.setVisible(true);
-		labelError.setText(message);
-		btnConnect.setDisable(false);
+
+	public void handleBtnConnect(ActionEvent event) {
+		labelError.setVisible(false);
+		if (txtURL.validate()) {
+			// We disable the button to user doenst continues clicking
+			btnConnect.setDisable(true);
+			tryToConnect(event);
+		}
 	}
-	
-	private void changeLoadingVisible() {
-		boolean visibility = imageLoading.isVisible() ? false : true;
-		imageLoading.setVisible(visibility);
-	}
-	
+
 	private void tryToConnect(ActionEvent event) {
-		changeLoadingVisible();
+		changeLoadingVisibility();
 		DBFactory.setUnits(txtURL.getText());
-		// In threads to not freeze the UI
+		// Try to connect in a different thread to not freeze the UI
 		Thread threadConnection = new Thread(() -> {
 			try {
-				DBFactory.getConnection(); // Try to connect
-				// Close dialog when connect
+				DBFactory.getConnection();
+				// If connection is established, them lose DBConnection dialogStage
 				Platform.runLater(() -> {
-					main.showLoginForm();
+					// Before close, we call mainClass to show the LoginForm
+					Globe.getStateItem(Main.class, "main", "main", "mainClass").showLoginForm();
+					;
 					Utils.currentStage(event).close();
 				});
 			} catch (HibernateException e) {
@@ -64,18 +64,16 @@ public class DBConnectionURLController implements Initializable{
 					showErrorMessage("Erro ao se conectar com o banco de dados.");
 				});
 			} finally {
-				changeLoadingVisible();
+				changeLoadingVisibility();
 			}
 		});
 		threadConnection.start();
 	}
 
-	public void handleBtnConnect(ActionEvent event) {
-		labelError.setVisible(false);
+	private void showErrorMessage(String message) {
+		labelError.setVisible(true);
+		labelError.setText(message);
+		btnConnect.setDisable(false);
 		txtURL.getValidators().add(Validators.getRequiredFieldValidator());
-		if (txtURL.validate()) {
-			btnConnect.setDisable(true);
-			tryToConnect(event);
-		}
-	}	
+	}
 }
