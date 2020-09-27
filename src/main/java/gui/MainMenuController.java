@@ -12,25 +12,19 @@ import javafx.fxml.Initializable;
 public class MainMenuController implements Initializable {
 
 	@FXML private JFXButton btnListStudents;
-	@FXML private JFXButton btnListResponsibles;
-	
-	private MainViewController mainView;	
+	@FXML private JFXButton btnListResponsibles;	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 	}
 	
-	public void setMainViewController(MainViewController mainView) {
-		this.mainView = mainView;
-	}
-	
-	public void showListStudents(ActionEvent event) {
-		Roots.listStudents(mainView);
+	public void hadleBtnShowListStudents(ActionEvent event) {
+		Roots.listStudents();
 	}
 
-	public void showListResponsibles(ActionEvent event) {
-		Roots.listResponsibles(mainView);
+	public void handleBtnShowListResponsibles(ActionEvent event) {
+		Roots.listResponsibles();
 	}
 
 }

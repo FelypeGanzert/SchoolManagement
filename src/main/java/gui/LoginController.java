@@ -17,7 +17,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
-import application.Main;
 import db.DBFactory;
 import gui.util.Utils;
 import gui.util.Validators;
@@ -66,7 +65,7 @@ public class LoginController implements Initializable {
 			// Close Login dialogStage if find a collaborator
 			Utils.currentStage(event).close();
 			// Call mainClass to show MainView
-			Globe.getStateItem(Main.class, "main", "main", "mainClass").showMainView();
+			Roots.mainView(this);
 		} catch (NoResultException e) {
 			// Show login error message in case we don't find any
 			// collaborator with same name and password in DB

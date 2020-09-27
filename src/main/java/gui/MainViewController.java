@@ -6,9 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-import com.jfoenix.controls.JFXButton;
-
-import application.Main;
+import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
@@ -20,45 +18,47 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import model.entites.Collaborator;
+import sharedData.Globe;
+import sharedData.State;
 
 public class MainViewController implements Initializable {
 
 	@FXML private ScrollPane content;
-	@FXML private JFXButton btnHome;
-	@FXML private JFXButton btnStudents;
 	@FXML private Label labelCurrentUser;
-	@FXML private JFXButton btnChangeUser;
-	
-	private Main main;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
+		// Put this controller inside Globe to allow to share this controller
+		State controllerState = new State();
+		controllerState.putItem("mainViewController", this);
+		Globe.getGlobe().getContext("main").putState("controller", controllerState);
+		// Make the scrollPane content fit the whole space
 		this.content.setFitToHeight(true);
 		this.content.setFitToWidth(true);
-		this.labelCurrentUser.setText(Main.getCurrentUser().getName());
-		try {
-			setContent(FXMLPath.MAIN_MENU, (MainMenuController controller) -> {
-				controller.setMainViewController(this);
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void setMain(Main main) {
-		this.main = main;
+		// Set the name of currentUser to label
+		Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+		this.labelCurrentUser.setText(currentUser.getName());
+		// Defines main menu as content
+		setContent(FXMLPath.MAIN_MENU, x -> {});
 	}
 	
 	public void handleBtnHome(ActionEvent event) {
-		Roots.home(this);
+		Roots.home();
 	}
 	
-	public void handleChangeUser(ActionEvent event) {
-		main.showLoginForm();
+	public void handleBtnStudents(ActionEvent event) {
+		Roots.listStudents();
+	}
+	
+	public void handleBtnChangeUser(ActionEvent event) {
+		// Close this stage and show login form
 		Utils.currentStage(event).close();
+		Roots.loginForm(this);
 	}
 	
 	public void handleBtnExit(ActionEvent event) {
+		// Confirmation message to exit
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Sair");
 		alert.setHeaderText("Clique em OK para encerrar o sistema");
@@ -68,22 +68,22 @@ public class MainViewController implements Initializable {
 		}
 	}
 	
-	public void handleBtnStudents(ActionEvent event) {
-		Roots.listStudents(this);
-	}
-	
-	public <T> void setContent(String path, Consumer<T> initializingAction) throws IOException {
+	// Set content to scrollPane
+	public <T> void setContent(String path, Consumer<T> initializingAction) {
+		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 			ScrollPane newContent = loader.load();
 			this.content.setContent(newContent.getContent());
 			this.content.setStyle(newContent.getStyle());
-			
 			T controller = loader.getController();
 			initializingAction.accept(controller);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
 	}
 	
-	public ScrollPane getMainContent() {
-		return this.content;
-	}
-
 }

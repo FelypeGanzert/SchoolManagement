@@ -8,7 +8,6 @@ import org.hibernate.HibernateException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
-import application.Main;
 import db.DBFactory;
 import gui.util.Utils;
 import gui.util.Validators;
@@ -18,18 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import sharedData.Globe;
 
 public class DBConnectionURLController implements Initializable {
 
-	@FXML
-	private JFXTextField txtURL;
-	@FXML
-	private JFXButton btnConnect;
-	@FXML
-	private ImageView imageLoading;
-	@FXML
-	private Label labelError;
+	@FXML private JFXTextField txtURL;
+	@FXML private JFXButton btnConnect;
+	@FXML private ImageView imageLoading;
+	@FXML private Label labelError;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -58,8 +52,8 @@ public class DBConnectionURLController implements Initializable {
 				Platform.runLater(() -> {
 					// If connection is established, them close DBConnection dialogStage
 					Utils.currentStage(event).close();
-					// we call mainClass to show the LoginForm
-					Globe.getStateItem(Main.class, "main", "main", "mainClass").showLoginForm();
+					// show LoginForm
+					Roots.loginForm(this);
 				});
 			} catch (HibernateException e) {
 				e.printStackTrace();
