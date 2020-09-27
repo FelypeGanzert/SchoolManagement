@@ -10,12 +10,12 @@
    <content>
       <VBox alignment="CENTER" prefHeight="322.0" prefWidth="533.0" spacing="20.0">
          <children>
-            <JFXButton fx:id="btnListStudents" onAction="#showListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
+            <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btnListResponsibles" onAction="#showListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
+            <JFXButton onAction="#handleBtnShowListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>

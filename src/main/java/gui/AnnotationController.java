@@ -43,20 +43,20 @@ public class AnnotationController implements Initializable{
 		textAreaDescription.setValidators(Validators.getRequiredFieldValidator());
 	}
 	
-	public void setDependences(Annotation annotation, Student student, String responsibleCollaborator, ListStudentsController listStudentsController) {
+	public void setDependences(Annotation annotation, Student student, ListStudentsController listStudentsController) {
 		this.listStudentsController = listStudentsController;
 		this.annotation = annotation;
 		this.student = student;
-		this.responsibleCollaborator = responsibleCollaborator;
+		//this.responsibleCollaborator = responsibleCollaborator;
 		setValuesToAnnotation();
 		this.setLabels();
 	}
 	
-	public void setDependences(Annotation annotation, String responsibleCollaborator, ListStudentsController listStudentsController) {
+	public void setDependences(Annotation annotation, ListStudentsController listStudentsController) {
 		this.listStudentsController = listStudentsController;
 		this.annotation = annotation;
 		this.student = annotation.getStudent();
-		this.responsibleCollaborator = responsibleCollaborator;
+		//this.responsibleCollaborator = responsibleCollaborator;
 		setValuesToAnnotation();
 		this.setLabels();
 	}

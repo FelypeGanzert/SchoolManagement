@@ -38,6 +38,8 @@ public class Globe {
 			return returnClass.cast(Globe.getGlobe().getContext(contextKey).getState(stateName).getItem(itemKey));
 		} catch (ClassCastException e) {
 			return null;
+		} catch (NullPointerException e) {
+			return null;
 		}
 	}
 

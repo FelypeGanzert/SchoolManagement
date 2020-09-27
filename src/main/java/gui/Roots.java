@@ -22,6 +22,7 @@ public class Roots {
 		Utils.loadView(currentClass, false, FXMLPath.MAIN_VIEW, new Stage(), "Gerenciamento Escolar", true, x -> {});
 	}
 
+	// List Student
 	public static void listStudents() {
 		listStudents(x -> {});
 	}
@@ -33,6 +34,7 @@ public class Roots {
 		alertProcessing.close();
 	}
 
+	// List Responsibles
 	public static void listResponsibles() {
 		listResponsibles(x -> {});
 	}
@@ -42,6 +44,7 @@ public class Roots {
 		mainView.setContent(FXMLPath.LIST_RESPONSIBLES, initializingAction);
 	}
 
+	// Home
 	public static void home() {
 		home(x -> {});
 	}

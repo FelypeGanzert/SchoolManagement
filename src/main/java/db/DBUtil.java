@@ -3,7 +3,7 @@ package db;
 import model.dao.StudentDao;
 import model.entites.Student;
 
-public class DbUtil {
+public class DBUtil {
 	
 	public static <T> void refleshData(Student entity) {
 		try {
