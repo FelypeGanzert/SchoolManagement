@@ -94,7 +94,7 @@ public class ListStudentsController implements Initializable {
 	@FXML private Label labelSelectedAnnotationDate;
 	@FXML private JFXTextArea textAreaAnnotation;
 	@FXML private Button btnEditSelectedAnnotation;
-	@FXML private Button btnDeleteSelectedAnnottion;
+	@FXML private Button btnDeleteSelectedAnnotation;
 	@FXML private Label labelSelectedAnnotationCollaborator;
 	
 	private StudentDao studentDao;
@@ -135,9 +135,17 @@ public class ListStudentsController implements Initializable {
 		filterStudentStatus.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
 		});
+		// Hidden edit and remove button of annotation if nothing is selected
+		labelSelectedAnnotationDate.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue != null && newValue.length() > 0) {
+				btnEditSelectedAnnotation.setVisible(true);
+				btnDeleteSelectedAnnotation.setVisible(true);
+			} else {
+				btnEditSelectedAnnotation.setVisible(false);
+				btnDeleteSelectedAnnotation.setVisible(false);
+			}
+		});
 	}
-	
-	
 	
 	// Get students with contacts loaded from Database
 	// and put in studentsList 
@@ -383,7 +391,7 @@ public class ListStudentsController implements Initializable {
 		Student studentSelected = tableStudents.getSelectionModel().getSelectedItem();
 		if (studentSelected != null) {
 			Utils.loadView(this, true, FXMLPath.ANNOTATION, Utils.currentStage(event), "Adicionar Anotação", false, (AnnotationController controller) -> {
-				controller.setDependences(null, studentSelected, this);
+				controller.setDependences(studentSelected, this);
 			});
 		}
 	}
@@ -401,8 +409,8 @@ public class ListStudentsController implements Initializable {
 	
 	public void handleBtnDeleteAnnotation(ActionEvent event){
 		Annotation itemSelected = listViewAnnotation.getSelectionModel().getSelectedItem();
-		Student studentOwner = itemSelected.getStudent();
 		if(itemSelected != null) {
+			Student studentOwner = itemSelected.getStudent();
 			// Confirmation to delete annotation
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -410,7 +418,7 @@ public class ListStudentsController implements Initializable {
 			alert.setHeaderText("Deletar a anotação do dia " + sdf.format(itemSelected.getDate()) + " ?");
 			Optional<ButtonType> result =alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
-				// Show a screen of deleting annnotation process
+				// Show a screen of deleting annotation process
 				try {
 					Alert alertProcessing = Alerts.showProcessingScreen();
 					// AnnotationDao to delete from db

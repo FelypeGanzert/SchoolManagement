@@ -275,7 +275,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnDeleteSelectedAnnottion" mnemonicParsing="false" onAction="#handleBtnDeleteAnnotation" prefHeight="25.0" prefWidth="25.0" style="-fx-cursor: hand; -fx-background-color: #f0f0f0;" GridPane.columnIndex="2">
+                                    <Button fx:id="btnDeleteSelectedAnnotation" mnemonicParsing="false" onAction="#handleBtnDeleteAnnotation" prefHeight="25.0" prefWidth="25.0" style="-fx-cursor: hand; -fx-background-color: #f0f0f0;" GridPane.columnIndex="2">
                                        <graphic>
                                           <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                              <image>

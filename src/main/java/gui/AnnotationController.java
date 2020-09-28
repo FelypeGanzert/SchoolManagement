@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 
+import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -19,71 +20,79 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import model.dao.AnnotationDao;
 import model.entites.Annotation;
+import model.entites.Collaborator;
 import model.entites.Student;
+import sharedData.Globe;
 
 public class AnnotationController implements Initializable{
 
 	@FXML private Label labelStudentName;
 	@FXML private Label labelDate;
-	@FXML private Label labelResponsibleEmployee;
+	@FXML private Label labelResponsibleCollaborator;
 	@FXML private JFXTextArea textAreaDescription;
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
 	
-	private AnnotationDao annotationDao;
 	private Annotation annotation;
 	private Student student;
-	private String responsibleCollaborator;
-	
-
 	private ListStudentsController listStudentsController;
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL url, ResourceBundle resources) {
 		textAreaDescription.setValidators(Validators.getRequiredFieldValidator());
 	}
 	
+	// All dependences
 	public void setDependences(Annotation annotation, Student student, ListStudentsController listStudentsController) {
-		this.listStudentsController = listStudentsController;
 		this.annotation = annotation;
 		this.student = student;
-		//this.responsibleCollaborator = responsibleCollaborator;
-		setValuesToAnnotation();
-		this.setLabels();
-	}
-	
-	public void setDependences(Annotation annotation, ListStudentsController listStudentsController) {
 		this.listStudentsController = listStudentsController;
-		this.annotation = annotation;
-		this.student = annotation.getStudent();
-		//this.responsibleCollaborator = responsibleCollaborator;
-		setValuesToAnnotation();
-		this.setLabels();
+		// if annotation is null, user is adding a new annotation.
+		// So, are setted some defaults values
+		if(annotation == null) {
+			this.annotation = new Annotation();
+			this.annotation.setDate(new Date());
+			this.annotation.setStudent(this.student);
+			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+			this.annotation.setResponsibleCollaborator(currentUser.getInitials());
+			System.out.println("============== 2: annotation responsible: " + this.annotation.getResponsibleCollaborator());
+			// Add annotation to student in memory
+			this.student.getAnnotations().add(this.annotation);
+		}
+		// Set values from annotation variable to UI
+		this.updateForm();
 	}
 	
-	public void setAnnotationDao(AnnotationDao annotationDao) {
-		this.annotationDao = annotationDao;
+	// Called when user will add a new annotation to a student
+	public void setDependences(Student student, ListStudentsController listStudentsController) {
+		setDependences(null, student, listStudentsController);
+	}
+	
+	// Called when user will edit a annotation
+	public void setDependences(Annotation annotation, ListStudentsController listStudentsController) {
+		setDependences(annotation, annotation.getStudent(), listStudentsController);
 	}
 	
 	public void handleSaveBtn(ActionEvent event) {
-		if (annotationDao == null) {
-			throw new IllegalStateException("AnnotationDao not instantied");
-		}
+		AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
 		if (textAreaDescription.validate()) {
-			annotation.setResponsibleCollaborator(responsibleCollaborator);
+			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+			annotation.setResponsibleCollaborator(currentUser.getInitials());
 			annotation.setDescription(textAreaDescription.getText());
-
 			try {
+				// If he doesn't have a id, is a new annotation,
+				// otherwhise the annotations already is in database
 				if (annotation.getId() == null) {
 					annotationDao.insert(annotation);
 				} else {
 					annotationDao.update(annotation);
 				}
-				listStudentsController.updateAnnotations(annotation);
+				// Update annotations from student in listStudent and then close this form
+				listStudentsController.updateAnnotations(annotation.getStudent());
 				Utils.currentStage(event).close();
 			} catch (DbException e) {
-				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
-						AlertType.ERROR);
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),	AlertType.ERROR);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -91,21 +100,11 @@ public class AnnotationController implements Initializable{
 	public void handleCancelBtn(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
-	
-	private void setValuesToAnnotation() {
-		if(annotation == null) {
-			annotation = new Annotation();
-			annotation.setDate(new Date());
-			annotation.setStudent(student);
-			annotation.setResponsibleCollaborator(responsibleCollaborator);
-			student.getAnnotations().add(annotation);
-		}
-	}
-	
-	private void setLabels() {
+		
+	private void updateForm() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 		labelStudentName.setText(student.getName());
-		labelResponsibleEmployee.setText(annotation.getResponsibleCollaborator());
+		labelResponsibleCollaborator.setText(annotation.getResponsibleCollaborator());
 		labelDate.setText(sdf.format(annotation.getDate()));
 		textAreaDescription.setText(annotation.getDescription());
 	}

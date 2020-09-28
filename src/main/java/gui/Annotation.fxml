@@ -69,7 +69,7 @@
                   <HBox spacing="15.0">
                      <children>
                         <Label text="Quem fez a anotação:" />
-                        <Label fx:id="labelResponsibleEmployee" text="Nome" />
+                        <Label fx:id="labelResponsibleCollaborator" text="Nome" />
                      </children>
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
