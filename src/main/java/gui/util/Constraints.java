@@ -7,8 +7,8 @@ import javafx.scene.control.TextField;
 
 public class Constraints {
 
-	public static void cpf(TextField txt) {
-		maxField(txt, 14);
+	public static void cpfAutoComplete(TextField txt) {
+		setTextFieldMaxLength(txt, 14);
 		txt.lengthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -32,8 +32,8 @@ public class Constraints {
 		});
 	}
 
-	public static void rg(TextField txt) {
-		maxField(txt, 12);
+	public static void rgAutoComplete(TextField txt) {
+		setTextFieldMaxLength(txt, 12);
 		txt.lengthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -57,8 +57,8 @@ public class Constraints {
 		});
 	}
 	
-	public static void date(TextField txt) {
-		maxField(txt, 12);
+	public static void dateAutoComplete(TextField txt) {
+		setTextFieldMaxLength(txt, 12);
 		txt.lengthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -82,7 +82,7 @@ public class Constraints {
 		});
 	}
 	
-	public static String onlyDigitsValue(TextField field) {
+	public static String getOnlyDigitsValue(TextField field) {
 		String result = field.getText();
 		if (result == null) {
 			return null;
@@ -90,13 +90,6 @@ public class Constraints {
 		return result.replaceAll("[^0-9]", "");
 	}
 
-	public static void maxField(TextField txt, Integer length) {
-		txt.textProperty().addListener((observableValue, oldValue, newValue) -> {
-			if (newValue == null || newValue.length() > length) {
-				txt.setText(oldValue);
-			}
-		});
-	}
 
 	// set the position of cursor to the end
 	public static void positionCaret(TextField txt) {
@@ -111,7 +104,7 @@ public class Constraints {
 		});
 	}
 	
-	public static void noWhiteSpace(TextField txt) {
+	public static void setTextFieldNoWhiteSpace(TextField txt) {
 		txt.textProperty().addListener((obs, oldValue, newValue) -> {
 			if (newValue != null && newValue.contains(" ")) {
 				txt.setText(oldValue);
@@ -119,7 +112,7 @@ public class Constraints {
 		});
 	}
 	
-	public static void alwaysUpperCase(TextField txt) {
+	public static void setTextFieldAlwaysUpperCase(TextField txt) {
 		txt.textProperty().addListener((obs, oldValue, newValue) -> {
 			if (newValue != null) {
 				txt.setText(newValue.toUpperCase());
@@ -142,23 +135,7 @@ public class Constraints {
 			}
 		});
 	}
-
-	public static void setTextFieldDayPeriod(TextField txt) {
-		txt.textProperty().addListener((obs, oldValue, newValue) -> {
-			if (newValue != null && !newValue.matches("\\d{0,2}|(?:\\d{1,2}-){0,1}\\d{0,2}")) {
-				txt.setText(oldValue);
-			}
-		});
-	}
-
-	public static void setTextFieldDbLimitation(TextField txt) {
-		txt.textProperty().addListener((obs, oldValue, newValue) -> {
-			if (newValue != null && newValue.contains("#")) {
-				txt.setText(oldValue);
-			}
-		});
-	}
-
+	
 	public static void setTextFieldMaxLength(TextField txt, int max) {
 		txt.textProperty().addListener((obs, oldValue, newValue) -> {
 			if (newValue != null && newValue.length() > max) {

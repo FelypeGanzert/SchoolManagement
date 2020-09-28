@@ -104,7 +104,7 @@ public class ListStudentsController implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		// Try to get studentDao from Globe, if he doenst find then
+		// Try to get studentDao from Globe, if he doens't find then
 		// instantiate a new and add to Globe
 		studentDao = Globe.getStateItem(StudentDao.class, "main", "db", "studentDao");
 		if(studentDao == null) {

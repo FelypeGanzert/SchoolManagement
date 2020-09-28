@@ -1,13 +1,11 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
@@ -20,6 +18,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 
 import animatefx.animation.Shake;
 import animatefx.animation.ZoomIn;
+import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
@@ -33,22 +32,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.dao.StudentDao;
+import model.entites.Collaborator;
 import model.entites.Contact;
 import model.entites.Person;
 import model.entites.Student;
+import sharedData.Globe;
 
 public class PersonFormController implements Initializable {
 	// Search Bar
@@ -58,7 +54,7 @@ public class PersonFormController implements Initializable {
 	@FXML private Label labelFindRegistryResponse;
 	// Registry Informations
 	@FXML private HBox HBoxRegistryInformations;
-	@FXML private JFXComboBox comboBoxRegisteredBy;
+	@FXML private JFXComboBox<Collaborator> comboBoxRegisteredBy;
 	@FXML private JFXTextField textDateRegistry;
 	// Person Informations
 	@FXML private HBox HBoxInformations;
@@ -86,6 +82,7 @@ public class PersonFormController implements Initializable {
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
 	
+	// This form can be used to add/edit Students and Responsibles
 	private Person entity;
 	private StudentDao studentDao;
 	private ObservableList<Contact> contactsList;
@@ -97,6 +94,7 @@ public class PersonFormController implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		// Hidden some fields by default
 		btnFindRegistry.setVisible(false);
 		HBoxRegistryInformations.setVisible(false);
 		comboBoxRegisteredBy.setVisible(false);
@@ -104,28 +102,68 @@ public class PersonFormController implements Initializable {
 		labelFindRegistryResponse.setVisible(false);
 		HBoxInformations.setVisible(false);
 		btnSave.setVisible(false);
+		// Define by default disabled the option to allow to send email
+		// and let able only when have some email
+		checkBoxSendEmail.setDisable(true);
+		textEmail.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null && newValue.length() > 0) {
+				checkBoxSendEmail.setDisable(false);
+			} else {
+				checkBoxSendEmail.setSelected(false);
+				checkBoxSendEmail.setDisable(true);
+			}
+		});
+		// Set requiredFields and Constraints
 		initializeFields();
 		initiliazeTableContactsNodes();
 	}
 	
+	// Called from another controllers
+	public void setPersonEntity(Person entity) {
+		this.entity = entity;
+		// Set dao according the instance of entity
+		defineEntityDao();
+		// put entity data in fields of UI
+		updateFormData();
+	}
+	
+	// Called from another controller
+	// We will need the infoStudentController to return to that screen if user saves the Person
+	public void setInfoStudentController(InfoStudentController infoStudentController) {
+		this.infoStudentController = infoStudentController;
+	}
+	
+	// This will verify if we need a student or resposible dao
+	private void defineEntityDao() {
+		// Try to get dao from Globe, if he doens't find then
+		// instantiate a new and add to Globe
+		if (entity instanceof Student) {
+			studentDao = Globe.getStateItem(StudentDao.class, "main", "db", "studentDao");
+			if (studentDao == null) {
+				studentDao = new StudentDao(DBFactory.getConnection());
+			}
+		}
+	}
+
+	// Set requiredFields and Constraints
 	private void initializeFields() {
-		// Required validator
+		// Create Required validator
 		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
 		requiredValidator.setMessage("Campo necessário");
-		// Name
+		// Name: always in UpperCase and required
 		textName.setValidators(requiredValidator);
-		Constraints.alwaysUpperCase(textName);
-		// CPF
-		Constraints.cpf(textCPF);
+		Constraints.setTextFieldAlwaysUpperCase(textName);
+		// CPF: required
+		Constraints.cpfAutoComplete(textCPF);
 		RegexValidator cpfValidator = new RegexValidator("CPF inválido");
 		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
 		textCPF.setValidators(requiredValidator, cpfValidator);
 		// RG
-		Constraints.rg(textRG);
+		Constraints.rgAutoComplete(textRG);
 		RegexValidator rgValidator = new RegexValidator("RG inválido");
 		rgValidator.setRegexPattern("^\\d{2}\\.\\d{3}\\.\\d{3}\\-\\d{1}$");
 		textRG.setValidators(rgValidator);
-		// Date Validator
+		// Date Validator: birthDate and dateRegistry
 		RegexValidator dateValidator = new RegexValidator("Ex: 21/10/1990");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
 		textBirthDate.setValidators(dateValidator);
@@ -134,18 +172,18 @@ public class PersonFormController implements Initializable {
 		RegexValidator emailValidator = new RegexValidator("Email inválido");
 		emailValidator.setRegexPattern("^(.+)@(.+)$");
 		textEmail.setValidators(emailValidator);
-		//textDateRegistry.setValidators(requiredValidator, dateValidator);
+		//textDateRegistry.setValidators(requiredValidator, dateValidator); /// ========= I still have to work in dateRegistry
 		// Max length for fields
 		Constraints.setTextFieldMaxLength(textUF, 2);
 		Constraints.setTextFieldMaxLength(textName, 50);
 		Constraints.setTextFieldMaxLength(textEmail, 50);
-		Constraints.noWhiteSpace(textEmail);
+		Constraints.setTextFieldNoWhiteSpace(textEmail);
 		Constraints.setTextFieldMaxLength(textAdress, 50);
 		Constraints.setTextFieldMaxLength(textNeighborhood, 50);
 		Constraints.setTextFieldMaxLength(textCity, 50);
 		Constraints.setTextFieldMaxLength(textBirthDate, 10);
 		Constraints.setTextFieldMaxLength(textDateRegistry, 10);
-		// ComboBox
+		// ComboBox: status, civilStatus, gender
 		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
 		comboBoxStatus.getSelectionModel().selectFirst();
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
@@ -154,75 +192,51 @@ public class PersonFormController implements Initializable {
 		comboBoxGender.getSelectionModel().selectFirst();
 	}
 	
+	// Initialize Table Contacts
+	private void initiliazeTableContactsNodes() {
+		Utils.setCellValueFactory(columnContactNumber, "number");
+		Utils.setCellValueFactory(columnContactDescription, "description");
+		// Edit button STILL HAVE TO BE IMPLEMENTED
+		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
+			System.out.println("edit contact");
+		});
+		// Remove button STILL HAVE TO BE IMPLEMENTED
+		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
+			System.out.println("remove contact");
+		});
+	}
+	
+	// ===============================================
+	// == START OF METHODS TO HANDLE BUTTONS ACTION ==
+	// ===============================================
+	
+	// Find Registry
 	public void handleBtnFindRegistry(ActionEvent event) {
 		//Check if cpf is valide
 		if(!textCPF.validate()) {
 			return;
 		}
-		Student student;
-		try {
-			// Try to find a Student with same cpf informed
-			student = studentDao.findByCPF(Constraints.onlyDigitsValue(textCPF));
-			if (student != null) {
-				this.entity = student;
-				this.updateFormData();
-				HBoxInformations.setVisible(true);
-				new ZoomIn(HBoxInformations).play();
-				labelFindRegistryResponse.setVisible(true);
-				labelFindRegistryResponse.setText("Registro encontrado a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
-				new Shake(labelFindRegistryResponse).play();
-				btnSave.setVisible(true);
-				return;
-			}
-			// Check if Name is valide
-			if(!textName.validate()) {
-				return;
-			}
-			// Try to students with name like the one informed
-			List<Student> studentsNameLike = studentDao.findAllWithNameLike(textName.getText().trim());
-			if(studentsNameLike.size() > 0) {
-				List<Person> peopleList = studentsNameLike.stream().map(s -> (Person) s).collect(Collectors.toList());
-				// Show Screen to person see students finded
-				loadView(FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event), "Registros semelhantes", false,
-						(PersonFormFindRegistryController controller) -> {
-							controller.setPeopleList(peopleList);
-							controller.setPersonFormController(this);
-						});
-				return;
-			}
-		} catch (DbException e) {
-			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro", AlertType.ERROR);
-			e.printStackTrace();
+		if(entity instanceof Student) {
+			findStudentRegistry(event);
 		}
-		labelFindRegistryResponse.setText("A pessoa ainda não possui registro.");
-		addNewRegistry();
+		// I still need a method to find a Resposible
 	}
 	
-
-	public void addNewRegistry() {
-		textCPF.setDisable(true);
-		textName.setDisable(true);
-		btnFindRegistry.setVisible(false);
-		comboBoxRegisteredBy.setVisible(true);
-		// Registry Date
-		textDateRegistry.setVisible(true);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		textDateRegistry.setText(sdf.format(new Date()));
-		HBoxInformations.setVisible(true);
-		new ZoomIn(HBoxInformations).play();
-		labelFindRegistryResponse.setVisible(true);
-		new Shake(labelFindRegistryResponse).play();
-		btnSave.setVisible(true);		
-	}
-	
+	// Save entity
 	public void handleBtnSave(ActionEvent event) {
-		if(studentDao == null) {
+		// Verify if the dao of entity is set, if isn't will throw a exception
+		if(entity instanceof Student && studentDao == null) {
 			throw new IllegalStateException("StudentDao is null");
 		}
+		// Get data from UI and put in entity
 		getFormData();
 		try {
 			if(entity instanceof Student) {		
-				// check if fields is valid, only cpf and name is always required
+				// check if fields is valid, we have theses situations to stop this method:
+				// 1- if cpf or name aren't valide; or
+				// 2- if date registry isn't null and has something and isn't valide; or
+				// 3- if birthDate isn't null and has something and isn't valide; or
+				// 4- if email isn't null and has something and isn't valide
 				if(!textCPF.validate() || !textName.validate() ||
 						(textDateRegistry.getText()  != null && textDateRegistry.getText().length() > 0 && !textDateRegistry.validate()) || 
 						(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
@@ -230,25 +244,30 @@ public class PersonFormController implements Initializable {
 						(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
 					return;
 				}
-				if (entity.getId() != null) {
-					studentDao.update((Student) entity);
+				// If doesn't have an Id, so isn't in database
+				// Otherwhise already is in database, so we just update
+				if (entity.getId() == null) {
+					if(entity instanceof Student) {
+						studentDao.insert((Student) entity);
+					}
 				} else {
-					studentDao.insert((Student) entity);
-				}
-				if (this.infoStudentController != null) {
-					this.infoStudentController.onDataChanged((Student) entity);
-				} else {
-					try {
-						mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
-							controller.setMainViewControllerAndReturnName(mainView, "Alunos");
-							controller.setCurrentStudent((Student) entity);
-						});
-					} catch (IOException e) {
-						e.printStackTrace();
-						Alerts.showAlert("IOException", "Erro ao exibir tela prncipal para sair", e.getMessage(), AlertType.ERROR);
+					if(entity instanceof Student) {
+						studentDao.update((Student) entity);
 					}
 				}
+				// Redirect to info of student
+				if (this.infoStudentController != null) {
+					// if already has an infoStudentController we have come from a info Student screen,
+					// so we just update that screen
+					this.infoStudentController.onDataChanged((Student) entity);
+				} else {
+					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
+						controller.setMainViewControllerAndReturnName(mainView, "Alunos");
+						controller.setCurrentStudent((Student) entity);
+					});
+				}
 			}
+			// Finally, if everything occurs fine, we close this form
 			Utils.currentStage(event).close();
 		} catch (DbException e) {
 			e.printStackTrace();
@@ -256,37 +275,106 @@ public class PersonFormController implements Initializable {
 		}
 	}
 	
+	// Cancel
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
-
-	public void setPersonEntity(Person entity) {
-		this.entity = entity;
-		updateFormData();
+	
+	// ===============================================
+	// === END OF METHODS TO HANDLE BUTTONS ACTION ===
+	// ===============================================
+		
+	// =========== AUXILIAR METHODS ==================
+	
+	// Method to find a STUDENT registry
+	private void findStudentRegistry(ActionEvent event) {
+		Student student;
+		try {
+			// Try to find a Student with same cpf informed
+			student = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+			if (student != null) {
+				this.entity = student;
+				// update fields in UI according the student get from database
+				updateFormData();
+				// Message to inform that data have come from database using the CPF
+				labelFindRegistryResponse.setText("Registro encontrado a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
+				labelFindRegistryResponse.setVisible(true);
+				// Animations to get attention
+				new ZoomIn(HBoxInformations).play();
+				new Shake(labelFindRegistryResponse).play();
+				// Stop the method
+				return;
+			}
+			// If we are here he doesn't find by the CPF, so we will try to find some similar name
+			// Check if name is valide
+			if(!textName.validate()) {
+				return;
+			}
+			// Try to find students with name like the one informed
+			List<Student> studentsNameLike = studentDao.findAllWithNameLike(textName.getText().trim());
+			if(studentsNameLike.size() > 0) {
+				// if he have find one we  will cast student to super class Person, and show in a new screen
+				// to user see if is one of them
+				List<Person> peopleList = studentsNameLike.stream().map(s -> (Person) s).collect(Collectors.toList());
+				Utils.loadView(this.getClass(), true, FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event),
+						"Registros semelhantes", false, (PersonFormFindRegistryController controller) -> {
+							controller.setPeopleList(peopleList);
+							controller.setPersonFormController(this);
+						});
+				// Stop the method
+				return;
+			}
+		} catch (DbException e) {
+			// Show a alert message if something went wrong
+			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro", AlertType.ERROR);
+			e.printStackTrace();
+		}
+		// If we get here, doesn't exist a person with the same CPF even a similar name
+		// So, the user is creating a new person
+		labelFindRegistryResponse.setText("A pessoa ainda não possui registro. Insira as informações para o novo cadastro.");
+		labelFindRegistryResponse.setVisible(true);
+		new Shake(labelFindRegistryResponse).play();
+		addNewRegistry();
+	}
+	
+	// Called in case of doesn't have find any correspondent registry in database
+	private void addNewRegistry() {
+		// Disable cpf and name field to user doenst change this informations anymore
+		textCPF.setDisable(true);
+		textName.setDisable(true);
+		btnFindRegistry.setVisible(false);
+		// show registeredBy, dateRegistry, hBox Informations and button to save
+		comboBoxRegisteredBy.setVisible(true);
+		textDateRegistry.setVisible(true);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		textDateRegistry.setText(sdf.format(new Date()));
+		HBoxInformations.setVisible(true);
+		// Animation to get attention
+		new ZoomIn(HBoxInformations).play();
+		btnSave.setVisible(true);		
+	}
+	
+	// Update form Data according the data in entity
+	public void updateFormData() {
+		// If entity has an Id, so he already is in databaseso, we show Informations
+		// and button to save, and hidden button to find the registry in db
 		if(entity.getId() != null) {
 			btnFindRegistry.setVisible(false);
 			HBoxInformations.setVisible(true);
 			btnSave.setVisible(true);
 		} else {
+			// If entity hasn't an id, so he aren't in databse. So, we
+			// show button to find the registry and registryInformations box
 			btnFindRegistry.setVisible(true);
 			HBoxRegistryInformations.setVisible(true);
+			// only students haven status
+			if(entity instanceof Student) {
+				comboBoxStatus.setVisible(true);
+			} else {
+				comboBoxStatus.setVisible(false);
+			}
 		}
-	}
-
-	public void setStudentDao(StudentDao studentDao) {
-		this.studentDao = studentDao;
-	}
-	
-	public void setMainView(MainViewController mainView){
-		this.mainView = mainView;
-	}
-	
-	public void setInfoStudentController(InfoStudentController infoStudentController) {
-		this.infoStudentController = infoStudentController;
-	}
-	
-	public void updateFormData() {
-		//comboBoxRegisteredBy
+		//comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
 		textName.setText(entity.getName());
 		textEmail.setText(entity.getEmail());
 		if(entity.getSendEmail() != null) {
@@ -300,6 +388,7 @@ public class PersonFormController implements Initializable {
 		textCity.setText(entity.getCity());
 		textUF.setText(entity.getUf());
 		textAreaObservation.setText(entity.getObservation());
+		// birthDate and registryDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		if(entity.getDateBirth() != null) {
 			textBirthDate.setText(sdf.format(entity.getDateBirth()));
@@ -307,37 +396,40 @@ public class PersonFormController implements Initializable {
 		if(entity.getDateRegistry() != null) {
 			textDateRegistry.setText(sdf.format(entity.getDateRegistry()));
 		}
+		// set contacts if have some
 		if (this.entity.getContacts() != null) {
 			contactsList = FXCollections.observableArrayList(this.entity.getContacts());
 			tableContacts.setItems(contactsList);
 		}
-		// Only student have status
+		//ComboBox's
+		if (entity.getGender() != null) {
+			comboBoxGender.getSelectionModel().select(GenderEnum.fromString(entity.getGender()));
+		}
+		if (entity.getCivilStatus() != null) {
+			comboBoxCivilStatus.getSelectionModel()
+					.select(CivilStatusEnum.fromFullCivilStatus(entity.getCivilStatus()));
+		}
+		// Only student have status, so we set if the status of student isn't null
 		if(entity instanceof Student && ((Student) entity).getStatus() != null) {
 			comboBoxStatus.getSelectionModel().select(StudentStatusEnum.fromString(((Student) entity).getStatus()));
 		}
-		//ComboBox's
-		if(entity.getGender() != null) {
-			comboBoxGender.getSelectionModel().select(GenderEnum.fromString(entity.getGender()));
-		}
-		if(entity.getCivilStatus() != null) {
-			comboBoxCivilStatus.getSelectionModel().select(CivilStatusEnum.fromFullCivilStatus(entity.getCivilStatus()));
-		}		
-		
 	}
 	
+	// get form Data and put inside entity
 	public void getFormData() {
-		// comboBoxRegisteredBy
+		// comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
 		entity.setName(textName.getText().trim());
 		entity.setEmail(textEmail.getText());
 		entity.setSendEmail(checkBoxSendEmail.isSelected());
-		entity.setCpf(Constraints.onlyDigitsValue(textCPF));
-		entity.setRg(Constraints.onlyDigitsValue(textRG));
+		entity.setCpf(Constraints.getOnlyDigitsValue(textCPF));
+		entity.setRg(Constraints.getOnlyDigitsValue(textRG));
 		entity.setNeighborhood(textNeighborhood.getText());
 		entity.setAdress(textAdress.getText());
 		entity.setAdressReference(textAdressReference.getText());
 		entity.setCity(textCity.getText());
 		entity.setUf(textUF.getText());
 		entity.setObservation(textAreaObservation.getText());
+		// birthDate and registryDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			if(textBirthDate.getText().length() > 0) {
@@ -347,53 +439,17 @@ public class PersonFormController implements Initializable {
 				entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
 			}
 		} catch (ParseException e) {
-		}
-		// Only student have status
-		if (entity instanceof Student) {
-			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
+			System.out.println("======== Some error has ocurred while parsing dates from entity to form");
+			e.printStackTrace();
 		}
 		// Combo Box's
 		entity.setGender(comboBoxGender.getSelectionModel().getSelectedItem().getfullGender());
 		entity.setCivilStatus(comboBoxCivilStatus.getSelectionModel().getSelectedItem().getFullCivilStatus());
-	}
-	
-	private void initiliazeTableContactsNodes() {
-		Utils.setCellValueFactory(columnContactNumber, "number");
-		Utils.setCellValueFactory(columnContactDescription, "description");
-		// Edit button
-		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("edit contact");
-		});
-		// Remove button
-		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
-			System.out.println("remove contact");
-		});
-	}
-	
-	private synchronized <T> void loadView(String FXMLPath, Stage parentStage, String windowTitle,
-			boolean resizable, Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath));
-			Parent parent = loader.load();
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle(windowTitle);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(parentStage);
-			dialogStage.setResizable(resizable);
-			
-			Scene scene = new Scene(parent);
-			scene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());			
-			dialogStage.setScene(scene);
-			
-			T controller = loader.getController();
-			initializingAction.accept(controller);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		} catch(IllegalStateException e) {
-			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		// Only student have status
+		if (entity instanceof Student) {
+			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
 		}
-	}	
-
+		
+	}
+	
 }

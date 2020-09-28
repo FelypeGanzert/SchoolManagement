@@ -68,7 +68,6 @@
 						<RowConstraints maxHeight="70.0" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
 						<RowConstraints maxHeight="70.0" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="70.0" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="90.0" minHeight="90.0" prefHeight="90.0" valignment="CENTER" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
                   <JFXTextField fx:id="textRG" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="RG" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" />
@@ -89,12 +88,19 @@
                      </children></HBox>
                   <JFXComboBox fx:id="comboBoxStatus" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" promptText="STATUS" styleClass="text-field-with-label" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                   <JFXTextField fx:id="textAdressReference" labelFloat="true" promptText="LOCAL DE REFERÊNCIA (opcional)" styleClass="text-field-with-label" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                  <JFXTextArea fx:id="textAreaObservation" labelFloat="true" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" promptText="OBSERVAÇÃO (opcional)" styleClass="text-field-with-label" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                   <JFXComboBox fx:id="comboBoxCivilStatus" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" promptText="ESTADO CIVIL" styleClass="text-field-with-label" GridPane.rowIndex="1" />
 					</children>
 				</GridPane>
 				<VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
 					<children>
+                  <JFXTextArea fx:id="textAreaObservation" labelFloat="true" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" promptText="OBSERVAÇÃO (opcional)" style="-fx-border-color: #777; -fx-border-width: 0px 0.5px 0px 0.5px;" styleClass="text-field-with-label">
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </JFXTextArea>
 						<HBox alignment="CENTER" prefWidth="200.0" spacing="40.0" style="-fx-background-color: #0077b6;">
 							<children>
                         <GridPane HBox.hgrow="ALWAYS">
@@ -143,6 +149,9 @@
                      </columnResizePolicy>
 						</TableView>
 					</children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
 				</VBox>
 			</children>
 		</HBox>
