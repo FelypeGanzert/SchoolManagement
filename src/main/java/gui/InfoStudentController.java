@@ -184,17 +184,17 @@ public class InfoStudentController implements Initializable {
 	private void updateTablesData() {
 		try {
 			// Matriculations
-			if (this.student.getMatriculations() != null) {
+			if (student.getMatriculations() != null && student.getMatriculations().size() > 0) {
 				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
 				tableMatriculations.setItems(matriculationsList);
 			}
 			// Contacts
-			if (this.student.getContacts() != null) {
+			if (student.getContacts() != null && student.getContacts().size() > 0) {
 				contactsList = FXCollections.observableArrayList(this.student.getContacts());
 				tableContacts.setItems(contactsList);
 			}
 			// Responsibles
-			if (this.student.getAllResponsibles() != null) {
+			if (student.getAllResponsibles() != null && student.getAllResponsibles().size() > 0) {
 				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
 				tableResponsibles.setItems(responsiblesList);
 			}

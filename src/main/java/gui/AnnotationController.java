@@ -78,7 +78,6 @@ public class AnnotationController implements Initializable{
 			if(annotation.getStudent() == null) {
 				this.annotation.setStudent(this.student);
 				this.student.getAnnotations().add(this.annotation);
-				
 			}
 			try {
 				AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());

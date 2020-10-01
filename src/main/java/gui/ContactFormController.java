@@ -21,12 +21,18 @@ public class ContactFormController implements Initializable {
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
 	
+	private final String DEFAULT_NUMBER = "9";
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		// Constraints and validators
 		Constraints.setTextFieldInteger(textNumber);
-		Constraints.setTextFieldMaxLength(textNumber, 11);
+		Constraints.setTextFieldMaxLength(textNumber, 15);
 		Constraints.setTextFieldMaxLength(textDescription, 30);
-		textNumber.setValidators(Validators.getRequiredFieldValidator());		
+		textNumber.setValidators(Validators.getRequiredFieldValidator());
+		// Set default text to number
+		textNumber.setText(DEFAULT_NUMBER);
+		Constraints.positionCaret(textNumber);
 	}
 	
 	public void handleBtnCancel(ActionEvent event) {

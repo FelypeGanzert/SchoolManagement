@@ -88,9 +88,6 @@ public class PersonFormController implements Initializable {
 	private ObservableList<Contact> contactsList;
 	
 	private InfoStudentController infoStudentController;
-	private MainViewController mainView;
-	
-	private final Integer ICON_SIZE = 15;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -197,11 +194,11 @@ public class PersonFormController implements Initializable {
 		Utils.setCellValueFactory(columnContactNumber, "number");
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button STILL HAVE TO BE IMPLEMENTED
-		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
+		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
 			System.out.println("edit contact");
 		});
 		// Remove button STILL HAVE TO BE IMPLEMENTED
-		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
+		Utils.initButtons(columnContactDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
 			System.out.println("remove contact");
 		});
 	}
@@ -261,6 +258,8 @@ public class PersonFormController implements Initializable {
 					// so we just update that screen
 					this.infoStudentController.onDataChanged((Student) entity);
 				} else {
+					// Get mainViewController from Globe
+					MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
 					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 						controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
 						controller.setCurrentStudent((Student) entity);

@@ -13,7 +13,6 @@ import javax.persistence.criteria.Root;
 
 import db.DbException;
 import model.entites.Responsible;
-import model.entites.ResponsibleStudent;
 import model.entites.Student;
 
 public class StudentDao {
