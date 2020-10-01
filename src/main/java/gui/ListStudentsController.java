@@ -246,7 +246,7 @@ public class ListStudentsController implements Initializable {
 		// Listener to selected student, 
 		tableStudents.getSelectionModel().selectedItemProperty().addListener(
 	            (observable, oldSelection, newSelection) -> {
-					if (newSelection != null) {
+					if (newSelection != null && newSelection != oldSelection) {
 						// Reflesh student data if was update in database
 						refreshStudentFromDB(newSelection);
 		            	updateAnnotations(newSelection);

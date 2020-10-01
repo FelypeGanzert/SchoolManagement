@@ -52,12 +52,8 @@ public class AnnotationController implements Initializable{
 		if(annotation == null) {
 			this.annotation = new Annotation();
 			this.annotation.setDate(new Date());
-			this.annotation.setStudent(this.student);
 			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
 			this.annotation.setResponsibleCollaborator(currentUser.getInitials());
-			System.out.println("============== 2: annotation responsible: " + this.annotation.getResponsibleCollaborator());
-			// Add annotation to student in memory
-			this.student.getAnnotations().add(this.annotation);
 		}
 		// Set values from annotation variable to UI
 		this.updateForm();
@@ -74,12 +70,18 @@ public class AnnotationController implements Initializable{
 	}
 	
 	public void handleSaveBtn(ActionEvent event) {
-		AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
 		if (textAreaDescription.validate()) {
 			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
 			annotation.setResponsibleCollaborator(currentUser.getInitials());
 			annotation.setDescription(textAreaDescription.getText());
+			// Add annotation to student in memory if is a new Annotation
+			if(annotation.getStudent() == null) {
+				this.annotation.setStudent(this.student);
+				this.student.getAnnotations().add(this.annotation);
+				
+			}
 			try {
+				AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
 				// If he doesn't have a id, is a new annotation,
 				// otherwhise the annotations already is in database
 				if (annotation.getId() == null) {
@@ -93,7 +95,7 @@ public class AnnotationController implements Initializable{
 			} catch (DbException e) {
 				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),	AlertType.ERROR);
 				e.printStackTrace();
-			}
+			} 
 		}
 	}
 	
