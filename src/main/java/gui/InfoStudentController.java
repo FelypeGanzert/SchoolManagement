@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,8 +11,8 @@ import java.util.stream.Collectors;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
-import db.DbException;
 import db.DBUtil;
+import db.DbException;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Icons;
@@ -51,6 +50,7 @@ public class InfoStudentController implements Initializable {
 	@FXML private Label labelStudentName;
 	@FXML private HBox hBoxStaus;
 	@FXML private TextField textStatus;
+	@FXML private Button btnCourses;
 	@FXML private Button btnEditStatus;
 	@FXML private Button btnEditStudent;
 	@FXML private Button btnDeleteStudent;
@@ -96,84 +96,84 @@ public class InfoStudentController implements Initializable {
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleEdit;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleRemove;
 	@FXML private Button btnAddResponsible;
-
-	private final Integer ICON_SIZE = 15;
+	
 	private Student student;
 	private String returnPath;	
 
 	private ObservableList<Matriculation> matriculationsList;
 	private ObservableList<Contact> contactsList;
 	private ObservableList<Responsible> responsiblesList;
-	
-	MainViewController mainView;	
 
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		initializeTableMatriculationsNodes();
 		initiliazeTableContactsNodes();
 		initiliazeTableResponsiblesNodes();
+		// Default return path
 		this.returnPath = FXMLPath.LIST_STUDENTS;
 	}
 	
+	// DEPENDENCES	
 	public void setCurrentStudent(Student student) {
 		this.student = student;
-		DBUtil.refleshData(student);
+		// Refresh student data
+		DBUtil.refleshData(this.student);
+		// Update UI with student informations
 		updateFormData();
-		try {
-			if (this.student.getMatriculations() != null) {
-				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
-				tableMatriculations.setItems(matriculationsList);
-			}
-			if (this.student.getContacts() != null) {
-				contactsList = FXCollections.observableArrayList(this.student.getContacts());
-				tableContacts.setItems(contactsList);
-			}
-			if (this.student.getAllResponsibles() != null) {
-				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
-				tableResponsibles.setItems(responsiblesList);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Alerts.showAlert("Erro ao carregar as informações do aluno", "DBException", e.getMessage(), AlertType.ERROR);
-		}
+		updateTablesData();
 	}
 	
-	public void updateFormData() {
+	public void setMainViewControllerAndReturnName(String returnPath, String returnText) {
+		btnReturn.setText("Voltar para " + returnText);
+	}
+	
+	// ====================================================
+	// ===== START OF METHODS TO UPDATE DATA IN UI ========
+	// ====================================================
+	
+	private void updateFormData() {
+		// Menu: Name
 		labelStudentName.setText(student.getName());
+		// Status
 		textStatus.setText(student.getStatus());
 		hBoxStaus.setStyle("-fx-background-color: " + StudentStatusEnum.fromString(student.getStatus()).getHexColor());
-
+		// Menu: ID, OldRA, Name, Email, PromotionEmail, CPF, RG,  
 		textID.setText(Integer.toString(student.getId()));
 		textOldRA.setText(student.getOldRA());
 		textName.setText(student.getName());
 		textEmail.setText(student.getEmail());
 		checkBoxPromotionsEmail.selectedProperty().setValue(student.getSendEmail());
-		textCPF.setText(student.getCpf());
-		textRG.setText(student.getRg());
+		textCPF.setText(Utils.formatCPF(student.getCpf()));
+		textRG.setText(Utils.formatRG(student.getRg()));
 		// Gender and CivilStatus
 		textGender.setText(GenderEnum.fromString(student.getGender()).getfullGender());
 		textCivilStatus.setText(CivilStatusEnum.fromFullCivilStatus(student.getCivilStatus()).getFullCivilStatus());
+		// If the person is a woman, so we change civilStatus to end with A
 		if(student.getGender() != null && student.getGender().equalsIgnoreCase("Feminino")) {
 			int civilStatusLength = textCivilStatus.getText().length();
 			String feminineCivilStatus = textCivilStatus.getText().substring(0, civilStatusLength-1) + "a";
 			textCivilStatus.setText(feminineCivilStatus);
 		}
+		// Adress: Neighborhood, adress, adressReferemce, city, uf
 		textNeighborhood.setText(student.getNeighborhood());
 		textAdress.setText(student.getAdress());
 		textAdressReference.setText(student.getAdressReference());
 		textCity.setText(student.getCity());
 		textUF.setText(student.getUf());
+		// Observation
 		textAreaObservation.setText(student.getObservation());
-
+		// DATES: birthdate, age
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		if(student.getDateBirth() != null) {
 			textBirthDate.setText(sdf.format(student.getDateBirth()));
 		}
 		textAge.setText(Integer.toString(student.getAge()) + " anos");
+		// REGISTRY INFORMATIONS: registeredBy, dateRegistry, DateLastEdit
 		String dateCadastryAndModify = "";
 		if (student.getRegisteredBy() != null && student.getDateRegistry() != null) {
 			dateCadastryAndModify = "Cadastrado por " + student.getRegisteredBy();
 			dateCadastryAndModify += ", em " + sdf.format(student.getDateRegistry()) + ".";
+			// If the student have been changed we show the date of the last edit
 			if (student.getDateLastRegistryEdit() != null) {
 				dateCadastryAndModify += " Última edição em: " + sdf.format(student.getDateLastRegistryEdit());
 			}
@@ -181,33 +181,63 @@ public class InfoStudentController implements Initializable {
 		labelDateCadastryAndModify.setText(dateCadastryAndModify);
 	}
 	
-
-	public void handleBtnReturn(ActionEvent event) {
+	private void updateTablesData() {
 		try {
-			if(returnPath == FXMLPath.LIST_STUDENTS) {
-				mainView.setContent(returnPath, (ListStudentsController controller) -> {
-					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
-					controller.setMainViewController(mainView);
-					controller.getStudentsFromDB();
-					controller.filterStudents(student.getStatus());
-					controller.tableStudents.getSelectionModel().select(student);
-				});
+			// Matriculations
+			if (this.student.getMatriculations() != null) {
+				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
+				tableMatriculations.setItems(matriculationsList);
 			}
-		} catch (IOException e) {
+			// Contacts
+			if (this.student.getContacts() != null) {
+				contactsList = FXCollections.observableArrayList(this.student.getContacts());
+				tableContacts.setItems(contactsList);
+			}
+			// Responsibles
+			if (this.student.getAllResponsibles() != null) {
+				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
+				tableResponsibles.setItems(responsiblesList);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
+			Alerts.showAlert("Erro ao carregar as informações do aluno em alguma das tabelas", "Erro", e.getMessage(), AlertType.ERROR);
 		}
 	}
 	
+	// ====================================================
+	// ======= END OF METHODS TO UPDATE DATA IN UI ========
+	// ====================================================
+	
+	// ====================================================
+	// ======== START OF BUTTONS ACTION ON MENU ===========
+	// ====================================================
+
+	// Return button
+	public void handleBtnReturn(ActionEvent event) {
+		try {
+			if(returnPath == FXMLPath.LIST_STUDENTS) {
+				Roots.listStudents((ListStudentsController controller) -> {
+					// Select this student
+					controller.tableStudents.getSelectionModel().select(student);
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Alerts.showAlert("Erro ao retornar", "Erro", e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	// Edit student
 	public void handleBtnEdit(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
 				(PersonFormController controller) -> {
 					controller.setPersonEntity(student);
-					controller.setStudentDao(new StudentDao(DBFactory.getConnection()));
+					// We need to set this dependence to return to here in the future
 					controller.setInfoStudentController(this);
-					controller.setMainView(this.mainView);
 				});
 	}
 	
+	// Remove student 
 	public void handleBtnRemove(ActionEvent event) {
 		// Confirmation Alert to delete
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -217,19 +247,27 @@ public class InfoStudentController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			// Call studentDao to delete
-			StudentDao studentDao = new StudentDao(DBFactory.getConnection());
 			try {
 				Alert alertProcessing = Alerts.showProcessingScreen();
+				StudentDao studentDao = new StudentDao(DBFactory.getConnection());
 				studentDao.deleteById(student.getId());
 				alertProcessing.close();
 				// Return to List of students
-				Roots.listStudents(mainView);
+				Roots.listStudents();
 			} catch (DbException e) {
 				e.printStackTrace();
 				Alerts.showAlert("Erro ao deletar o estudante...", "DbException", e.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
+	
+	// ====================================================
+	// ========== END OF BUTTONS ACTION ON MENU ===========
+	// ====================================================
+	
+	// ====================================================
+	// ========== START OF BUTTONS ON TABLES===============
+	// ====================================================
 	
 	public void handleBtnAddContact(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
@@ -238,29 +276,38 @@ public class InfoStudentController implements Initializable {
 				});
 	}
 
-	public void setMainViewControllerAndReturnName(MainViewController mainView, String returnBtnText) {
-		this.mainView = mainView;
-		btnReturn.setText("Voltar para " + returnBtnText);
-		
-	}
+	// ====================================================
+	// ============ END OF BUTTONS ON TABLES===============
+	// ====================================================
 
+	// ====================================================
+	// ======== START OF INITIALIZE METHODS ===============
+	// ====================================================
+
+	// MATRICULATION
 	private void initializeTableMatriculationsNodes() {
+		// code, dateMatriculation, status, 
 		Utils.setCellValueFactory(columnMatriculationCode, "code");
 		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
 		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
 		Utils.setCellValueFactory(columnMatriculationStatus, "status");
+		// Parcels
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
 				// Total of parcels ignoring matriculation tax (parcel 0)
 				List<Parcel> parcels = cellData.getValue().getParcels().stream()
 						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());
+				// Total of paid parcels = with status equals PAGA
 				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation()
 						.equalsIgnoreCase("PAGO")).collect(Collectors.toList()).size();
+				// will show in table number of paid parcels from total
 				return new SimpleStringProperty(paidParcels + "/" + parcels.size());
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {
+				// if the matriculation doenst have parcels will show just a line
 				return new SimpleStringProperty("-");
 			}
 		});
+		// Matriculation Responsible name
 		columnMatriculationResponsible.setCellValueFactory(cellData -> {
 			try {
 				if(cellData.getValue().getResponsible() != null) {
@@ -272,29 +319,36 @@ public class InfoStudentController implements Initializable {
 			}
 		});
 		// Info button
-		Utils.initButtons(columnMatriculationInfo, ICON_SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("info matriculation");
+		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (item, event) -> {
+			System.out.println("info matriculation"); //IN PROGRESS
 		});
 	}
 	
+	// CONTACTS
 	private void initiliazeTableContactsNodes() {
+		// number, description
 		Utils.setCellValueFactory(columnContactNumber, "number");
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
-		Utils.initButtons(columnContactEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
+		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
 			Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
 					(ContactFormController controller) -> {
+						// IN PROGRESS
 						System.out.println("You clicked to edit " + contact.getNumber() + " - " + contact.getDescription());
 					});
 		});
 		// Remove button
-		Utils.initButtons(columnContactDelete, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (contact, event) -> {
+		Utils.initButtons(columnContactDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (contact, event) -> {
+			// IN PROGRESS
 			System.out.println("You clicked to remove " + contact.getNumber() + " - " + contact.getDescription());
 		});
 	}
 	
+	// RESPONSIBLES
 	private void initiliazeTableResponsiblesNodes() {
+		// name
 		Utils.setCellValueFactory(columnReponsibleName, "name");
+		// relationship
 		columnReponsibleRelationship.setCellValueFactory(cellData -> {
 			try {
 				if(cellData.getValue().getName() != null) {
@@ -306,15 +360,20 @@ public class InfoStudentController implements Initializable {
 			}
 		});
 		// Edit button
-		Utils.initButtons(columnResponsibleEdit, ICON_SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("edit responsible");
+		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
+			System.out.println("edit responsible"); // IN PROGRESS
 		});
 		// Remove button
-		Utils.initButtons(columnResponsibleRemove, ICON_SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
-			System.out.println("remove responsible");
+		Utils.initButtons(columnResponsibleRemove, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
+			System.out.println("remove responsible"); // IN PROGRESS
 		});
 	}
 	
+	// ====================================================
+	// ========== END OF INITIALIZE METHODS ===============
+	// ====================================================
+	
+	// Called from another controller
 	public void onDataChanged(Student student) {
 		this.student = student;
 		updateFormData();

@@ -262,7 +262,7 @@ public class PersonFormController implements Initializable {
 					this.infoStudentController.onDataChanged((Student) entity);
 				} else {
 					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
-						controller.setMainViewControllerAndReturnName(mainView, "Alunos");
+						controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
 						controller.setCurrentStudent((Student) entity);
 					});
 				}
@@ -338,7 +338,8 @@ public class PersonFormController implements Initializable {
 	}
 	
 	// Called in case of doesn't have find any correspondent registry in database
-	private void addNewRegistry() {
+	// Or in case of the user realy want to create a new registry
+	public void addNewRegistry() {
 		// Disable cpf and name field to user doenst change this informations anymore
 		textCPF.setDisable(true);
 		textName.setDisable(true);

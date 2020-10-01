@@ -33,6 +33,35 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class Utils {
+	
+	// To patterns
+	public static String formatCPF(String value) {
+		try {
+			String formatedValue;
+			formatedValue = value.replaceAll("[^0-9]", "");
+			formatedValue = formatedValue.replaceFirst("(\\d{3})(\\d)", "$1.$2");
+			formatedValue = formatedValue.replaceFirst("(\\d{3})\\.(\\d{3})(\\d)", "$1.$2.$3");
+			formatedValue = formatedValue.replaceFirst("(\\d{3})\\.(\\d{3})\\.(\\d{3})(\\d)", "$1.$2.$3-$4");
+			formatedValue = formatedValue.replaceFirst("(\\d{3})\\.(\\d{3})\\.(\\d{3})\\-(\\d{2})(\\d)", "$1.$2.$3.$4");
+			return formatedValue;
+		} catch(Exception e) {
+			return value;
+		}
+	}
+	
+	public static String formatRG(String value) {
+		try {
+			String formatedValue;
+			formatedValue = value.replaceAll("[^0-9]", "");
+			formatedValue = formatedValue.replaceFirst("(\\d{2})(\\d)", "$1.$2");
+			formatedValue = formatedValue.replaceFirst("(\\d{2})\\.(\\d{3})(\\d)", "$1.$2.$3");
+			formatedValue = formatedValue.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})(\\d)", "$1.$2.$3-$4");
+			formatedValue = formatedValue.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})\\-(\\d{1})(\\d)", "$1.$2.$3.$4");
+			return formatedValue;
+		} catch(Exception e) {
+			return value;
+		}
+	}
 
 	// To numbers
 	private static final DecimalFormatSymbols DOLAR = new DecimalFormatSymbols(Locale.US);

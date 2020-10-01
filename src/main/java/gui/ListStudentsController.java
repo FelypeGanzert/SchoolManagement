@@ -440,7 +440,8 @@ public class ListStudentsController implements Initializable {
 		try {
 			MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
 			mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
-				controller.setMainViewControllerAndReturnName(mainView, "Alunos");
+				controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
+				controller.setCurrentStudent(student);
 				// Reflesh student data
 				refreshStudentFromDB(student);
 			});
@@ -457,9 +458,7 @@ public class ListStudentsController implements Initializable {
 	// Refresh student data
 	public void refreshStudentFromDB(Student student) {
 		// he will try to find the student in db and then will refresh the data
-		DBFactory.getConnection().getTransaction().begin();
 		DBUtil.refleshData(student);
-		DBFactory.getConnection().getTransaction().commit();
 		// refresh tables and lists
 		tableStudents.refresh();
 		tableMatriculations.refresh();
