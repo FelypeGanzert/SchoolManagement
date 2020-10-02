@@ -12,6 +12,8 @@ import gui.util.Validators;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import model.entites.Contact;
+import model.entites.Person;
 
 public class ContactFormController implements Initializable {
 
@@ -22,6 +24,12 @@ public class ContactFormController implements Initializable {
 	@FXML private JFXButton btnCancel;
 	
 	private final String DEFAULT_NUMBER = "9";
+	
+	private Contact contact;
+	private Person person;
+	// Screens that can call this form
+	private PersonFormController personForm;
+	private InfoStudentController infoStudent;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -34,6 +42,25 @@ public class ContactFormController implements Initializable {
 		textNumber.setText(DEFAULT_NUMBER);
 		Constraints.positionCaret(textNumber);
 	}
+	
+	// DEPENDENCES
+	public void setDependences(Contact contact, Person person, PersonFormController personForm, InfoStudentController infoStudent) {
+		this.contact = contact;
+		this.person = person;
+		this.personForm = personForm;
+		this.infoStudent = infoStudent;
+	}
+	
+	// Called when user will add a new contact to a person in form
+	public void setDependences(Person person, PersonFormController personForm) {
+		setDependences(null, person, personForm, null);
+	}
+
+	// Called when user will add a new contact to a person in info screen
+	public void setDependences(Person person, PersonFormController personForm) {
+		setDependences(null, person, personForm, null);
+	}
+	
 	
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event);

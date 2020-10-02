@@ -106,9 +106,10 @@ public class ListStudentsController implements Initializable {
 	public void initialize(URL url, ResourceBundle resources) {
 		// Try to get studentDao from Globe, if he doens't find then
 		// instantiate a new and add to Globe
-		studentDao = Globe.getStateItem(StudentDao.class, "main", "db", "studentDao");
+		studentDao =  Globe.getGlobe().getItem(StudentDao.class, "studentDao");
 		if(studentDao == null) {
 			studentDao = new StudentDao(DBFactory.getConnection());
+			Globe.getGlobe().putItem("studentDao", studentDao);
 		}
 		// Initialize tables
 		initializeTableStudentsNodes();
@@ -438,7 +439,7 @@ public class ListStudentsController implements Initializable {
 	// called when user click in info button in student table
 	private void showStudentInfo(Student student) {
 		try {
-			MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
+			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 				controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
 				controller.setCurrentStudent(student);

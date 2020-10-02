@@ -20,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import model.entites.Collaborator;
 import sharedData.Globe;
-import sharedData.State;
 
 public class MainViewController implements Initializable {
 
@@ -30,14 +29,12 @@ public class MainViewController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		// Put this controller inside Globe to allow to share this controller
-		State controllerState = new State();
-		controllerState.putItem("mainViewController", this);
-		Globe.getGlobe().getContext("main").putState("controller", controllerState);
+		Globe.getGlobe().putItem("mainViewController", this);;
 		// Make the scrollPane content fit the whole space
 		this.content.setFitToHeight(true);
 		this.content.setFitToWidth(true);
 		// Set the name of currentUser to label
-		Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+		Collaborator currentUser =  Globe.getGlobe().getItem(Collaborator.class, "currentUser");
 		this.labelCurrentUser.setText(currentUser.getName());
 		// Defines main menu as content
 		setContent(FXMLPath.MAIN_MENU, x -> {});

@@ -29,7 +29,7 @@ public class Roots {
 	public static <T> void listStudents(Consumer<T> initializingAction) {
 		Alert alertProcessing = Alerts.showProcessingScreen();
 		// Get mainvViewController from Globe to set content in
-		MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.LIST_STUDENTS, initializingAction);
 		alertProcessing.close();
 	}
@@ -40,7 +40,7 @@ public class Roots {
 	}
 	public static <T> void listResponsibles(Consumer<T> initializingAction) {
 		// Get mainvViewController from Globe to set content in
-		MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.LIST_RESPONSIBLES, initializingAction);
 	}
 
@@ -50,7 +50,7 @@ public class Roots {
 	}
 	public static <T> void home(Consumer<T> initializingAction) {
 		// Get mainvViewController from Globe to set content in
-		MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.MAIN_MENU, initializingAction);
 	}
 

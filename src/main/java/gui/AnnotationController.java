@@ -52,7 +52,7 @@ public class AnnotationController implements Initializable{
 		if(annotation == null) {
 			this.annotation = new Annotation();
 			this.annotation.setDate(new Date());
-			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+			Collaborator currentUser = Globe.getGlobe().getItem(Collaborator.class, "currentUser");
 			this.annotation.setResponsibleCollaborator(currentUser.getInitials());
 		}
 		// Set values from annotation variable to UI
@@ -71,7 +71,7 @@ public class AnnotationController implements Initializable{
 	
 	public void handleSaveBtn(ActionEvent event) {
 		if (textAreaDescription.validate()) {
-			Collaborator currentUser = Globe.getStateItem(Collaborator.class, "main", "main", "currentUser");
+			Collaborator currentUser = Globe.getGlobe().getItem(Collaborator.class, "currentUser");
 			annotation.setResponsibleCollaborator(currentUser.getInitials());
 			annotation.setDescription(textAreaDescription.getText());
 			// Add annotation to student in memory if is a new Annotation

@@ -37,7 +37,7 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Remove currentUser from Globe data when user logout
-		Globe.getState("main", "main").removeItem("currentUser");
+		Globe.getGlobe().removeItem("currentUser");
 		txtUser.getValidators().add(Validators.getRequiredFieldValidator());
 		txtPassword.getValidators().add(Validators.getRequiredFieldValidator());
 		addListeners();
@@ -63,7 +63,7 @@ public class LoginController implements Initializable {
 		try {
 			Collaborator collaborator = getCollaboratorFromDB();
 			// set currentCollaborator (User) to Globe
-			Globe.getState("main", "main").putItem("currentUser", collaborator);
+			Globe.getGlobe().putItem("currentUser", collaborator);
 			// Close Login dialogStage if find a collaborator
 			Utils.currentStage(event).close();
 			// show MainView

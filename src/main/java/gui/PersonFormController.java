@@ -23,25 +23,18 @@ import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
-import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import model.dao.StudentDao;
 import model.entites.Collaborator;
-import model.entites.Contact;
 import model.entites.Person;
 import model.entites.Student;
 import sharedData.Globe;
@@ -71,13 +64,6 @@ public class PersonFormController implements Initializable {
 	@FXML private JFXComboBox<StudentStatusEnum> comboBoxStatus;
 	@FXML private JFXTextField textAdressReference;
 	@FXML private JFXTextArea textAreaObservation;
-	// Table Contacts
-	@FXML private TableView<Contact> tableContacts;
-	@FXML private TableColumn<Contact, String> columnContactNumber;
-	@FXML private TableColumn<Contact, String> columnContactDescription;
-	@FXML private TableColumn<Contact, Contact> columnContactEdit;
-	@FXML private TableColumn<Contact, Contact> columnContactDelete;
-	@FXML private Button btnAddContact;
 	// Buttons
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
@@ -85,7 +71,6 @@ public class PersonFormController implements Initializable {
 	// This form can be used to add/edit Students and Responsibles
 	private Person entity;
 	private StudentDao studentDao;
-	private ObservableList<Contact> contactsList;
 	
 	private InfoStudentController infoStudentController;
 	
@@ -112,7 +97,6 @@ public class PersonFormController implements Initializable {
 		});
 		// Set requiredFields and Constraints
 		initializeFields();
-		initiliazeTableContactsNodes();
 	}
 	
 	// Called from another controllers
@@ -135,9 +119,10 @@ public class PersonFormController implements Initializable {
 		// Try to get dao from Globe, if he doens't find then
 		// instantiate a new and add to Globe
 		if (entity instanceof Student) {
-			studentDao = Globe.getStateItem(StudentDao.class, "main", "db", "studentDao");
+			studentDao = Globe.getGlobe().getItem(StudentDao.class, "studentDao");
 			if (studentDao == null) {
 				studentDao = new StudentDao(DBFactory.getConnection());
+				Globe.getGlobe().putItem("studentDao", studentDao);
 			}
 		}
 	}
@@ -188,21 +173,7 @@ public class PersonFormController implements Initializable {
 		comboBoxGender.getItems().addAll(GenderEnum.values());
 		comboBoxGender.getSelectionModel().selectFirst();
 	}
-	
-	// Initialize Table Contacts
-	private void initiliazeTableContactsNodes() {
-		Utils.setCellValueFactory(columnContactNumber, "number");
-		Utils.setCellValueFactory(columnContactDescription, "description");
-		// Edit button STILL HAVE TO BE IMPLEMENTED
-		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("edit contact");
-		});
-		// Remove button STILL HAVE TO BE IMPLEMENTED
-		Utils.initButtons(columnContactDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
-			System.out.println("remove contact");
-		});
-	}
-	
+		
 	// ===============================================
 	// == START OF METHODS TO HANDLE BUTTONS ACTION ==
 	// ===============================================
@@ -259,7 +230,7 @@ public class PersonFormController implements Initializable {
 					this.infoStudentController.onDataChanged((Student) entity);
 				} else {
 					// Get mainViewController from Globe
-					MainViewController mainView = Globe.getStateItem(MainViewController.class, "main", "controller", "mainViewController");
+					MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 						controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
 						controller.setCurrentStudent((Student) entity);
@@ -395,11 +366,6 @@ public class PersonFormController implements Initializable {
 		}
 		if(entity.getDateRegistry() != null) {
 			textDateRegistry.setText(sdf.format(entity.getDateRegistry()));
-		}
-		// set contacts if have some
-		if (this.entity.getContacts() != null) {
-			contactsList = FXCollections.observableArrayList(this.entity.getContacts());
-			tableContacts.setItems(contactsList);
 		}
 		//ComboBox's
 		if (entity.getGender() != null) {

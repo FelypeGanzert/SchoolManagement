@@ -218,7 +218,9 @@ public class InfoStudentController implements Initializable {
 			if(returnPath == FXMLPath.LIST_STUDENTS) {
 				Roots.listStudents((ListStudentsController controller) -> {
 					// Select this student
+					controller.selectStatusToFilter(student.getStatus());
 					controller.tableStudents.getSelectionModel().select(student);
+					controller.tableStudents.scrollTo(student);
 				});
 			}
 		} catch (Exception e) {
