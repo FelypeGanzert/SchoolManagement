@@ -74,7 +74,7 @@ public class InfoStudentController implements Initializable {
 	@FXML private Label labelDateCadastryAndModify;
 	@FXML private TextArea textAreaObservation;
 	// Table Matriculations
-	@FXML private TableView<Matriculation> tableMatriculations;
+	@FXML public TableView<Matriculation> tableMatriculations;
 	@FXML private TableColumn<Matriculation, Integer> columnMatriculationCode;
 	@FXML private TableColumn<Matriculation, Date> columnMatriculationDate;
 	@FXML private TableColumn<Matriculation, String> columnMatriculationStatus;
@@ -83,14 +83,14 @@ public class InfoStudentController implements Initializable {
 	@FXML private TableColumn<Matriculation, Matriculation> columnMatriculationInfo;
 	@FXML private Button btnAddMatriculation;
 	// Table Contacts
-	@FXML private TableView<Contact> tableContacts;
+	@FXML public TableView<Contact> tableContacts;
 	@FXML private TableColumn<Contact, String> columnContactNumber;
 	@FXML private TableColumn<Contact, String> columnContactDescription;
 	@FXML private TableColumn<Contact, Contact> columnContactEdit;
 	@FXML private TableColumn<Contact, Contact> columnContactDelete;
 	@FXML private Button btnAddContact;
 	// Table Responsibles
-	@FXML private TableView<Responsible> tableResponsibles;
+	@FXML public TableView<Responsible> tableResponsibles;
 	@FXML private TableColumn<Responsible, String> columnReponsibleName;
 	@FXML private TableColumn<Responsible, String> columnReponsibleRelationship;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleEdit;
@@ -274,7 +274,7 @@ public class InfoStudentController implements Initializable {
 	public void handleBtnAddContact(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
 				(ContactFormController controller) -> {
-					System.out.println("You clicked to add a new contact");
+					controller.setDependences(new Contact(), student, this);
 				});
 	}
 
@@ -379,6 +379,7 @@ public class InfoStudentController implements Initializable {
 	public void onDataChanged(Student student) {
 		this.student = student;
 		updateFormData();
+		updateTablesData();
 	}
 
 }

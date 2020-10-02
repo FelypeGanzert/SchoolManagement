@@ -74,6 +74,9 @@ public class PersonFormController implements Initializable {
 	
 	private InfoStudentController infoStudentController;
 	
+	private final String DEFAULT_CITY = "Lapa";
+	private final String DEFAULT_UF = "UF";
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Hidden some fields by default
@@ -97,6 +100,8 @@ public class PersonFormController implements Initializable {
 		});
 		// Set requiredFields and Constraints
 		initializeFields();
+		// Set default values
+		setDefaultValuesToFields();
 	}
 	
 	// Called from another controllers
@@ -125,6 +130,15 @@ public class PersonFormController implements Initializable {
 				Globe.getGlobe().putItem("studentDao", studentDao);
 			}
 		}
+	}
+	
+	// Set default values to Form
+	private void setDefaultValuesToFields() {
+		comboBoxStatus.getSelectionModel().selectFirst();
+		comboBoxCivilStatus.getSelectionModel().selectFirst();
+		comboBoxGender.getSelectionModel().selectFirst();
+		textCity.setText(DEFAULT_CITY);
+		textUF.setText(DEFAULT_UF);
 	}
 
 	// Set requiredFields and Constraints
@@ -167,11 +181,8 @@ public class PersonFormController implements Initializable {
 		Constraints.setTextFieldMaxLength(textDateRegistry, 10);
 		// ComboBox: status, civilStatus, gender
 		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
-		comboBoxStatus.getSelectionModel().selectFirst();
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
-		comboBoxCivilStatus.getSelectionModel().selectFirst();
 		comboBoxGender.getItems().addAll(GenderEnum.values());
-		comboBoxGender.getSelectionModel().selectFirst();
 	}
 		
 	// ===============================================
@@ -322,7 +333,8 @@ public class PersonFormController implements Initializable {
 		HBoxInformations.setVisible(true);
 		// Animation to get attention
 		new ZoomIn(HBoxInformations).play();
-		btnSave.setVisible(true);		
+		btnSave.setVisible(true);
+		setDefaultValuesToFields();
 	}
 	
 	// Update form Data according the data in entity

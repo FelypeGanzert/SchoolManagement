@@ -6,14 +6,20 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import db.DBFactory;
+import db.DbException;
+import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
+import model.dao.ContactDao;
 import model.entites.Contact;
 import model.entites.Person;
+import model.entites.Student;
 
 public class ContactFormController implements Initializable {
 
@@ -27,8 +33,7 @@ public class ContactFormController implements Initializable {
 	
 	private Contact contact;
 	private Person person;
-	// Screens that can call this form
-	private PersonFormController personForm;
+	// Screen that can call this form
 	private InfoStudentController infoStudent;
 	
 	@Override
@@ -40,25 +45,16 @@ public class ContactFormController implements Initializable {
 		textNumber.setValidators(Validators.getRequiredFieldValidator());
 		// Set default text to number
 		textNumber.setText(DEFAULT_NUMBER);
-		Constraints.positionCaret(textNumber);
 	}
 	
 	// DEPENDENCES
-	public void setDependences(Contact contact, Person person, PersonFormController personForm, InfoStudentController infoStudent) {
+	public void setDependences(Contact contact, Person person, InfoStudentController infoStudent) {
 		this.contact = contact;
 		this.person = person;
-		this.personForm = personForm;
 		this.infoStudent = infoStudent;
-	}
-	
-	// Called when user will add a new contact to a person in form
-	public void setDependences(Person person, PersonFormController personForm) {
-		setDependences(null, person, personForm, null);
-	}
-
-	// Called when user will add a new contact to a person in info screen
-	public void setDependences(Person person, PersonFormController personForm) {
-		setDependences(null, person, personForm, null);
+		if(contact.getId() != null) {
+			this.updateForm();
+		}
 	}
 	
 	
@@ -67,10 +63,43 @@ public class ContactFormController implements Initializable {
 	}
 	
 	public void handleBtnSave(ActionEvent event) {
-		if(!textNumber.validate()) {
-			return;
+		if(textNumber.validate()) {
+			// Create an instance if contact is null
+			if(contact == null) {
+				contact = new Contact();
+			}
+			// Get data from UI Form
+			contact.setNumber(textNumber.getText());
+			contact.setDescription(textDescription.getText());
+			// Save in DB
+			try {
+				ContactDao contactDao = new ContactDao(DBFactory.getConnection());
+				// If he doesn't have a id, is a new contact,
+				// otherwhise the contact already is in database
+				if (contact.getId() == null) {
+					person.getContacts().add(contact);
+					contactDao.insert(contact);
+				} else {
+					contactDao.update(contact);
+				}
+				// Update Screen that opens this form
+				if(infoStudent != null) {
+					infoStudent.onDataChanged(Student.class.cast(person));
+					infoStudent.tableContacts.getSelectionModel().select(contact);
+					infoStudent.tableContacts.scrollTo(contact);
+				}
+				Utils.currentStage(event).close();
+			} catch (DbException e) {
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),	AlertType.ERROR);
+				e.printStackTrace();
+			} 
 		}
-		System.out.println("Saved contact " + textNumber.getText() + " - " + textDescription.getText());
+	}
+	
+	// Update UI with contact infomartions
+	public void updateForm() {
+		textNumber.setText(contact.getNumber());
+		textDescription.setText(contact.getDescription());
 	}
 
 }
