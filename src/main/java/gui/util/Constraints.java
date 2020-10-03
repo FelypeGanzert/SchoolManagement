@@ -89,7 +89,23 @@ public class Constraints {
 		}
 		return result.replaceAll("[^0-9]", "");
 	}
-
+	
+	// Contacts
+	public static String formatNumberContact(String number) {
+		if (number.length() == 8) { // 1234-5678
+			return number.replaceFirst("(\\d{4})(\\d)", "$1-$2");
+		}
+		if (number.length() == 9) { // 91234-5678
+			return number.replaceFirst("(\\d{5})(\\d)", "$1-$2");
+		}
+		if (number.length() == 10) { // (41)1234-5678
+			return number.replaceFirst("(\\d{2})(\\d{4})(\\d)", "($1)$2-$3");
+		}
+		if (number.length() == 11) { // (41)91234-5678
+			return number.replaceFirst("(\\d{2})(\\d{5})(\\d)", "($1)$2-$3");
+		}
+		return number;
+	}
 
 	// set the position of cursor to the end
 	public static void positionCaret(TextField txt) {

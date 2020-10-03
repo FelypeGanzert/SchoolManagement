@@ -14,6 +14,7 @@ import db.DBFactory;
 import db.DBUtil;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
@@ -332,8 +333,11 @@ public class InfoStudentController implements Initializable {
 	
 	// CONTACTS
 	private void initiliazeTableContactsNodes() {
-		// number, description
-		Utils.setCellValueFactory(columnContactNumber, "number");
+		// number
+		columnContactNumber.setCellValueFactory(cellData -> {
+			return new SimpleStringProperty(Constraints.formatNumberContact(cellData.getValue().getNumber()));
+		});
+		// description
 		Utils.setCellValueFactory(columnContactDescription, "description");
 		// Edit button
 		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
