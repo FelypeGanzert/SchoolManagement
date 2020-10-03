@@ -39,6 +39,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import model.dao.ContactDao;
+import model.dao.ResponsibleDao;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Matriculation;
@@ -277,7 +278,7 @@ public class InfoStudentController implements Initializable {
 	// ====================================================
 	
 	public void handleBtnAddContact(ActionEvent event) {
-		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
+		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar Informações", false,
 				(ContactFormController controller) -> {
 					controller.setDependences(new Contact(), student, this);
 				});
@@ -387,12 +388,47 @@ public class InfoStudentController implements Initializable {
 			}
 		});
 		// Edit button
-		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (item, event) -> {
-			System.out.println("edit responsible"); // IN PROGRESS
+		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (responsible, event) -> {
+			System.out.println("edit responsible");
+			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
+					(PersonFormController controller) -> {
+						// IN PROGRESS
+						// controller.setPersonEntity(responsible);
+						// We need to set this dependence to return to here in the future
+						controller.setInfoStudentController(this);
+					});
 		});
 		// Remove button
-		Utils.initButtons(columnResponsibleRemove, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (item, event) -> {
-			System.out.println("remove responsible"); // IN PROGRESS
+		Utils.initButtons(columnResponsibleRemove, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (responsible, event) -> {
+			// Check if there isn't any matriculation vinculed with this responsible
+			// If this happen, we cant delete him
+			List<Matriculation> matriculationsVinculed = student.getMatriculations().stream()
+					.filter(m -> m.getResponsible() != null && m.getResponsible().getId() == responsible.getId())
+					.collect(Collectors.toList());
+			if(matriculationsVinculed.size() > 0) {
+				Alerts.showAlert("Vínculo existente", "Não é possível deletar esse responsável", "Existe matrículas pela qual ele responde", AlertType.WARNING);
+				return;
+			}
+			
+			// Confirmation to delete responsible
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Deletar responsável");
+			alert.setHeaderText("Deletar " + responsible.getName() + " ?");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				// Show a screen of deleting responsible process
+				Alert alertProcessing = Alerts.showProcessingScreen();
+				try {
+					// ContactDao to delete from db
+					ResponsibleDao responsibleDao = new ResponsibleDao(DBFactory.getConnection());
+					responsibleDao.deleteFromStudent(responsible, student);
+					// remove responsible from student in memory and refresh tables in UI
+					updateTablesData();
+				} catch (DbException e) {
+					Alerts.showAlert("Erro ao deletar responsável", "DbException", e.getMessage(), AlertType.ERROR);
+				}
+				alertProcessing.close();
+			}
 		});
 	}
 	

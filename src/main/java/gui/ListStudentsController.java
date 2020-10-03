@@ -420,18 +420,18 @@ public class ListStudentsController implements Initializable {
 			Optional<ButtonType> result =alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				// Show a screen of deleting annotation process
+				Alert alertProcessing = Alerts.showProcessingScreen();
 				try {
-					Alert alertProcessing = Alerts.showProcessingScreen();
 					// AnnotationDao to delete from db
 					AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
 					annotationDao.delete(itemSelected);
 					// remove annotation from student in memory and update Annotations list
 					studentOwner.getAnnotations().remove(itemSelected);
 					updateAnnotations(studentOwner);
-					alertProcessing.close();
 				} catch (DbException e) {
 					Alerts.showAlert("Erro ao deletar anotação", "DbException", e.getMessage(), AlertType.ERROR);
 				}
+				alertProcessing.close();
 			}
 		}
 	}

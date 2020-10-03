@@ -126,7 +126,7 @@ public class Responsible extends Person {
 	
 	public String getRelationship(Student student) {
 		for(ResponsibleStudent rs : students) {
-			if(rs.getStudent().equals(student) || rs.getResponsible().equals(this)) {
+			if(rs.getStudent().equals(student) && rs.getResponsible().equals(this)) {
 				return rs.getRelationship();
 			}
 		}
