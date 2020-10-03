@@ -37,6 +37,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import model.dao.ContactDao;
 import model.dao.StudentDao;
 import model.entites.Contact;
 import model.entites.Matriculation;
@@ -184,19 +185,22 @@ public class InfoStudentController implements Initializable {
 	private void updateTablesData() {
 		try {
 			// Matriculations
-			if (student.getMatriculations() != null && student.getMatriculations().size() > 0) {
+			if (student.getMatriculations() != null) {
 				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
 				tableMatriculations.setItems(matriculationsList);
+				tableMatriculations.refresh();
 			}
 			// Contacts
-			if (student.getContacts() != null && student.getContacts().size() > 0) {
+			if (student.getContacts() != null) {
 				contactsList = FXCollections.observableArrayList(this.student.getContacts());
 				tableContacts.setItems(contactsList);
+				tableContacts.refresh();
 			}
 			// Responsibles
-			if (student.getAllResponsibles() != null && student.getAllResponsibles().size() > 0) {
+			if (student.getAllResponsibles() != null) {
 				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
 				tableResponsibles.setItems(responsiblesList);
+				tableResponsibles.refresh();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,14 +339,31 @@ public class InfoStudentController implements Initializable {
 		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
 			Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
 					(ContactFormController controller) -> {
-						// IN PROGRESS
-						System.out.println("You clicked to edit " + contact.getNumber() + " - " + contact.getDescription());
+						controller.setDependences(contact, student, this);
 					});
 		});
-		// Remove button
+		// Delete button
 		Utils.initButtons(columnContactDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (contact, event) -> {
-			// IN PROGRESS
-			System.out.println("You clicked to remove " + contact.getNumber() + " - " + contact.getDescription());
+			// Confirmation to delete contact
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Deletar contato");
+			alert.setHeaderText("Deletar o contato " +  contact.getNumber()  + " - " + contact.getDescription() + " ?");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				// Show a screen of deleting contact process
+				try {
+					Alert alertProcessing = Alerts.showProcessingScreen();
+					// ContactDao to delete from db
+					ContactDao contactDao = new ContactDao(DBFactory.getConnection());
+					contactDao.delete(contact);
+					// remove contact from student in memory and refresh tables in UI
+					student.getContacts().remove(contact);
+					updateTablesData();
+					alertProcessing.close();
+				} catch (DbException e) {
+					Alerts.showAlert("Erro ao deletar contato", "DbException", e.getMessage(), AlertType.ERROR);
+				}
+			}
 		});
 	}
 	

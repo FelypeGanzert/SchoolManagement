@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RegexValidator;
 
 import db.DBFactory;
 import db.DbException;
@@ -38,11 +39,15 @@ public class ContactFormController implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// Constraints and validators
+		// Constraints
 		Constraints.setTextFieldInteger(textNumber);
 		Constraints.setTextFieldMaxLength(textNumber, 15);
 		Constraints.setTextFieldMaxLength(textDescription, 30);
+		// Validators
 		textNumber.setValidators(Validators.getRequiredFieldValidator());
+		RegexValidator lengthValidator = new RegexValidator("Mínimo de 8 dígitos");
+		lengthValidator.setRegexPattern("^\\d{8,}$");
+		textNumber.setValidators(lengthValidator);
 		// Set default text to number
 		textNumber.setText(DEFAULT_NUMBER);
 	}
@@ -59,7 +64,7 @@ public class ContactFormController implements Initializable {
 	
 	
 	public void handleBtnCancel(ActionEvent event) {
-		Utils.currentStage(event);
+		Utils.currentStage(event).close();;
 	}
 	
 	public void handleBtnSave(ActionEvent event) {
