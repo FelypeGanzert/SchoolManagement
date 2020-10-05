@@ -87,6 +87,10 @@
                            </toggleGroup>
 								</JFXRadioButton>
 								<JFXRadioButton selected="true" style="-fx-cursor: hand;" text="inicia com" toggleGroup="$filterType" />
+                        <Label fx:id="labelTotalStudentsSearch">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin></Label>
 							</children>
 							<padding>
 								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
@@ -144,8 +148,8 @@
 								<Label text="Não há matrículas" />
 							</placeholder>
 							<columns>
-								<TableColumn fx:id="columnMatriculationCode" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="ID" />
-                        <TableColumn fx:id="columnMatriculationDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Data" />
+								<TableColumn fx:id="columnMatriculationCode" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
+                        <TableColumn fx:id="columnMatriculationDate" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Data" />
 								<TableColumn fx:id="columnMatriculationStatus" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Situação" />
 								<TableColumn fx:id="columnMatriculationParcels" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" style="-fx-alignment: center;" text="Parcelas" />
 							</columns>
@@ -184,8 +188,8 @@
 							<columns>
 								<TableColumn fx:id="columnParcelStatus" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
 								<TableColumn fx:id="columnParcelParcel" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Parcela" />
-								<TableColumn fx:id="columnParcelDate" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: center;" text="Vencimento" />
-								<TableColumn fx:id="columnParcelValue" prefWidth="75.0" style="-fx-alignment: center;" text="Valor" />
+								<TableColumn fx:id="columnParcelDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Vencimento" />
+								<TableColumn fx:id="columnParcelValue" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" style="-fx-alignment: center;" text="Valor" />
 							</columns>
 							<columnResizePolicy>
 								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

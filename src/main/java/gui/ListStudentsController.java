@@ -62,6 +62,7 @@ public class ListStudentsController implements Initializable {
 	@FXML private JFXTextField textFilter;
 	@FXML private JFXComboBox<String> comboBoxFieldFilter;
 	@FXML private ToggleGroup filterType;
+	@FXML private Label labelTotalStudentsSearch;
 	@FXML private ToggleGroup filterStudentStatus;
 	@FXML private JFXRadioButton statusTODOS;
 	@FXML private JFXRadioButton statusATIVOS;
@@ -117,6 +118,10 @@ public class ListStudentsController implements Initializable {
 		initializeTableMatriculationsNodes();
 		initiliazeTableParcelsNodes();
 		initiliazeListViewAnnotations();
+		// Initialize Fields to allow the search
+		String[] fieldsToFilter = {"Nome", "CPF", "RG", "ID"};
+		comboBoxFieldFilter.setItems(FXCollections.observableArrayList(fieldsToFilter));
+		comboBoxFieldFilter.getSelectionModel().selectFirst();
 		// Add listeners to components
 		addListeners();
 		// Update tableView to show students data
@@ -127,6 +132,10 @@ public class ListStudentsController implements Initializable {
 	private void addListeners() {
 		// Filter students table when user type anything in search bar
 		textFilter.textProperty().addListener((observable, oldValue, newValue) -> {
+			filterStudents();
+		});
+		// Filter students table when user select another field to make the search
+		comboBoxFieldFilter.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
 		});
 		// Filter students table when user select another type of search
@@ -185,16 +194,24 @@ public class ListStudentsController implements Initializable {
 			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
 		}
 		// Filter by text in search bar
-		String value = textFilter.getText();
+		String textSearch = textFilter.getText();
+		String fieldFilter = comboBoxFieldFilter.getSelectionModel().getSelectedItem();
 		String filterTypeSelected = ((RadioButton) filterType.getSelectedToggle()).getText();
-		if(filterTypeSelected.equalsIgnoreCase("inicia com")) {
+		if(filterTypeSelected.equalsIgnoreCase("inicia com") && textSearch.length() > 0) {
 			filteredList = filteredList.stream()
-					.filter(student -> student.getName().toUpperCase().startsWith(value.toUpperCase()))
+					.filter(student -> student.getValue(fieldFilter) != null &&
+						student.getValue(fieldFilter).toUpperCase().startsWith(textSearch.toUpperCase()))
 					.collect(Collectors.toList());
-		} else if(filterTypeSelected.equalsIgnoreCase("contém")) {
+		} else if(filterTypeSelected.equalsIgnoreCase("contém") && textSearch.length() > 0) {
 			filteredList = filteredList.stream()
-					.filter(student -> student.getName().toUpperCase().contains(value.toUpperCase()))
+					.filter(student -> student.getValue(fieldFilter) != null &&
+						student.getValue(fieldFilter).toUpperCase().contains(textSearch.toUpperCase()))
 					.collect(Collectors.toList());
+		}
+		if(textSearch.length() > 0) {
+			labelTotalStudentsSearch.setText("Resultados: " + filteredList.size());
+		} else {
+			labelTotalStudentsSearch.setText(null);
 		}
 		// set total students to label
 		labelTotalStudents.setText(totalStudentsText);

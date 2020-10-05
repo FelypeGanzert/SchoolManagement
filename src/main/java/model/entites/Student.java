@@ -149,5 +149,28 @@ public class Student extends Person{
 	public List<Responsible> getAllResponsibles() {
 		return responsibles.stream().map(responsibleStudent -> responsibleStudent.getResponsible()).collect(Collectors.toList());
 	}
+	
+	// Method for field to Fillter the search
+	@Override
+	public String getValue(String field) {
+		if (field.equalsIgnoreCase("Nome")) {
+			return name;
+		}
+		if (field.equalsIgnoreCase("CPF")) {
+			return cpf;
+		}
+		if (field.equalsIgnoreCase("RG")) {
+			return rg;
+		}
+		if (field.equalsIgnoreCase("ID")) {
+			String idToString = null;
+			try {
+				idToString = Integer.toString(id);
+			} catch (Exception e) {
+			}
+			return idToString;
+		}
+		return null;
+	}
 
 }

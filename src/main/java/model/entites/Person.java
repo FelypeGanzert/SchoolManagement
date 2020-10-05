@@ -30,5 +30,7 @@ public abstract class Person {
 	private String observation;	
 	private List<Contact> contacts;
 	public abstract int getAge();
-
+	
+	// Method for field to Fillter the search
+	public abstract String getValue(String field);
 }

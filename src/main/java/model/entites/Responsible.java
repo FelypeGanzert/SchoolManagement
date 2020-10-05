@@ -148,4 +148,26 @@ public class Responsible extends Person {
 	public List<Student> getAllStudents() {
 		return students.stream().map(responsibleStudent -> responsibleStudent.getStudent()).collect(Collectors.toList());
 	}
+	
+	// Method for field to Fillter the search
+	public String getValue(String field) {
+		if (field.equalsIgnoreCase("Nome")) {
+			return name;
+		}
+		if (field.equalsIgnoreCase("CPF")) {
+			return cpf;
+		}
+		if (field.equalsIgnoreCase("RG")) {
+			return rg;
+		}
+		if (field.equalsIgnoreCase("ID")) {
+			String idToString = null;
+			try {
+				idToString = Integer.toString(id);
+			} catch (Exception e) {
+			}
+			return idToString;
+		}
+		return null;
+	}
 }
