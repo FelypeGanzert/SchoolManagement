@@ -86,7 +86,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding></Label>
                               <TextField fx:id="textStatus" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
-                              <Button fx:id="btnEditStatus" mnemonicParsing="false" style="-fx-background-color: #1167B1; -fx-cursor: hand;">
+                              <Button fx:id="btnEditStatus" mnemonicParsing="false" onAction="#handleBtnEditStatus" style="-fx-background-color: #1167B1; -fx-cursor: hand;">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

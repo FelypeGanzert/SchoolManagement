@@ -246,6 +246,17 @@ public class InfoStudentController implements Initializable {
 				});
 	}
 	
+	// Edit Student Status
+	public void handleBtnEditStatus(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.STUDENT_STATUS_FORM, Utils.currentStage(event), "Editar Status", false,
+				(Object controller) -> {
+					// IN PROGRESS
+					//controller.setPersonEntity(student);
+					// We need to set this dependence to update here in the future
+					//controller.setInfoStudentController(this);
+				});
+	}
+	
 	// Remove student 
 	public void handleBtnRemove(ActionEvent event) {
 		// Confirmation Alert to delete
