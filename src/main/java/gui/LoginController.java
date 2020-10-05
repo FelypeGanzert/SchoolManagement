@@ -18,6 +18,7 @@ import com.jfoenix.controls.JFXTextField;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
 import db.DBFactory;
+import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.event.ActionEvent;

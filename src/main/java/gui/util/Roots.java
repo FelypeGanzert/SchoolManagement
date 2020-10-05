@@ -1,10 +1,8 @@
-package gui;
+package gui.util;
 
 import java.util.function.Consumer;
 
-import gui.util.Alerts;
-import gui.util.FXMLPath;
-import gui.util.Utils;
+import gui.MainViewController;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import sharedData.Globe;

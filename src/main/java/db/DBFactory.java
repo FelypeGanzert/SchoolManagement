@@ -1,7 +1,9 @@
 package db;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,7 +19,9 @@ public class DBFactory {
 	private static String driver = "com.mysql.cj.jdbc.Driver";
 	
 	public static void setUnits(String url) {
-		url = "jdbc:mysql://"+url+"/cadastroprojetos?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC";
+		Locale.setDefault(new Locale("pt", "BR"));
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+		url = "jdbc:mysql://"+url+"/cadastroprojetos?createDatabaseIfNotExist=true&autoReconnect=true&useTimezone=true&serverTimezone=" + TimeZone.getDefault().getID();
 		persistenceMap.put("javax.persistence.jdbc.url", url);
 		persistenceMap.put("javax.persistence.jdbc.user", username);
 		persistenceMap.put("javax.persistence.jdbc.password", password);

@@ -49,7 +49,7 @@ public class Student extends Person{
 	@Column (name = "rg", columnDefinition = "varchar(50) default null")
 	private String rg;
 	
-	@Column (name = "data_nascimento", columnDefinition = "date default null")
+	@Column (name = "data_nascimento", columnDefinition = "DATETIME default null")
 	private Date dateBirth;
 	
 	@Column (name = "email", columnDefinition = "varchar(50) default null")
@@ -82,7 +82,7 @@ public class Student extends Person{
 	@Column (name = "cadastrado_por", columnDefinition = "varchar(50) default null")
 	private String registeredBy;
 	
-	@Column (name = "data_cadastro", columnDefinition = "date default null")
+	@Column (name = "data_cadastro", columnDefinition = "DATETIME default null")
 	private Date dateRegistry;
 	
 	@Column (name = "data_ultima_edicao", columnDefinition = "date default null")

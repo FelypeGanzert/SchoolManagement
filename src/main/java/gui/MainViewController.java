@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import gui.util.Alerts;
 import gui.util.FXMLPath;
+import gui.util.Roots;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

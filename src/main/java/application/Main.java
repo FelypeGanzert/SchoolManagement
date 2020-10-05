@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Locale;
+
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import javafx.application.Application;
@@ -12,7 +14,7 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) {		
+	public void start(Stage primaryStage) {
 		// 1: user entry the url of database to try to connect
 		Utils.loadView(this, false, FXMLPath.DB_CONNECTION_URL, primaryStage,"Conexão com o Banco de Dados", false,	x -> {});
 	}

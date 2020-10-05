@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import db.DBFactory;
+import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.application.Platform;

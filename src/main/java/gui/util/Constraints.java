@@ -135,6 +135,14 @@ public class Constraints {
 			}
 		});
 	}
+	
+	public static void setTextFieldAlwaysLowerCase(TextField txt) {
+		txt.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null) {
+				txt.setText(newValue.toLowerCase());
+			}
+		});
+	}
 
 	public static void setTextFieldInteger(TextField txt) {
 		txt.textProperty().addListener((obs, oldValue, newValue) -> {

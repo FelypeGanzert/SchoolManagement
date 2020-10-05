@@ -75,11 +75,12 @@ public class PersonFormController implements Initializable {
 	private InfoStudentController infoStudentController;
 	
 	private final String DEFAULT_CITY = "Lapa";
-	private final String DEFAULT_UF = "UF";
+	private final String DEFAULT_UF = "PR";
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Hidden some fields by default
+		textName.setVisible(false);
 		btnFindRegistry.setVisible(false);
 		HBoxRegistryInformations.setVisible(false);
 		comboBoxRegisteredBy.setVisible(false);
@@ -148,19 +149,18 @@ public class PersonFormController implements Initializable {
 		requiredValidator.setMessage("Campo necessário");
 		// Name: always in UpperCase and required
 		textName.setValidators(requiredValidator);
-		Constraints.setTextFieldAlwaysUpperCase(textName);
 		// CPF: required
 		Constraints.cpfAutoComplete(textCPF);
-		RegexValidator cpfValidator = new RegexValidator("CPF inválido");
+		RegexValidator cpfValidator = new RegexValidator("Inválido");
 		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
 		textCPF.setValidators(requiredValidator, cpfValidator);
 		// RG
 		Constraints.rgAutoComplete(textRG);
-		RegexValidator rgValidator = new RegexValidator("RG inválido");
+		RegexValidator rgValidator = new RegexValidator("Inválido");
 		rgValidator.setRegexPattern("^\\d{2}\\.\\d{3}\\.\\d{3}\\-\\d{1}$");
 		textRG.setValidators(rgValidator);
 		// Date Validator: birthDate and dateRegistry
-		RegexValidator dateValidator = new RegexValidator("Ex: 21/10/1990");
+		RegexValidator dateValidator = new RegexValidator("Inválido");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
 		textBirthDate.setValidators(dateValidator);
 		textDateRegistry.setValidators(dateValidator);
@@ -168,14 +168,18 @@ public class PersonFormController implements Initializable {
 		RegexValidator emailValidator = new RegexValidator("Email inválido");
 		emailValidator.setRegexPattern("^(.+)@(.+)$");
 		textEmail.setValidators(emailValidator);
+		Constraints.setTextFieldAlwaysLowerCase(textEmail);
 		//textDateRegistry.setValidators(requiredValidator, dateValidator); /// ========= I still have to work in dateRegistry
 		// Max length for fields
 		Constraints.setTextFieldMaxLength(textUF, 2);
+		Constraints.setTextFieldAlwaysUpperCase(textUF);
 		Constraints.setTextFieldMaxLength(textName, 50);
+		Constraints.setTextFieldAlwaysUpperCase(textName);
 		Constraints.setTextFieldMaxLength(textEmail, 50);
 		Constraints.setTextFieldNoWhiteSpace(textEmail);
 		Constraints.setTextFieldMaxLength(textAdress, 50);
 		Constraints.setTextFieldMaxLength(textNeighborhood, 50);
+		Constraints.setTextFieldMaxLength(textAdressReference, 50);
 		Constraints.setTextFieldMaxLength(textCity, 50);
 		Constraints.setTextFieldMaxLength(textBirthDate, 10);
 		Constraints.setTextFieldMaxLength(textDateRegistry, 10);
@@ -288,6 +292,14 @@ public class PersonFormController implements Initializable {
 				// Stop the method
 				return;
 			}
+			labelFindRegistryResponse.setText("Nenhum registro com esse CPF. Insira o nome completo e clique em Procurar Registro");
+			labelFindRegistryResponse.setVisible(true);
+			new Shake(labelFindRegistryResponse).play();
+			// Check if textName field is hidden, if is show him and stop this method
+			if(!textName.isVisible()) {
+				textName.setVisible(true);
+				return;
+			}
 			// If we are here he doesn't find by the CPF, so we will try to find some similar name
 			// Check if name is valide
 			if(!textName.validate()) {
@@ -344,8 +356,10 @@ public class PersonFormController implements Initializable {
 		// If entity has an Id, so he already is in databaseso, we show Informations
 		// and button to save, and hidden button to find the registry in db
 		if(entity.getId() != null) {
+			textName.setVisible(true);
 			btnFindRegistry.setVisible(false);
 			HBoxInformations.setVisible(true);
+			textCPF.setDisable(true);
 			btnSave.setVisible(true);
 		} else {
 			// If entity hasn't an id, so he aren't in databse. So, we
@@ -420,7 +434,6 @@ public class PersonFormController implements Initializable {
 			}
 		} catch (ParseException e) {
 			System.out.println("======== Some error has ocurred while parsing dates from entity to form");
-			e.printStackTrace();
 		}
 		// Combo Box's
 		entity.setGender(comboBoxGender.getSelectionModel().getSelectedItem().getfullGender());

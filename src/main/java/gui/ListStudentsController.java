@@ -377,7 +377,7 @@ public class ListStudentsController implements Initializable {
 						textAreaAnnotation.setText("");
 						labelSelectedAnnotationCollaborator.setText("");
 						if (newSelection != null) {
-							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 							labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDate()));
 							textAreaAnnotation.setText(newSelection.getDescription());
 							labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleCollaborator());

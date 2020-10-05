@@ -2,7 +2,7 @@ package gui.util.enums;
 
 public enum StudentStatusEnum {
 	
-	ATIVO("#1167B1"), AGUARDANDO("#F05E23"), INATIVO("#1C282E");
+	ATIVO("#0984E2"), AGUARDANDO("#FDCA6E"), INATIVO("#333333");
 	
 	private String hexColor;
 	
