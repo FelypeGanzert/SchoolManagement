@@ -244,7 +244,7 @@ public class PersonFormController implements Initializable {
 				if (this.infoStudentController != null) {
 					// if already has an infoStudentController we have come from a info Student screen,
 					// so we just update that screen
-					this.infoStudentController.onDataChanged((Student) entity);
+					this.infoStudentController.onDataChanged();
 				} else {
 					// Get mainViewController from Globe
 					MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");

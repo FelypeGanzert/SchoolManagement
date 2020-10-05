@@ -1,7 +1,5 @@
 package application;
 
-import java.util.Locale;
-
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import javafx.application.Application;

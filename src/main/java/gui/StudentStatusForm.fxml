@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StudentStatusFormController">
    <children>
       <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton prefWidth="200.0" ripplerFill="#032b46" style="-fx-cursor: hand; -fx-background-color: #0984E2;" text="ATIVO" textFill="WHITE">
+            <JFXButton onAction="#handleBtnClick" prefWidth="200.0" ripplerFill="#032b46" style="-fx-cursor: hand; -fx-background-color: #0984E2;" text="ATIVO" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -22,7 +21,7 @@
                   <Insets />
                </VBox.margin>
             </JFXButton>
-            <JFXButton prefWidth="200.0" ripplerFill="#c9820e" style="-fx-cursor: hand; -fx-background-color: #FDCA6E;" text="AGUARDANDO" textFill="WHITE">
+            <JFXButton onAction="#handleBtnClick" prefWidth="200.0" ripplerFill="#865404" style="-fx-cursor: hand; -fx-background-color: #edb900;" text="AGUARDANDO" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -33,7 +32,7 @@
                   <Insets />
                </VBox.margin>
             </JFXButton>
-            <JFXButton prefWidth="200.0" ripplerFill="BLACK" style="-fx-cursor: hand; -fx-background-color: #333333;" text="INATIVO" textFill="WHITE">
+            <JFXButton onAction="#handleBtnClick" prefWidth="200.0" ripplerFill="BLACK" style="-fx-cursor: hand; -fx-background-color: #333333;" text="INATIVO" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

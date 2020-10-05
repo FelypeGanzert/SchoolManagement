@@ -249,11 +249,10 @@ public class InfoStudentController implements Initializable {
 	// Edit Student Status
 	public void handleBtnEditStatus(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.STUDENT_STATUS_FORM, Utils.currentStage(event), "Editar Status", false,
-				(Object controller) -> {
-					// IN PROGRESS
-					//controller.setPersonEntity(student);
+				(StudentStatusFormController controller) -> {
+					controller.setStudent(student);
 					// We need to set this dependence to update here in the future
-					//controller.setInfoStudentController(this);
+					controller.setInfoStudentController(this);
 				});
 	}
 	
@@ -448,9 +447,8 @@ public class InfoStudentController implements Initializable {
 	// ========== END OF INITIALIZE METHODS ===============
 	// ====================================================
 	
-	// Called from another controller
-	public void onDataChanged(Student student) {
-		this.student = student;
+	// Called from others controllers
+	public void onDataChanged() {
 		updateFormData();
 		updateTablesData();
 	}

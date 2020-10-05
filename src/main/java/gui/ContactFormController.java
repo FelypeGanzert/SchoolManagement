@@ -20,7 +20,6 @@ import javafx.scene.control.Alert.AlertType;
 import model.dao.ContactDao;
 import model.entites.Contact;
 import model.entites.Person;
-import model.entites.Student;
 
 public class ContactFormController implements Initializable {
 
@@ -89,7 +88,7 @@ public class ContactFormController implements Initializable {
 				}
 				// Update Screen that opens this form
 				if(infoStudent != null) {
-					infoStudent.onDataChanged(Student.class.cast(person));
+					infoStudent.onDataChanged();
 					infoStudent.tableContacts.getSelectionModel().select(contact);
 					infoStudent.tableContacts.scrollTo(contact);
 				}
