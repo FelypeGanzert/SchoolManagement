@@ -230,6 +230,8 @@ public class PersonFormController implements Initializable {
 						studentDao.insert((Student) entity);
 					}
 				} else {
+					// Edit date
+					entity.setDateLastRegistryEdit(new Date());
 					if(entity instanceof Student) {
 						studentDao.update((Student) entity);
 					}

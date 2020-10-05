@@ -23,6 +23,7 @@ import db.DBFactory;
 import db.DBUtil;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
@@ -232,7 +233,8 @@ public class ListStudentsController implements Initializable {
 		columnStudentContact1.setCellValueFactory(cellData -> {
 			try {
 				if(!(cellData.getValue().getContacts() == null)) {
-					return new SimpleStringProperty(cellData.getValue().getContacts().get(0).getNumber());
+					String numberFormated = Constraints.formatNumberContact(cellData.getValue().getContacts().get(0).getNumber());
+					return new SimpleStringProperty(numberFormated);
 				} else {
 					return new SimpleStringProperty("-");
 				}
