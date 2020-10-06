@@ -294,6 +294,16 @@ public class InfoStudentController implements Initializable {
 					controller.setDependences(new Contact(), student, this);
 				});
 	}
+	
+	public void handleBtnAddResponsible(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
+				(PersonFormController controller) -> {
+					Responsible responsible = new Responsible();
+					controller.setPersonEntity(responsible);
+					controller.setStudentOfResponsible(student);
+					controller.setInfoStudentController(this);
+				});
+	}
 
 	// ====================================================
 	// ============ END OF BUTTONS ON TABLES===============

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import db.DbException;
@@ -24,7 +25,7 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		manager.getTransaction().begin();;
+		manager.getTransaction().begin();
 		manager.persist(responsible);
 		manager.getTransaction().commit();
 	}
@@ -42,19 +43,26 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		manager.getTransaction().begin();
+		boolean openedTransaction = false;
+		if(!manager.getTransaction().isActive()) {
+			openedTransaction = true;
+			manager.getTransaction().begin();
+		}
 		// Refresh data (because cache...)
 		manager.refresh(responsible);
-		manager.refresh(responsible);
+		manager.refresh(student);
 		// Check how many students this responsible respond for (not including this student)
 		List<Student> otherStudentsResponding = responsible.getAllStudents().stream().filter(s -> s.getId() != student.getId()).collect(Collectors.toList());
 		// Remove association between them
 		responsible.removeStudent(student);
+		manager.flush();
 		// Delete responsible if he doesnt have any other student
 		if(otherStudentsResponding.size() <= 0) {
 			manager.remove(responsible);
 		}
-		manager.getTransaction().commit();
+		if(openedTransaction) {
+			manager.getTransaction().commit();
+		}
 	}
 	
 	public Responsible findById(Integer id) throws DbException {

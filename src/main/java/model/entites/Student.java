@@ -119,7 +119,10 @@ public class Student extends Person{
 	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "student",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
 	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -128,10 +131,9 @@ public class Student extends Person{
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Annotation> annotations;
 
-	public void addResponsavel(Responsible responsible, String relationship) {
-		ResponsibleStudent responsibleStudent = new ResponsibleStudent(this, responsible, relationship);
+	public void addResponsavel(ResponsibleStudent responsibleStudent) {
 		this.responsibles.add(responsibleStudent);
-		responsible.getStudents().add(responsibleStudent);
+		responsibleStudent.getResponsible().getStudents().add(responsibleStudent);
 	}
 
 	public void removeResponsavel(Responsible responsible) {
@@ -140,8 +142,6 @@ public class Student extends Person{
 			if (responsibleStudent.getStudent().equals(this) && responsibleStudent.getResponsible().equals(responsible)) {
 				iterator.remove();
 				responsibleStudent.getStudent().getResponsibles().remove(responsibleStudent);
-				responsibleStudent.setStudent(null);
-				responsibleStudent.setResponsible(null);
 			}
 		}
 	}

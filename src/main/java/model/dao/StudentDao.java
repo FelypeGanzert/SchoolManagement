@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
+import db.DBFactory;
+import db.DBUtil;
 import db.DbException;
 import model.entites.Responsible;
 import model.entites.Student;
@@ -49,33 +51,19 @@ public class StudentDao {
 		manager.getTransaction().begin();
 		Student student = manager.find(Student.class, id);
 		manager.refresh(student);
-		Query query;
-		// get all responsibles that respond only for this student
-		query = manager.createNativeQuery(
-				"SELECT ra.responsavel_id FROM responsavel_aluno ra \r\n" + 
-				"JOIN responsavel r ON ra.responsavel_id = r.id\r\n" + 
-				"JOIN responsavel_aluno ra2 ON r.id = ra2.responsavel_id\r\n" + 
-				"WHERE ra2.aluno_id = ? GROUP BY ra.responsavel_id HAVING count(ra.aluno_id) = 1");
-		query.setParameter(1, student.getId());
-		List<Integer> responsiblesId = (List<Integer>)query.getResultList();
-		// remove all associations in ResponsibleStudent for this student
-		for(Responsible ra : student.getAllResponsibles()) {
-			ra.removeStudent(student);
-		}
-		query = manager.createNativeQuery("DELETE FROM responsavel_aluno ra WHERE ra.aluno_id = ?");
+		// Remove all matriculations from student
+		Query query = manager.createNativeQuery("DELETE FROM matricula m WHERE m.aluno_id = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
+		//manager.refresh(student);
+		// remove all associations in ResponsibleStudent for this student
+		ResponsibleDao responsibleDao = new ResponsibleDao(DBFactory.getConnection());
+		for(Responsible ra : student.getAllResponsibles()) {
+			responsibleDao.deleteFromStudent(ra, student);
+		}
+		manager.flush();
 		// Remove student entity
 		manager.remove(student);
-		manager.flush();
-		// remove all responsibles contacts that respond only for this student
-		query = manager.createNativeQuery("DELETE FROM contato c WHERE c.contact_id_responsible IN (:ids)");
-		query.setParameter("ids", responsiblesId);
-		query.executeUpdate();
-		// remove all responsibles entitys that respond only for this student
-		query = manager.createNativeQuery("DELETE FROM responsavel r WHERE r.id IN (:ids)");
-		query.setParameter("ids", responsiblesId);
-		query.executeUpdate();
 		manager.getTransaction().commit();
 	}
 	

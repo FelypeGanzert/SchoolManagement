@@ -21,7 +21,7 @@ public class DBFactory {
 	public static void setUnits(String url) {
 		Locale.setDefault(new Locale("pt", "BR"));
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
-		url = "jdbc:mysql://"+url+"/cadastroprojetos?createDatabaseIfNotExist=true&autoReconnect=true&useTimezone=true&serverTimezone=" + TimeZone.getDefault().getID();
+		url = "jdbc:mysql://"+url+"/cadastroprojetos?createDatabaseIfNotExist=true&autoReconnect=true&useTimezone=true&serverTimezone=UTC";
 		persistenceMap.put("javax.persistence.jdbc.url", url);
 		persistenceMap.put("javax.persistence.jdbc.user", username);
 		persistenceMap.put("javax.persistence.jdbc.password", password);

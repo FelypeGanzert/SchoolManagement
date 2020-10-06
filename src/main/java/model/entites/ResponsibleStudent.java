@@ -29,16 +29,16 @@ public class ResponsibleStudent {
 	private Integer id;
 	
 	@ManyToOne
-	@MapsId("aluno_id")
+	@MapsId("id")
 	@JoinColumn(name = "aluno_id")
 	private Student student;
 	
 	@ManyToOne
-	@MapsId("responsavel_id")
+	@MapsId("id")
 	@JoinColumn(name = "responsavel_id")
 	private Responsible responsible;
 	
-	@Column (name = "parentesco", columnDefinition = "varchar(50) default null")
+	@Column (name = "parentesco", columnDefinition = "varchar(30) default null")
 	private String relationship;
 	
     public ResponsibleStudent(Student student, Responsible responsible, String relationship) {

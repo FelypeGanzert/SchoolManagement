@@ -133,14 +133,17 @@ public class Responsible extends Person {
 		return null;
 	}
 	
+	public void addStudent(ResponsibleStudent responsibleStudent) {
+		this.students.add(responsibleStudent);
+		responsibleStudent.getStudent().getResponsibles().add(responsibleStudent);
+	}
+	
 	public void removeStudent(Student student) {
 		for (Iterator<ResponsibleStudent> iterator = students.iterator(); iterator.hasNext();) {
 			ResponsibleStudent responsibleStudent = iterator.next();
 			if (responsibleStudent.getResponsible().equals(this) && responsibleStudent.getStudent().equals(student)) {
 				iterator.remove();
 				responsibleStudent.getResponsible().getStudents().remove(responsibleStudent);
-				responsibleStudent.setResponsible(null);
-				responsibleStudent.setStudent(null);
 			}
 		}
 	}

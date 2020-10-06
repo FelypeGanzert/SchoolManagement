@@ -383,7 +383,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btnAddResponsible" mnemonicParsing="false" style="-fx-background-color: #0077b6; -fx-cursor: hand;">
+                        <Button fx:id="btnAddResponsible" mnemonicParsing="false" onAction="#handleBtnAddResponsible" style="-fx-background-color: #0077b6; -fx-cursor: hand;">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

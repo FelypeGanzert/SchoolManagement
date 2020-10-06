@@ -19,6 +19,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import animatefx.animation.Shake;
 import animatefx.animation.ZoomIn;
 import db.DBFactory;
+import db.DBUtil;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
@@ -33,9 +34,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import model.dao.ResponsibleDao;
+import model.dao.ResponsibleStudentDao;
 import model.dao.StudentDao;
 import model.entites.Collaborator;
 import model.entites.Person;
+import model.entites.Responsible;
+import model.entites.ResponsibleStudent;
 import model.entites.Student;
 import sharedData.Globe;
 
@@ -64,13 +69,16 @@ public class PersonFormController implements Initializable {
 	@FXML private JFXComboBox<StudentStatusEnum> comboBoxStatus;
 	@FXML private JFXTextField textAdressReference;
 	@FXML private JFXTextArea textAreaObservation;
+	@FXML private JFXTextField textRelationship;
 	// Buttons
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
 	
 	// This form can be used to add/edit Students and Responsibles
 	private Person entity;
+	private Student studentOfResponsible;
 	private StudentDao studentDao;
+	private ResponsibleDao responsibleDao;
 	
 	private InfoStudentController infoStudentController;
 	
@@ -88,6 +96,7 @@ public class PersonFormController implements Initializable {
 		labelFindRegistryResponse.setVisible(false);
 		HBoxInformations.setVisible(false);
 		btnSave.setVisible(false);
+		textRelationship.setVisible(false);
 		// Define by default disabled the option to allow to send email
 		// and let able only when have some email
 		checkBoxSendEmail.setDisable(true);
@@ -114,6 +123,17 @@ public class PersonFormController implements Initializable {
 		updateFormData();
 	}
 	
+	public void setStudentOfResponsible(Student studentOfResponsible) {
+		this.studentOfResponsible = studentOfResponsible;
+		// Define StudentDao
+		defineEntityDao();
+		// Make required the relationship beetwen them
+		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+		requiredValidator.setMessage("Campo necessário");
+		textRelationship.setValidators(requiredValidator);
+		textRelationship.setVisible(true);
+	}
+	
 	// Called from another controller
 	// We will need the infoStudentController to return to that screen if user saves the Person
 	public void setInfoStudentController(InfoStudentController infoStudentController) {
@@ -124,11 +144,18 @@ public class PersonFormController implements Initializable {
 	private void defineEntityDao() {
 		// Try to get dao from Globe, if he doens't find then
 		// instantiate a new and add to Globe
-		if (entity instanceof Student) {
+		if (studentDao == null && (entity instanceof Student || studentOfResponsible != null)) {
 			studentDao = Globe.getGlobe().getItem(StudentDao.class, "studentDao");
 			if (studentDao == null) {
 				studentDao = new StudentDao(DBFactory.getConnection());
 				Globe.getGlobe().putItem("studentDao", studentDao);
+			}
+		}
+		if (responsibleDao == null && entity instanceof Responsible) {
+			responsibleDao = Globe.getGlobe().getItem(ResponsibleDao.class, "responsibleDao");
+			if (responsibleDao == null) {
+				responsibleDao = new ResponsibleDao(DBFactory.getConnection());
+				Globe.getGlobe().putItem("responsibleDao", responsibleDao);
 			}
 		}
 	}
@@ -183,6 +210,9 @@ public class PersonFormController implements Initializable {
 		Constraints.setTextFieldMaxLength(textCity, 50);
 		Constraints.setTextFieldMaxLength(textBirthDate, 10);
 		Constraints.setTextFieldMaxLength(textDateRegistry, 10);
+		// Responsible relationship
+		Constraints.setTextFieldMaxLength(textRelationship, 30);
+		Constraints.setTextFieldAlwaysUpperCase(textRelationship);
 		// ComboBox: status, civilStatus, gender
 		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
@@ -199,9 +229,7 @@ public class PersonFormController implements Initializable {
 		if(!textCPF.validate()) {
 			return;
 		}
-		if(entity instanceof Student) {
-			findStudentRegistry(event);
-		}
+		findPersonRegistry(event);
 		// I still need a method to find a Resposible
 	}
 	
@@ -211,43 +239,39 @@ public class PersonFormController implements Initializable {
 		if(entity instanceof Student && studentDao == null) {
 			throw new IllegalStateException("StudentDao is null");
 		}
+		if(entity instanceof Responsible && responsibleDao == null) {
+			throw new IllegalStateException("ResponsibleDaois null");
+		}
 		// Get data from UI and put in entity
 		getFormData();
 		try {
-			if(entity instanceof Student) {		
-				// check if fields is valid, we have theses situations to stop this method:
-				// 1- if cpf or name aren't valide; or
-				// 2- if date registry isn't null and has something and isn't valide; or
-				// 3- if birthDate isn't null and has something and isn't valide; or
-				// 4- if email isn't null and has something and isn't valide
-				if(!textCPF.validate() || !textName.validate() ||
-						(textDateRegistry.getText()  != null && textDateRegistry.getText().length() > 0 && !textDateRegistry.validate()) || 
-						(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
-						(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
-						(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
-					return;
-				}
-				// If doesn't have an Id, so isn't in database
-				// Otherwhise already is in database, so we just update
-				if (entity.getId() == null) {
-					if(entity instanceof Student) {
-						studentDao.insert((Student) entity);
-					}
-				} else {
-					// Edit date
-					entity.setDateLastRegistryEdit(new Date());
-					if(entity instanceof Student) {
-						studentDao.update((Student) entity);
-					}
-				}
-				// Redirect to info of student
-				if (this.infoStudentController != null) {
-					// if already has an infoStudentController we have come from a info Student screen,
-					// so we just update that screen
-					this.infoStudentController.onDataChanged();
-				} else {
-					// Get mainViewController from Globe
-					MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+			// check if fields is valid, we have theses situations to stop this method:
+			// 1- if cpf or name aren't valide; or
+			// 2- if date registry isn't null and has something and isn't valide; or
+			// 3- if birthDate isn't null and has something and isn't valide; or
+			// 4- if email isn't null and has something and isn't valide
+			if(!textCPF.validate() || !textName.validate() ||
+					(textDateRegistry.getText()  != null && textDateRegistry.getText().length() > 0 && !textDateRegistry.validate()) || 
+					(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
+					(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
+					(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
+				return;
+			}
+			// If we have a student to make a relationship with a responsible, we check if the textFieldRelationship field is valid
+			if(studentOfResponsible != null && !textRelationship.validate()) {
+				return;
+			}
+			saveDataInDB();
+			saveRelationship();
+			// Redirect to info of student
+			if (this.infoStudentController != null) {
+				// if already has an infoStudentController we have come from a info Student screen,
+				// so we just update that screen
+				this.infoStudentController.onDataChanged();
+			} else {
+				// Get mainViewController from Globe
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				if (entity instanceof Student) {
 					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 						controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
 						controller.setCurrentStudent((Student) entity);
@@ -262,9 +286,69 @@ public class PersonFormController implements Initializable {
 		}
 	}
 	
+	// Auxiliar method to save person entity
+	private void saveDataInDB() throws DbException {
+		// Save data in db
+		if (entity instanceof Student) {
+			// If doesn't have an Id, so isn't in database
+			// Otherwhise already is in database, so we just update
+			if (entity.getId() == null) {
+				studentDao.insert((Student) entity);
+			} else {
+				// Edit date
+				entity.setDateLastRegistryEdit(new Date());
+				studentDao.update((Student) entity);
+			}
+		}
+		if (entity instanceof Responsible) {
+			// If doesn't have an Id, so isn't in database
+			// Otherwhise already is in database, so we just update
+			if (entity.getId() == null) {
+				responsibleDao.insert((Responsible) entity);
+			} else {
+				// Edit date
+				entity.setDateLastRegistryEdit(new Date());
+				responsibleDao.update((Responsible) entity);
+			}
+		}
+	}
+	
+	// Auxiliar method
+	private void saveRelationship() throws DbException {
+		if(studentOfResponsible != null) {
+			// DownCast to Responsible
+			Responsible responsible = (Responsible) entity;
+			// Verify if already exists a relationship beetwen the responsible and the student
+			List<ResponsibleStudent> listSearch = null;
+			listSearch = responsible.getStudents().stream().
+					filter(rs -> rs.getStudent().getId() == studentOfResponsible.getId()).
+					collect(Collectors.toList());
+			// Save/Update date
+			ResponsibleStudentDao rsDao = new ResponsibleStudentDao(DBFactory.getConnection());
+			ResponsibleStudent rs = null;
+			// If have any object in list Search, so already exist a relation created
+			String relationship = textRelationship.getText();
+			if(listSearch.size() > 0) {
+				rs = listSearch.get(0);
+				rs.setRelationship(relationship);
+				rsDao.update(rs);
+			} else {
+				rs = new ResponsibleStudent();
+				rs.setStudent(studentOfResponsible);
+				rs.setResponsible(responsible);
+				rs.setRelationship(relationship);
+				rsDao.insert(rs);
+			}
+			// Reflesh data of persons to get the relationship
+			DBUtil.refleshData(studentOfResponsible);
+			DBUtil.refleshData(responsible);
+		}
+	}
+	
 	// Cancel
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event).close();
+		
 	}
 	
 	// ===============================================
@@ -273,14 +357,19 @@ public class PersonFormController implements Initializable {
 		
 	// =========== AUXILIAR METHODS ==================
 	
-	// Method to find a STUDENT registry
-	private void findStudentRegistry(ActionEvent event) {
-		Student student;
+	// Method to find a existinh Person registry
+	private void findPersonRegistry(ActionEvent event) {
+		Person person = null;
 		try {
-			// Try to find a Student with same cpf informed
-			student = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
-			if (student != null) {
-				this.entity = student;
+			// Try to find a Person with same cpf informed
+			if(entity instanceof Student) {
+				person = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+			}
+			if(entity instanceof Responsible) {
+				person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+			}
+			if (person != null) {
+				this.entity = person;
 				// update fields in UI according the student get from database
 				updateFormData();
 				// Message to inform that data have come from database using the CPF
@@ -289,15 +378,16 @@ public class PersonFormController implements Initializable {
 				// Animations to get attention
 				new ZoomIn(HBoxInformations).play();
 				new Shake(labelFindRegistryResponse).play();
-				// Stop the method
+				// Stop the method because we find a person
 				return;
 			}
 			labelFindRegistryResponse.setText("Nenhum registro com esse CPF. Insira o nome completo e clique em Procurar Registro");
 			labelFindRegistryResponse.setVisible(true);
 			new Shake(labelFindRegistryResponse).play();
-			// Check if textName field is hidden, if is show him and stop this method
+			// Check if textName field is hidden, if is show him and stop this method because we find the person
 			if(!textName.isVisible()) {
 				textName.setVisible(true);
+				textName.requestFocus();
 				return;
 			}
 			// If we are here he doesn't find by the CPF, so we will try to find some similar name
@@ -306,11 +396,21 @@ public class PersonFormController implements Initializable {
 				return;
 			}
 			// Try to find students with name like the one informed
-			List<Student> studentsNameLike = studentDao.findAllWithNameLike(textName.getText().trim());
-			if(studentsNameLike.size() > 0) {
+			List<Person> personsNameLike = null;
+			if(entity instanceof Student) {
+				// we  will cast student to super class Person
+				personsNameLike = studentDao.findAllWithNameLike(textName.getText().trim()).
+						stream().map(s -> (Person) s).collect(Collectors.toList());
+			}
+			if(entity instanceof Responsible) {
+				// we  will cast responsibles to super class Person
+				personsNameLike = responsibleDao.findAllWithNameLike(textName.getText().trim()).
+						stream().map(s -> (Person) s).collect(Collectors.toList());
+			}
+			if(personsNameLike.size() > 0) {
 				// if he have find one we  will cast student to super class Person, and show in a new screen
 				// to user see if is one of them
-				List<Person> peopleList = studentsNameLike.stream().map(s -> (Person) s).collect(Collectors.toList());
+				List<Person> peopleList = personsNameLike;
 				Utils.loadView(this.getClass(), true, FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event),
 						"Registros semelhantes", false, (PersonFormFindRegistryController controller) -> {
 							controller.setPeopleList(peopleList);
