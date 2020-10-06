@@ -12,7 +12,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import db.DBFactory;
-import db.DBUtil;
 import db.DbException;
 import model.entites.Responsible;
 import model.entites.Student;

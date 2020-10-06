@@ -132,6 +132,12 @@ public class PersonFormController implements Initializable {
 		requiredValidator.setMessage("Campo necessário");
 		textRelationship.setValidators(requiredValidator);
 		textRelationship.setVisible(true);
+		// Set the relationship to field
+		if (entity != null) {
+			Responsible responsible = (Responsible) entity;
+			String relationship = responsible.getRelationship(studentOfResponsible);
+			textRelationship.setText(relationship);
+		}
 	}
 	
 	// Called from another controller
@@ -242,8 +248,6 @@ public class PersonFormController implements Initializable {
 		if(entity instanceof Responsible && responsibleDao == null) {
 			throw new IllegalStateException("ResponsibleDaois null");
 		}
-		// Get data from UI and put in entity
-		getFormData();
 		try {
 			// check if fields is valid, we have theses situations to stop this method:
 			// 1- if cpf or name aren't valide; or
@@ -261,6 +265,8 @@ public class PersonFormController implements Initializable {
 			if(studentOfResponsible != null && !textRelationship.validate()) {
 				return;
 			}
+			// Get data from UI and put in entity
+			getFormData();
 			saveDataInDB();
 			saveRelationship();
 			// Redirect to info of student
@@ -449,6 +455,14 @@ public class PersonFormController implements Initializable {
 		new ZoomIn(HBoxInformations).play();
 		btnSave.setVisible(true);
 		setDefaultValuesToFields();
+		// If the user is adding a new Responsible, so We copy some informations from student to the form
+		if(studentOfResponsible != null) {
+			textAdress.setText(studentOfResponsible.getAdress());
+			textNeighborhood.setText(studentOfResponsible.getNeighborhood());
+			textCity.setText(studentOfResponsible.getCity());
+			textUF.setText(studentOfResponsible.getUf());
+			textAdressReference.setText(studentOfResponsible.getAdressReference());
+		}
 	}
 	
 	// Update form Data according the data in entity

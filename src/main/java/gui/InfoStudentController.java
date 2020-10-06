@@ -301,6 +301,7 @@ public class InfoStudentController implements Initializable {
 					Responsible responsible = new Responsible();
 					controller.setPersonEntity(responsible);
 					controller.setStudentOfResponsible(student);
+					// We need to set this dependence to return to here in the future
 					controller.setInfoStudentController(this);
 				});
 	}
@@ -410,11 +411,10 @@ public class InfoStudentController implements Initializable {
 		});
 		// Edit button
 		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (responsible, event) -> {
-			System.out.println("edit responsible");
-			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Informações pessoais", false,
+			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
 					(PersonFormController controller) -> {
-						// IN PROGRESS
-						// controller.setPersonEntity(responsible);
+						controller.setPersonEntity(responsible);
+						controller.setStudentOfResponsible(student);
 						// We need to set this dependence to return to here in the future
 						controller.setInfoStudentController(this);
 					});
