@@ -50,8 +50,20 @@ public class StudentDao {
 		manager.getTransaction().begin();
 		Student student = manager.find(Student.class, id);
 		manager.refresh(student);
+		// Get all code parcels of this student
+		Query query = manager.createNativeQuery(
+				"SELECT p.numero_documento FROM parcela p \r\n" + 
+				"JOIN matricula m ON p.matricula_codigo = m.code\r\n" + 
+				"JOIN aluno a ON m.aluno_id = a.id\r\n" + 
+				"WHERE a.id = ?;");
+		query.setParameter(1, student.getId());
+		List<Integer> parcelsCode = (List<Integer>)query.getResultList();
+		// Remove all parcels
+		query = manager.createNativeQuery("DELETE FROM parcela p WHERE p.numero_documento IN (:codes)");
+		query.setParameter("codes", parcelsCode);
+		query.executeUpdate();
 		// Remove all matriculations from student
-		Query query = manager.createNativeQuery("DELETE FROM matricula m WHERE m.aluno_id = ?");
+		query = manager.createNativeQuery("DELETE FROM matricula m WHERE m.aluno_id = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
 		//manager.refresh(student);

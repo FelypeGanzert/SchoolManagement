@@ -22,7 +22,7 @@
 		<GridPane alignment="CENTER" minHeight="400.0" minWidth="1250.0" prefHeight="400.0" prefWidth="1250.0">
 			<columnConstraints>
 				<ColumnConstraints hgrow="ALWAYS" maxWidth="560.0" minWidth="560.0" prefWidth="560.0" />
-				<ColumnConstraints hgrow="ALWAYS" minWidth="300.0" prefWidth="300.0" />
+				<ColumnConstraints hgrow="ALWAYS" />
 			</columnConstraints>
 			<rowConstraints>
             <RowConstraints valignment="CENTER" vgrow="NEVER" />
@@ -70,22 +70,6 @@
 								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
 							</padding>
 						</HBox>
-						<HBox spacing="25.0">
-							<children>
-								<Label text="Status do aluno:" />
-								<JFXRadioButton text="Todos">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="status_aluno" />
-                           </toggleGroup>
-								</JFXRadioButton>
-								<JFXRadioButton selected="true" text="Ativo" toggleGroup="$status_aluno" />
-								<JFXRadioButton text="Aguardando" toggleGroup="$status_aluno" />
-								<JFXRadioButton text="Inativo" toggleGroup="$status_aluno" />
-							</children>
-							<padding>
-								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-							</padding>
-						</HBox>
 						<TableView prefHeight="200.0" VBox.vgrow="ALWAYS">
 							<placeholder>
 								<Label text="Não há alunos matriculados" />
@@ -127,7 +111,7 @@
                         <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <TableView prefHeight="200.0" VBox.vgrow="ALWAYS">
+                  <TableView VBox.vgrow="ALWAYS">
                      <placeholder>
                         <Label text="Não há alunos matriculados" />
                      </placeholder>

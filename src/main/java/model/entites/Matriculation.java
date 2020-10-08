@@ -54,7 +54,7 @@ public class Matriculation {
 	@Column(name="situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 	
-	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Parcel> parcels;
 
 
