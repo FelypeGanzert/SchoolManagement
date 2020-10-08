@@ -130,6 +130,9 @@ public class Student extends Person{
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Annotation> annotations;
+	
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Course> courses;
 
 	public void addResponsavel(ResponsibleStudent responsibleStudent) {
 		this.responsibles.add(responsibleStudent);

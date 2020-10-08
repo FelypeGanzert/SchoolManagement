@@ -301,7 +301,7 @@ public class ListStudentsController implements Initializable {
 		tableMatriculations.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {	
 					labelSelectedMatriculation.setText("");
-					if (newSelection != null && newSelection.getParcels().size() > 0) {
+					if (newSelection != null) {
 						updateParcels(newSelection);
 						String matriculationCode = Integer.toString(newSelection.getCode());
 						setCurrentMatriculationId(matriculationCode);
@@ -460,7 +460,7 @@ public class ListStudentsController implements Initializable {
 		try {
 			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
-				controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
+				controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
 				controller.setCurrentStudent(student);
 				// Reflesh student data
 				refreshStudentFromDB(student);
@@ -508,31 +508,34 @@ public class ListStudentsController implements Initializable {
 	public void updateMatriculations(Student student) {
 		tableMatriculations.setItems(null);
 		// return if doesnt have any matriculation to show
-		if (student == null || student.getMatriculations() == null || student.getMatriculations().size() <= 0) {
-			return;
+		if (student != null && student.getMatriculations() != null && student.getMatriculations().size() >= 0) {
+			// get matriculations from student and put in a ObservableList
+			ObservableList<Matriculation> matriculations = FXCollections.observableList(student.getMatriculations());
+			// sort matriculations by date
+			matriculations.sort((m1, m2) -> m2.getDateMatriculation().compareTo(m1.getDateMatriculation()));
+			// set matriculations to table in UI
+			tableMatriculations.setItems(matriculations);
 		}
-		// get matriculations from student and put in a ObservableList
-		ObservableList<Matriculation> matriculations = FXCollections.observableList(student.getMatriculations());
-		// sort matriculations by date
-		matriculations.sort((m1, m2) -> m2.getDateMatriculation().compareTo(m1.getDateMatriculation()));
-		// set matriculations to table in UI and select the first one
-		tableMatriculations.setItems(matriculations);
-		listViewAnnotation.refresh();
-		listViewAnnotation.getSelectionModel().selectFirst();
+		// reflesh and select the first one
+		tableMatriculations.refresh();
+		tableMatriculations.getSelectionModel().selectFirst();
+		if(tableMatriculations.getItems().size() <= 0) {
+			updateParcels(null);
+		}
 	}
 	
 	public void updateParcels(Matriculation matriculation) {
 		tableParcels.setItems(null);
 		// return if doesnt have any parcel to show
-		if (matriculation == null || matriculation.getParcels() == null || matriculation.getParcels().size() <= 0) {
-			return;
+		if (matriculation != null && matriculation.getParcels() != null && matriculation.getParcels().size() >= 0) {
+			// get parcels from matriculation and put in a ObservableList
+			ObservableList<Parcel> parcels = FXCollections.observableList(matriculation.getParcels());
+			// sort parcels by date
+			parcels.sort((p1, p2) -> p2.getDateParcel().compareTo(p1.getDateParcel()));
+			// set parcels to table in UI
+			tableParcels.setItems(parcels);
 		}
-		// get parcels from matriculation and put in a ObservableList
-		ObservableList<Parcel> parcels = FXCollections.observableList(matriculation.getParcels());
-		// sort parcels by date
-		parcels.sort((p1, p2) -> p2.getDateParcel().compareTo(p1.getDateParcel()));
-		// set parcels to table in UI and select the first one
-		tableParcels.setItems(parcels);
+		// Refresh and select the first one
 		tableParcels.refresh();
 		tableParcels.getSelectionModel().selectFirst();
 	}
@@ -540,15 +543,15 @@ public class ListStudentsController implements Initializable {
 	public void updateAnnotations(Student student) {
 		listViewAnnotation.setItems(null);
 		// return if doenst have any annotation to show
-		if (student == null || student.getAnnotations() == null || student.getAnnotations().size() <= 0) {
-			return;
+		if (student != null && student.getAnnotations() != null && student.getAnnotations().size() >= 0) {
+			// get annotations from student and put in a ObservableList
+			ObservableList<Annotation> annotations = FXCollections.observableList(student.getAnnotations());
+			// sort annotations by date
+			annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
+			// set annotations to listView in UI
+			listViewAnnotation.setItems(annotations);
 		}
-		// get annotations from student and put in a ObservableList
-		ObservableList<Annotation> annotations = FXCollections.observableList(student.getAnnotations());
-		// sort annotations by date
-		annotations.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
-		// set annotations to listView in UI and select the first one
-		listViewAnnotation.setItems(annotations);
+		// Refresh and select the first one
 		listViewAnnotation.refresh();
 		listViewAnnotation.getSelectionModel().selectFirst();
 	}

@@ -47,6 +47,7 @@ import model.entites.Matriculation;
 import model.entites.Parcel;
 import model.entites.Responsible;
 import model.entites.Student;
+import sharedData.Globe;
 
 public class InfoStudentController implements Initializable {
 	// Menu
@@ -127,7 +128,7 @@ public class InfoStudentController implements Initializable {
 		updateTablesData();
 	}
 	
-	public void setMainViewControllerAndReturnName(String returnPath, String returnText) {
+	public void setReturn(String returnPath, String returnText) {
 		btnReturn.setText("Voltar para " + returnText);
 	}
 	
@@ -305,6 +306,13 @@ public class InfoStudentController implements Initializable {
 					controller.setInfoStudentController(this);
 				});
 	}
+	
+	public void handleBtnCourses(ActionEvent event) {
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.STUDENT_COURSES, (StudentCoursesController controller) -> {
+			controller.setStudent(student);
+		});
+	}
 
 	// ====================================================
 	// ============ END OF BUTTONS ON TABLES===============
@@ -354,7 +362,7 @@ public class InfoStudentController implements Initializable {
 		});
 	}
 	
-	// CONTACTS
+	// S
 	private void initiliazeTableContactsNodes() {
 		// number
 		columnContactNumber.setCellValueFactory(cellData -> {

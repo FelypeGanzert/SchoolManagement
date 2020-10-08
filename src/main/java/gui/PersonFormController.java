@@ -279,7 +279,7 @@ public class PersonFormController implements Initializable {
 				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 				if (entity instanceof Student) {
 					mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
-						controller.setMainViewControllerAndReturnName(FXMLPath.LIST_STUDENTS, "Alunos");
+						controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
 						controller.setCurrentStudent((Student) entity);
 					});
 				}

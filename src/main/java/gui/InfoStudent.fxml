@@ -61,7 +61,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" spacing="20.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton fx:id="btnCourses" ripplerFill="#1165b1" style="-fx-background-color: #fff; -fx-cursor: hand;" text="CURSOS">
+                        <JFXButton fx:id="btnCourses" onAction="#handleBtnCourses" ripplerFill="#1165b1" style="-fx-background-color: #fff; -fx-cursor: hand;" text="CURSOS">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
