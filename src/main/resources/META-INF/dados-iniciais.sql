@@ -20,23 +20,23 @@ insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf, send_email) values (3, "Aldeia da Folha", "Felype", "Sï¿½o Paulo", "53453", "camile@gmail.com", "Rua Carlos Pereiras", "Chritian de Oliveira Pereiras", "242", "M", "PR", false);
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf, send_email) values (4, "Vila Nova Fibrurgo", "Felype", "Petrolina", "444444444", "camile@gmail.com", "Rua Bermudas", "Triangulo das Bermudas", "34234", "M", "PR", true);
  
-insert into contato(id, descricao, numero, contact_id_student) values(1,"NÃºmero do aluno","(41) 98868-0206", 1);
-insert into contato(id, descricao, numero, contact_id_student) values(2,"NÃºmero da mãe", "912345678", 2);
+insert into contato(id, descricao, numero, contact_id_student) values(1,"Número do aluno","(41) 98868-0206", 1);
+insert into contato(id, descricao, numero, contact_id_student) values(2,"Número da mãe", "912345678", 2);
 insert into contato(id, descricao, numero, contact_id_student) values(3, "--", "9123456781234567890", 2);
 insert into contato(id, descricao, numero, contact_id_responsible) values(4,"Namorado", "988888877", 1);
-insert into contato(id, descricao, numero, contact_id_responsible) values(5,"VÃ³", "123456791", 2);
+insert into contato(id, descricao, numero, contact_id_responsible) values(5,"Vó", "123456791", 2);
  
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 1,  "Mãe");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (3, 2, "Tia");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (1, 3, "Sobinho");
 insert into responsavel_aluno (aluno_id, responsavel_id, parentesco) values (2, 3, "Amigo");
 
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (1, '2020-11-01 01:00:00', "uma nova anotaÃ§ão que será adicionada", "Felype", 1);
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (2, '2020-10-01 02:00:00', "segunda anotaÃ§ão", "Felype", 3);
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (3, '2020-09-01 03:00:00', "terceira anotaÃ§ão\n\n\ncom quebra de linhas", "Felype", 1);
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (4, '2020-07-01 04:00:00', "quinta anotaÃ§ão", "Felype", 3);
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (5, '2020-02-01 05:00:00', "sexta anotaÃ§ão", "Felype", 2);
-insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (6, '2020-03-01 06:00:00', "sétima anotaÃ§ão com uma quantidade tremendamente um pouquinho maior do que as anotaÃ§Ãµes anteriores, sendo que essa também possui quebra de linhas.\n\n\n Quebras inseridas com barras e a letra n, vamos ver se irá funcionar ou não", "Felype", 2);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (1, '2020-11-01 01:00:00', "uma nova anotação que será adicionada", "Felype", 1);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (2, '2020-10-01 02:00:00', "segunda anotação", "Felype", 3);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (3, '2020-09-01 03:00:00', "terceira anotação\n\n\ncom quebra de linhas", "Felype", 1);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (4, '2020-07-01 04:00:00', "quinta anotação", "Felype", 3);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (5, '2020-02-01 05:00:00', "sexta anotação", "Felype", 2);
+insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (6, '2020-03-01 06:00:00', "sétima anotação com uma quantidade tremendamente um pouquinho maior do que as anotações anteriores, sendo que essa também possui quebra de linhas.\n\n\n Quebras inseridas com barras e a letra n, vamos ver se irá funcionar ou não", "Felype", 2);
     
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(1, 'Ativa', '2020-09-01', "Feh", "Teste sem resp.", null, 1);
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(2, 'Cancelada', '2010-10-01', "Feh", "Teste sem resp.", 1, 1);

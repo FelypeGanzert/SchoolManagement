@@ -362,7 +362,7 @@ public class InfoStudentController implements Initializable {
 		});
 	}
 	
-	// S
+	// Contacts
 	private void initiliazeTableContactsNodes() {
 		// number
 		columnContactNumber.setCellValueFactory(cellData -> {

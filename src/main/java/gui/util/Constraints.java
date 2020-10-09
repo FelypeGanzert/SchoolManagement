@@ -99,10 +99,10 @@ public class Constraints {
 			return number.replaceFirst("(\\d{5})(\\d)", "$1-$2");
 		}
 		if (number.length() == 10) { // (41)1234-5678
-			return number.replaceFirst("(\\d{2})(\\d{4})(\\d)", "($1)$2-$3");
+			return number.replaceFirst("(\\d{2})(\\d{4})(\\d)", "($1) $2-$3");
 		}
 		if (number.length() == 11) { // (41)91234-5678
-			return number.replaceFirst("(\\d{2})(\\d{5})(\\d)", "($1)$2-$3");
+			return number.replaceFirst("(\\d{2})(\\d{5})(\\d)", "($1) $2-$3");
 		}
 		return number;
 	}

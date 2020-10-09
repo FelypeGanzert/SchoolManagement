@@ -56,14 +56,14 @@ public class ContactFormController implements Initializable {
 		this.contact = contact;
 		this.person = person;
 		this.infoStudent = infoStudent;
-		if(contact.getId() != null) {
+		if(this.contact.getId() != null) {
 			this.updateForm();
 		}
 	}
 	
 	
 	public void handleBtnCancel(ActionEvent event) {
-		Utils.currentStage(event).close();;
+		Utils.currentStage(event).close();
 	}
 	
 	public void handleBtnSave(ActionEvent event) {
@@ -102,7 +102,11 @@ public class ContactFormController implements Initializable {
 	
 	// Update UI with contact infomartions
 	public void updateForm() {
-		textNumber.setText(contact.getNumber());
+		
+		// set Only Numbers to text field
+		if(contact.getNumber() != null) {
+			textNumber.setText(contact.getNumber().replaceAll("[^0-9]", ""));
+		}
 		textDescription.setText(contact.getDescription());
 	}
 
