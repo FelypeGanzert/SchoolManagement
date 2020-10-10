@@ -17,7 +17,7 @@
          <children>
       		<HBox prefWidth="200.0" spacing="20.0">
       			<children>
-                  <JFXTextField fx:id="textCPF" labelFloat="true" promptText="CPF" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textCPF" labelFloat="true" prefWidth="130.0" promptText="CPF" styleClass="text-field-with-label" />
                   <JFXTextField fx:id="textName" labelFloat="true" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" promptText="NOME" styleClass="text-field-with-label" />
       				<JFXButton fx:id="btnFindRegistry" onAction="#handleBtnFindRegistry" ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Procurar Registro" textFill="WHITE">
       					<padding>
@@ -38,13 +38,16 @@
                   <Insets bottom="20.0" top="20.0" />
                </padding>
       		</HBox>
-				<Label fx:id="labelFindRegistryResponse">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></Label>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+      				<Label fx:id="labelFindRegistryResponse" text="O CPF é fundamental para o cadastro, porém você pode">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="btnWithoutCPF" onAction="#handleBtnPreRegistry" text="Matricular provisoriamente sem CPF" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="5.0" />

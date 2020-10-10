@@ -25,7 +25,6 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
 import gui.util.Utils;
-import gui.util.Validators;
 import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
@@ -74,18 +73,19 @@ public class PersonFormController implements Initializable {
 	// Buttons
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
-	
+	@FXML private JFXButton btnWithoutCPF;
+
 	// This form can be used to add/edit Students and Responsibles
 	private Person entity;
 	private Student studentOfResponsible;
 	private StudentDao studentDao;
 	private ResponsibleDao responsibleDao;
-	
+
 	private InfoStudentController infoStudentController;
-	
+
 	private final String DEFAULT_CITY = "Lapa";
 	private final String DEFAULT_UF = "PR";
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Hidden some fields by default
@@ -94,7 +94,6 @@ public class PersonFormController implements Initializable {
 		HBoxRegistryInformations.setVisible(false);
 		comboBoxRegisteredBy.setVisible(false);
 		textDateRegistry.setVisible(false);
-		labelFindRegistryResponse.setVisible(false);
 		HBoxInformations.setVisible(false);
 		btnSave.setVisible(false);
 		textRelationship.setVisible(false);
@@ -114,7 +113,7 @@ public class PersonFormController implements Initializable {
 		// Set default values
 		setDefaultValuesToFields();
 	}
-	
+
 	// Called from another controllers
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
@@ -122,8 +121,13 @@ public class PersonFormController implements Initializable {
 		defineEntityDao();
 		// put entity data in fields of UI
 		updateFormData();
+		// Hidden new registry message about CPF if the person already is in db
+		if (entity.getId() != null) {
+			btnWithoutCPF.setVisible(false);
+			labelFindRegistryResponse.setVisible(false);
+		}
 	}
-	
+
 	public void setStudentOfResponsible(Student studentOfResponsible) {
 		this.studentOfResponsible = studentOfResponsible;
 		// Define StudentDao
@@ -140,13 +144,14 @@ public class PersonFormController implements Initializable {
 			textRelationship.setText(relationship);
 		}
 	}
-	
+
 	// Called from another controller
-	// We will need the infoStudentController to return to that screen if user saves the Person
+	// We will need the infoStudentController to return to that screen if user saves
+	// the Person
 	public void setInfoStudentController(InfoStudentController infoStudentController) {
 		this.infoStudentController = infoStudentController;
 	}
-	
+
 	// This will verify if we need a student or resposible dao
 	private void defineEntityDao() {
 		// Try to get dao from Globe, if he doens't find then
@@ -166,7 +171,7 @@ public class PersonFormController implements Initializable {
 			}
 		}
 	}
-	
+
 	// Set default values to Form
 	private void setDefaultValuesToFields() {
 		comboBoxStatus.getSelectionModel().selectFirst();
@@ -203,7 +208,8 @@ public class PersonFormController implements Initializable {
 		emailValidator.setRegexPattern("^(.+)@(.+)$");
 		textEmail.setValidators(emailValidator);
 		Constraints.setTextFieldAlwaysLowerCase(textEmail);
-		//textDateRegistry.setValidators(requiredValidator, dateValidator); /// ========= I still have to work in dateRegistry
+		// textDateRegistry.setValidators(requiredValidator, dateValidator); ///
+		// ========= I still have to work in dateRegistry
 		// Max length for fields
 		Constraints.setTextFieldMaxLength(textUF, 2);
 		Constraints.setTextFieldAlwaysUpperCase(textUF);
@@ -225,28 +231,44 @@ public class PersonFormController implements Initializable {
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
 		comboBoxGender.getItems().addAll(GenderEnum.values());
 	}
-		
+
 	// ===============================================
 	// == START OF METHODS TO HANDLE BUTTONS ACTION ==
 	// ===============================================
+
+	// Pre-registry without CPF
+	public void handleBtnPreRegistry(ActionEvent event) {
+		// Hidden button to pre-registry without CPF
+		btnWithoutCPF.setVisible(false);
+		// Show message to user remember to update the CPF in future
+		labelFindRegistryResponse.setText("Será feito um pré-registro sem o CPF. NÃO SE ESQUEÇA de atualizar o CPF dessa pessoa no futuro.");
+		new Shake(labelFindRegistryResponse).play();
+		//  Remove all Validators from cpf, clear and disable field
+		RegexValidator cpfValidator = new RegexValidator("Inválido");
+		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
+		textCPF.getValidators().clear();
+		textCPF.setDisable(true);
+		// Show name field
+		textName.setVisible(true);
+	}
 	
 	// Find Registry
 	public void handleBtnFindRegistry(ActionEvent event) {
-		//Check if cpf is valide
-		if(!textCPF.validate()) {
+		// Check if cpf is valide
+		if (!textCPF.validate()) {
 			return;
 		}
 		findPersonRegistry(event);
 		// I still need a method to find a Resposible
 	}
-	
+
 	// Save entity
 	public void handleBtnSave(ActionEvent event) {
 		// Verify if the dao of entity is set, if isn't will throw a exception
-		if(entity instanceof Student && studentDao == null) {
+		if (entity instanceof Student && studentDao == null) {
 			throw new IllegalStateException("StudentDao is null");
 		}
-		if(entity instanceof Responsible && responsibleDao == null) {
+		if (entity instanceof Responsible && responsibleDao == null) {
 			throw new IllegalStateException("ResponsibleDaois null");
 		}
 		try {
@@ -255,13 +277,14 @@ public class PersonFormController implements Initializable {
 			// 2- if date registry isn't null and has something and isn't valide; or
 			// 3- if birthDate isn't null and has something and isn't valide; or
 			// 4- if email isn't null and has something and isn't valide
-			if(!textCPF.validate() || !textName.validate() || !textDateRegistry.validate() || 
-					(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
-					(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
-					(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
+			if (!textCPF.validate() || !textName.validate() || !textDateRegistry.validate()
+					|| (textRG.getText() != null && textRG.getText().length() > 0 && !textRG.validate())
+					|| (textBirthDate.getText() != null && textBirthDate.getText().length() > 0
+							&& !textBirthDate.validate())
+					|| (textEmail.getText() != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
 				return;
 			}
-			//Check if registry date is after today
+			// Check if registry date is after today
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date today = new Date();
@@ -271,9 +294,10 @@ public class PersonFormController implements Initializable {
 					// stop the method
 					return;
 				}
-				if (textBirthDate.getText()  != null && textBirthDate.getText().length() > 0) {
+				if (textBirthDate.getText() != null && textBirthDate.getText().length() > 0) {
 					if (sdf.parse(textBirthDate.getText()).compareTo(today) > 0) {
-						Alerts.showAlert("Inválido", "A data de nascimento do aluno é posterior a data atual do computador.",
+						Alerts.showAlert("Inválido",
+								"A data de nascimento do aluno é posterior a data atual do computador.",
 								"É impossível fazer um cadastro de um aluno que ainda nem nasceu.", AlertType.ERROR);
 						// stop the method
 						return;
@@ -283,8 +307,9 @@ public class PersonFormController implements Initializable {
 				System.out.println("Erro durante conversão para verificar datas...");
 				e.printStackTrace();
 			}
-			// If we have a student to make a relationship with a responsible, we check if the textFieldRelationship field is valid
-			if(studentOfResponsible != null && !textRelationship.validate()) {
+			// If we have a student to make a relationship with a responsible, we check if
+			// the textFieldRelationship field is valid
+			if (studentOfResponsible != null && !textRelationship.validate()) {
 				return;
 			}
 			// Get data from UI and put in entity
@@ -293,7 +318,8 @@ public class PersonFormController implements Initializable {
 			saveRelationship();
 			// Redirect to info of student
 			if (this.infoStudentController != null) {
-				// if already has an infoStudentController we have come from a info Student screen,
+				// if already has an infoStudentController we have come from a info Student
+				// screen,
 				// so we just update that screen
 				this.infoStudentController.onDataChanged();
 			} else {
@@ -313,7 +339,7 @@ public class PersonFormController implements Initializable {
 			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
 		}
 	}
-	
+
 	// Auxiliar method to save person entity
 	private void saveDataInDB() throws DbException {
 		// Save data in db
@@ -340,23 +366,23 @@ public class PersonFormController implements Initializable {
 			}
 		}
 	}
-	
+
 	// Auxiliar method
 	private void saveRelationship() throws DbException {
-		if(studentOfResponsible != null) {
+		if (studentOfResponsible != null) {
 			// DownCast to Responsible
 			Responsible responsible = (Responsible) entity;
-			// Verify if already exists a relationship beetwen the responsible and the student
+			// Verify if already exists a relationship beetwen the responsible and the
+			// student
 			List<ResponsibleStudent> listSearch = null;
-			listSearch = responsible.getStudents().stream().
-					filter(rs -> rs.getStudent().getId() == studentOfResponsible.getId()).
-					collect(Collectors.toList());
+			listSearch = responsible.getStudents().stream()
+					.filter(rs -> rs.getStudent().getId() == studentOfResponsible.getId()).collect(Collectors.toList());
 			// Save/Update date
 			ResponsibleStudentDao rsDao = new ResponsibleStudentDao(DBFactory.getConnection());
 			ResponsibleStudent rs = null;
 			// If have any object in list Search, so already exist a relation created
 			String relationship = textRelationship.getText();
-			if(listSearch.size() > 0) {
+			if (listSearch.size() > 0) {
 				rs = listSearch.get(0);
 				rs.setRelationship(relationship);
 				rsDao.update(rs);
@@ -372,71 +398,81 @@ public class PersonFormController implements Initializable {
 			DBUtil.refleshData(responsible);
 		}
 	}
-	
+
 	// Cancel
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event).close();
-		
+
 	}
-	
+
 	// ===============================================
 	// === END OF METHODS TO HANDLE BUTTONS ACTION ===
 	// ===============================================
-		
+
 	// =========== AUXILIAR METHODS ==================
-	
-	// Method to find a existinh Person registry
+
+	// Method to find a existinG Person registry
 	private void findPersonRegistry(ActionEvent event) {
+		// Hidden button to pre-registry without CPF and the label with some informations
+		btnWithoutCPF.setVisible(false);
+		labelFindRegistryResponse.setVisible(false);
 		Person person = null;
 		try {
 			// Try to find a Person with same cpf informed
-			if(entity instanceof Student) {
-				person = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
-			}
-			if(entity instanceof Responsible) {
-				person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
-			}
-			if (person != null) {
-				this.entity = person;
-				// update fields in UI according the student get from database
-				updateFormData();
-				// Message to inform that data have come from database using the CPF
-				labelFindRegistryResponse.setText("Registro encontrado a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
+			if (textCPF.getText() != null && textCPF.getText().length() > 0) {
+				if (entity instanceof Student) {
+					person = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+				}
+				if (entity instanceof Responsible) {
+					person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+				}
+
+				if (person != null) {
+					this.entity = person;
+					// update fields in UI according the student get from database
+					updateFormData();
+					// Message to inform that data have come from database using the CPF
+					labelFindRegistryResponse.setText(
+							"Registro encontrado a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
+					labelFindRegistryResponse.setVisible(true);
+					// Animations to get attention
+					new ZoomIn(HBoxInformations).play();
+					new Shake(labelFindRegistryResponse).play();
+					// Stop the method because we find a person
+					return;
+				}
+				labelFindRegistryResponse
+						.setText("Nenhum registro com esse CPF. Insira o nome completo e clique em Procurar Registro");
 				labelFindRegistryResponse.setVisible(true);
-				// Animations to get attention
-				new ZoomIn(HBoxInformations).play();
 				new Shake(labelFindRegistryResponse).play();
-				// Stop the method because we find a person
-				return;
 			}
-			labelFindRegistryResponse.setText("Nenhum registro com esse CPF. Insira o nome completo e clique em Procurar Registro");
-			labelFindRegistryResponse.setVisible(true);
-			new Shake(labelFindRegistryResponse).play();
-			// Check if textName field is hidden, if is show him and stop this method because we find the person
-			if(!textName.isVisible()) {
+			// Check if textName field is hidden, if is show him and stop this method
+			// because we find the person
+			if (!textName.isVisible()) {
 				textName.setVisible(true);
 				textName.requestFocus();
 				return;
 			}
 			// If we are here he doesn't find by the CPF, so we will try to find some similar name
 			// Check if name is valide
-			if(!textName.validate()) {
+			if (!textName.validate()) {
 				return;
 			}
 			// Try to find students with name like the one informed
 			List<Person> personsNameLike = null;
-			if(entity instanceof Student) {
-				// we  will cast student to super class Person
-				personsNameLike = studentDao.findAllWithNameLike(textName.getText().trim()).
-						stream().map(s -> (Person) s).collect(Collectors.toList());
+			if (entity instanceof Student) {
+				// we will cast student to super class Person
+				personsNameLike = studentDao.findAllWithNameLike(textName.getText().trim()).stream()
+						.map(s -> (Person) s).collect(Collectors.toList());
 			}
-			if(entity instanceof Responsible) {
-				// we  will cast responsibles to super class Person
-				personsNameLike = responsibleDao.findAllWithNameLike(textName.getText().trim()).
-						stream().map(s -> (Person) s).collect(Collectors.toList());
+			if (entity instanceof Responsible) {
+				// we will cast responsibles to super class Person
+				personsNameLike = responsibleDao.findAllWithNameLike(textName.getText().trim()).stream()
+						.map(s -> (Person) s).collect(Collectors.toList());
 			}
-			if(personsNameLike.size() > 0) {
-				// if he have find one we  will cast student to super class Person, and show in a new screen
+			if (personsNameLike.size() > 0) {
+				// if he have find one we will cast student to super class Person, and show in a
+				// new screen
 				// to user see if is one of them
 				List<Person> peopleList = personsNameLike;
 				Utils.loadView(this.getClass(), true, FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event),
@@ -449,17 +485,19 @@ public class PersonFormController implements Initializable {
 			}
 		} catch (DbException e) {
 			// Show a alert message if something went wrong
-			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro", AlertType.ERROR);
+			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro",
+					AlertType.ERROR);
 			e.printStackTrace();
 		}
 		// If we get here, doesn't exist a person with the same CPF even a similar name
 		// So, the user is creating a new person
-		labelFindRegistryResponse.setText("A pessoa ainda não possui registro. Insira as informações para o novo cadastro.");
+		labelFindRegistryResponse
+				.setText("A pessoa ainda não possui registro. Insira as informações para o novo cadastro.");
 		labelFindRegistryResponse.setVisible(true);
 		new Shake(labelFindRegistryResponse).play();
 		addNewRegistry();
 	}
-	
+
 	// Called in case of doesn't have find any correspondent registry in database
 	// Or in case of the user realy want to create a new registry
 	public void addNewRegistry() {
@@ -477,8 +515,9 @@ public class PersonFormController implements Initializable {
 		new ZoomIn(HBoxInformations).play();
 		btnSave.setVisible(true);
 		setDefaultValuesToFields();
-		// If the user is adding a new Responsible, so We copy some informations from student to the form
-		if(studentOfResponsible != null) {
+		// If the user is adding a new Responsible, so We copy some informations from
+		// student to the form
+		if (studentOfResponsible != null) {
 			textAdress.setText(studentOfResponsible.getAdress());
 			textNeighborhood.setText(studentOfResponsible.getNeighborhood());
 			textCity.setText(studentOfResponsible.getCity());
@@ -486,12 +525,12 @@ public class PersonFormController implements Initializable {
 			textAdressReference.setText(studentOfResponsible.getAdressReference());
 		}
 	}
-	
+
 	// Update form Data according the data in entity
 	public void updateFormData() {
 		// If entity has an Id, so he already is in databaseso, we show Informations
 		// and button to save, and hidden button to find the registry in db
-		if(entity.getId() != null) {
+		if (entity.getId() != null) {
 			textName.setVisible(true);
 			btnFindRegistry.setVisible(false);
 			HBoxInformations.setVisible(true);
@@ -503,16 +542,16 @@ public class PersonFormController implements Initializable {
 			btnFindRegistry.setVisible(true);
 			HBoxRegistryInformations.setVisible(true);
 			// only students haven status
-			if(entity instanceof Student) {
+			if (entity instanceof Student) {
 				comboBoxStatus.setVisible(true);
 			} else {
 				comboBoxStatus.setVisible(false);
 			}
 		}
-		//comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
+		// comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
 		textName.setText(entity.getName());
 		textEmail.setText(entity.getEmail());
-		if(entity.getSendEmail() != null) {
+		if (entity.getSendEmail() != null) {
 			checkBoxSendEmail.setSelected(entity.getSendEmail());
 		}
 		textCPF.setText(entity.getCpf());
@@ -525,13 +564,13 @@ public class PersonFormController implements Initializable {
 		textAreaObservation.setText(entity.getObservation());
 		// birthDate and registryDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		if(entity.getDateBirth() != null) {
+		if (entity.getDateBirth() != null) {
 			textBirthDate.setText(sdf.format(entity.getDateBirth()));
 		}
-		if(entity.getDateRegistry() != null) {
+		if (entity.getDateRegistry() != null) {
 			textDateRegistry.setText(sdf.format(entity.getDateRegistry()));
 		}
-		//ComboBox's
+		// ComboBox's
 		if (entity.getGender() != null) {
 			comboBoxGender.getSelectionModel().select(GenderEnum.fromString(entity.getGender()));
 		}
@@ -540,11 +579,11 @@ public class PersonFormController implements Initializable {
 					.select(CivilStatusEnum.fromFullCivilStatus(entity.getCivilStatus()));
 		}
 		// Only student have status, so we set if the status of student isn't null
-		if(entity instanceof Student && ((Student) entity).getStatus() != null) {
+		if (entity instanceof Student && ((Student) entity).getStatus() != null) {
 			comboBoxStatus.getSelectionModel().select(StudentStatusEnum.fromString(((Student) entity).getStatus()));
 		}
 	}
-	
+
 	// get form Data and put inside entity
 	public void getFormData() {
 		// comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
@@ -562,10 +601,10 @@ public class PersonFormController implements Initializable {
 		// birthDate and registryDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			if(textBirthDate.getText().length() > 0) {
+			if (textBirthDate.getText().length() > 0) {
 				entity.setDateBirth(sdf.parse(textBirthDate.getText()));
 			}
-			if(textDateRegistry.getText().length() > 0) {
+			if (textDateRegistry.getText().length() > 0) {
 				entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
 			}
 		} catch (ParseException e) {
@@ -578,7 +617,7 @@ public class PersonFormController implements Initializable {
 		if (entity instanceof Student) {
 			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
 		}
-		
+
 	}
-	
+
 }
