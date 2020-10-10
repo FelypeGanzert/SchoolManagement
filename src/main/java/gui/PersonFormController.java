@@ -25,6 +25,7 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
 import gui.util.Utils;
+import gui.util.Validators;
 import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
@@ -192,7 +193,7 @@ public class PersonFormController implements Initializable {
 		RegexValidator rgValidator = new RegexValidator("Inválido");
 		rgValidator.setRegexPattern("^\\d{2}\\.\\d{3}\\.\\d{3}\\-\\d{1}$");
 		textRG.setValidators(rgValidator);
-		// Date Validator: birthDate and dateRegistry
+		// Date Validator: birthDate and dateRegistry (required)
 		RegexValidator dateValidator = new RegexValidator("Inválido");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
 		textBirthDate.setValidators(dateValidator);
@@ -259,6 +260,28 @@ public class PersonFormController implements Initializable {
 					(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
 					(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
 				return;
+			}
+			//Check if registry date is after today
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Date today = new Date();
+				if (sdf.parse(textDateRegistry.getText()).compareTo(today) > 0) {
+					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
+							"É impossível fazer um cadastro no futuro.", AlertType.ERROR);
+					// stop the method
+					return;
+				}
+				if (textBirthDate.getText()  != null && textBirthDate.getText().length() > 0) {
+					if (sdf.parse(textBirthDate.getText()).compareTo(today) > 0) {
+						Alerts.showAlert("Inválido", "A data de nascimento do aluno é posterior a data atual do computador.",
+								"É impossível fazer um cadastro de um aluno que ainda nem nasceu.", AlertType.ERROR);
+						// stop the method
+						return;
+					}
+				}
+			} catch (ParseException e) {
+				System.out.println("Erro durante conversão para verificar datas...");
+				e.printStackTrace();
 			}
 			// If we have a student to make a relationship with a responsible, we check if the textFieldRelationship field is valid
 			if(studentOfResponsible != null && !textRelationship.validate()) {
