@@ -15,6 +15,7 @@ public class FXMLPath {
 	public static final String INFO_STUDENT = "/gui/InfoStudent.fxml";
 	public static final String STUDENT_STATUS_FORM = "/gui/StudentStatusForm.fxml";
 	public static final String STUDENT_COURSES = "/gui/StudentCourses.fxml";
+	public static final String COURSE_FORM = "/gui/CourseForm.fxml";
 	
 	public static final String PERSON_FORM = "/gui/PersonForm.fxml";
 	public static final String PERSON_FORM_FIND_REGISTRY = "/gui/PersonFormFindRegistry.fxml";

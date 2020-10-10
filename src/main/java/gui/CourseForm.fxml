@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ContactFormController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CourseFormController">
    <children>
-      <VBox layoutX="-3.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
                <children>
-                  <Label text="Contato" textFill="WHITE">
+                  <Label text="Curso" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
@@ -26,22 +26,30 @@
                   <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
                <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
                </padding>
                <children>
-                  <Label text="Número:" />
-                  <JFXTextField fx:id="textNumber" prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textCourseName" labelFloat="true" prefWidth="350.0" promptText="Curso" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
                <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
                </padding>
                <children>
-                  <Label text="Descrição:" />
-                  <JFXTextField fx:id="textDescription" prefWidth="150.0" style="-fx-alignment: center;" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textStartDate" labelFloat="true" promptText="Início" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textEndDate" labelFloat="true" promptText="Término" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <padding>
+                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+               </padding>
+               <children>
+                  <JFXTextField fx:id="textProfessor" labelFloat="true" prefWidth="250.0" promptText="Professor" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textCourseLoad" labelFloat="true" prefWidth="100.0" promptText="Carga Horária" styleClass="text-field-with-label" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" spacing="30.0">
@@ -64,7 +72,7 @@
                   </JFXButton>
                </children>
                <padding>
-                  <Insets left="20.0" right="20.0" top="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </HBox>
          </children>

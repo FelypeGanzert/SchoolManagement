@@ -290,7 +290,7 @@ public class InfoStudentController implements Initializable {
 	// ====================================================
 	
 	public void handleBtnAddContact(ActionEvent event) {
-		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar Informações", false,
+		Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Novo contato", false,
 				(ContactFormController controller) -> {
 					controller.setDependences(new Contact(), student, this);
 				});

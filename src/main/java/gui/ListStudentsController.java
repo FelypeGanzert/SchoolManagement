@@ -166,7 +166,7 @@ public class ListStudentsController implements Initializable {
 		}
 		try {
 			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
-			studentsList.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
+			studentsList.sort((s1, s2) -> s1.getName().toUpperCase().compareTo(s2.getName().toUpperCase()));
 		} catch (DbException e) {
 			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR);
 		}
@@ -531,7 +531,7 @@ public class ListStudentsController implements Initializable {
 			// get parcels from matriculation and put in a ObservableList
 			ObservableList<Parcel> parcels = FXCollections.observableList(matriculation.getParcels());
 			// sort parcels by date
-			parcels.sort((p1, p2) -> p2.getDateParcel().compareTo(p1.getDateParcel()));
+			parcels.sort((p1, p2) -> p1.getDateParcel().compareTo(p2.getDateParcel()));
 			// set parcels to table in UI
 			tableParcels.setItems(parcels);
 		}

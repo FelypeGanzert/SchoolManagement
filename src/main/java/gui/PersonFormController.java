@@ -254,8 +254,7 @@ public class PersonFormController implements Initializable {
 			// 2- if date registry isn't null and has something and isn't valide; or
 			// 3- if birthDate isn't null and has something and isn't valide; or
 			// 4- if email isn't null and has something and isn't valide
-			if(!textCPF.validate() || !textName.validate() ||
-					(textDateRegistry.getText()  != null && textDateRegistry.getText().length() > 0 && !textDateRegistry.validate()) || 
+			if(!textCPF.validate() || !textName.validate() || !textDateRegistry.validate() || 
 					(textRG.getText()  != null && textRG.getText().length() > 0 && !textRG.validate()) ||						
 					(textBirthDate.getText()  != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate()) || 
 					(textEmail.getText()  != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
