@@ -112,13 +112,13 @@ public class PersonFormController implements Initializable {
 		initializeFields();
 		// Set default values
 		setDefaultValuesToFields();
+		// Define entities daos
+		defineEntitiesDaos();
 	}
 
 	// Called from another controllers
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
-		// Set dao according the instance of entity
-		defineEntityDao();
 		// put entity data in fields of UI
 		updateFormData();
 		// Hidden new registry message about CPF if the person already is in db
@@ -130,8 +130,6 @@ public class PersonFormController implements Initializable {
 
 	public void setStudentOfResponsible(Student studentOfResponsible) {
 		this.studentOfResponsible = studentOfResponsible;
-		// Define StudentDao
-		defineEntityDao();
 		// Make required the relationship beetwen them
 		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
 		requiredValidator.setMessage("Campo necessário");
@@ -153,17 +151,17 @@ public class PersonFormController implements Initializable {
 	}
 
 	// This will verify if we need a student or resposible dao
-	private void defineEntityDao() {
+	private void defineEntitiesDaos() {
 		// Try to get dao from Globe, if he doens't find then
 		// instantiate a new and add to Globe
-		if (studentDao == null && (entity instanceof Student || studentOfResponsible != null)) {
+		if (studentDao == null) {
 			studentDao = Globe.getGlobe().getItem(StudentDao.class, "studentDao");
 			if (studentDao == null) {
 				studentDao = new StudentDao(DBFactory.getConnection());
 				Globe.getGlobe().putItem("studentDao", studentDao);
 			}
 		}
-		if (responsibleDao == null && entity instanceof Responsible) {
+		if (responsibleDao == null) {
 			responsibleDao = Globe.getGlobe().getItem(ResponsibleDao.class, "responsibleDao");
 			if (responsibleDao == null) {
 				responsibleDao = new ResponsibleDao(DBFactory.getConnection());
@@ -265,11 +263,8 @@ public class PersonFormController implements Initializable {
 	// Save entity
 	public void handleBtnSave(ActionEvent event) {
 		// Verify if the dao of entity is set, if isn't will throw a exception
-		if (entity instanceof Student && studentDao == null) {
-			throw new IllegalStateException("StudentDao is null");
-		}
-		if (entity instanceof Responsible && responsibleDao == null) {
-			throw new IllegalStateException("ResponsibleDaois null");
+		if (studentDao == null || responsibleDao == null) {
+			throw new IllegalStateException("Entity dao is null");
 		}
 		try {
 			// check if fields is valid, we have theses situations to stop this method:
