@@ -142,6 +142,12 @@ public class PersonFormController implements Initializable {
 			btnWithoutCPF.setVisible(false);
 			labelFindRegistryResponse.setVisible(false);
 		}
+		// If the entity is already in db (has an id) and doesn't have a cpf, we show
+		// a message informing the user about this problem
+		if(entity.getId() != null && entity.getCpf() == null) {
+			registryWithoutCPF();
+			Alerts.showAlert("CPF não informado", "O cadastro se encontra em pré-registro. É necessário atualizar o CPF dessa pessoa.", "Não esqueça de atualizar o CPF na tela inicial, ele é uma informação essencial.", AlertType.ERROR);
+		}
 	}
 	
 	public void setisEntityFromAnotherTable(boolean isEntityFromAnotherTable) {
@@ -273,13 +279,18 @@ public class PersonFormController implements Initializable {
 		// Show message to user remember to update the CPF in future
 		labelFindRegistryResponse.setText("Será feito um pré-registro sem o CPF. NÃO SE ESQUEÇA de atualizar o CPF dessa pessoa no futuro.");
 		new Shake(labelFindRegistryResponse).play();
-		//  Remove all Validators from cpf, clear and disable field
+		registryWithoutCPF();
+		// Show name field
+		textName.setVisible(true);
+		textName.requestFocus();
+	}
+
+	public void registryWithoutCPF() {
+		// Remove all Validators from cpf, clear and disable field
 		RegexValidator cpfValidator = new RegexValidator("Inválido");
 		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
 		textCPF.getValidators().clear();
 		textCPF.setDisable(true);
-		// Show name field
-		textName.setVisible(true);
 	}
 	
 	// Find Registry
@@ -382,12 +393,14 @@ public class PersonFormController implements Initializable {
 				studentDao.update((Student) entity);
 			}
 			// We try to find in the other table a registry with the same cpf
-			personOtherTable = responsibleDao.findByCPF(entity.getCpf());
-			// Update date
-			if(personOtherTable != null) {
-				PersonUtils.parseDataFromStudentToResponsible((Student) entity, (Responsible) personOtherTable);
-				personOtherTable.setDateLastRegistryEdit(new Date());
-				responsibleDao.update((Responsible) personOtherTable);
+			if (entity.getCpf() != null) {
+				personOtherTable = responsibleDao.findByCPF(entity.getCpf());
+				// Update data
+				if (personOtherTable != null) {
+					PersonUtils.parseDataFromStudentToResponsible((Student) entity, (Responsible) personOtherTable);
+					personOtherTable.setDateLastRegistryEdit(new Date());
+					responsibleDao.update((Responsible) personOtherTable);
+				}
 			}
 		}
 		if (entity instanceof Responsible) {
@@ -401,12 +414,14 @@ public class PersonFormController implements Initializable {
 				responsibleDao.update((Responsible) entity);
 			}
 			// We try to find in the other table a registry with the same cpf
-			personOtherTable = studentDao.findByCPF(entity.getCpf());
-			// Update date
-			if (personOtherTable != null) {
-				PersonUtils.parseDataFromResponsibleToStudent((Responsible) entity, (Student) personOtherTable);
-				personOtherTable.setDateLastRegistryEdit(new Date());
-				studentDao.update((Student) personOtherTable);
+			if (entity.getCpf() != null) {
+				personOtherTable = studentDao.findByCPF(entity.getCpf());
+				// Update data
+				if (personOtherTable != null) {
+					PersonUtils.parseDataFromResponsibleToStudent((Responsible) entity, (Student) personOtherTable);
+					personOtherTable.setDateLastRegistryEdit(new Date());
+					studentDao.update((Student) personOtherTable);
+				}
 			}
 		}
 	}
