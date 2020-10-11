@@ -176,7 +176,7 @@ public class InfoStudentController implements Initializable {
 		// REGISTRY INFORMATIONS: registeredBy, dateRegistry, DateLastEdit
 		String dateCadastryAndModify = "";
 		if (student.getRegisteredBy() != null && student.getDateRegistry() != null) {
-			dateCadastryAndModify = "Cadastrado por " + student.getRegisteredBy();
+			dateCadastryAndModify = "Registrado por " + student.getRegisteredBy();
 			dateCadastryAndModify += ", em " + sdf.format(student.getDateRegistry()) + ".";
 			// If the student have been changed we show the date of the last edit
 			if (student.getDateLastRegistryEdit() != null) {

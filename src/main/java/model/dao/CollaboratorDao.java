@@ -61,4 +61,12 @@ public class CollaboratorDao {
 		return query.getResultList();
 	}
 	
+	public List<String> findAllInitials() throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}
+		TypedQuery<String> query = manager.createQuery("SELECT initials FROM Colaborador", String.class);
+		return query.getResultList();
+	}
+	
 }

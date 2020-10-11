@@ -35,6 +35,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import model.dao.CollaboratorDao;
 import model.dao.ResponsibleDao;
 import model.dao.ResponsibleStudentDao;
 import model.dao.StudentDao;
@@ -54,7 +55,7 @@ public class PersonFormController implements Initializable {
 	@FXML private Label labelFindRegistryResponse;
 	// Registry Informations
 	@FXML private HBox HBoxRegistryInformations;
-	@FXML private JFXComboBox<Collaborator> comboBoxRegisteredBy;
+	@FXML private JFXComboBox<String> comboBoxRegisteredBy;
 	@FXML private JFXTextField textDateRegistry;
 	// Person Informations
 	@FXML private HBox HBoxInformations;
@@ -245,10 +246,20 @@ public class PersonFormController implements Initializable {
 		// Responsible relationship
 		Constraints.setTextFieldMaxLength(textRelationship, 30);
 		Constraints.setTextFieldAlwaysUpperCase(textRelationship);
-		// ComboBox: status, civilStatus, gender
+		// ComboBox: status, civilStatus, gender, registered by
 		comboBoxStatus.getItems().addAll(StudentStatusEnum.values());
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
 		comboBoxGender.getItems().addAll(GenderEnum.values());
+		try {
+			// Get all initials from the collaborators in db
+			List<String> collaboratorsInitials = new CollaboratorDao(DBFactory.getConnection()).findAllInitials();
+			comboBoxRegisteredBy.getItems().addAll(collaboratorsInitials);
+			// Select the current user logged
+			String currentUser = Globe.getGlobe().getItem(Collaborator.class, "currentUser").getInitials();
+			comboBoxRegisteredBy.getSelectionModel().select(currentUser);
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// ===============================================
@@ -637,7 +648,6 @@ public class PersonFormController implements Initializable {
 				comboBoxStatus.setVisible(false);
 			}
 		}
-		// comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
 		textName.setText(entity.getName());
 		textEmail.setText(entity.getEmail());
 		if (entity.getSendEmail() != null) {
@@ -666,6 +676,16 @@ public class PersonFormController implements Initializable {
 		if (entity.getCivilStatus() != null) {
 			comboBoxCivilStatus.getSelectionModel()
 					.select(CivilStatusEnum.fromFullCivilStatus(entity.getCivilStatus()));
+		}
+		if(entity.getRegisteredBy() != null) {
+			// Check if the name of the person who register this entity is already in the comboBox,
+			// If the name isn't in, them we put inside and select that
+			if(comboBoxRegisteredBy.getItems().contains(entity.getRegisteredBy())) {
+				comboBoxRegisteredBy.getSelectionModel().select(entity.getRegisteredBy());
+			} else {
+				comboBoxRegisteredBy.getItems().add(entity.getRegisteredBy());;
+				comboBoxRegisteredBy.getSelectionModel().select(entity.getRegisteredBy());
+			}
 		}
 		// Only student have status, so we set if the status of student isn't null
 		if (entity instanceof Student && ((Student) entity).getStatus() != null) {
@@ -708,7 +728,8 @@ public class PersonFormController implements Initializable {
 		if (entity instanceof Student) {
 			((Student) entity).setStatus(comboBoxStatus.getSelectionModel().getSelectedItem().toString());
 		}
-
+		// Colaborrator who makes the registry
+		entity.setRegisteredBy(comboBoxRegisteredBy.getSelectionModel().getSelectedItem());
 	}
 
 }
