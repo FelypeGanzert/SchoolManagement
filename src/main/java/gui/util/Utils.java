@@ -134,6 +134,7 @@ public class Utils {
 			e.printStackTrace();
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		} catch (IllegalStateException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}

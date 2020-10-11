@@ -3,6 +3,7 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -118,6 +119,17 @@ public class PersonFormController implements Initializable {
 		// Define entities daos
 		defineEntitiesDaos();
 	}
+	
+	public Person getEntity() {
+		return this.entity;
+	}
+	
+	public StudentDao getStudentDao() {
+		return this.studentDao;
+	}
+	public ResponsibleDao getResponsibleDao() {
+		return this.responsibleDao;
+	}
 
 	// Called from another controllers
 	public void setPersonEntity(Person entity) {
@@ -130,8 +142,14 @@ public class PersonFormController implements Initializable {
 			labelFindRegistryResponse.setVisible(false);
 		}
 	}
+	
+	public void setisEntityFromAnotherTable(boolean isEntityFromAnotherTable) {
+		this.isEntityFromAnotherTable = isEntityFromAnotherTable;
+	}
 
 	public void setStudentOfResponsible(Student studentOfResponsible) {
+		// hidden option to change student status
+		comboBoxStatus.setVisible(false);
 		this.studentOfResponsible = studentOfResponsible;
 		// Make required the relationship beetwen them
 		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
@@ -505,24 +523,32 @@ public class PersonFormController implements Initializable {
 			if (!textName.validate()) {
 				return;
 			}
-			// Try to find students with name like the one informed
-			List<Person> personsNameLike = null;
-			if (entity instanceof Student) {
+			// Try to find students/responsibles with name like the one informed
+			List<Person> studentsNameLike = null;
+			List<Person> responsiblesNameLike = null;
 				// we will cast student to super class Person
-				personsNameLike = studentDao.findAllWithNameLike(textName.getText().trim()).stream()
+			studentsNameLike = studentDao.findAllWithNameLike(textName.getText().trim()).stream()
 						.map(s -> (Person) s).collect(Collectors.toList());
-			}
-			if (entity instanceof Responsible) {
 				// we will cast responsibles to super class Person
-				personsNameLike = responsibleDao.findAllWithNameLike(textName.getText().trim()).stream()
+			responsiblesNameLike = responsibleDao.findAllWithNameLike(textName.getText().trim()).stream()
 						.map(s -> (Person) s).collect(Collectors.toList());
-			}
+			// unites students and responsibles
+			List<Person> personsNameLike = new ArrayList<>();
+			personsNameLike.addAll(studentsNameLike);
+			personsNameLike.addAll(responsiblesNameLike);
 			if (personsNameLike.size() > 0) {
+				// Sort by name the results of the list
+				personsNameLike.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
+				// Filter only distinct peopless
+				personsNameLike = personsNameLike.stream()
+						.filter(PersonUtils.distinctByKey(Person::getName))
+						.collect(Collectors.toList());
+				// hidden text informations
+				labelFindRegistryResponse.setText("");
 				// if he have find one we will cast student to super class Person, and show in a
-				// new screen
-				// to user see if is one of them
+				// new screen to user see if is one of them
 				List<Person> peopleList = personsNameLike;
-				Utils.loadView(this.getClass(), true, FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event),
+				Utils.loadView(this, true, FXMLPath.PERSON_FORM_FIND_REGISTRY, Utils.currentStage(event),
 						"Registros semelhantes", false, (PersonFormFindRegistryController controller) -> {
 							controller.setPeopleList(peopleList);
 							controller.setPersonFormController(this);
@@ -586,6 +612,15 @@ public class PersonFormController implements Initializable {
 			// show registeredBy, dateRegistry if the person has come from another table
 			if(isEntityFromAnotherTable) {
 				comboBoxRegisteredBy.setVisible(true);
+				textDateRegistry.setVisible(true);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				textDateRegistry.setText(sdf.format(new Date()));
+			}
+			// check if the person has a registry date and the person who makes the register
+			if(entity.getRegisteredBy() == null) {
+				comboBoxRegisteredBy.setVisible(true);
+			}
+			if(entity.getDateRegistry() == null) {
 				textDateRegistry.setVisible(true);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				textDateRegistry.setText(sdf.format(new Date()));
