@@ -42,6 +42,7 @@ import model.entites.Person;
 import model.entites.Responsible;
 import model.entites.ResponsibleStudent;
 import model.entites.Student;
+import model.entites.util.PersonUtils;
 import sharedData.Globe;
 
 public class PersonFormController implements Initializable {
@@ -80,6 +81,8 @@ public class PersonFormController implements Initializable {
 	private Student studentOfResponsible;
 	private StudentDao studentDao;
 	private ResponsibleDao responsibleDao;
+	// flag to know if we have get person data from a different table of the instance of entity
+	private boolean isEntityFromAnotherTable;
 
 	private InfoStudentController infoStudentController;
 
@@ -421,9 +424,8 @@ public class PersonFormController implements Initializable {
 				if (entity instanceof Responsible) {
 					person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
 				}
-
 				if (person != null) {
-					this.entity = person;
+					entity = person;
 					// update fields in UI according the student get from database
 					updateFormData();
 					// Message to inform that data have come from database using the CPF
@@ -435,6 +437,39 @@ public class PersonFormController implements Initializable {
 					new Shake(labelFindRegistryResponse).play();
 					// Stop the method because we find a person
 					return;
+				} else {
+					// We try to find in the other table, for example, if the entity is a student and we don't
+					// find a registry with the cpf, so we will try to find a resposible with the cpf
+					if (entity instanceof Student) {
+						person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+					}
+					if (entity instanceof Responsible) {
+						person = studentDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
+					}
+					// if he have find a registry in the other table we have to copy the data to the entity
+					if(person != null) {
+						isEntityFromAnotherTable = true;
+						String dataComeFrom = "";
+						if(person instanceof Student && entity instanceof Responsible) {
+							PersonUtils.parseDataFromStudentToResponsible((Student) person, (Responsible) entity);
+							dataComeFrom = "alunos";
+						}
+						if(person instanceof Responsible && entity instanceof Student) {
+							PersonUtils.parseDataFromResponsibleToStudent((Responsible) person, (Student) entity);
+							dataComeFrom = "responsáveis";
+						}
+						// update fields in UI according the student get from database
+						updateFormData();
+						// Message to inform that data have come from other database using the CPF
+						labelFindRegistryResponse.setText(
+								"Registro encontrado nos " + dataComeFrom + " a partir do CPF. Confira as informações e atualize se necessário, em seguida clique em Salvar");
+						labelFindRegistryResponse.setVisible(true);
+						// Animations to get attention
+						new ZoomIn(HBoxInformations).play();
+						new Shake(labelFindRegistryResponse).play();
+						// Stop the method because we find a person
+						return;
+					}
 				}
 				labelFindRegistryResponse
 						.setText("Nenhum registro com esse CPF. Insira o nome completo e clique em Procurar Registro");
@@ -525,12 +560,19 @@ public class PersonFormController implements Initializable {
 	public void updateFormData() {
 		// If entity has an Id, so he already is in databaseso, we show Informations
 		// and button to save, and hidden button to find the registry in db
-		if (entity.getId() != null) {
+		if (entity.getId() != null || isEntityFromAnotherTable) {
 			textName.setVisible(true);
 			btnFindRegistry.setVisible(false);
 			HBoxInformations.setVisible(true);
 			textCPF.setDisable(true);
 			btnSave.setVisible(true);
+			// show registeredBy, dateRegistry if the person has come from another table
+			if(isEntityFromAnotherTable) {
+				comboBoxRegisteredBy.setVisible(true);
+				textDateRegistry.setVisible(true);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				textDateRegistry.setText(sdf.format(new Date()));
+			}
 		} else {
 			// If entity hasn't an id, so he aren't in databse. So, we
 			// show button to find the registry and registryInformations box

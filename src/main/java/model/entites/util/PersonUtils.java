@@ -5,8 +5,8 @@ import model.entites.Responsible;
 import model.entites.Student;
 
 public class PersonUtils {
-	
-	public static void parseDataFromStudentToResponsible(Student student, Responsible responsible) {
+
+	public static void parseDataFromResponsibleToStudent(Responsible responsible, Student student) {
 		student.setName(responsible.getName());
 		student.setCpf(responsible.getCpf());
 		student.setRg(responsible.getRg());
@@ -15,21 +15,23 @@ public class PersonUtils {
 		student.setSendEmail(responsible.getSendEmail());
 		student.setGender(responsible.getGender());
 		student.setCivilStatus(responsible.getCivilStatus());
-		student.setAdress(responsible.getCivilStatus());
+		student.setAdress(responsible.getAdress());
 		student.setNeighborhood(responsible.getNeighborhood());
 		student.setCity(responsible.getCity());
 		student.setUf(responsible.getUf());
 		student.setAdressReference(responsible.getAdressReference());
 		student.setObservation(responsible.getObservation());
-		for(Contact c : responsible.getContacts()){
-			Contact contactCopy = new Contact();
-			contactCopy.setNumber(c.getNumber());
-			contactCopy.setDescription(c.getDescription());
-			student.getContacts().add(contactCopy);
+		if (responsible.getContacts() != null) {
+			for (Contact c : responsible.getContacts()) {
+				Contact contactCopy = new Contact();
+				contactCopy.setNumber(c.getNumber());
+				contactCopy.setDescription(c.getDescription());
+				student.getContacts().add(contactCopy);
+			}
 		}
 	}
 
-	public static void parseDataFromResponsibleToStudent(Responsible responsible, Student student) {
+	public static void parseDataFromStudentToResponsible(Student student, Responsible responsible) {
 		responsible.setName(student.getName());
 		responsible.setCpf(student.getCpf());
 		responsible.setRg(student.getRg());
@@ -38,18 +40,20 @@ public class PersonUtils {
 		responsible.setSendEmail(student.getSendEmail());
 		responsible.setGender(student.getGender());
 		responsible.setCivilStatus(student.getCivilStatus());
-		responsible.setAdress(student.getCivilStatus());
+		responsible.setAdress(student.getAdress());
 		responsible.setNeighborhood(student.getNeighborhood());
 		responsible.setCity(student.getCity());
 		responsible.setUf(student.getUf());
 		responsible.setAdressReference(student.getAdressReference());
 		responsible.setObservation(student.getObservation());
-		for(Contact c : student.getContacts()){
-			Contact contactCopy = new Contact();
-			contactCopy.setNumber(c.getNumber());
-			contactCopy.setDescription(c.getDescription());
-			responsible.getContacts().add(contactCopy);
+		if (responsible.getContacts() != null) {
+			for (Contact c : student.getContacts()) {
+				Contact contactCopy = new Contact();
+				contactCopy.setNumber(c.getNumber());
+				contactCopy.setDescription(c.getDescription());
+				responsible.getContacts().add(contactCopy);
+			}
 		}
 	}
-	
+
 }
