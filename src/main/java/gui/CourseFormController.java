@@ -3,6 +3,7 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
@@ -85,7 +86,6 @@ public class CourseFormController implements Initializable{
 	public void handleBtnSave(ActionEvent event) {
 		if(textCourseName.validate() && textStartDate.validate()) {
 			// stop the method if end date is not null and is not valide
-			System.out.println("End date = " + textEndDate.getText());
 			if(textEndDate.getText() != null && textEndDate.getText().length() > 0 && !textEndDate.validate()) {
 				return;
 			}
@@ -110,6 +110,23 @@ public class CourseFormController implements Initializable{
 					if(course.getStartDate().compareTo(course.getEndDate()) > 0) {
 						Alerts.showAlert("Inválido", "A data de término é anterior a data de início.",
 								"É impossível o aluno ter terminado um curso antes de ter iniciado.", AlertType.ERROR);
+						// stop the method
+						return;
+					}
+				}
+				// Check if start/end date is after of 'today', this can't happen...
+				if(course.getStartDate() != null) {
+					if(course.getStartDate().compareTo(new Date()) > 0) {
+						Alerts.showAlert("Inválido", "A data de início é posterior a data atual do computador.",
+								"Você não pode fazer o registro de algo que ainda não aconteceu.", AlertType.ERROR);
+						// stop the method
+						return;
+					}
+				}
+				if(course.getEndDate() != null) {
+					if(course.getEndDate().compareTo(new Date()) > 0) {
+						Alerts.showAlert("Inválido", "A data de término é posterior a data atual do computador.",
+								"Você não pode fazer o registro de algo que ainda não aconteceu.", AlertType.ERROR);
 						// stop the method
 						return;
 					}

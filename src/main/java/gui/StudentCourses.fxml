@@ -86,11 +86,11 @@
                   </GridPane>
                   <TableView fx:id="tableCourses" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="columnCourseName" minWidth="150.0" prefWidth="75.0" text="Curso" />
-                        <TableColumn fx:id="columnStartDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Início" />
-                        <TableColumn fx:id="columnEndDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Término" />
-                      <TableColumn fx:id="columnProfessor" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Professor" />
-                      <TableColumn fx:id="columnCourseLoad" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Carga Horária" />
+                        <TableColumn fx:id="columnCourseName" minWidth="150.0" prefWidth="75.0" style="-fx-alignment: center-left;" text="Curso" />
+                        <TableColumn fx:id="columnStartDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Início" />
+                        <TableColumn fx:id="columnEndDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Término" />
+                      <TableColumn fx:id="columnProfessor" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" style="-fx-alignment: center;" text="Professor" />
+                      <TableColumn fx:id="columnCourseLoad" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Carga Horária" />
                         <TableColumn fx:id="columnEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                         <TableColumn fx:id="columnDelete" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                     </columns>

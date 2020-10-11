@@ -145,6 +145,7 @@ public class StudentCoursesController implements Initializable{
 		// Course
 		if (student.getCourses() != null) {
 			courses = FXCollections.observableArrayList(student.getCourses());
+			courses.sort((s1, s2) -> s2.getStartDate().compareTo(s1.getEndDate()));
 			tableCourses.setItems(courses);
 			tableCourses.refresh();
 		}
