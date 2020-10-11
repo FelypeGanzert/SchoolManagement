@@ -86,7 +86,7 @@ public class Responsible extends Person {
 	@Column (name = "data_cadastro", columnDefinition = "DATETIME default null")
 	private Date dateRegistry;
 	
-	@Column (name = "data_ultima_edicao", columnDefinition = "date default null")
+	@Column (name = "data_ultima_edicao", columnDefinition = "DATETIME default null")
 	private Date dateLastRegistryEdit;
 	
 	@Column (name = "observacao", columnDefinition = "text default null")

@@ -277,8 +277,7 @@ public class PersonFormController implements Initializable {
 			// 4- if email isn't null and has something and isn't valide
 			if (!textCPF.validate() || !textName.validate() || !textDateRegistry.validate()
 					|| (textRG.getText() != null && textRG.getText().length() > 0 && !textRG.validate())
-					|| (textBirthDate.getText() != null && textBirthDate.getText().length() > 0
-							&& !textBirthDate.validate())
+					|| (textBirthDate.getText() != null && textBirthDate.getText().length() > 0 && !textBirthDate.validate())
 					|| (textEmail.getText() != null && textEmail.getText().length() > 0 && !textEmail.validate())) {
 				return;
 			}
@@ -340,6 +339,8 @@ public class PersonFormController implements Initializable {
 
 	// Auxiliar method to save person entity
 	private void saveDataInDB() throws DbException {
+		// Person with same CPF with same cpf to also update
+		Person personOtherTable;
 		// Save data in db
 		if (entity instanceof Student) {
 			// If doesn't have an Id, so isn't in database
@@ -351,6 +352,14 @@ public class PersonFormController implements Initializable {
 				entity.setDateLastRegistryEdit(new Date());
 				studentDao.update((Student) entity);
 			}
+			// We try to find in the other table a registry with the same cpf
+			personOtherTable = responsibleDao.findByCPF(entity.getCpf());
+			// Update date
+			if(personOtherTable != null) {
+				PersonUtils.parseDataFromStudentToResponsible((Student) entity, (Responsible) personOtherTable);
+				personOtherTable.setDateLastRegistryEdit(new Date());
+				responsibleDao.update((Responsible) personOtherTable);
+			}
 		}
 		if (entity instanceof Responsible) {
 			// If doesn't have an Id, so isn't in database
@@ -361,6 +370,14 @@ public class PersonFormController implements Initializable {
 				// Edit date
 				entity.setDateLastRegistryEdit(new Date());
 				responsibleDao.update((Responsible) entity);
+			}
+			// We try to find in the other table a registry with the same cpf
+			personOtherTable = studentDao.findByCPF(entity.getCpf());
+			// Update date
+			if (personOtherTable != null) {
+				PersonUtils.parseDataFromResponsibleToStudent((Responsible) entity, (Student) personOtherTable);
+				personOtherTable.setDateLastRegistryEdit(new Date());
+				studentDao.update((Student) personOtherTable);
 			}
 		}
 	}
@@ -636,13 +653,15 @@ public class PersonFormController implements Initializable {
 		entity.setUf(textUF.getText());
 		entity.setObservation(textAreaObservation.getText());
 		// birthDate and registryDate
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
 			if (textBirthDate.getText().length() > 0) {
-				entity.setDateBirth(sdf.parse(textBirthDate.getText()));
+				entity.setDateBirth(sdf.parse(textBirthDate.getText() + " 00:00"));
 			}
 			if (textDateRegistry.getText().length() > 0) {
-				entity.setDateRegistry(sdf.parse(textDateRegistry.getText()));
+				SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+				Date now = new Date();
+				entity.setDateRegistry(sdf.parse(textDateRegistry.getText() + " " + sdf2.format(now)));
 			}
 		} catch (ParseException e) {
 			System.out.println("======== Some error has ocurred while parsing dates from entity to form");
