@@ -208,7 +208,8 @@ public class InfoStudentController implements Initializable {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Alerts.showAlert("Erro ao carregar as informações do aluno em alguma das tabelas", "Erro", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("Erro ao carregar as informações do aluno em alguma das tabelas", "Erro",
+					e.getMessage(), AlertType.ERROR, null);
 		}
 	}
 	
@@ -233,7 +234,7 @@ public class InfoStudentController implements Initializable {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Alerts.showAlert("Erro ao retornar", "Erro", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("Erro ao retornar", "Erro", e.getMessage(), AlertType.ERROR, Utils.currentStage(event));
 		}
 	}
 	
@@ -264,11 +265,12 @@ public class InfoStudentController implements Initializable {
 		alert.setTitle("Deletar Estudante?");
 		alert.setHeaderText("Tem certeza que deseja deletar as informações de " + student.getName() + "?\n" +
 				"Todos os seus dados serão excluídos e não será possível reverter tal ação.");
+		alert.initOwner(Utils.currentStage(event));
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			// Call studentDao to delete
 			try {
-				Alert alertProcessing = Alerts.showProcessingScreen();
+				Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
 				StudentDao studentDao = new StudentDao(DBFactory.getConnection());
 				studentDao.deleteById(student.getId());
 				alertProcessing.close();
@@ -276,7 +278,8 @@ public class InfoStudentController implements Initializable {
 				Roots.listStudents();
 			} catch (DbException e) {
 				e.printStackTrace();
-				Alerts.showAlert("Erro ao deletar o estudante...", "DbException", e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Erro ao deletar o estudante...", "DbException", e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
 			}
 		}
 	}
@@ -359,6 +362,10 @@ public class InfoStudentController implements Initializable {
 		// Info button
 		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (item, event) -> {
 			System.out.println("info matriculation"); //IN PROGRESS
+			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+			mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
+				
+			});
 		});
 	}
 	
@@ -383,11 +390,12 @@ public class InfoStudentController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar contato");
 			alert.setHeaderText("Deletar o contato " +  contact.getNumber()  + " - " + contact.getDescription() + " ?");
+			alert.initOwner(Utils.currentStage(event));
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				// Show a screen of deleting contact process
 				try {
-					Alert alertProcessing = Alerts.showProcessingScreen();
+					Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
 					// ContactDao to delete from db
 					ContactDao contactDao = new ContactDao(DBFactory.getConnection());
 					contactDao.delete(contact);
@@ -396,7 +404,8 @@ public class InfoStudentController implements Initializable {
 					updateTablesData();
 					alertProcessing.close();
 				} catch (DbException e) {
-					Alerts.showAlert("Erro ao deletar contato", "DbException", e.getMessage(), AlertType.ERROR);
+					Alerts.showAlert("Erro ao deletar contato", "DbException", e.getMessage(),
+							AlertType.ERROR, Utils.currentStage(event));
 				}
 			}
 		});
@@ -419,7 +428,7 @@ public class InfoStudentController implements Initializable {
 		});
 		// Edit button
 		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (responsible, event) -> {
-			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
+			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Editar responsável", false,
 					(PersonFormController controller) -> {
 						controller.setPersonEntity(responsible);
 						controller.setStudentOfResponsible(student);
@@ -435,7 +444,8 @@ public class InfoStudentController implements Initializable {
 					.filter(m -> m.getResponsible() != null && m.getResponsible().getId() == responsible.getId())
 					.collect(Collectors.toList());
 			if(matriculationsVinculed.size() > 0) {
-				Alerts.showAlert("Vínculo existente", "Não é possível deletar esse responsável", "Existe matrículas pela qual ele responde", AlertType.WARNING);
+				Alerts.showAlert("Vínculo existente", "Não é possível deletar esse responsável",
+						"Existe matrículas pela qual ele responde", AlertType.WARNING, Utils.currentStage(event));
 				return;
 			}
 			
@@ -443,10 +453,11 @@ public class InfoStudentController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar responsável");
 			alert.setHeaderText("Deletar " + responsible.getName() + " ?");
+			alert.initOwner(Utils.currentStage(event));
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				// Show a screen of deleting responsible process
-				Alert alertProcessing = Alerts.showProcessingScreen();
+				Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
 				try {
 					// ContactDao to delete from db
 					ResponsibleDao responsibleDao = new ResponsibleDao(DBFactory.getConnection());
@@ -454,7 +465,8 @@ public class InfoStudentController implements Initializable {
 					// remove responsible from student in memory and refresh tables in UI
 					updateTablesData();
 				} catch (DbException e) {
-					Alerts.showAlert("Erro ao deletar responsável", "DbException", e.getMessage(), AlertType.ERROR);
+					Alerts.showAlert("Erro ao deletar responsável", "DbException", e.getMessage(),
+							AlertType.ERROR, Utils.currentStage(event));
 				}
 				alertProcessing.close();
 			}

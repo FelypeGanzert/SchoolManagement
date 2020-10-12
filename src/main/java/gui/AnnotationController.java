@@ -92,7 +92,8 @@ public class AnnotationController implements Initializable{
 				listStudentsController.updateAnnotations(annotation.getStudent());
 				Utils.currentStage(event).close();
 			} catch (DbException e) {
-				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),	AlertType.ERROR);
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
 				e.printStackTrace();
 			} 
 		}

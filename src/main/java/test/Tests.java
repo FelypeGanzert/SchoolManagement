@@ -11,7 +11,7 @@ public class Tests {
 	public static void main(String[] args) {
 		
 
-		Alert alertProcessing = Alerts.showProcessingScreen();
+		Alert alertProcessing = Alerts.showProcessingScreen(null);
 		
 //		DBFactory.setUnits("localhost");
 //		DBFactory.getConnection();

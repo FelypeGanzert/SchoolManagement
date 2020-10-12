@@ -113,11 +113,12 @@ public class StudentCoursesController implements Initializable{
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar curso");
 			alert.setHeaderText("Deletar o curso: " + course.getName() + " ?");
+			alert.initOwner(Utils.currentStage(event));
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				// Show a screen of deleting course process
 				try {
-					Alert alertProcessing = Alerts.showProcessingScreen();
+					Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
 					// CourseDao to delete from db
 					CourseDao courseDao = new CourseDao(DBFactory.getConnection());
 					courseDao.delete(course);
@@ -126,7 +127,8 @@ public class StudentCoursesController implements Initializable{
 					updateForm();
 					alertProcessing.close();
 				} catch (DbException e) {
-					Alerts.showAlert("Erro ao deletar curso", "DbException", e.getMessage(), AlertType.ERROR);
+					Alerts.showAlert("Erro ao deletar curso", "DbException", e.getMessage(),
+							AlertType.ERROR, Utils.currentStage(event));
 				}
 			}
 		});

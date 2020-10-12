@@ -168,7 +168,7 @@ public class ListStudentsController implements Initializable {
 			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
 			studentsList.sort((s1, s2) -> s1.getName().toUpperCase().compareTo(s2.getName().toUpperCase()));
 		} catch (DbException e) {
-			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR, null);
 		}
 	}
 	
@@ -436,10 +436,11 @@ public class ListStudentsController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar anotação");
 			alert.setHeaderText("Deletar a anotação do dia " + sdf.format(itemSelected.getDate()) + " ?");
+			alert.initOwner(Utils.currentStage(event));
 			Optional<ButtonType> result =alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				// Show a screen of deleting annotation process
-				Alert alertProcessing = Alerts.showProcessingScreen();
+				Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
 				try {
 					// AnnotationDao to delete from db
 					AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
@@ -448,7 +449,8 @@ public class ListStudentsController implements Initializable {
 					studentOwner.getAnnotations().remove(itemSelected);
 					updateAnnotations(studentOwner);
 				} catch (DbException e) {
-					Alerts.showAlert("Erro ao deletar anotação", "DbException", e.getMessage(), AlertType.ERROR);
+					Alerts.showAlert("Erro ao deletar anotação", "DbException", e.getMessage(),
+							AlertType.ERROR, Utils.currentStage(event));
 				}
 				alertProcessing.close();
 			}

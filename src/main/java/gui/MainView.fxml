@@ -59,6 +59,18 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXButton>
+                        <JFXButton fx:id="btnFullScreen" onAction="#handleBtnChangeFullScreen" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="TELA CHEIA" textFill="#fffdfd">
+                           <graphic>
+                              <ImageView fx:id="imageFullScreen" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                                 <image>
+                                    <Image url="@../png_icons/expand_white.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
                         <JFXButton onAction="#handleBtnExit" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="SAIR" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">

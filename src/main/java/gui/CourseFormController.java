@@ -109,7 +109,8 @@ public class CourseFormController implements Initializable{
 				if(course.getStartDate() != null && course.getEndDate() != null) {
 					if(course.getStartDate().compareTo(course.getEndDate()) > 0) {
 						Alerts.showAlert("Inválido", "A data de término é anterior a data de início.",
-								"É impossível o aluno ter terminado um curso antes de ter iniciado.", AlertType.ERROR);
+								"É impossível o aluno ter terminado um curso antes de ter iniciado.",
+								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
 						return;
 					}
@@ -118,7 +119,8 @@ public class CourseFormController implements Initializable{
 				if(course.getStartDate() != null) {
 					if(course.getStartDate().compareTo(new Date()) > 0) {
 						Alerts.showAlert("Inválido", "A data de início é posterior a data atual do computador.",
-								"Você não pode fazer o registro de algo que ainda não aconteceu.", AlertType.ERROR);
+								"Você não pode fazer o registro de algo que ainda não aconteceu.",
+								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
 						return;
 					}
@@ -126,7 +128,8 @@ public class CourseFormController implements Initializable{
 				if(course.getEndDate() != null) {
 					if(course.getEndDate().compareTo(new Date()) > 0) {
 						Alerts.showAlert("Inválido", "A data de término é posterior a data atual do computador.",
-								"Você não pode fazer o registro de algo que ainda não aconteceu.", AlertType.ERROR);
+								"Você não pode fazer o registro de algo que ainda não aconteceu.",
+								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
 						return;
 					}
@@ -158,7 +161,8 @@ public class CourseFormController implements Initializable{
 				}
 				Utils.currentStage(event).close();
 			} catch (DbException e) {
-				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),	AlertType.ERROR);
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
 				e.printStackTrace();
 			} 
 		}

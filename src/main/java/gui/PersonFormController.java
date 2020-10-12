@@ -146,7 +146,9 @@ public class PersonFormController implements Initializable {
 		// a message informing the user about this problem
 		if(entity.getId() != null && entity.getCpf() == null) {
 			registryWithoutCPF();
-			Alerts.showAlert("CPF não informado", "O cadastro se encontra em pré-registro. É necessário atualizar o CPF dessa pessoa.", "Não esqueça de atualizar o CPF na tela inicial, ele é uma informação essencial.", AlertType.ERROR);
+			Alerts.showAlert("CPF não informado", "O cadastro se encontra em pré-registro. É necessário atualizar o CPF dessa pessoa.",
+					"Não esqueça de atualizar o CPF na tela inicial, ele é uma informação essencial.",
+					AlertType.ERROR, null);
 		}
 	}
 	
@@ -327,7 +329,7 @@ public class PersonFormController implements Initializable {
 				Date today = new Date();
 				if (sdf.parse(textDateRegistry.getText()).compareTo(today) > 0) {
 					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
-							"É impossível fazer um cadastro no futuro.", AlertType.ERROR);
+							"É impossível fazer um cadastro no futuro.", AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
 				}
@@ -335,7 +337,8 @@ public class PersonFormController implements Initializable {
 					if (sdf.parse(textBirthDate.getText()).compareTo(today) > 0) {
 						Alerts.showAlert("Inválido",
 								"A data de nascimento do aluno é posterior a data atual do computador.",
-								"É impossível fazer um cadastro de um aluno que ainda nem nasceu.", AlertType.ERROR);
+								"É impossível fazer um cadastro de um aluno que ainda nem nasceu.",
+								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
 						return;
 					}
@@ -373,7 +376,7 @@ public class PersonFormController implements Initializable {
 			Utils.currentStage(event).close();
 		} catch (DbException e) {
 			e.printStackTrace();
-			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR, Utils.currentStage(event));
 		}
 	}
 
@@ -585,7 +588,7 @@ public class PersonFormController implements Initializable {
 		} catch (DbException e) {
 			// Show a alert message if something went wrong
 			Alerts.showAlert("DBException", e.getMessage(), "Houve um problema ao procurar a existência do cadastro",
-					AlertType.ERROR);
+					AlertType.ERROR, Utils.currentStage(event));
 			e.printStackTrace();
 		}
 		// If we get here, doesn't exist a person with the same CPF even a similar name

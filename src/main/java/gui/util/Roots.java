@@ -3,7 +3,6 @@ package gui.util;
 import java.util.function.Consumer;
 
 import gui.MainViewController;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import sharedData.Globe;
 
@@ -25,11 +24,9 @@ public class Roots {
 		listStudents(x -> {});
 	}
 	public static <T> void listStudents(Consumer<T> initializingAction) {
-		Alert alertProcessing = Alerts.showProcessingScreen();
 		// Get mainvViewController from Globe to set content in
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.LIST_STUDENTS, initializingAction);
-		alertProcessing.close();
 	}
 
 	// List Responsibles

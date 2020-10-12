@@ -20,9 +20,9 @@ insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf, send_email) values (3, "Aldeia da Folha", "Felype", "Sï¿½o Paulo", "36495875625", "camile@gmail.com", "Rua Carlos Pereiras", "Chritian de Oliveira Pereiras", "242", "Masculino", "PR", false);
 insert into responsavel(id, bairro, cadastrado_por, cidade, cpf, email, endereco, nome, rg, sexo, uf, send_email) values (4, "Vila Nova Fibrurgo", "Felype", "Petrolina", "66633322215", "camile@gmail.com", "Rua Bermudas", "Triangulo das Bermudas", "34234", "Masculino", "PR", true);
  
-insert into contato(id, descricao, numero, contact_id_student) values(1,"Número do aluno","(41) 98868-0206", 1);
+insert into contato(id, descricao, numero, contact_id_student) values(1,"Número do aluno","41988680206", 1);
 insert into contato(id, descricao, numero, contact_id_student) values(2,"Número da mãe", "912345678", 2);
-insert into contato(id, descricao, numero, contact_id_student) values(3, "--", "9123456781234567890", 2);
+insert into contato(id, descricao, numero, contact_id_student) values(3, "--", "978685025", 2);
 insert into contato(id, descricao, numero, contact_id_responsible) values(4,"Namorado", "988888877", 1);
 insert into contato(id, descricao, numero, contact_id_responsible) values(5,"Vó", "123456791", 2);
  

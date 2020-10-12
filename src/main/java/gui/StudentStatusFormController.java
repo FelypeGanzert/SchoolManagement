@@ -58,7 +58,8 @@ public class StudentStatusFormController implements Initializable {
 			Utils.currentStage(event).close();
 		} catch (DbException e) {
 			e.printStackTrace();
-			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(),
+					AlertType.ERROR, Utils.currentStage(event));
 		}
 	}
 
