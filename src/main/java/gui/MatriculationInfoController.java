@@ -16,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import model.entites.Matriculation;
@@ -37,7 +36,6 @@ public class MatriculationInfoController implements Initializable{
 	// Tab's
 	@FXML private TabPane tabPanePeople;
 	@FXML private TabPane tabPaneParcels;
-	@FXML private Tab tabParcels;	
 	
 	private Matriculation matriculation;
 	
@@ -63,6 +61,14 @@ public class MatriculationInfoController implements Initializable{
 				controller.setPerson(matriculation.getResponsible());
 			});
 		}
+		if(matriculation.getParcels() != null) {
+			//DBUtil.refleshData(matriculation.getParcels());
+			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PARCELS, "Parcelas", tabPaneParcels, 
+					(MatriculationInfoParcels controller) -> {
+				controller.setParcels(matriculation.getParcels());
+			});
+		}
+		
 	}
 	public void setReturn(String returnPath, String returnText) {
 		btnReturn.setText("Voltar para " + returnText);

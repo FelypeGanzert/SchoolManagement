@@ -1,5 +1,6 @@
 package model.entites;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -66,4 +67,23 @@ public class Parcel {
 	@Column(name = "pagamento_recebido_por", columnDefinition = "varchar(50) default null")
 	private String paymentReceivedBy;
 	
+	public Date getDateFineDelay() {
+		if (getDateParcel() != null) {
+			Date date = getDateParcel();
+			// add days to original date
+			if(getDaysFineDelay() != null && getDaysFineDelay() > 0) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date); // set date to calendar
+				cal.add(Calendar.DAY_OF_MONTH, getDaysFineDelay()); // add the X daysFineDelay
+				date = cal.getTime(); // set changed date in calendar to dat
+			}
+			return date;
+		}
+		return null;
+	}
+	
+	public Double getValueWithFineDelay() {
+		return getValue() + getValueFineDelay();
+	}
+
 }

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -203,7 +202,7 @@
                                     <Label text="Serviço contratado:" />
                                  </children>
                               </HBox>
-                              <JFXTextArea fx:id="txtServiceContracted">
+                              <JFXTextArea fx:id="txtServiceContracted" editable="false">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -328,11 +327,7 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TabPane fx:id="tabPaneParcels" maxWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-                    <tabs>
-                      <Tab fx:id="tabParcels" text="Parcelas" />
-                    </tabs>
-                  </TabPane>
+                  <TabPane fx:id="tabPaneParcels" maxWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" />

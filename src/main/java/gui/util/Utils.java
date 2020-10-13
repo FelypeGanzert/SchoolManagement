@@ -192,7 +192,7 @@ public class Utils {
 				@Override
 				protected void updateItem(Double item, boolean empty) {
 					super.updateItem(item, empty);
-					if (empty) {
+					if (empty || item == null) {
 						setText(null);
 					} else {
 						setText(formatCurrentMoney(item, DINHEIRO_REAL));
