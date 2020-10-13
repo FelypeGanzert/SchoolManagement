@@ -5,21 +5,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoParcels">
    <children>
-      <TableView maxHeight="1.7976931348623157E308" maxWidth="-Infinity" VBox.vgrow="ALWAYS">
+      <TableView fx:id="tableParcels" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" VBox.vgrow="ALWAYS">
          <columns>
-            <TableColumn maxWidth="85.0" minWidth="85.0" prefWidth="85.0" style="-fx-alignment: center-left;" text="Código" />
-            <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Parcela" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Valor" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Vencimento" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Multa após" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Valor c/ Multa" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Status" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Pago em" />
-            <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Valor Pago" />
-            <TableColumn maxWidth="80.0" minWidth="80.0" text="Pago com" />
-            <TableColumn maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Cobrado por" />
+            <TableColumn fx:id="columnCode" maxWidth="85.0" minWidth="85.0" prefWidth="85.0" style="-fx-alignment: center-left;" text="Código" />
+            <TableColumn fx:id="columnParcelNumber" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Parcela" />
+            <TableColumn fx:id="columnValue" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Valor" />
+            <TableColumn fx:id="columnDateParcel" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Vencimento" />
+            <TableColumn fx:id="columnDateFineDelay" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Multa após" />
+            <TableColumn fx:id="columnValueWithFineDelay" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Valor c/ Multa" />
+            <TableColumn fx:id="columnSituation" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Status" />
+            <TableColumn fx:id="columnDatePayment" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Pago em" />
+            <TableColumn fx:id="columnValuePaid" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Valor Pago" />
+            <TableColumn fx:id="columnPaidWith" maxWidth="80.0" minWidth="80.0" text="Pago com" />
+            <TableColumn fx:id="columnPaymentReceivedBy" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Cobrado por" />
             <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
          </columns>
          <columnResizePolicy>

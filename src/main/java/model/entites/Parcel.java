@@ -39,22 +39,31 @@ public class Parcel {
 	@Column(name = "parcela_numero", columnDefinition = "int default null")
 	private Integer parcelNumber;
 	
-	@Column(name = "data_parcela", columnDefinition = "date default null")
-	private Date dateParcel;
-	
-	@Column(name = "data_pagamento", columnDefinition = "date default null")
-	private Date datePayment;
-	
 	@Column(name = "valor", columnDefinition = "numeric(19,4) default null")
 	private Double value;
 	
-	@Column(name = "desconto", columnDefinition = "numeric(19,4) default null")
-	private Double descont;
+	@Column(name = "data_parcela", columnDefinition = "DATETIME default null")
+	private Date dateParcel;
 	
-	@Column(name = "dias_desconto", columnDefinition = "numeric(19,4) default null")
-	private Integer diasDesconto;
+	@Column(name = "dias_multa_atraso", columnDefinition = "int default null")
+	private Integer daysFineDelay;
+	
+	@Column(name = "valor_multa_atraso", columnDefinition = "numeric(19,4) default null")
+	private Double valueFineDelay;
 	
 	@Column(name = "situacao", columnDefinition = "varchar(50) default null")
 	private String situation;
+	
+	@Column(name = "data_pagamento", columnDefinition = "DATETIME  default null")
+	private Date datePayment;
+	
+	@Column(name = "valor_pago", columnDefinition = "numeric(19,4) default null")
+	private Double valuePaid;
+	
+	@Column(name = "pago_com", columnDefinition = "varchar(50) default null")
+	private String paidWith;
+	
+	@Column(name = "pagamento_recebido_por", columnDefinition = "varchar(50) default null")
+	private String paymentReceivedBy;
 	
 }
