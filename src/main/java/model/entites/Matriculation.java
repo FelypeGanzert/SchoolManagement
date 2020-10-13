@@ -51,6 +51,9 @@ public class Matriculation {
 	@Column(name="motivo", columnDefinition = "varchar(50) default null")
 	private String reason;
 	
+	@Column(name="servico_contratado", columnDefinition = "text default null")
+	private String serviceContracted;
+	
 	@Column(name="situacao", columnDefinition = "varchar(50) default null")
 	private String status;
 	

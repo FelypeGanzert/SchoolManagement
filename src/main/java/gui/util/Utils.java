@@ -23,9 +23,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -137,6 +140,26 @@ public class Utils {
 			e.printStackTrace();
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR, null);
 		}
+	}
+	
+	public static <T, Tclass> void addTab(Tclass currentClass, String contentPath, String tabTitle, TabPane tabPane, Consumer<T> initializingAction) {
+		Tab tab = new Tab();
+		try {
+			FXMLLoader loader = new FXMLLoader(currentClass.getClass().getResource(contentPath));
+			VBox newContent = loader.load();
+			tab.setContent(newContent);
+			tab.setText(tabTitle);
+			//tab.setStyle(newContent.getStyle());
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(),AlertType.ERROR, null);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR, null);
+		}
+		tabPane.getTabs().add(tab);
 	}
 
 	// To Tables

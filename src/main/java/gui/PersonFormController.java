@@ -135,13 +135,15 @@ public class PersonFormController implements Initializable {
 	// Called from another controllers
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
-		// put entity data in fields of UI
-		updateFormData();
 		// Hidden new registry message about CPF if the person already is in db
 		if (entity.getId() != null) {
+			// reflesh data
+			DBUtil.refleshData(entity);
 			btnWithoutCPF.setVisible(false);
 			labelFindRegistryResponse.setVisible(false);
 		}
+		// put entity data in fields of UI
+		updateFormData();
 		// If the entity is already in db (has an id) and doesn't have a cpf, we show
 		// a message informing the user about this problem
 		if(entity.getId() != null && entity.getCpf() == null) {

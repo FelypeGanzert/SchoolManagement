@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER_LEFT" prefHeight="234.0" prefWidth="449.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoPerson">
+   <children>
+      <Label fx:id="labelName" text="Nome" />
+      <Label fx:id="labelBirthDateAndCivilStatus" text="Nascimento: X; X anos; Estado Civil: X" />
+      <Label fx:id="labelCpfAndRg" text="CPF: X; RG: X" />
+      <Label fx:id="labelAdress" text="Endereço: X" />
+      <Label fx:id="labelNeighborhoodAndCity" layoutX="10.0" layoutY="173.0" text="Bairro: X; Cidade: X" />
+   </children>
+   <padding>
+      <Insets bottom="20.0" top="20.0" />
+   </padding>
+</VBox>

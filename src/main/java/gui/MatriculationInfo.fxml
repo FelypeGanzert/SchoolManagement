@@ -151,19 +151,19 @@
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Código:" />
-                                    <TextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
+                                    <TextField fx:id="txtCode" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Data:" />
-                                    <TextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" text="10/09/2000" />
+                                    <TextField fx:id="txtDateMatriculation" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" text="10/09/2000" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Matriculado por:" />
-                                    <TextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
+                                    <TextField fx:id="txtMatriculatedBy" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
                                  </children>
                               </HBox>
                            </children>
@@ -173,13 +173,13 @@
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Situação:" />
-                                    <TextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" text="13/24" />
+                                    <TextField fx:id="txtParcelsSituation" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" text="13/24" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Motivo da matrícula:" />
-                                    <TextField editable="false" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="txtReason" editable="false" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                            </children>
@@ -191,7 +191,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                  <children>
-                                    <Button fx:id="btnEditStatus1" mnemonicParsing="false" style="-fx-background-color: #fff; -fx-cursor: hand;">
+                                    <Button mnemonicParsing="false" style="-fx-background-color: #fff; -fx-cursor: hand;">
                                        <graphic>
                                           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -203,7 +203,7 @@
                                     <Label text="Serviço contratado:" />
                                  </children>
                               </HBox>
-                              <JFXTextArea>
+                              <JFXTextArea fx:id="txtServiceContracted">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -214,14 +214,7 @@
                   </VBox>
                   <VBox prefHeight="78.0" prefWidth="445.0">
                      <children>
-                        <TabPane prefHeight="200.0" prefWidth="200.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE">
-                          <tabs>
-                            <Tab text="Aluno">
-                            	<fx:include source="MatriculationInfoStudentResponsible.fxml" />
-                            </Tab>
-                            <Tab text="Responsável Financeiro" />
-                          </tabs>
-                        </TabPane>
+                        <TabPane fx:id="tabPanePeople" prefHeight="200.0" prefWidth="200.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE" />
                      </children>
                   </VBox>
                </children>
@@ -301,6 +294,21 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXButton layoutX="620.0" layoutY="10.0" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Definir datas de vencimento" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png_icons/share_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
                   <JFXButton ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Fazer acordo" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -320,12 +328,9 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TabPane maxWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                  <TabPane fx:id="tabPaneParcels" maxWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
-                      <Tab text="Parcelas">
-                      	<fx:include source="MatriculationInfoParcels.fxml" />
-                      </Tab>
-                      <Tab text="Acordo #1" />
+                      <Tab fx:id="tabParcels" text="Parcelas" />
                     </tabs>
                   </TabPane>
                </children>

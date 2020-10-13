@@ -340,7 +340,7 @@ public class InfoStudentController implements Initializable {
 						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());
 				// Total of paid parcels = with status equals PAGA
 				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation()
-						.equalsIgnoreCase("PAGO")).collect(Collectors.toList()).size();
+						.equalsIgnoreCase("PAGA")).collect(Collectors.toList()).size();
 				// will show in table number of paid parcels from total
 				return new SimpleStringProperty(paidParcels + "/" + parcels.size());
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {
@@ -360,11 +360,12 @@ public class InfoStudentController implements Initializable {
 			}
 		});
 		// Info button
-		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (item, event) -> {
+		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (matriculation, event) -> {
 			System.out.println("info matriculation"); //IN PROGRESS
 			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
-				
+				controller.setReturn(FXMLPath.INFO_STUDENT, "Aluno");
+				controller.setCurrentMatriculation(matriculation);
 			});
 		});
 	}

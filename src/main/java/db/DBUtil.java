@@ -3,11 +3,21 @@ package db;
 import model.dao.ResponsibleDao;
 import model.dao.ResponsibleStudentDao;
 import model.dao.StudentDao;
+import model.entites.Person;
 import model.entites.Responsible;
 import model.entites.ResponsibleStudent;
 import model.entites.Student;
 
 public class DBUtil {
+	
+	public static <T> void refleshData(Person entity) {
+		if(entity instanceof Student) {
+			refleshData((Student) entity);
+		}
+		if(entity instanceof Responsible) {
+			refleshData((Responsible) entity);
+		}
+	}
 
 	public static <T> void refleshData(Student entity) {
 		try {

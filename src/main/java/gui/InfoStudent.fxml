@@ -29,7 +29,7 @@
         <rowConstraints>
             <RowConstraints maxHeight="-Infinity" vgrow="NEVER" />
           <RowConstraints maxHeight="320.0" minHeight="320.0" prefHeight="320.0" valignment="TOP" vgrow="NEVER" />
-            <RowConstraints maxHeight="-Infinity" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #0077b6;" GridPane.columnSpan="2" GridPane.vgrow="NEVER">
@@ -330,7 +330,7 @@
                   <Insets right="20.0" />
                </padding>
             </VBox>
-            <VBox maxHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+            <VBox maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER" prefWidth="200.0" spacing="40.0" style="-fx-background-color: #0077b6;">
                      <children>
@@ -353,7 +353,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView fx:id="tableMatriculations" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tableMatriculations" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="columnMatriculationCode" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center-right;" text="Código" />
                         <TableColumn fx:id="columnMatriculationDate" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" style="-fx-alignment: center;" text="Data" />
@@ -371,10 +371,10 @@
                   </TableView>
                </children>
                <padding>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
                </padding>
             </VBox>
-            <VBox maxHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+            <VBox maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER" prefWidth="200.0" spacing="40.0" style="-fx-background-color: #0077b6;">
                      <children>
@@ -397,7 +397,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView fx:id="tableResponsibles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tableResponsibles" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn fx:id="columnReponsibleName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" style="-fx-alignment: center-left;" text="Nome" />
                         <TableColumn fx:id="columnReponsibleRelationship" maxWidth="120.0" minWidth="120.0" prefWidth="12.0" style="-fx-alignment: center;" text="Parentesco" />
@@ -413,7 +413,7 @@
                   </TableView>
                </children>
                <padding>
-                  <Insets right="20.0" />
+                  <Insets bottom="20.0" right="20.0" />
                </padding>
             </VBox>
          </children>
