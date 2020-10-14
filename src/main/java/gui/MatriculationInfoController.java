@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import model.entites.Matriculation;
 import model.entites.Parcel;
+import model.entites.Student;
+import sharedData.Globe;
 
 public class MatriculationInfoController implements Initializable{
 
@@ -41,13 +43,29 @@ public class MatriculationInfoController implements Initializable{
 	@FXML private TabPane tabPaneParcels;
 	
 	private Matriculation matriculation;
+	private String returnPath;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 	}
+	
+	private void setReturnPath(String returnPath) {
+		this.returnPath = returnPath;
+		// Set text to return to student
+		if(this.returnPath.equals(FXMLPath.INFO_STUDENT)) {
+			Student student = matriculation.getStudent();
+			String firstName;
+			if (student.getName().contains(" ")) {
+				firstName = student.getName().substring(0, student.getName().indexOf(" "));
+			} else {
+				firstName = student.getName();
+			}
+			btnReturn.setText("Voltar para " + firstName);
+		}
+	}
 
 	// === DEPENDENCES ===
-	public void setCurrentMatriculation(Matriculation matriculation) {
+	public void setCurrentMatriculation(Matriculation matriculation, String returnPath) {
 		this.matriculation = matriculation;
 		updateForm();
 		// Add a tab to student infos
@@ -71,15 +89,23 @@ public class MatriculationInfoController implements Initializable{
 				controller.setParcels(matriculation.getParcels());
 			});
 		}
+		setReturnPath(returnPath);
 		
-	}
-	public void setReturn(String returnPath, String returnText) {
-		btnReturn.setText("Voltar para " + returnText);
 	}
 	
 	// === BUTTONS ON TOP ===
 	public void handleBtnReturn(ActionEvent event) {
-		System.out.println("return button clicked");
+		if(returnPath.equals(FXMLPath.INFO_STUDENT)) {
+			try {
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
+					controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
+					controller.setCurrentStudent(matriculation.getStudent());
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	// Edit Matriculation Status

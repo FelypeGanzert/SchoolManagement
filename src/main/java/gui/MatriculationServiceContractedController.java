@@ -10,7 +10,6 @@ import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Utils;
-import gui.util.Validators;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +28,6 @@ public class MatriculationServiceContractedController implements Initializable{
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
-		textServiceContracted.setValidators(Validators.getRequiredFieldValidator());
 	}
 	
 	// DEPENDENCES

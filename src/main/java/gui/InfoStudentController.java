@@ -364,8 +364,7 @@ public class InfoStudentController implements Initializable {
 			System.out.println("info matriculation"); //IN PROGRESS
 			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
-				controller.setReturn(FXMLPath.INFO_STUDENT, "Aluno");
-				controller.setCurrentMatriculation(matriculation);
+				controller.setCurrentMatriculation(matriculation, FXMLPath.INFO_STUDENT);
 			});
 		});
 	}
