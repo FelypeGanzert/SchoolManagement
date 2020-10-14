@@ -92,6 +92,16 @@ public class MatriculationInfoController implements Initializable{
 				});
 	}
 	
+	// Edit Service Contracted
+	public void handleBtnEditServiceContracted(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_SERVICE_CONTRACTED_FORM, Utils.currentStage(event), "Editar Status", false,
+				(MatriculationServiceContractedController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
 	// Auxiliar methods
 	private void updateForm() {
 		// Status

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationServiceContractedController">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
+               <children>
+                  <Label text="Serviço Contratado" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <HBox prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;" VBox.vgrow="ALWAYS">
+               <children>
+                  <JFXTextArea fx:id="textServiceContracted" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="20.0" />
+                     </HBox.margin></JFXTextArea>
+               </children>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </HBox>
+            <VBox spacing="15.0" />
+            <HBox alignment="CENTER_RIGHT" spacing="30.0">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton fx:id="btnSave" onAction="#handleSaveBtn" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnCancel" cancelButton="true" onAction="#handleCancelBtn" ripplerFill="#b51b12" style="-fx-background-color: #ee6055; -fx-cursor: hand;" text="CANCELAR" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="15.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

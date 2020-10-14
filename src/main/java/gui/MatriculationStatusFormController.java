@@ -33,6 +33,10 @@ public class MatriculationStatusFormController implements Initializable {
 	public void setMatriculationInfoController(MatriculationInfoController matriculationInfoController) {
 		this.matriculationInfoController = matriculationInfoController;		
 	}
+	
+	// STILL HAVE TO IMPLEMENT SOME BUSINESS LOGIG:
+	// - just allow to change to CONCLUIDA if every parcel is paid
+	// - if the user change to CANCELADA, get all open parcels (parcels with status ABERTA) and set status to CANCELADA
 
 	public void handleBtnClick(ActionEvent event) {
 		if (matriculation == null) {

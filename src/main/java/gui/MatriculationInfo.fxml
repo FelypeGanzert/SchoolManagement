@@ -190,7 +190,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                  <children>
-                                    <Button mnemonicParsing="false" style="-fx-background-color: #fff; -fx-cursor: hand;">
+                                    <Button mnemonicParsing="false" onAction="#handleBtnEditServiceContracted" style="-fx-background-color: #fff; -fx-cursor: hand;">
                                        <graphic>
                                           <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
