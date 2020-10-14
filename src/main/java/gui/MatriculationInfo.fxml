@@ -91,7 +91,7 @@
                               </ImageView>
                            </graphic>
                         </JFXButton>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #1167B1; -fx-background-radius: 3px;">
+                        <HBox fx:id="hBoxStatus" alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #5dd39e; -fx-background-radius: 3px;">
                            <children>
                               <Label style="-fx-background-color: #1167B1; -fx-background-radius: 3px;" text="STATUS" textFill="#f8f8f8">
                                  <font>
@@ -102,7 +102,7 @@
                                  </padding>
                               </Label>
                               <TextField fx:id="textStatus" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
-                              <Button fx:id="btnEditStatus" mnemonicParsing="false" style="-fx-background-color: #1167B1; -fx-cursor: hand;">
+                              <Button fx:id="btnEditStatus" mnemonicParsing="false" onAction="#handleBtnEditStatus" style="-fx-background-color: #1167B1; -fx-cursor: hand;">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -303,7 +303,7 @@
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../png_icons/share_white.png" />
+                              <Image url="@../png_icons/clock_white.png" />
                            </image>
                         </ImageView>
                      </graphic>

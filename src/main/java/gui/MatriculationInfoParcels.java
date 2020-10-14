@@ -28,6 +28,7 @@ public class MatriculationInfoParcels implements Initializable{
 	@FXML private TableColumn<Parcel, Double> columnValuePaid;
 	@FXML private TableColumn<Parcel, String> columnPaidWith;
 	@FXML private TableColumn<Parcel, String> columnPaymentReceivedBy;
+	@FXML private TableColumn<Parcel, Parcel> columnButtons;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {

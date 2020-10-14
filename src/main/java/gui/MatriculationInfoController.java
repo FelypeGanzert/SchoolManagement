@@ -12,12 +12,14 @@ import com.jfoenix.controls.JFXTextArea;
 import db.DBUtil;
 import gui.util.FXMLPath;
 import gui.util.Utils;
+import gui.util.enums.MatriculationStatusEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import model.entites.Matriculation;
 import model.entites.Parcel;
 
@@ -25,6 +27,7 @@ public class MatriculationInfoController implements Initializable{
 
 	@FXML private JFXButton btnReturn;
 	@FXML private TextField textStatus;
+	@FXML private HBox hBoxStatus;
 	@FXML private Button btnEditStatus;
 	// Matriculation main infos
 	@FXML private TextField txtCode;
@@ -79,8 +82,21 @@ public class MatriculationInfoController implements Initializable{
 		System.out.println("return button clicked");
 	}
 	
+	// Edit Matriculation Status
+	public void handleBtnEditStatus(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_STATUS_FORM, Utils.currentStage(event), "Editar Status", false,
+				(MatriculationStatusFormController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
 	// Auxiliar methods
 	private void updateForm() {
+		// Status
+		textStatus.setText(matriculation.getStatus());
+		hBoxStatus.setStyle("-fx-background-color: " + MatriculationStatusEnum.fromString(matriculation.getStatus()).getHexColor());
 		// Code, date matriculation, matriculated by,reason, serviceContracted
 		txtCode.setText(Integer.toString(matriculation.getCode()));
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -104,6 +120,12 @@ public class MatriculationInfoController implements Initializable{
 		}
 	}
 	
+	
+	// Called from others controllers
+	public void onDataChanged() {
+		updateForm();
+	}
+
 	
 
 
