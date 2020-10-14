@@ -25,7 +25,7 @@ public class DBUtil {
 			if(entity != null) {
 				DBFactory.getConnection().refresh(entity);
 			}
-		} catch (DbException e) {
+		} catch (Exception e) {
 			entity = null;
 			e.printStackTrace();
 		}
@@ -37,7 +37,7 @@ public class DBUtil {
 			if(entity != null) {
 				DBFactory.getConnection().refresh(entity);
 			}
-		} catch (DbException e) {
+		} catch (Exception e) {
 			entity = null;
 			e.printStackTrace();
 		}
@@ -49,7 +49,7 @@ public class DBUtil {
 			if(responsibleStudent != null) {
 				DBFactory.getConnection().refresh(responsibleStudent);
 			}
-		} catch (DbException e) {
+		} catch (Exception e) {
 			responsibleStudent = null;
 			e.printStackTrace();
 		}

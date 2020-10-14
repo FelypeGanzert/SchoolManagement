@@ -122,7 +122,7 @@
                               <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <JFXButton ripplerFill="#ff7575" style="-fx-background-color: #fff; -fx-cursor: hand;" text="EXCLUIR">
+                        <JFXButton onAction="#handleBtnDeleteMatriculation" ripplerFill="#ff7575" style="-fx-background-color: #fff; -fx-cursor: hand;" text="EXCLUIR">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

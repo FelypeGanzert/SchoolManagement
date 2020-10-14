@@ -3,23 +3,31 @@ package gui;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 
+import db.DBFactory;
 import db.DBUtil;
+import db.DbException;
+import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import gui.util.enums.MatriculationStatusEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import model.dao.MatriculationDao;
 import model.entites.Matriculation;
 import model.entites.Parcel;
 import model.entites.Student;
@@ -49,22 +57,10 @@ public class MatriculationInfoController implements Initializable{
 	public void initialize(URL url, ResourceBundle resources) {
 	}
 	
-	private void setReturnPath(String returnPath) {
-		this.returnPath = returnPath;
-		// Set text to return to student
-		if(this.returnPath.equals(FXMLPath.INFO_STUDENT)) {
-			Student student = matriculation.getStudent();
-			String firstName;
-			if (student.getName().contains(" ")) {
-				firstName = student.getName().substring(0, student.getName().indexOf(" "));
-			} else {
-				firstName = student.getName();
-			}
-			btnReturn.setText("Voltar para " + firstName);
-		}
-	}
-
-	// === DEPENDENCES ===
+	// =====================
+	// === DEPENDENCES =====
+	// =====================
+	
 	public void setCurrentMatriculation(Matriculation matriculation, String returnPath) {
 		this.matriculation = matriculation;
 		updateForm();
@@ -90,10 +86,28 @@ public class MatriculationInfoController implements Initializable{
 			});
 		}
 		setReturnPath(returnPath);
-		
 	}
 	
-	// === BUTTONS ON TOP ===
+	private void setReturnPath(String returnPath) {
+		this.returnPath = returnPath;
+		// Set text to return to student
+		if(this.returnPath.equals(FXMLPath.INFO_STUDENT)) {
+			Student student = matriculation.getStudent();
+			String firstName;
+			if (student.getName().contains(" ")) {
+				firstName = student.getName().substring(0, student.getName().indexOf(" "));
+			} else {
+				firstName = student.getName();
+			}
+			btnReturn.setText("Voltar para " + firstName);
+		}
+	}
+	
+	// =========================
+	// === BUTTONS ON TOP ======
+	// =========================
+	
+	// Return button
 	public void handleBtnReturn(ActionEvent event) {
 		if(returnPath.equals(FXMLPath.INFO_STUDENT)) {
 			try {
@@ -118,17 +132,49 @@ public class MatriculationInfoController implements Initializable{
 				});
 	}
 	
+	// Delete matriculation
+	public void handleBtnDeleteMatriculation(ActionEvent event) {
+		Student student = matriculation.getStudent();
+		// Confirmation to delete matriculation
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Deletar matrícula");
+		alert.setHeaderText("Tem certeza que deseja deletar a matrícula de código " + matriculation.getCode() + " ? " + 
+				"Não será possível desfazer a ação.");
+		alert.initOwner(Utils.currentStage(event));
+		Optional<ButtonType> result =alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			// Show a screen of deleting matriculation process
+			Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
+			try {
+				// MatriculationDao to delete from db
+				MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
+				matriculationDao.delete(matriculation);
+				// remove matriculation from student in memory and update Annotations list
+				student.getMatriculations().remove(matriculation);
+				handleBtnReturn(event);
+			} catch (DbException e) {
+				Alerts.showAlert("Erro ao deletar matrícula", "DbException", e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
+			}
+			alertProcessing.close();
+		}
+	}
+	
+	// ==========================
+	// ======= BUTTONS ==========
+	// ==========================
+
 	// Edit Service Contracted
 	public void handleBtnEditServiceContracted(ActionEvent event) {
-		Utils.loadView(this, true, FXMLPath.MATRICULATION_SERVICE_CONTRACTED_FORM, Utils.currentStage(event), "Editar Status", false,
-				(MatriculationServiceContractedController controller) -> {
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_SERVICE_CONTRACTED_FORM, Utils.currentStage(event),
+				"Editar Serviço", false, (MatriculationServiceContractedController controller) -> {
 					controller.setMatriculation(matriculation);
 					// We need to set this dependence to update here in the future
 					controller.setMatriculationInfoController(this);
 				});
 	}
 	
-	// Auxiliar methods
+	// Update UI Form
 	private void updateForm() {
 		// Status
 		textStatus.setText(matriculation.getStatus());
@@ -161,8 +207,5 @@ public class MatriculationInfoController implements Initializable{
 	public void onDataChanged() {
 		updateForm();
 	}
-
-	
-
 
 }
