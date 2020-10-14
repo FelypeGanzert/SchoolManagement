@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
+         <children>
+            <Label text="Nova Matrícula" textFill="WHITE">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <HBox prefHeight="319.0" spacing="20.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Data da Matrícula" />
+                        <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Matriculado por:" />
+                        <JFXComboBox maxHeight="1.7976931348623157E308" prefWidth="250.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="35.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Label text="Motivo:" />
+                        <JFXTextField alignment="CENTER" prefWidth="80.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Serviço Contratado">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
+                     <children>
+                        <JFXTextArea fx:id="textAreaDescription" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </JFXTextArea>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox alignment="CENTER_LEFT">
+                     <children>
+                        <JFXComboBox labelFloat="true" prefWidth="340.0" promptText="Responsável Financeiro:" styleClass="text-field-with-label" />
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox>
+                  	
+                  	<fx:include source="MatriculationInfoPerson.fxml" />
+                  </VBox>
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label prefWidth="150.0" text="Preencha as informações ou selecione um plano criado" wrapText="true" />
+                        <JFXButton ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Selecionar Plano" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label style="-fx-border-color: #0077b6; -fx-border-width: 0px 0px 3px 0px;" text="Valor Normal" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label minWidth="-Infinity" text="Taxa de matrícula" />
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;">
+                                       <children>
+                                          <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="15.0" top="15.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
+                                 <children>
+                                    <Label minWidth="-Infinity" text="Número de parcelas" />
+                                    <Spinner prefHeight="30.0" prefWidth="80.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <VBox alignment="BOTTOM_CENTER">
+                                 <children>
+                                    <GridPane hgap="5.0" vgap="10.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" />
+                                        <ColumnConstraints hgrow="SOMETIMES" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                             <children>
+                                                <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <Label minWidth="-Infinity" text="Mensalidade" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <HBox alignment="CENTER" layoutX="110.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                             <children>
+                                                <Label minWidth="-Infinity" prefHeight="31.0" prefWidth="36.0" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="15.0" top="15.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                           <children>
+                              <Label style="-fx-border-color: #0077b6; -fx-border-width: 0px 0px 3px 0px;" text="Multa sobre as parcelas" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <Label minWidth="-Infinity" text="Valor da multa">
+                                       <padding>
+                                          <Insets bottom="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;">
+                                       <children>
+                                          <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="98.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;">
+                                       <children>
+                                          <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="\%" textFill="WHITE">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField alignment="CENTER" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff;" text="105,267">
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </padding>
+                                          </TextField>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="15.0" top="15.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
+                                 <children>
+                                    <Label minWidth="-Infinity" prefWidth="150.0" text="Cobrar multa após quantos dias depois do vencimento?" wrapText="true" />
+                                    <Spinner prefHeight="30.0" prefWidth="80.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #dee2e6;">
+                                 <children>
+                                    <GridPane hgap="5.0" vgap="10.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" />
+                                          <ColumnConstraints hgrow="SOMETIMES" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                             <children>
+                                                <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                          <Label minWidth="-Infinity" text="Mensalidade" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <HBox alignment="CENTER" layoutX="110.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                             <children>
+                                                <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                       </padding>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children></VBox>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="30.0">
+         <children>
+            <JFXButton fx:id="btnSave" onAction="#handleBtnSave" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnCancel" onAction="#handleBtnCancel" ripplerFill="#b51b12" style="-fx-background-color: #ee6055; -fx-cursor: hand;" text="CANCELAR" textFill="WHITE">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="30.0" />
+   </padding>
+</VBox>
