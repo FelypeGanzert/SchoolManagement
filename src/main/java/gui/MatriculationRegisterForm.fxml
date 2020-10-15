@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationRegisterFormController">
    <children>
       <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
          <children>
@@ -40,7 +40,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Data da Matrícula" />
-                        <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                        <JFXTextField alignment="CENTER" prefWidth="80.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
@@ -204,7 +204,7 @@
                                              </children>
                                           </HBox>
                                           <Label minWidth="-Infinity" text="Mensalidade" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Valor Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                           <HBox alignment="CENTER" layoutX="110.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                              <children>
                                                 <Label minWidth="-Infinity" prefHeight="31.0" prefWidth="36.0" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
@@ -231,7 +231,7 @@
                               </VBox>
                            </children>
                            <padding>
-                              <Insets right="20.0" />
+                              <Insets bottom="20.0" right="20.0" />
                            </padding>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -279,7 +279,7 @@
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField alignment="CENTER" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff;" text="105,267">
+                                          <TextField alignment="CENTER" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff;">
                                              <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
@@ -333,7 +333,7 @@
                                              </children>
                                           </HBox>
                                           <Label minWidth="-Infinity" text="Mensalidade" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Label layoutX="10.0" layoutY="77.0" minWidth="-Infinity" text="Valor Bruto" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                           <HBox alignment="CENTER" layoutX="110.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #333; -fx-border-width: 1px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                              <children>
                                                 <Label minWidth="-Infinity" style="-fx-background-color: #333;" text="R$" textFill="WHITE">
@@ -360,9 +360,45 @@
                               </VBox>
                            </children>
                            <padding>
-                              <Insets left="20.0" />
+                              <Insets bottom="20.0" left="20.0" />
                            </padding>
                         </VBox>
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <HBox>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label text="Vencimento da Taxa de Matrícula" />
+                              <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="332.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label text="Vencimento da 1ª Parcela" />
+                              <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
+                           <children>
+                              <Label minWidth="-Infinity" text="Vencimento das parcelas todo dia" />
+                              <Spinner prefHeight="30.0" prefWidth="80.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
                      </children>
                   </HBox>
                </children></VBox>

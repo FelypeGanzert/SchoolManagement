@@ -299,6 +299,12 @@ public class InfoStudentController implements Initializable {
 				});
 	}
 	
+	public void handleBtnAddMatriculation(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_REGISTER_FORM, Utils.currentStage(event), "Nova matrícula", false,
+				(x) -> {
+				});
+	}
+	
 	public void handleBtnAddResponsible(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Novo cadatro", false,
 				(PersonFormController controller) -> {
