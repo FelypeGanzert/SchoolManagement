@@ -243,9 +243,12 @@ public class ListStudentsController implements Initializable {
 				}
 			};
 	    });
+		columnStudentStatus.setReorderable(false);
 		// columns to id and name
 		Utils.setCellValueFactory(columnStudentCode, "id");
+		columnStudentCode.setReorderable(false);
 		Utils.setCellValueFactory(columnStudentName, "name");
+		columnStudentName.setReorderable(false);
 		// we need this verification because can happen of students doenst have any contact number
 		columnStudentContact1.setCellValueFactory(cellData -> {
 			try {
@@ -259,10 +262,12 @@ public class ListStudentsController implements Initializable {
 				return new SimpleStringProperty("-");
 			}
 		});
+		columnStudentContact1.setReorderable(false);
 		// Add info button to student and when clicked will show informations of that student
 		Utils.initButtons(columnStudentInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
 			showStudentInfo(student);
 		});
+		columnStudentInfo.setReorderable(false);
 		// Listener to selected student, 
 		tableStudents.getSelectionModel().selectedItemProperty().addListener(
 	            (observable, oldSelection, newSelection) -> {
@@ -279,9 +284,12 @@ public class ListStudentsController implements Initializable {
 	// TABLE MATRICULATIONS
 	private void initializeTableMatriculationsNodes() {
 		Utils.setCellValueFactory(columnMatriculationCode, "code");
+		columnMatriculationCode.setReorderable(false);
 		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
 		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
+		columnMatriculationDate.setReorderable(false);
 		Utils.setCellValueFactory(columnMatriculationStatus, "status");
+		columnMatriculationStatus.setReorderable(false);
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
 				// Total of parcels ignoring matriculation tax (parcel 0)
@@ -297,6 +305,7 @@ public class ListStudentsController implements Initializable {
 				return new SimpleStringProperty("-");
 			}
 		});
+		columnMatriculationParcels.setReorderable(false);
 		// Listener to selected Matriculation
 		tableMatriculations.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {	
@@ -340,11 +349,15 @@ public class ListStudentsController implements Initializable {
 				}
 			};
 	    });
+		columnParcelStatus.setReorderable(false);
 		Utils.setCellValueFactory(columnParcelParcel, "parcelNumber");
+		columnParcelParcel.setReorderable(false);
 		Utils.setCellValueFactory(columnParcelDate, "dateParcel");
 		Utils.formatTableColumnDate(columnParcelDate, "dd/MM/yyyy");
+		columnParcelDate.setReorderable(false);
 		Utils.setCellValueFactory(columnParcelValue, "value");
 		Utils.formatTableColumnDoubleCurrency(columnParcelValue);
+		columnParcelValue.setReorderable(false);
 	}
 	
 	// LIST VIEW ANNOTATIONS

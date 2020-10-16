@@ -57,31 +57,6 @@ public class Constraints {
 		});
 	}
 	
-	public static void dateAutoComplete(TextField txt) {
-		setTextFieldMaxLength(txt, 12);
-		txt.lengthProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						if (newValue.intValue() <= 14) {
-							String value = txt.getText();
-							value = value.replaceAll("[^0-9]", "");
-							value = value.replaceFirst("(\\d{2})(\\d)", "$1.$2");
-							value = value.replaceFirst("(\\d{2})\\.(\\d{3})(\\d)", "$1.$2.$3");
-							value = value.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})(\\d)", "$1.$2.$3-$4");
-							value = value.replaceFirst("(\\d{2})\\.(\\d{3})\\.(\\d{3})\\-(\\d{1})(\\d)", "$1.$2.$3.$4");
-							txt.setText(value);
-							positionCaret(txt);
-						}
-
-					}
-				});
-			}
-		});
-	}
-	
 	public static String getOnlyDigitsValue(TextField field) {
 		String result = field.getText();
 		if (result == null) {
@@ -170,7 +145,15 @@ public class Constraints {
 
 	public static void setTextFieldDouble(TextField txt) {
 		txt.textProperty().addListener((obs, oldValue, newValue) -> {
-			if (newValue != null && !newValue.matches("\\d*([\\.]\\d*)?")) {
+			if (newValue != null && !newValue.matches("\\d*([\\,]\\d*)?")) {
+				txt.setText(oldValue);
+			}
+		});
+	}
+	
+	public static void setTextFieldDoubleMoney(TextField txt) {
+		txt.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null && !newValue.matches("\\d*([\\,]\\d{0,4})?")) {
 				txt.setText(oldValue);
 			}
 		});

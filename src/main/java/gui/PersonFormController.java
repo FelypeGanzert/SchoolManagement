@@ -26,6 +26,7 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
 import gui.util.Utils;
+import gui.util.Validators;
 import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
 import gui.util.enums.StudentStatusEnum;
@@ -214,8 +215,7 @@ public class PersonFormController implements Initializable {
 	// Set requiredFields and Constraints
 	private void initializeFields() {
 		// Create Required validator
-		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-		requiredValidator.setMessage("Campo necessário");
+		RequiredFieldValidator requiredValidator = Validators.getRequiredFieldValidator();
 		// Name: always in UpperCase and required
 		textName.setValidators(requiredValidator);
 		// CPF: required

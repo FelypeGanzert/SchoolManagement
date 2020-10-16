@@ -40,7 +40,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Data da Matrícula" />
-                        <JFXTextField alignment="CENTER" prefWidth="80.0" />
+                        <JFXTextField fx:id="textDate" alignment="CENTER" prefWidth="80.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
@@ -48,8 +48,8 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Label text="Matriculado por:" />
-                        <JFXComboBox maxHeight="1.7976931348623157E308" prefWidth="250.0" />
+                        <Label text="Matriculado por" />
+                        <JFXComboBox fx:id="comboBoxMatriculatedBy" maxHeight="1.7976931348623157E308" prefWidth="250.0" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
@@ -58,7 +58,7 @@
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="35.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Motivo:" />
-                        <JFXTextField alignment="CENTER" prefWidth="80.0" HBox.hgrow="ALWAYS" />
+                        <JFXTextField fx:id="textReason" alignment="CENTER" prefWidth="80.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
@@ -78,7 +78,7 @@
                   </HBox>
                   <HBox minHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
                      <children>
-                        <JFXTextArea fx:id="textAreaDescription" HBox.hgrow="ALWAYS">
+                        <JFXTextArea fx:id="textAreaServiceContracted" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -94,7 +94,7 @@
                   <Separator prefWidth="200.0" />
                   <VBox alignment="CENTER_LEFT">
                      <children>
-                        <JFXComboBox labelFloat="true" prefWidth="340.0" promptText="Responsável Financeiro:" styleClass="text-field-with-label" />
+                        <JFXComboBox fx:id="comboBoxResponsible" labelFloat="true" prefWidth="340.0" promptText="Responsável Financeiro:" styleClass="text-field-with-label" />
                      </children>
                      <padding>
                         <Insets top="10.0" />
@@ -115,7 +115,7 @@
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
                         <Label prefWidth="150.0" text="Preencha as informações ou selecione um plano criado" wrapText="true" />
-                        <JFXButton ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Selecionar Plano" textFill="WHITE">
+                        <JFXButton fx:id="btnSelectPaymentPlan" ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Selecionar Plano" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -150,7 +150,7 @@
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                          <TextField fx:id="textMatriculationTax" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                              <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
@@ -168,7 +168,7 @@
                               <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
                                  <children>
                                     <Label minWidth="-Infinity" text="Número de parcelas" />
-                                    <Spinner prefHeight="30.0" prefWidth="80.0" />
+                                    <Spinner fx:id="spinnerNumberOfParcels" prefHeight="30.0" prefWidth="80.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" top="10.0" />
@@ -196,7 +196,7 @@
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                <TextField fx:id="textParcelValue" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
@@ -215,7 +215,7 @@
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                <TextField fx:id="textTotalValue" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
@@ -262,7 +262,7 @@
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                          <TextField fx:id="textValueFineDelay" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                              <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
@@ -279,7 +279,7 @@
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField alignment="CENTER" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff;">
+                                          <TextField fx:id="textPercentValueFineDelay" alignment="CENTER" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff;">
                                              <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                              </padding>
@@ -297,7 +297,7 @@
                               <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
                                  <children>
                                     <Label minWidth="-Infinity" prefWidth="150.0" text="Cobrar multa após quantos dias depois do vencimento?" wrapText="true" />
-                                    <Spinner prefHeight="30.0" prefWidth="80.0" />
+                                    <Spinner fx:id="spinnerDaysFineDelay" prefHeight="30.0" prefWidth="80.0" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" top="10.0" />
@@ -325,7 +325,7 @@
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <TextField alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                <TextField fx:id="textParcelValueWithFineDelay" alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
@@ -344,7 +344,7 @@
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
                                                 </Label>
-                                                <TextField alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                                <TextField fx:id="textTotalValueWithFineDelay" alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
@@ -371,7 +371,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                               <Label text="Vencimento da Taxa de Matrícula" />
-                              <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                              <JFXTextField fx:id="textMatriculationTaxDate" alignment="CENTER" prefWidth="80.0" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
@@ -384,7 +384,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                               <Label text="Vencimento da 1ª Parcela" />
-                              <JFXTextField alignment="CENTER" prefWidth="80.0" text="10/09/2020" />
+                              <JFXTextField fx:id="textFirstParcelDate" alignment="CENTER" prefWidth="80.0" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
@@ -393,7 +393,7 @@
                         <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
                            <children>
                               <Label minWidth="-Infinity" text="Vencimento das parcelas todo dia" />
-                              <Spinner prefHeight="30.0" prefWidth="80.0" />
+                              <Spinner fx:id="spinnerParcelsDueDate" prefHeight="30.0" prefWidth="80.0" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
