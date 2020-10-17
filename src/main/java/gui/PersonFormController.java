@@ -238,8 +238,6 @@ public class PersonFormController implements Initializable {
 		emailValidator.setRegexPattern("^(.+)@(.+)$");
 		textEmail.setValidators(emailValidator);
 		Constraints.setTextFieldAlwaysLowerCase(textEmail);
-		// textDateRegistry.setValidators(requiredValidator, dateValidator); ///
-		// ========= I still have to work in dateRegistry
 		// Max length for fields
 		Constraints.setTextFieldMaxLength(textUF, 2);
 		Constraints.setTextFieldAlwaysUpperCase(textUF);

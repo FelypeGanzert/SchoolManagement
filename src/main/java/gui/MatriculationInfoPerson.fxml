@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER_LEFT" prefWidth="350.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoPerson">
+<VBox alignment="CENTER_LEFT" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoPerson">
    <children>
       <Label fx:id="labelName" text="Nome" />
       <Label fx:id="labelBirthDateAndCivilStatus" text="Nascimento: X; X anos; Estado Civil: X" />
@@ -13,6 +13,6 @@
       <Label fx:id="labelNeighborhoodAndCity" layoutX="10.0" layoutY="173.0" text="Bairro: X; Cidade: X" />
    </children>
    <padding>
-      <Insets bottom="15.0" top="15.0" />
+      <Insets bottom="10.0" top="10.0" />
    </padding>
 </VBox>

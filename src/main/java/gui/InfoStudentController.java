@@ -300,8 +300,16 @@ public class InfoStudentController implements Initializable {
 	}
 	
 	public void handleBtnAddMatriculation(ActionEvent event) {
+		// Check if the student is underage and if doesn't have any responsible
+		// If this happen, we cant add a new matriculation to him
+		if(student.getAge() < 18 && student.getResponsibles().size() <= 0) {
+			Alerts.showAlert("Menor de Idade", "Não é possível matricular esse estudante",
+					"O estudante é menor de idade e não possui nenhum responsável.", AlertType.WARNING, Utils.currentStage(event));
+			return;
+		}
 		Utils.loadView(this, true, FXMLPath.MATRICULATION_REGISTER_FORM, Utils.currentStage(event), "Nova matrícula", false,
-				(x) -> {
+				(MatriculationRegisterFormController controller ) -> {
+					controller.setStudent(student);
 				});
 	}
 	

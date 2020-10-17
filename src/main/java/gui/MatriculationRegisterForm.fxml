@@ -5,13 +5,17 @@
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -37,43 +41,51 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Data da Matrícula" />
                         <JFXTextField fx:id="textDate" alignment="CENTER" prefWidth="80.0" />
                      </children>
                      <padding>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Matriculado por" />
                         <JFXComboBox fx:id="comboBoxMatriculatedBy" maxHeight="1.7976931348623157E308" prefWidth="250.0" />
                      </children>
                      <padding>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="35.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="35.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Motivo:" />
                         <JFXTextField fx:id="textReason" alignment="CENTER" prefWidth="80.0" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="110.0" prefWidth="200.0" spacing="30.0">
                      <children>
                         <Label text="Serviço Contratado">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Label>
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <Label text="(" />
+                              <Label text="Digite ou" />
+                              <JFXButton fx:id="btnSelectServiceContracted" style="-fx-cursor: hand;" text="Selecione" underline="true" />
+                              <Label text=")" />
+                           </children>
+                        </HBox>
                      </children>
                      <padding>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" top="10.0" />
                      </padding>
                   </HBox>
                   <HBox minHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
@@ -92,9 +104,18 @@
                      </VBox.margin>
                   </HBox>
                   <Separator prefWidth="200.0" />
-                  <VBox alignment="CENTER_LEFT">
+                  <HBox alignment="CENTER_LEFT">
                      <children>
                         <JFXComboBox fx:id="comboBoxResponsible" labelFloat="true" prefWidth="340.0" promptText="Responsável Financeiro:" styleClass="text-field-with-label" />
+                        <Button fx:id="btnRemoveResponsible" mnemonicParsing="false" onAction="#handleBtnRemoveResponsible" style="-fx-background-color: #FFF; -fx-cursor: HAND;" visible="false">
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png_icons/delete_red.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                      <padding>
                         <Insets top="10.0" />
@@ -102,20 +123,17 @@
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
-                  </VBox>
-                  <VBox>
-                  	
-                  	<fx:include source="MatriculationInfoPerson.fxml" />
-                  </VBox>
+                  </HBox>
+                  <Pane fx:id="paneResponsibleInfo" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="200.0" />
             <VBox>
                <children>
-                  <HBox alignment="CENTER" spacing="10.0">
+                  <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
                      <children>
-                        <Label prefWidth="150.0" text="Preencha as informações ou selecione um plano criado" wrapText="true" />
-                        <JFXButton fx:id="btnSelectPaymentPlan" ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Selecionar Plano" textFill="WHITE">
+                        <Label prefWidth="150.0" text="Preencha as informações ou" wrapText="true" />
+                        <JFXButton fx:id="btnSelectPaymentPlan" ripplerFill="#01344d" style="-fx-background-color: #0077b6; -fx-cursor: hand;" text="Selecione um Plano" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -296,7 +314,7 @@
                               </HBox>
                               <HBox alignment="CENTER" minHeight="-Infinity" spacing="10.0">
                                  <children>
-                                    <Label minWidth="-Infinity" prefWidth="150.0" text="Cobrar multa após quantos dias depois do vencimento?" wrapText="true" />
+                                    <Label alignment="CENTER" minWidth="-Infinity" prefWidth="150.0" text="Cobrar multa quantos dias após o vencimento?" wrapText="true" />
                                     <Spinner fx:id="spinnerDaysFineDelay" prefHeight="30.0" prefWidth="80.0" />
                                  </children>
                                  <padding>

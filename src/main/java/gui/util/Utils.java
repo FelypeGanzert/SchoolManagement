@@ -149,7 +149,6 @@ public class Utils {
 			VBox newContent = loader.load();
 			tab.setContent(newContent);
 			tab.setText(tabTitle);
-			//tab.setStyle(newContent.getStyle());
 			T controller = loader.getController();
 			initializingAction.accept(controller);
 		} catch (IOException e) {

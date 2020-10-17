@@ -78,6 +78,7 @@ public class MatriculationInfoController implements Initializable{
 				controller.setPerson(matriculation.getResponsible());
 			});
 		}
+		// Refresh and set a tab to Parcels
 		if(matriculation.getParcels() != null) {
 			//DBUtil.refleshData(matriculation.getParcels());
 			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PARCELS, "Parcelas", tabPaneParcels, 
