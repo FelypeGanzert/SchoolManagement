@@ -327,7 +327,7 @@ public class ListStudentsController implements Initializable {
 			try {
 				String situation = cellData.getValue().getSituation();
 				Parcel auxParcel = cellData.getValue();
-				if (auxParcel.getDateParcel().before(new Date()) && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date()) && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
 					situation = "ATRASADA";
 				}
 				return new SimpleStringProperty(situation);
@@ -546,7 +546,8 @@ public class ListStudentsController implements Initializable {
 			// get parcels from matriculation and put in a ObservableList
 			ObservableList<Parcel> parcels = FXCollections.observableList(matriculation.getParcels());
 			// sort parcels by date
-			parcels.sort((p1, p2) -> p1.getDateParcel().compareTo(p2.getDateParcel()));
+			
+			parcels.sort((p1, p2) -> p1.getDocumentNumber().compareTo(p2.getDocumentNumber()));
 			// set parcels to table in UI
 			tableParcels.setItems(parcels);
 		}

@@ -1,5 +1,6 @@
 package model.entites;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class Matriculation {
 	private String status;
 	
 	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Parcel> parcels;
+	private List<Parcel> parcels = new ArrayList<>();
 
 
 }

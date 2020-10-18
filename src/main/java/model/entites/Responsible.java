@@ -94,7 +94,7 @@ public class Responsible extends Person {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_responsible")
-	private List<Contact> contacts;
+	private List<Contact> contacts = new ArrayList<>();
 
 	public int getAge(){
 		if (dateBirth == null) {

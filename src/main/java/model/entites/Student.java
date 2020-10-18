@@ -93,7 +93,7 @@ public class Student extends Person{
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_student")
-	private List<Contact> contacts;
+	private List<Contact> contacts = new ArrayList<>();
 
 	public int getAge(){
 		if (dateBirth == null) {
@@ -126,13 +126,13 @@ public class Student extends Person{
 	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Matriculation> matriculations;
+	private List<Matriculation> matriculations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Annotation> annotations;
+	private List<Annotation> annotations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Course> courses;
+	private List<Course> courses = new ArrayList<>();
 
 	public void addResponsavel(ResponsibleStudent responsibleStudent) {
 		this.responsibles.add(responsibleStudent);

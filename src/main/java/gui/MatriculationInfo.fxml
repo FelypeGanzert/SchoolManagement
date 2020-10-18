@@ -16,7 +16,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="1270.0" prefHeight="600.0" prefWidth="1270.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoController">
    <content>
-      <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="1100.0" prefWidth="1100.0" spacing="15.0">
+      <VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="1100.0" prefWidth="1100.0" spacing="10.0">
          <children>
             <HBox spacing="20.0" style="-fx-background-color: #0077b6;">
                <padding>
@@ -143,7 +143,7 @@
             </HBox>
             <HBox alignment="CENTER" spacing="30.0">
                <children>
-                  <VBox prefHeight="200.0" spacing="20.0">
+                  <VBox spacing="20.0">
                      <children>
                         <HBox maxHeight="-Infinity" spacing="15.0">
                            <children>
@@ -183,7 +183,7 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <VBox alignment="CENTER" minHeight="-Infinity" prefHeight="95.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
+                        <VBox alignment="CENTER" minHeight="-Infinity" prefHeight="80.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
                            <padding>
                               <Insets left="15.0" right="15.0" top="5.0" />
                            </padding>
@@ -202,7 +202,7 @@
                                     <Label text="Serviço contratado:" />
                                  </children>
                               </HBox>
-                              <JFXTextArea fx:id="txtServiceContracted" editable="false">
+                              <JFXTextArea fx:id="txtServiceContracted" editable="false" text="texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -211,9 +211,9 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="78.0" prefWidth="445.0">
+                  <VBox prefWidth="445.0">
                      <children>
-                        <TabPane fx:id="tabPanePeople" prefHeight="200.0" prefWidth="200.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE" />
+                        <TabPane fx:id="tabPanePeople" prefWidth="200.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>

@@ -191,18 +191,21 @@ public class InfoStudentController implements Initializable {
 			// Matriculations
 			if (student.getMatriculations() != null) {
 				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
+				matriculationsList.sort((m1, m2) -> m2.getDateMatriculation().compareTo(m1.getDateMatriculation()));
 				tableMatriculations.setItems(matriculationsList);
 				tableMatriculations.refresh();
 			}
 			// Contacts
 			if (student.getContacts() != null) {
 				contactsList = FXCollections.observableArrayList(this.student.getContacts());
+				contactsList.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
 				tableContacts.setItems(contactsList);
 				tableContacts.refresh();
 			}
 			// Responsibles
 			if (student.getAllResponsibles() != null) {
 				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
+				responsiblesList.sort((r1, r2) -> r2.getId().compareTo(r1.getId()));
 				tableResponsibles.setItems(responsiblesList);
 				tableResponsibles.refresh();
 			}

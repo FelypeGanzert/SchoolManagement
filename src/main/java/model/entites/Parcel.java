@@ -83,7 +83,10 @@ public class Parcel {
 	}
 	
 	public Double getValueWithFineDelay() {
-		return getValue() + getValueFineDelay();
+		if(getValueFineDelay() != null) {
+			return getValue() + getValueFineDelay();
+		}
+		return null;
 	}
 
 }

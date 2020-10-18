@@ -2,8 +2,10 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,8 +23,12 @@ import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.DateUtil;
 import gui.util.FXMLPath;
+import gui.util.Utils;
 import gui.util.Validators;
+import gui.util.enums.MatriculationStatusEnum;
+import gui.util.enums.ParcelStatusEnum;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +43,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import model.dao.CollaboratorDao;
+import model.dao.MatriculationDao;
 import model.entites.Collaborator;
+import model.entites.Matriculation;
+import model.entites.Parcel;
 import model.entites.Responsible;
 import model.entites.Student;
 import sharedData.Globe;
@@ -80,6 +89,7 @@ public class MatriculationRegisterFormController implements Initializable{
 	private String lastValueChanged = "parcelValue";
 	private String lastValueFineDelayChanged = "valueFineDelay";
 	
+	private Matriculation matriculation;
 	private Student student;
 	
 	@Override
@@ -90,8 +100,6 @@ public class MatriculationRegisterFormController implements Initializable{
 		setListeners();
 		// Set default values
 		setDefaultValuesToFields();
-		// Define entities daos
-		defineEntitiesDaos();
 	}
 	
 	// =========================
@@ -127,11 +135,72 @@ public class MatriculationRegisterFormController implements Initializable{
 	// ==========================
 	
 	public void handleBtnSave(ActionEvent event) {
-		System.out.println("Save button clicked");
+		try {
+			// check if fields is valid, we have theses situations to stop this method:
+			// 1- textDate is empty or not a valid date
+			// 2 - textAreaService is empty
+			// 3 - If matriculationTaxDate is not empty, we check if is a valid date
+			// 4 - If firstParcelDate is not empty, we check if is a valid date
+			if (!textDate.validate() || !textAreaServiceContracted.validate()
+					|| (textMatriculationTaxDate.getText() != null && textMatriculationTaxDate.getText().length() > 0
+							&& !textMatriculationTaxDate.validate())
+					|| (textFirstParcelDate.getText() != null && textFirstParcelDate.getText().length() > 0
+							&& !textFirstParcelDate.validate())) {
+				return;
+			}
+			// Check if date of matriculation is after today, this can't happen
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Date today = new Date();
+				if (sdf.parse(textDate.getText()).compareTo(today) > 0) {
+					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
+							"É impossível fazer uma matrícula no futuro.", AlertType.ERROR, Utils.currentStage(event));
+					// stop the method
+					return;
+				}
+			} catch (ParseException e) {
+				System.out.println("Erro durante conversão para verificar datas...");
+				e.printStackTrace();
+			}
+			// Get data in form and generate a matriculation
+			getFormData();
+			// Save in DB
+			try {
+				MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
+				// If he doesn't have a id, is a new matriculation,
+				// otherwhise the course already is in database
+				// ... Even I know that this screen will only be used to addy
+				// a new matriculation, its is important make this verification
+				if (matriculation.getCode() == null) {
+					// set current student to matriculation
+					matriculation.setStudent(student);
+					student.getMatriculations().add(matriculation);
+					matriculationDao.insert(matriculation);
+				} else {
+					matriculationDao.update(matriculation);
+				}
+				// Go to screen of matriculation info and close this form
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
+					controller.setCurrentMatriculation(matriculation, FXMLPath.INFO_STUDENT);
+				});
+				Utils.currentStage(event).close();
+			} catch (DbException e) {
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
+				e.printStackTrace();
+			} 
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR,
+					Utils.currentStage(event));
+		}
+
 	}
 	
 	public void handleBtnCancel(ActionEvent event) {
-		System.out.println("Cancel button clicked");
+		Utils.currentStage(event).close();
 	}
 	
 	public void handleBtnRemoveResponsible(ActionEvent event) {
@@ -144,6 +213,117 @@ public class MatriculationRegisterFormController implements Initializable{
 	// ==========================
 	// ===== END BUTTONS ========
 	// ==========================
+	
+	
+	// ===== AUXILIAR METHODS =====
+	
+	// set all informations in the form to matriculation
+	private void getFormData() {
+		// initialize Matriculation if is null
+		if(matriculation == null) {
+			matriculation = new Matriculation();
+		}
+		//
+		matriculation.setStatus(MatriculationStatusEnum.ATIVA.toString());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		// matriculation date
+		try {
+			matriculation.setDateMatriculation(sdf.parse(textDate.getText()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// matriculatedBy
+		matriculation.setMatriculatedBy(comboBoxMatriculatedBy.getSelectionModel().getSelectedItem());
+		// reason
+		matriculation.setReason(textReason.getText().trim());
+		// service contracted
+		matriculation.setServiceContracted(textAreaServiceContracted.getText().trim());
+		// responsible for the matriculation
+		if(comboBoxResponsible.getSelectionModel().getSelectedItem() != null) {
+			System.out.println("Responsible is not null");
+			matriculation.setResponsible(comboBoxResponsible.getSelectionModel().getSelectedItem());
+		}
+		// ========== PARCELS ==============
+		// Matriculation tax
+		if(!textMatriculationTax.getText().isEmpty()) {
+			// create parcel to tax
+			Parcel taxParcel = new Parcel();
+			taxParcel.setMatriculation(matriculation);
+			matriculation.getParcels().add(taxParcel);
+			// parcel number
+			taxParcel.setParcelNumber(0);
+			// tax value
+			Double taxValue = textToDouble(textMatriculationTax.getText());
+			taxParcel.setValue(taxValue);
+			// tax date
+			if (!textMatriculationTaxDate.getText().isEmpty()) {
+				try {
+					Date taxDate = sdf.parse(textMatriculationTaxDate.getText());
+					taxParcel.setDateParcel(taxDate);
+					taxParcel.setDaysFineDelay(0);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			// tax situation
+			taxParcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+		}
+		// other parcels
+		if(spinnerNumberOfParcels.getValue() > 0 && !textParcelValue.getText().isEmpty()) {
+			// parcel value
+			Double parcelValue = textToDouble(textParcelValue.getText());
+			// fine delay value
+			Double valueFineDelay = 0.0;
+			if(!textValueFineDelay.getText().isEmpty()) {
+				valueFineDelay = textToDouble(textValueFineDelay.getText());
+			}
+			// days fine delay
+			Integer daysFineDelay = spinnerDaysFineDelay.getValue();
+			// number of parcels
+			Integer numberOfParcels = spinnerNumberOfParcels.getValue();
+			// first parcel date
+			Date firstParcelDate = null;
+			if(!textFirstParcelDate.getText().isEmpty()) {
+				try {
+					firstParcelDate = sdf.parse(textFirstParcelDate.getText());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			// parcels due date
+			Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
+			// create parcels and add to matriculation
+			for(int i = 1; i <= numberOfParcels; i++) {
+				Parcel parcel = new Parcel();
+				parcel.setMatriculation(matriculation);
+				matriculation.getParcels().add(parcel);
+				// number
+				parcel.setParcelNumber(i);
+				// date
+				parcel.setDateParcel(firstParcelDate);
+				// add a month to first date parcel, and change the day to the user has set if i == 1
+				if(firstParcelDate != null) {
+					Calendar c = DateUtil.dateToCalendar(firstParcelDate);
+					c.add(Calendar.MONTH, 1);
+					if(i == 1) {
+						c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
+					}
+					firstParcelDate = DateUtil.calendarToDate(c);
+				}
+				// value
+				parcel.setValue(parcelValue);
+				parcel.setDaysFineDelay(daysFineDelay);
+				parcel.setValueFineDelay(valueFineDelay);
+				parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+			}			
+		}
+		 
+		// INSERT INTO parcela
+		//  parcela_numero, valor, data_parcela, dias_multa_atraso, valor_multa_atraso, situacao, 
+		
+
+		
+	}
 	
 	// ==========================
 	// === INITIALIZE METHODS  ==
@@ -184,7 +364,7 @@ public class MatriculationRegisterFormController implements Initializable{
 		// IntegerSpinnerValueFactory(int min, int max, int initialValue, int amountToStepBy)
 		spinnerNumberOfParcels.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,40, 0, 1));
 		spinnerDaysFineDelay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,15, 0, 1));
-		spinnerParcelsDueDate.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,25, 0, 1));
+		spinnerParcelsDueDate.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,25, 0, 1));
 		// comboBox: matriculated by
 		try {
 			// Get all initials from the collaborators in db
@@ -477,10 +657,6 @@ public class MatriculationRegisterFormController implements Initializable{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		textDate.setText(sdf.format(new Date()));
 	}
-	
-	private void defineEntitiesDaos() {
-		
-	}
 
 	private String doubleToTextField(Double value) {
 		return String.format("%.2f", value).replace(".", ",");
@@ -490,7 +666,4 @@ public class MatriculationRegisterFormController implements Initializable{
 		return Double.valueOf(valueText.replace(",", "."));
 	}
 	
-
-
-
 }

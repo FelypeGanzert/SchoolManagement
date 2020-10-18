@@ -44,11 +44,14 @@
                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Data da Matrícula" />
-                        <JFXTextField fx:id="textDate" alignment="CENTER" prefWidth="80.0" />
+                        <JFXTextField fx:id="textDate" alignment="CENTER" prefWidth="150.0" style="-fx-alignment: center;" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="10.0">
                      <children>
@@ -100,7 +103,7 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </padding>
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="30.0" />
                      </VBox.margin>
                   </HBox>
                   <Separator prefWidth="200.0" />

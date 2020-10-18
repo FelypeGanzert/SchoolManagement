@@ -14,11 +14,11 @@
    <content>
       <VBox minHeight="500.0" minWidth="700.0">
          <children>
-            <HBox spacing="10.0" style="-fx-background-color: #1261A0;">
+            <HBox minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #1261A0;">
                <children>
                   <HBox prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXButton onAction="#handleBtnHome" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="INÍCIO" textFill="#fffdfd">
+                        <JFXButton minWidth="-Infinity" onAction="#handleBtnHome" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="INÍCIO" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -30,7 +30,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton onAction="#handleBtnStudents" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="ALUNOS" textFill="#fffdfd">
+                        <JFXButton minWidth="-Infinity" onAction="#handleBtnStudents" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="ALUNOS" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -46,8 +46,8 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="labelCurrentUser" text="Usuário atual" textFill="WHITE" />
-                        <JFXButton onAction="#handleBtnChangeUser" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="MUDAR USUÁRIO" textFill="#fffdfd">
+                        <Label fx:id="labelCurrentUser" minWidth="-Infinity" text="Usuário atual" textFill="WHITE" />
+                        <JFXButton minWidth="-Infinity" onAction="#handleBtnChangeUser" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="MUDAR USUÁRIO" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -59,7 +59,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnFullScreen" onAction="#handleBtnChangeFullScreen" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="TELA CHEIA" textFill="#fffdfd">
+                        <JFXButton fx:id="btnFullScreen" minWidth="-Infinity" onAction="#handleBtnChangeFullScreen" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="TELA CHEIA" textFill="#fffdfd">
                            <graphic>
                               <ImageView fx:id="imageFullScreen" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
@@ -71,7 +71,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton onAction="#handleBtnExit" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="SAIR" textFill="#fffdfd">
+                        <JFXButton minWidth="-Infinity" onAction="#handleBtnExit" ripplerFill="#045b9e" style="-fx-background-color: #187BCD; -fx-cursor: hand;" text="SAIR" textFill="#fffdfd">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                                  <image>
