@@ -17,13 +17,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ProgressIndicator;
 
 public class DBConnectionURLController implements Initializable {
 
 	@FXML private JFXTextField txtURL;
 	@FXML private JFXButton btnConnect;
-	@FXML private ImageView imageLoading;
+	@FXML private ProgressIndicator progress;
 	@FXML private Label labelError;
 
 	@Override
@@ -31,7 +31,7 @@ public class DBConnectionURLController implements Initializable {
 	}
 
 	private void changeLoadingVisibility() {
-		imageLoading.setVisible(!imageLoading.isVisible());
+		progress.setVisible(!progress.isVisible());
 	}
 
 	public void handleBtnConnect(ActionEvent event) {

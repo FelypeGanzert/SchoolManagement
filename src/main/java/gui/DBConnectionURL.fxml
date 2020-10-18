@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -40,11 +40,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="imageLoading" fitHeight="50.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../images/loading.gif" />
-                     </image>
-                  </ImageView>
+                  <ProgressIndicator fx:id="progress" visible="false" />
                   <Label fx:id="labelError" text="Mensagem de erro" textFill="#a10303" visible="false" />
                </children>
             </HBox>
