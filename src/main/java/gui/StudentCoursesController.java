@@ -82,11 +82,15 @@ public class StudentCoursesController implements Initializable{
 	
 	private void initializeTableCourses() {
 		Utils.setCellValueFactory(columnCourseName, "name");
+		columnCourseName.setReorderable(false);
 		Utils.setCellValueFactory(columnStartDate, "startDate");
 		Utils.formatTableColumnDate(columnStartDate, "dd/MM/yyyy");
+		columnStartDate.setReorderable(false);
 		Utils.setCellValueFactory(columnEndDate, "endDate");
 		Utils.formatTableColumnDate(columnEndDate, "dd/MM/yyyy");
+		columnEndDate.setReorderable(false);
 		Utils.setCellValueFactory(columnProfessor, "professor");
+		columnProfessor.setReorderable(false);
 		// Course Load
 		columnCourseLoad.setCellValueFactory(cellData -> {
 			if(cellData.getValue().getCourseLoad() != null) {
@@ -100,6 +104,7 @@ public class StudentCoursesController implements Initializable{
 				return new SimpleStringProperty("");
 			}			
 		});
+		columnCourseLoad.setReorderable(false);
 		// Edit course button
 		Utils.initButtons(columnEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (course, event) -> {
 			Utils.loadView(this, true, FXMLPath.COURSE_FORM, Utils.currentStage(event), "Adicionar curso", false,
@@ -107,6 +112,7 @@ public class StudentCoursesController implements Initializable{
 						controller.setDependences(course, student, this);
 					});
 		});
+		columnEdit.setReorderable(false);
 		// Delete course button
 		Utils.initButtons(columnDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (course, event) -> {
 			// Confirmation to delete contact
@@ -132,6 +138,7 @@ public class StudentCoursesController implements Initializable{
 				}
 			}
 		});
+		columnDelete.setReorderable(false);
 	}
 	
 	public void updateForm() {

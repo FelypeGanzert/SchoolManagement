@@ -96,8 +96,8 @@ public class InfoStudentController implements Initializable {
 	@FXML private Button btnAddContact;
 	// Table Responsibles
 	@FXML public TableView<Responsible> tableResponsibles;
-	@FXML private TableColumn<Responsible, String> columnReponsibleName;
-	@FXML private TableColumn<Responsible, String> columnReponsibleRelationship;
+	@FXML private TableColumn<Responsible, String> columnResponsibleName;
+	@FXML private TableColumn<Responsible, String> columnResponsibleRelationship;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleEdit;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleRemove;
 	@FXML private Button btnAddResponsible;
@@ -343,9 +343,12 @@ public class InfoStudentController implements Initializable {
 	private void initializeTableMatriculationsNodes() {
 		// code, dateMatriculation, status, 
 		Utils.setCellValueFactory(columnMatriculationCode, "code");
+		columnMatriculationCode.setReorderable(false);
 		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
 		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
+		columnMatriculationDate.setReorderable(false);
 		Utils.setCellValueFactory(columnMatriculationStatus, "status");
+		columnMatriculationStatus.setReorderable(false);
 		// Parcels
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
@@ -362,6 +365,7 @@ public class InfoStudentController implements Initializable {
 				return new SimpleStringProperty("-");
 			}
 		});
+		columnMatriculationParcels.setReorderable(false);
 		// Matriculation Responsible name
 		columnMatriculationResponsible.setCellValueFactory(cellData -> {
 			try {
@@ -373,6 +377,7 @@ public class InfoStudentController implements Initializable {
 				return new SimpleStringProperty("-");
 			}
 		});
+		columnMatriculationResponsible.setReorderable(false);
 		// Info button
 		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (matriculation, event) -> {
 			System.out.println("info matriculation"); //IN PROGRESS
@@ -381,6 +386,7 @@ public class InfoStudentController implements Initializable {
 				controller.setCurrentMatriculation(matriculation, FXMLPath.INFO_STUDENT);
 			});
 		});
+		columnMatriculationInfo.setReorderable(false);
 	}
 	
 	// Contacts
@@ -389,8 +395,10 @@ public class InfoStudentController implements Initializable {
 		columnContactNumber.setCellValueFactory(cellData -> {
 			return new SimpleStringProperty(Constraints.formatNumberContact(cellData.getValue().getNumber()));
 		});
+		columnContactNumber.setReorderable(false);
 		// description
 		Utils.setCellValueFactory(columnContactDescription, "description");
+		columnContactDescription.setReorderable(false);
 		// Edit button
 		Utils.initButtons(columnContactEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (contact, event) -> {
 			Utils.loadView(this, true, FXMLPath.CONTACT_FORM, Utils.currentStage(event), "Editar contato", false,
@@ -398,6 +406,7 @@ public class InfoStudentController implements Initializable {
 						controller.setDependences(contact, student, this);
 					});
 		});
+		columnContactEdit.setReorderable(false);
 		// Delete button
 		Utils.initButtons(columnContactDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (contact, event) -> {
 			// Confirmation to delete contact
@@ -423,14 +432,16 @@ public class InfoStudentController implements Initializable {
 				}
 			}
 		});
+		columnContactDelete.setReorderable(false);
 	}
 	
 	// RESPONSIBLES
 	private void initiliazeTableResponsiblesNodes() {
 		// name
-		Utils.setCellValueFactory(columnReponsibleName, "name");
+		Utils.setCellValueFactory(columnResponsibleName, "name");
+		columnResponsibleName.setReorderable(false);
 		// relationship
-		columnReponsibleRelationship.setCellValueFactory(cellData -> {
+		columnResponsibleRelationship.setCellValueFactory(cellData -> {
 			try {
 				if(cellData.getValue().getName() != null) {
 					return new SimpleStringProperty(cellData.getValue().getRelationship(student));
@@ -440,6 +451,7 @@ public class InfoStudentController implements Initializable {
 				return new SimpleStringProperty("-");
 			}
 		});
+		columnResponsibleRelationship.setReorderable(false);
 		// Edit button
 		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (responsible, event) -> {
 			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Editar responsável", false,
@@ -450,6 +462,7 @@ public class InfoStudentController implements Initializable {
 						controller.setInfoStudentController(this);
 					});
 		});
+		columnResponsibleEdit.setReorderable(false);
 		// Remove button
 		Utils.initButtons(columnResponsibleRemove, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (responsible, event) -> {
 			// Check if there isn't any matriculation vinculed with this responsible
@@ -462,7 +475,6 @@ public class InfoStudentController implements Initializable {
 						"Existe matrículas pela qual ele responde", AlertType.WARNING, Utils.currentStage(event));
 				return;
 			}
-			
 			// Confirmation to delete responsible
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Deletar responsável");
@@ -485,6 +497,7 @@ public class InfoStudentController implements Initializable {
 				alertProcessing.close();
 			}
 		});
+		columnResponsibleRemove.setReorderable(false);
 	}
 	
 	// ====================================================

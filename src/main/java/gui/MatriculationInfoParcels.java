@@ -28,7 +28,7 @@ public class MatriculationInfoParcels implements Initializable{
 	@FXML private TableColumn<Parcel, Double> columnValuePaid;
 	@FXML private TableColumn<Parcel, String> columnPaidWith;
 	@FXML private TableColumn<Parcel, String> columnPaymentReceivedBy;
-	@FXML private TableColumn<Parcel, Parcel> columnButtons;
+	@FXML private TableColumn<Parcel, Parcel> columnButton;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
@@ -38,32 +38,45 @@ public class MatriculationInfoParcels implements Initializable{
 	private void initializeTable() {
 		// code
 		Utils.setCellValueFactory(columnCode, "documentNumber");
+		columnCode.setReorderable(false);
 		// parcel number
 		Utils.setCellValueFactory(columnParcelNumber, "parcelNumber");
+		columnParcelNumber.setReorderable(false);
 		// value
 		Utils.setCellValueFactory(columnValue, "value");
 		Utils.formatTableColumnDoubleCurrency(columnValue);
+		columnValue.setReorderable(false);
 		// date parcel
 		Utils.setCellValueFactory(columnDateParcel, "dateParcel");
 		Utils.formatTableColumnDate(columnDateParcel, "dd/MM/yyyy");
+		columnDateParcel.setReorderable(false);
 		// date fine delay
 		Utils.setCellValueFactory(columnDateFineDelay, "dateFineDelay");
 		Utils.formatTableColumnDate(columnDateFineDelay, "dd/MM/yyyy");
+		columnDateFineDelay.setReorderable(false);
 		// value with fine delay
 		Utils.setCellValueFactory(columnValueWithFineDelay, "valueWithFineDelay");
 		Utils.formatTableColumnDoubleCurrency(columnValueWithFineDelay);
+		columnValueWithFineDelay.setReorderable(false);
 		// situation
 		Utils.setCellValueFactory(columnSituation, "situation");
+		columnSituation.setReorderable(false);
 		// date payment
 		Utils.setCellValueFactory(columnDatePayment, "datePayment");
 		Utils.formatTableColumnDate(columnDatePayment, "dd/MM/yyyy");
+		columnDatePayment.setReorderable(false);
 		// value paid
 		Utils.setCellValueFactory(columnValuePaid, "valuePaid");
 		Utils.formatTableColumnDoubleCurrency(columnValuePaid);
+		columnValuePaid.setReorderable(false);
 		// value paid with
 		Utils.setCellValueFactory(columnPaidWith, "paidWith");
+		columnPaidWith.setReorderable(false);
 		// payment received by
 		Utils.setCellValueFactory(columnPaymentReceivedBy, "paymentReceivedBy");
+		columnPaymentReceivedBy.setReorderable(false);
+		// button
+		columnButton.setReorderable(false);
 	}
 
 	public void setParcels(List<Parcel> parcels) {

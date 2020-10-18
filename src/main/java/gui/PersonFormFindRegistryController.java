@@ -50,9 +50,12 @@ public class PersonFormFindRegistryController implements Initializable {
 			}
 			return null;
 		});
+		tableColumnCPF.setReorderable(false);
 		Utils.setCellValueFactory(tableColumnName, "name");
+		tableColumnName.setReorderable(false);
 		Utils.setCellValueFactory(tableColumnBirthDate, "dateBirth");
 		Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
+		tableColumnBirthDate.setReorderable(false);
 		tableColumnAge.setCellValueFactory(cellData -> {
 			try {
 				return new SimpleStringProperty(Integer.toString(cellData.getValue().getAge()));
@@ -60,6 +63,7 @@ public class PersonFormFindRegistryController implements Initializable {
 			}
 			return null;
 		});
+		tableColumnAge.setReorderable(false);
 		tableViewPersons.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldSelection, newSelection) -> {
 					if (newSelection != null) {

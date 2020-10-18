@@ -399,8 +399,8 @@
                   </HBox>
                   <TableView fx:id="tableResponsibles" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="columnReponsibleName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" style="-fx-alignment: center-left;" text="Nome" />
-                        <TableColumn fx:id="columnReponsibleRelationship" maxWidth="120.0" minWidth="120.0" prefWidth="12.0" style="-fx-alignment: center;" text="Parentesco" />
+                        <TableColumn fx:id="columnResponsibleName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" style="-fx-alignment: center-left;" text="Nome" />
+                        <TableColumn fx:id="columnResponsibleRelationship" maxWidth="120.0" minWidth="120.0" prefWidth="12.0" style="-fx-alignment: center;" text="Parentesco" />
                         <TableColumn fx:id="columnResponsibleEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                         <TableColumn fx:id="columnResponsibleRemove" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                      </columns>
