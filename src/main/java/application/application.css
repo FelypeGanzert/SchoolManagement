@@ -87,8 +87,15 @@
 }
 
 /* Full background birthday image */
-#cake{
+.cake{
     -fx-background-image: url("../images/birthday-cake.jpg");
+    -fx-background-repeat: no-repeat;   
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+/* Full background calendar image */
+.calendar{
+    -fx-background-image: url("../images/calendar-pexels-olya-kobruseva-5386754.jpg");
     -fx-background-repeat: no-repeat;   
     -fx-background-size: cover;
     -fx-background-position: center center;
