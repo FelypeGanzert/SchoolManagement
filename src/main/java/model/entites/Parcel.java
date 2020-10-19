@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -68,10 +71,10 @@ public class Parcel {
 	private String paymentReceivedBy;
 	
 	public Date getDateFineDelay() {
-		if (getDateParcel() != null) {
+		if (getDateParcel() != null && getDaysFineDelay() != null ) {
 			Date date = getDateParcel();
 			// add days to original date
-			if(getDaysFineDelay() != null && getDaysFineDelay() > 0) {
+			if(getDaysFineDelay() > 0) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(date); // set date to calendar
 				cal.add(Calendar.DAY_OF_MONTH, getDaysFineDelay()); // add the X daysFineDelay
@@ -88,5 +91,17 @@ public class Parcel {
 		}
 		return null;
 	}
-
+	
+	// This will be used to remove parcels from Matriculation
+	@Transient
+	private BooleanProperty  selected = new SimpleBooleanProperty(true);
+	
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);
+	}
+	
+	public boolean isSelected() {
+		return this.selected.get();
+	}
+	
 }

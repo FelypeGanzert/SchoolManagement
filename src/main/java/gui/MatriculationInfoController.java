@@ -17,6 +17,7 @@ import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import gui.util.enums.MatriculationStatusEnum;
+import gui.util.enums.ParcelStatusEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -178,6 +179,7 @@ public class MatriculationInfoController implements Initializable{
 				});
 	}
 	
+	// Add Parcels
 	public void handleBtnAddParcels(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.MATRICULATION_ADD_PARCELS_FORM, Utils.currentStage(event),
 				"Adicionar Parcelas", false, (MatriculationAddParcelsFormController controller) -> {
@@ -187,6 +189,25 @@ public class MatriculationInfoController implements Initializable{
 				});
 	}
 	
+	// Remove Parcels
+	public void handleBtnRemoveParcels(ActionEvent event) {
+		// Check if exists any open parcel
+		boolean exisitsOpenParcels = matriculation.getParcels().stream()
+				.anyMatch(p -> p.getSituation().equals(ParcelStatusEnum.ABERTA.toString()));
+		if (!exisitsOpenParcels) {
+			Alerts.showAlert("Nada para remover", "Nada para remover.",
+					"Não existe nenhuma parcela ABERTA ou ATRASADA para remover", AlertType.ERROR, Utils.currentStage(event));
+			// stop the method
+			return;
+		}
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_REMOVE_PARCELS_FORM, Utils.currentStage(event),
+				"Remover Parcelas", false, (MatriculationRemoveParcelsFormController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+
 	// ========= Update UI Form ==========
 	private void updateForm() {
 		// Status

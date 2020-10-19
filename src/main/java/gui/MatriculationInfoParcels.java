@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.util.Utils;
+import gui.util.enums.ParcelStatusEnum;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.entites.Parcel;
@@ -17,7 +20,8 @@ import model.entites.Parcel;
 public class MatriculationInfoParcels implements Initializable{
 	
 	@FXML private TableView<Parcel> tableParcels;
-	@FXML private TableColumn<Parcel, Integer> columnCode;
+	@FXML private TableColumn<Parcel, String> columnParcelStatus;
+	@FXML private TableColumn<Parcel, Integer> columnDocumentNumber;
 	@FXML private TableColumn<Parcel, Integer> columnParcelNumber;
 	@FXML private TableColumn<Parcel, Double> columnValue;
 	@FXML private TableColumn<Parcel, Date> columnDateParcel;
@@ -36,9 +40,36 @@ public class MatriculationInfoParcels implements Initializable{
 	}
 
 	private void initializeTable() {
-		// code
-		Utils.setCellValueFactory(columnCode, "documentNumber");
-		columnCode.setReorderable(false);
+		// column of status will show a color according ParcelStatusEnum
+		columnParcelStatus.setCellValueFactory(cellData -> {
+			try {
+				String situation = cellData.getValue().getSituation();
+				Parcel auxParcel = cellData.getValue();
+				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date())
+						&& auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+					situation = "ATRASADA";
+				}
+				return new SimpleStringProperty(situation);
+			} catch (IllegalStateException | IndexOutOfBoundsException e) {
+				return new SimpleStringProperty("");
+			}
+		});
+		columnParcelStatus.setCellFactory(column -> {
+			return new TableCell<Parcel, String>() {
+				@Override
+				protected void updateItem(String situation, boolean empty) {
+					super.updateItem(situation, empty);
+					setText("");
+					setGraphic(null);
+					if (!isEmpty()) {
+						this.setStyle("-fx-background-color:" + ParcelStatusEnum.fromString(getItem()).getHexColor());
+					}
+				}
+			};
+		});
+		// document number
+		Utils.setCellValueFactory(columnDocumentNumber, "documentNumber");
+		columnDocumentNumber.setReorderable(false);
 		// parcel number
 		Utils.setCellValueFactory(columnParcelNumber, "parcelNumber");
 		columnParcelNumber.setReorderable(false);
@@ -59,7 +90,18 @@ public class MatriculationInfoParcels implements Initializable{
 		Utils.formatTableColumnDoubleCurrency(columnValueWithFineDelay);
 		columnValueWithFineDelay.setReorderable(false);
 		// situation
-		Utils.setCellValueFactory(columnSituation, "situation");
+		columnSituation.setCellValueFactory(cellData -> {
+			try {
+				String situation = cellData.getValue().getSituation();
+				Parcel auxParcel = cellData.getValue();
+				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date()) && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+					situation = "ATRASADA";
+				}
+				return new SimpleStringProperty(situation);
+			}catch(IllegalStateException | IndexOutOfBoundsException e) {
+				return new SimpleStringProperty("");
+			}
+		});
 		columnSituation.setReorderable(false);
 		// date payment
 		Utils.setCellValueFactory(columnDatePayment, "datePayment");

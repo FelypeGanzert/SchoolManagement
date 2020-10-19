@@ -260,7 +260,6 @@ public class MatriculationRegisterFormController implements Initializable{
 				try {
 					Date taxDate = sdf.parse(textMatriculationTaxDate.getText());
 					taxParcel.setDateParcel(taxDate);
-					taxParcel.setDaysFineDelay(0);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
