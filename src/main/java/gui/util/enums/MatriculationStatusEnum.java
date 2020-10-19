@@ -2,7 +2,7 @@ package gui.util.enums;
 
 public enum MatriculationStatusEnum {
 	
-	ATIVA("#0984E2"), CANCELADA("#f38375"), CONCLUIDA("#5dd39e");
+	ABERTA("#0984E2"), CANCELADA("#f38375"), CONCLUIDA("#5dd39e");
 	
 	private String hexColor;
 	

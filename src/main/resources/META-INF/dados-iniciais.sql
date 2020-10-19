@@ -38,9 +38,9 @@ insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) v
 insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (5, '2020-02-01 05:00:00', "sexta anotação", "Felype", 2);
 insert into anotacoes (id, data, descricao, colaborador_responsavel, aluno_id) value (6, '2020-03-01 06:00:00', "sétima anotação com uma quantidade tremendamente um pouquinho maior do que as anotações anteriores, sendo que essa também possui quebra de linhas.\n\n\n Quebras inseridas com barras e a letra n, vamos ver se irá funcionar ou não", "Felype", 2);
     
-insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(1, 'Ativa', '2020-09-01', "Feh", "Teste sem resp.", null, 1);
+insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(1, 'ABERTA', '2020-09-01', "Feh", "Teste sem resp.", null, 1);
 insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(2, 'Cancelada', '2010-10-01', "Feh", "Teste sem resp.", 1, 1);
-insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(3, 'Ativa', '2020-11-01', "Feh", "Teste com resp.", 2, 3);
+insert into matricula(code, situacao, data_matricula, matriculado_por, motivo, responsavel_financeiro_id, aluno_id) values(3, 'ABERTA', '2020-11-01', "Feh", "Teste com resp.", 2, 3);
  
  
  INSERT INTO parcela(numero_documento, data_parcela, data_pagamento, dias_multa_atraso, pago_com, parcela_numero, pagamento_recebido_por, situacao, valor, valor_multa_atraso, valor_pago, matricula_codigo) VALUES (1, '2019/01/10', '2019/01/15', 3, "DINHEIRO", 0, "Paula", "PAGA", 138.90, 5.00, 138.90, 1);

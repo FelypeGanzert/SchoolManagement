@@ -189,9 +189,23 @@ public class ListStudentsController implements Initializable {
 		if (statusToFilter != null) {
 			filteredList = filteredList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusToFilter))
 					.collect(Collectors.toList());
-			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")";
+			if(filteredList.size() == 1) {
+				if(statusSelected.charAt(statusSelected.length()-1) == 's') {
+					statusSelected = statusSelected.substring(0, statusSelected.length()-1);
+				}
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno " + statusSelected + ")";
+			} else {
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")";	
+			}
 		} else {
-			totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
+			if(filteredList.size() == 1) {
+				if(statusSelected.charAt(statusSelected.length()-1) == 's') {
+					statusSelected = statusSelected.substring(0, statusSelected.length()-1);
+				}
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno)";
+			} else {
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
+			}
 		}
 		// Filter by text in search bar
 		String textSearch = textFilter.getText();

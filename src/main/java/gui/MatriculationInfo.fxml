@@ -248,7 +248,7 @@
             </HBox>
             <HBox alignment="CENTER" minWidth="-Infinity" spacing="20.0">
                <children>
-                  <JFXButton ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Adicionar parcelas" textFill="WHITE">
+                  <JFXButton onAction="#handleBtnAddParcels" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Adicionar parcelas" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

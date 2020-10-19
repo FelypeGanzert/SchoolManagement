@@ -1,70 +1,39 @@
 package gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
-import animatefx.animation.FadeInLeft;
-import animatefx.animation.FadeOutRight;
 import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.DateUtil;
-import gui.util.FXMLPath;
 import gui.util.Utils;
 import gui.util.Validators;
-import gui.util.enums.MatriculationStatusEnum;
 import gui.util.enums.ParcelStatusEnum;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
-import model.dao.CollaboratorDao;
 import model.dao.MatriculationDao;
-import model.entites.Collaborator;
 import model.entites.Matriculation;
 import model.entites.Parcel;
-import model.entites.Responsible;
-import model.entites.Student;
-import sharedData.Globe;
 
-public class MatriculationRegisterFormController implements Initializable{
+public class MatriculationAddParcelsFormController implements Initializable{
 
-	// Simple Informations
-	@FXML private JFXTextField textDate;
-	@FXML private JFXComboBox<String> comboBoxMatriculatedBy;
-	@FXML private JFXTextField textReason;
-	@FXML private JFXTextArea textAreaServiceContracted;
-	@FXML private JFXButton btnSelectServiceContracted;
-	@FXML private JFXComboBox<Responsible> comboBoxResponsible;
-	@FXML private Pane paneResponsibleInfo;
-	@FXML private Button btnRemoveResponsible;
-	@FXML private JFXButton btnSelectPaymentPlan;
 	// Normal Value
-	@FXML private TextField textMatriculationTax;
 	@FXML private Spinner<Integer> spinnerNumberOfParcels;
 	@FXML private TextField textParcelValue;
 	@FXML private TextField textTotalValue;
@@ -75,22 +44,17 @@ public class MatriculationRegisterFormController implements Initializable{
 	@FXML private TextField textParcelValueWithFineDelay;
 	@FXML private TextField textTotalValueWithFineDelay;
 	// Payment's date
-	@FXML private JFXTextField textMatriculationTaxDate;
 	@FXML private JFXTextField textFirstParcelDate;
 	@FXML private Spinner<Integer> spinnerParcelsDueDate;
 	// Bottom buttons
 	@FXML private JFXButton btnSave;
 	@FXML private JFXButton btnCancel;
-	
-	
-	private boolean isBtnRemoveResponsibleVisible;
-	private boolean isUnderage;
-	
+		
 	private String lastValueChanged = "parcelValue";
 	private String lastValueFineDelayChanged = "valueFineDelay";
 	
 	private Matriculation matriculation;
-	private Student student;
+	private MatriculationInfoController matriculationInfoController; 
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -105,29 +69,12 @@ public class MatriculationRegisterFormController implements Initializable{
 	// =========================
 	// ====== DEPENDENCES ======
 	// =========================
-	public void setStudent(Student student) {
-		this.student = student;
-		// comboBox responsible
-		List<Responsible> list = new ArrayList<>();
-		list.addAll(this.student.getAllResponsibles());
-		comboBoxResponsible.setItems(FXCollections.observableArrayList(list));
-		// show only the name of the responsible in comboBox
-		comboBoxResponsible.setConverter(new StringConverter<Responsible>() {
-			@Override
-			public String toString(Responsible object) {
-				return object.getName();
-			}
-			@Override
-			public Responsible fromString(String string) {
-				return null;
-			}
-		});
-		// select the last responsible if the age of the student is less than 18
-		// and change value to doens't allow to remove the responsible 
-		if(student.getAge() < 18) {
-			isUnderage = true;
-			comboBoxResponsible.getSelectionModel().selectLast();
-		}
+	public void setMatriculation(Matriculation matriculation) {
+		this.matriculation = matriculation;
+	}
+	
+	public void setMatriculationInfoController(MatriculationInfoController matriculationInfoController) {
+		this.matriculationInfoController = matriculationInfoController;
 	}
 	
 	// ==========================
@@ -137,24 +84,17 @@ public class MatriculationRegisterFormController implements Initializable{
 	public void handleBtnSave(ActionEvent event) {
 		try {
 			// check if fields is valid, we have theses situations to stop this method:
-			// 1- textDate is empty or not a valid date
-			// 2 - textAreaService is empty
-			// 3 - If matriculationTaxDate is not empty, we check if is a valid date
-			// 4 - If firstParcelDate is not empty, we check if is a valid date
-			if (!textDate.validate() || !textAreaServiceContracted.validate()
-					|| (textMatriculationTaxDate.getText() != null && textMatriculationTaxDate.getText().length() > 0
-							&& !textMatriculationTaxDate.validate())
-					|| (textFirstParcelDate.getText() != null && textFirstParcelDate.getText().length() > 0
-							&& !textFirstParcelDate.validate())) {
+			// 1- firstParcelDate is empty or not a valid date
+			if (!textFirstParcelDate.validate()) {
 				return;
 			}
-			// Check if date of matriculation is after today, this can't happen
+			// today is before the first date
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date today = new Date();
-				if (sdf.parse(textDate.getText()).compareTo(today) > 0) {
-					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
-							"É impossível fazer uma matrícula no futuro.", AlertType.ERROR, Utils.currentStage(event));
+				if (today.compareTo(sdf.parse(textFirstParcelDate.getText())) >  0) {
+					Alerts.showAlert("Inválido", "Data de pagamento inválida.",
+							"Só é possível adicionar uma parcela com vencimento a partir de um dia útil depois de hoje.", AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
 				}
@@ -162,28 +102,27 @@ public class MatriculationRegisterFormController implements Initializable{
 				System.out.println("Erro durante conversão para verificar datas...");
 				e.printStackTrace();
 			}
+
+			// Check if there is a parcel value seted
+			if(textParcelValue.getText().isEmpty()) {
+				Alerts.showAlert("Inválido", "Sem valor inserido.",
+						"É necessário definir um valor para as parcelas.", AlertType.ERROR, Utils.currentStage(event));
+				// stop the method
+				return;
+			}
 			// Get data in form and generate a matriculation
 			getFormData();
 			// Save in DB
 			try {
 				MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
-				// If he doesn't have a id, is a new matriculation,
-				// otherwhise the course already is in database
-				// ... Even I know that this screen will only be used to add
-				// a new matriculation, its is important make this verification
-				if (matriculation.getCode() == null) {
-					// set current student to matriculation
-					matriculation.setStudent(student);
-					student.getMatriculations().add(matriculation);
-					matriculationDao.insert(matriculation);
-				} else {
+				// Update matriculation with the news parcels
+				if (matriculation.getCode() != null) {
 					matriculationDao.update(matriculation);
 				}
-				// Go to screen of matriculation info and close this form
-				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
-				mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
-					controller.setCurrentMatriculation(matriculation, FXMLPath.INFO_STUDENT);
-				});
+				// Update screen of matriculation info and close this form
+				if(matriculationInfoController != null) {
+					matriculationInfoController.onDataChanged();
+				}
 				Utils.currentStage(event).close();
 			} catch (DbException e) {
 				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(),
@@ -202,13 +141,6 @@ public class MatriculationRegisterFormController implements Initializable{
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
-	
-	public void handleBtnRemoveResponsible(ActionEvent event) {
-		// clear responsible selection
-		comboBoxResponsible.getSelectionModel().clearSelection();
-		// clear Responsible Info
-		paneResponsibleInfo.getChildren().clear();
-	}
 
 	// ==========================
 	// ===== END BUTTONS ========
@@ -219,57 +151,9 @@ public class MatriculationRegisterFormController implements Initializable{
 	
 	// set all informations in the form to matriculation
 	private void getFormData() {
-		// initialize Matriculation if is null
-		if(matriculation == null) {
-			matriculation = new Matriculation();
-		}
-		//
-		matriculation.setStatus(MatriculationStatusEnum.ABERTA.toString());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		// matriculation date
-		try {
-			matriculation.setDateMatriculation(sdf.parse(textDate.getText()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		// matriculatedBy
-		matriculation.setMatriculatedBy(comboBoxMatriculatedBy.getSelectionModel().getSelectedItem());
-		// reason
-		matriculation.setReason(textReason.getText().trim());
-		// service contracted
-		matriculation.setServiceContracted(textAreaServiceContracted.getText().trim());
-		// responsible for the matriculation
-		if(comboBoxResponsible.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Responsible is not null");
-			matriculation.setResponsible(comboBoxResponsible.getSelectionModel().getSelectedItem());
-		}
 		// ========== PARCELS ==============
-		// Matriculation tax
-		if(!textMatriculationTax.getText().isEmpty()) {
-			// create parcel to tax
-			Parcel taxParcel = new Parcel();
-			taxParcel.setMatriculation(matriculation);
-			matriculation.getParcels().add(taxParcel);
-			// parcel number
-			taxParcel.setParcelNumber(0);
-			// tax value
-			Double taxValue = textToDouble(textMatriculationTax.getText());
-			taxParcel.setValue(taxValue);
-			// tax date
-			if (!textMatriculationTaxDate.getText().isEmpty()) {
-				try {
-					Date taxDate = sdf.parse(textMatriculationTaxDate.getText());
-					taxParcel.setDateParcel(taxDate);
-					taxParcel.setDaysFineDelay(0);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			// tax situation
-			taxParcel.setSituation(ParcelStatusEnum.ABERTA.toString());
-		}
-		// other parcels
 		if(spinnerNumberOfParcels.getValue() > 0 && !textParcelValue.getText().isEmpty()) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			// parcel value
 			Double parcelValue = textToDouble(textParcelValue.getText());
 			// fine delay value
@@ -292,8 +176,14 @@ public class MatriculationRegisterFormController implements Initializable{
 			}
 			// parcels due date
 			Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
+			// number of the last parcel already in matriculation
+			Integer lastNumber = 0;
+			Parcel lastParcel = matriculation.getParcels().get(matriculation.getParcels().size() -1);
+			if(lastParcel != null) {
+				lastNumber = lastParcel.getParcelNumber();
+			};
 			// create parcels and add to matriculation
-			for(int i = 1; i <= numberOfParcels; i++) {
+			for(int i = (lastNumber + 1); i < (lastNumber + 1 + numberOfParcels); i++) {
 				Parcel parcel = new Parcel();
 				parcel.setMatriculation(matriculation);
 				matriculation.getParcels().add(parcel);
@@ -305,7 +195,7 @@ public class MatriculationRegisterFormController implements Initializable{
 				if(firstParcelDate != null) {
 					Calendar c = DateUtil.dateToCalendar(firstParcelDate);
 					c.add(Calendar.MONTH, 1);
-					if(i == 1) {
+					if(i == (lastNumber + 1)) {
 						c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
 					}
 					firstParcelDate = DateUtil.calendarToDate(c);
@@ -316,7 +206,7 @@ public class MatriculationRegisterFormController implements Initializable{
 				parcel.setValueFineDelay(valueFineDelay);
 				parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
 			}			
-		}
+		}		
 	}
 	
 	// ==========================
@@ -327,110 +217,39 @@ public class MatriculationRegisterFormController implements Initializable{
 		// Disable some fieds
 		textPercentValueFineDelay.setDisable(true);
 		spinnerDaysFineDelay.setDisable(true);
-		textMatriculationTaxDate.setDisable(true);
-		textFirstParcelDate.setDisable(true);
 		spinnerParcelsDueDate.setDisable(true);
 		// === Constraints and validators
 		// Create Required and Date validator
 		RequiredFieldValidator requiredValidator = Validators.getRequiredFieldValidator();
 		RegexValidator dateValidator = new RegexValidator("Inválido");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
-		// Matriculation date: required and need to be a valid date
-		textDate.setValidators(requiredValidator);
-		textDate.setValidators(dateValidator);
-		// Others dates
-		textMatriculationTaxDate.setValidators(dateValidator);
+		// First Parcel: required and have to be a valid date
+		textFirstParcelDate.setValidators(requiredValidator);
 		textFirstParcelDate.setValidators(dateValidator);
-		// ServiceContracted: required
-		textAreaServiceContracted.setValidators(requiredValidator);
-		// MatriculationTax, ParcelValue, TotalValue, ValueFineDelay, TotalValueWithFineDelay  : only number with ,
-		Constraints.setTextFieldDoubleMoney(textMatriculationTax);
+		// ParcelValue, TotalValue, ValueFineDelay, TotalValueWithFineDelay  : only number with ,
 		Constraints.setTextFieldDoubleMoney(textParcelValue);
 		Constraints.setTextFieldDoubleMoney(textTotalValue);
 		Constraints.setTextFieldDoubleMoney(textValueFineDelay);
 		Constraints.setTextFieldDoubleMoney(textParcelValueWithFineDelay);
 		Constraints.setTextFieldDoubleMoney(textTotalValueWithFineDelay);
-		// Dates
-		Constraints.setTextFieldMaxLength(textDate, 10);
-		Constraints.setTextFieldMaxLength(textMatriculationTaxDate, 10);
+		// First Parcel Date
 		Constraints.setTextFieldMaxLength(textFirstParcelDate, 10);
 		// ======= Spinners ============
-		// IntegerSpinnerValueFactory(int min, int max, int initialValue, int amountToStepBy)
-		spinnerNumberOfParcels.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,40, 0, 1));
-		spinnerDaysFineDelay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,15, 0, 1));
-		spinnerParcelsDueDate.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,25, 1, 1));
-		// comboBox: matriculated by
-		try {
-			// Get all initials from the collaborators in db
-			List<String> collaboratorsInitials = new CollaboratorDao(DBFactory.getConnection()).findAllInitials();
-			comboBoxMatriculatedBy.getItems().addAll(collaboratorsInitials);
-			// Select the current user logged
-			String currentUser = Globe.getGlobe().getItem(Collaborator.class, "currentUser").getInitials();
-			comboBoxMatriculatedBy.getSelectionModel().select(currentUser);
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
+		// IntegerSpinnerValueFactory(int min, int max, int initialValue, int
+		// amountToStepBy)
+		spinnerNumberOfParcels.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 40, 1, 1));
+		spinnerDaysFineDelay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, 0, 1));
+		spinnerParcelsDueDate.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 25, 1, 1));
 	}
 
 	private void setListeners() {
-		// ======= COMBO BOX: RESPONSIBLE =========
-		comboBoxResponsible.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue != null) {
-				// animation to show the button to remove the responsible if he not visible
-				if(!isBtnRemoveResponsibleVisible && !isUnderage) {
-					new FadeInLeft(btnRemoveResponsible).play();
-					btnRemoveResponsible.setVisible(true);
-					isBtnRemoveResponsibleVisible = true;
-				}
-				// Show Responsible Infos
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.MATRICULATION_INFO_PERSON));
-					VBox newContent = loader.load();
-					MatriculationInfoPerson controller = loader.getController();
-					// clear Responsible Info and set the informations of selected responsible
-					if (paneResponsibleInfo.getChildren() != null) {
-						paneResponsibleInfo.getChildren().clear();
-					}
-					paneResponsibleInfo.getChildren().add(newContent);
-					controller.setPerson(newValue);
-				} catch (IOException e) {
-					e.printStackTrace();
-					Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR, null);
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-					Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR,
-							null);
-				}
-			} else {
-				// hidden the button to remove the responsible
-				new FadeOutRight(btnRemoveResponsible).play();
-				isBtnRemoveResponsibleVisible = false;
-				
-			}
-		});
-
-		// ====== MATRICULATION TAX ========
-		textMatriculationTax.textProperty().addListener((obs, oldValue, newValue) -> {
-			// if is null: disable matriculation tax date
-			if(newValue.isEmpty()) {
-				textMatriculationTaxDate.setText("");
-				textMatriculationTaxDate.setDisable(true);
-			} else {
-				textMatriculationTaxDate.setDisable(false);
-			}
-		});
 		// ============ NUMBER OF PARCELS ========
 		spinnerNumberOfParcels.valueProperty().addListener((obs, oldValue, newValue) -> {
-			// disable first parcel date, total and % of fine delay
-			// if number of parcels = 0
-			if (newValue == 0) {
-				textFirstParcelDate.setText("");
-				textFirstParcelDate.setDisable(true);
-				textTotalValue.setText("");
-				textTotalValue.setDisable(true);
+			// if is <= 1: hidden parcels due date
+			if (newValue <= 1) {
+				spinnerParcelsDueDate.setDisable(true);
 			} else {
-				textFirstParcelDate.setDisable(false);
-				textTotalValue.setDisable(false);
+				spinnerParcelsDueDate.setDisable(false);
 			}
 			// Calculate normal total value if value of parcel is not empty
 			String textParcelValue = this.textParcelValue.getText();
@@ -636,20 +455,15 @@ public class MatriculationRegisterFormController implements Initializable{
 				this.textTotalValueWithFineDelay.setText("");
 			}
 		});
-		// ====== FIRST PARCAL DATE ========
-		textFirstParcelDate.textProperty().addListener((obs, oldValue, newValue) -> {
-			// if is null: disable parcels due date
-			if (newValue.isEmpty()) {
-				spinnerParcelsDueDate.setDisable(true);
-			} else {
-				spinnerParcelsDueDate.setDisable(false);
-			}
-		});
 	}
 	
 	private void setDefaultValuesToFields() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		textDate.setText(sdf.format(new Date()));
+		Date today = new Date();
+		Calendar c = DateUtil.dateToCalendar(today);
+		c.add(Calendar.DAY_OF_MONTH, 1);
+		today = DateUtil.calendarToDate(c);
+		textFirstParcelDate.setText(sdf.format(today));
 	}
 
 	private String doubleToTextField(Double value) {

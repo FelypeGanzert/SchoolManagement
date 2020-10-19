@@ -82,6 +82,6 @@ public class MatriculationInfoParcels implements Initializable{
 	public void setParcels(List<Parcel> parcels) {
 		ObservableList<Parcel> parcelsObs = FXCollections.observableArrayList(parcels);
 		tableParcels.setItems(parcelsObs);
-		
+		tableParcels.refresh();
 	}
 }

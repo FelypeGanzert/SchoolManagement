@@ -10,7 +10,7 @@
    <children>
       <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton onAction="#handleBtnClick" prefWidth="200.0" ripplerFill="#032b46" style="-fx-cursor: hand; -fx-background-color: #0984E2;" text="ATIVA" textFill="WHITE">
+            <JFXButton onAction="#handleBtnClick" prefWidth="200.0" ripplerFill="#032b46" style="-fx-cursor: hand; -fx-background-color: #0984E2;" text="ABERTA" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

@@ -53,6 +53,8 @@ public class MatriculationInfoController implements Initializable{
 	private Matriculation matriculation;
 	private String returnPath;
 	
+	private MatriculationInfoParcels matriculationInfoParcels;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 	}
@@ -79,12 +81,13 @@ public class MatriculationInfoController implements Initializable{
 			});
 		}
 		// Refresh and set a tab to Parcels
-		if(matriculation.getParcels() != null) {
-			//DBUtil.refleshData(matriculation.getParcels());
-			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PARCELS, "Parcelas", tabPaneParcels, 
+		if (matriculation.getParcels() != null) {
+			// DBUtil.refleshData(matriculation.getParcels());
+			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PARCELS, "Parcelas", tabPaneParcels,
 					(MatriculationInfoParcels controller) -> {
-				controller.setParcels(matriculation.getParcels());
-			});
+						this.matriculationInfoParcels = controller; 
+						controller.setParcels(matriculation.getParcels());
+					});
 		}
 		setReturnPath(returnPath);
 	}
@@ -175,7 +178,16 @@ public class MatriculationInfoController implements Initializable{
 				});
 	}
 	
-	// Update UI Form
+	public void handleBtnAddParcels(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_ADD_PARCELS_FORM, Utils.currentStage(event),
+				"Adicionar Parcelas", false, (MatriculationAddParcelsFormController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
+	// ========= Update UI Form ==========
 	private void updateForm() {
 		// Status
 		textStatus.setText(matriculation.getStatus());
@@ -207,6 +219,7 @@ public class MatriculationInfoController implements Initializable{
 	// Called from others controllers
 	public void onDataChanged() {
 		updateForm();
+		matriculationInfoParcels.setParcels(matriculation.getParcels());
 	}
 
 }
