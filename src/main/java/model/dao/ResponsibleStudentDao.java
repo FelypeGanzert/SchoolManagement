@@ -31,7 +31,7 @@ public class ResponsibleStudentDao {
 		query = manager.createNativeQuery("SELECT ra.id FROM responsavel_aluno ra WHERE ra.responsavel_id = ? AND ra.aluno_id = ?");
 		Integer id = query.getFirstResult();
 		responsibleStudent.setId(id);
-		DBUtil.refleshData(responsibleStudent);
+		DBUtil.refreshData(responsibleStudent);
 		manager.getTransaction().commit();
 	}
 

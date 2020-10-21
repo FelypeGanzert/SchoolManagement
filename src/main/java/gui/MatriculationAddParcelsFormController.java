@@ -94,7 +94,8 @@ public class MatriculationAddParcelsFormController implements Initializable{
 				Date today = new Date();
 				if (today.compareTo(sdf.parse(textFirstParcelDate.getText())) >  0) {
 					Alerts.showAlert("Inválido", "Data de pagamento inválida.",
-							"Só é possível adicionar uma parcela com vencimento a partir de um dia útil depois de hoje.", AlertType.ERROR, Utils.currentStage(event));
+							"Só é possível adicionar uma parcela com vencimento a partir de um dia útil depois de hoje.",
+							AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
 				}
@@ -129,13 +130,11 @@ public class MatriculationAddParcelsFormController implements Initializable{
 						AlertType.ERROR, Utils.currentStage(event));
 				e.printStackTrace();
 			} 
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR,
 					Utils.currentStage(event));
 		}
-
 	}
 	
 	public void handleBtnCancel(ActionEvent event) {

@@ -57,7 +57,7 @@ public class StudentCoursesController implements Initializable{
 	public void setStudent(Student student) {
 		this.student = student;
 		// Refresh student data
-		DBUtil.refleshData(this.student);
+		DBUtil.refreshData(this.student);
 		updateForm();
 	}
 

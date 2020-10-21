@@ -48,7 +48,7 @@
                      <children>
                         <JFXButton ripplerFill="#1165b1" style="-fx-background-color: #fff; -fx-cursor: hand;" text="CONTRATO">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -63,7 +63,7 @@
                         </JFXButton>
                         <JFXButton ripplerFill="#1165b1" style="-fx-background-color: #fff; -fx-cursor: hand;" text="CARNÊ">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -78,7 +78,7 @@
                         </JFXButton>
                         <JFXButton ripplerFill="#1165b1" style="-fx-background-color: #fff; -fx-cursor: hand;" text="FICHA">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -172,7 +172,7 @@
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="Situação:" />
-                                    <TextField fx:id="txtParcelsSituation" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" text="13/24" />
+                                    <TextField fx:id="txtParcelsSituation" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px; -fx-alignment: center;" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
@@ -202,7 +202,7 @@
                                     <Label text="Serviço contratado:" />
                                  </children>
                               </HBox>
-                              <JFXTextArea fx:id="txtServiceContracted" editable="false" text="texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto ">
+                              <JFXTextArea fx:id="txtServiceContracted" editable="false">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -278,7 +278,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Prolongar datas de vencimento" textFill="WHITE">
+                  <JFXButton onAction="#handleBtnExtendDates" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Prolongar datas de vencimento" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

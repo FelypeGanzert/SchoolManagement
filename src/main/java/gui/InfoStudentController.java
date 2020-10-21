@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
-import db.DBUtil;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
@@ -121,8 +120,6 @@ public class InfoStudentController implements Initializable {
 	// DEPENDENCES	
 	public void setCurrentStudent(Student student) {
 		this.student = student;
-		// Refresh student data
-		DBUtil.refleshData(this.student);
 		// Update UI with student informations
 		updateFormData();
 		updateTablesData();
@@ -383,7 +380,6 @@ public class InfoStudentController implements Initializable {
 		columnMatriculationResponsible.setReorderable(false);
 		// Info button
 		Utils.initButtons(columnMatriculationInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (matriculation, event) -> {
-			System.out.println("info matriculation"); //IN PROGRESS
 			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
 				controller.setCurrentMatriculation(matriculation, FXMLPath.INFO_STUDENT);

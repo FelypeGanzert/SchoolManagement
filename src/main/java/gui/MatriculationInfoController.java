@@ -66,16 +66,15 @@ public class MatriculationInfoController implements Initializable{
 	
 	public void setCurrentMatriculation(Matriculation matriculation, String returnPath) {
 		this.matriculation = matriculation;
-		updateForm();
 		// Add a tab to student infos
-		DBUtil.refleshData(matriculation.getStudent());
+		updateForm();
 		Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PERSON, "Aluno", tabPanePeople, 
 				(MatriculationInfoPerson controller) -> {
 			controller.setPerson(matriculation.getStudent());
 		});
 		// Add a tab to matriculation responsible if exists
 		if(matriculation.getResponsible() != null) {
-			DBUtil.refleshData(matriculation.getResponsible());
+			DBUtil.refreshData(matriculation.getResponsible());
 			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PERSON, "Responsável", tabPanePeople, 
 					(MatriculationInfoPerson controller) -> {
 				controller.setPerson(matriculation.getResponsible());
@@ -202,6 +201,26 @@ public class MatriculationInfoController implements Initializable{
 		}
 		Utils.loadView(this, true, FXMLPath.MATRICULATION_REMOVE_PARCELS_FORM, Utils.currentStage(event),
 				"Remover Parcelas", false, (MatriculationRemoveParcelsFormController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
+	// Extend Dates
+	public void handleBtnExtendDates(ActionEvent event) {
+		// Check if exists any open parcel
+		boolean exisitsOpenParcels = matriculation.getParcels().stream()
+				.anyMatch(p -> p.getSituation().equals(ParcelStatusEnum.ABERTA.toString()));
+		if (!exisitsOpenParcels) {
+			Alerts.showAlert("Nada para adiar", "Nada para adiar.",
+					"Não existe nenhuma parcela ABERTA ou ATRASADA para prolongar a data de vencimento",
+					AlertType.ERROR, Utils.currentStage(event));
+			// stop the method
+			return;
+		}
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_EXTEND_DATES, Utils.currentStage(event),
+				"Prolongar Vencimentos", false, (MatriculationExtendDatesController controller) -> {
 					controller.setMatriculation(matriculation);
 					// We need to set this dependence to update here in the future
 					controller.setMatriculationInfoController(this);

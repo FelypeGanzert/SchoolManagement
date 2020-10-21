@@ -28,6 +28,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
@@ -103,6 +104,9 @@ public class Utils {
 
 	// To Screens
 	public static Stage currentStage(ActionEvent event) {
+		return (Stage) ((Node) event.getSource()).getScene().getWindow();
+	}
+	public static Stage currentStage(MouseEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
 

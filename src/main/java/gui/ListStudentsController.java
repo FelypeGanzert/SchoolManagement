@@ -22,6 +22,7 @@ import com.jfoenix.controls.JFXTextField;
 import db.DBFactory;
 import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
@@ -45,9 +46,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import model.dao.AnnotationDao;
 import model.dao.StudentDao;
 import model.entites.Annotation;
@@ -100,9 +103,8 @@ public class ListStudentsController implements Initializable {
 	@FXML private Label labelSelectedAnnotationCollaborator;
 	
 	private StudentDao studentDao;
-	// List to store all students from db
+	// List to store all students from database
 	private ObservableList<Student> studentsList;
-	
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -129,7 +131,19 @@ public class ListStudentsController implements Initializable {
 		filterStudents();
 	}
 	
+	// ===========================
+	// === START OF LISTENERS ====
+	// ===========================
+	
 	private void addListeners() {
+		addListenersToFilterStudents();
+		addListenersToTableStudents();
+		addListenersToTableMatriculations();
+		addListenersToTableParcels();
+		addListenersToListAnnotations();
+	}
+
+	private void addListenersToFilterStudents() {
 		// Filter students table when user type anything in search bar
 		textFilter.textProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
@@ -146,9 +160,105 @@ public class ListStudentsController implements Initializable {
 		filterStudentStatus.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			filterStudents();
 		});
+	}
+	
+	private void addListenersToTableStudents() {
+		// Listener to double click in student to show informations
+		tableStudents.setRowFactory(tv -> {
+			TableRow<Student> row = new TableRow<>();
+			row.setOnMouseClicked(mouseEvent -> {
+				if(mouseEvent.getClickCount() == 2 && !row.isEmpty()){
+	                showStudentInfo(row.getItem());
+	            }
+			});
+			return row;
+		});
+		// Listener to selected student of table
+		tableStudents.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldSelection, newSelection) -> {
+					if (newSelection != null) {
+						Student student = newSelection;
+						// refresh student data
+						try {
+							DBUtil.refreshData(student);
+						} catch (DbException e) {
+							Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(),
+									AlertType.ERROR, (Stage) tableStudents.getScene().getWindow());
+							e.printStackTrace();
+						} catch (DbExceptioneEntityExcluded e) {
+							// Show a message that student has been deleted
+							Alerts.showAlert("DBExceptionEntityExcluded",
+									student.getId() + " - " + student.getName() + " foi deletado do banco de dados por alguém",
+									"DBExceptionEntityExcluded: " + e.getMessage(),
+									AlertType.ERROR, (Stage) tableStudents.getScene().getWindow());
+							// remove student deleted from table
+							tableStudents.getItems().remove(student);
+							e.printStackTrace();
+						} finally {
+							// refresh tables and lists
+							tableStudents.refresh();
+							updateAnnotations(student);
+							updateMatriculations(student);
+						}
+					}
+				});
+	}
+
+	private void addListenersToTableMatriculations() {
+		// Listener to double click in matriculation to show informations
+		tableMatriculations.setRowFactory(tv -> {
+			TableRow<Matriculation> row = new TableRow<>();
+			row.setOnMouseClicked(mouseEvent -> {
+				if (mouseEvent.getClickCount() == 2 && !row.isEmpty()) {
+					showMatriculationInfo(row.getItem());
+				}
+			});
+			return row;
+		});
+		// Listener to selected Matriculation
+		tableMatriculations.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldSelection, newSelection) -> {
+					labelSelectedMatriculation.setText("");
+					if (newSelection != null) {
+						updateParcels(newSelection);
+						String matriculationCode = Integer.toString(newSelection.getCode());
+						labelSelectedMatriculation.setText("Matrícula: " + matriculationCode);
+					}
+				});
+	}
+	
+	private void addListenersToTableParcels() {
+		// Listener to double click in parcel to show matriculation informations
+		tableParcels.setRowFactory(tv -> {
+			TableRow<Parcel> row = new TableRow<>();
+			row.setOnMouseClicked(mouseEvent -> {
+				if (mouseEvent.getClickCount() == 2 && !row.isEmpty()) {
+					showMatriculationInfo(row.getItem().getMatriculation());
+				}
+			});
+			return row;
+		});
+	}
+	
+	private void addListenersToListAnnotations() {
+		// Listener to selected Annotation
+		listViewAnnotation.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldSelection, newSelection) -> {
+					// clear current annotation infos
+					labelSelectedAnnotationDate.setText("");
+					textAreaAnnotation.setText("");
+					labelSelectedAnnotationCollaborator.setText("");
+					// set the informations of selected annotation
+					if (newSelection != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+						labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDate()));
+						textAreaAnnotation.setText(newSelection.getDescription());
+						labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleCollaborator());
+					}
+				});
 		// Hidden edit and remove button of annotation if nothing is selected
 		labelSelectedAnnotationDate.textProperty().addListener((observable, oldValue, newValue) -> {
-			if(newValue != null && newValue.length() > 0) {
+			if (newValue != null && newValue.length() > 0) {
 				btnEditSelectedAnnotation.setVisible(true);
 				btnDeleteSelectedAnnotation.setVisible(true);
 			} else {
@@ -157,84 +267,10 @@ public class ListStudentsController implements Initializable {
 			}
 		});
 	}
-	
-	// Get students with contacts loaded from Database
-	// and put in studentsList 
-	public void getStudentsFromDB() {
-		if(studentDao == null) {
-			throw new IllegalStateException("StudentDao service not initialized");
-		}
-		try {
-			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
-			studentsList.sort((s1, s2) -> s1.getName().toUpperCase().compareTo(s2.getName().toUpperCase()));
-		} catch (DbException e) {
-			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR, null);
-		}
-	}
-	
-	public void filterStudents() {
-		// Auxiliar list to doenst interfery where all students are stored
-		List<Student> filteredList = new ArrayList<>();
-		filteredList = studentsList;
-		String totalStudentsText = "";
-		// Filter by status selected in UI
-		String statusSelected = ((RadioButton) filterStudentStatus.getSelectedToggle()).getText();
-		Map<String, String> statusMap = new HashMap<>();
-		statusMap.put("TODOS", null);
-		statusMap.put("ATIVOS", "ATIVO");
-		statusMap.put("AGUARDANDO", "AGUARDANDO");
-		statusMap.put("INATIVOS", "INATIVO");
-		// I use this to correspond with status stored in database
-		String statusToFilter = statusMap.get(statusSelected.toUpperCase());
-		if (statusToFilter != null) {
-			filteredList = filteredList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusToFilter))
-					.collect(Collectors.toList());
-			if(filteredList.size() == 1) {
-				if(statusSelected.charAt(statusSelected.length()-1) == 's') {
-					statusSelected = statusSelected.substring(0, statusSelected.length()-1);
-				}
-				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno " + statusSelected + ")";
-			} else {
-				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos " + statusSelected + ")";	
-			}
-		} else {
-			if(filteredList.size() == 1) {
-				if(statusSelected.charAt(statusSelected.length()-1) == 's') {
-					statusSelected = statusSelected.substring(0, statusSelected.length()-1);
-				}
-				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno)";
-			} else {
-				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
-			}
-		}
-		// Filter by text in search bar
-		String textSearch = textFilter.getText();
-		String fieldFilter = comboBoxFieldFilter.getSelectionModel().getSelectedItem();
-		String filterTypeSelected = ((RadioButton) filterType.getSelectedToggle()).getText();
-		if(filterTypeSelected.equalsIgnoreCase("inicia com") && textSearch.length() > 0) {
-			filteredList = filteredList.stream()
-					.filter(student -> student.getValue(fieldFilter) != null &&
-						student.getValue(fieldFilter).toUpperCase().startsWith(textSearch.toUpperCase()))
-					.collect(Collectors.toList());
-		} else if(filterTypeSelected.equalsIgnoreCase("contém") && textSearch.length() > 0) {
-			filteredList = filteredList.stream()
-					.filter(student -> student.getValue(fieldFilter) != null &&
-						student.getValue(fieldFilter).toUpperCase().contains(textSearch.toUpperCase()))
-					.collect(Collectors.toList());
-		}
-		if(textSearch.length() > 0) {
-			labelTotalStudentsSearch.setText("Resultados: " + filteredList.size());
-		} else {
-			labelTotalStudentsSearch.setText(null);
-		}
-		// set total students to label
-		labelTotalStudents.setText(totalStudentsText);
-		// convert filteredList to Observable List and set in tableStudents
-		ObservableList<Student> filteredObsList = FXCollections.observableArrayList(filteredList);
-		tableStudents.setItems(filteredObsList);
-		tableStudents.refresh();
-		tableStudents.getSelectionModel().selectFirst();
-	}
+
+	// ===========================
+	// === END OF LISTENERS ====
+	// ===========================
 	
 	// ====================================================
 	// ======== START OF INITIALIZE METHODS ===============
@@ -263,7 +299,7 @@ public class ListStudentsController implements Initializable {
 		columnStudentCode.setReorderable(false);
 		Utils.setCellValueFactory(columnStudentName, "name");
 		columnStudentName.setReorderable(false);
-		// we need this verification because can happen of students doenst have any contact number
+		// we need this verification because can happen of students doesn't have any contact number
 		columnStudentContact1.setCellValueFactory(cellData -> {
 			try {
 				if(!(cellData.getValue().getContacts() == null)) {
@@ -282,54 +318,38 @@ public class ListStudentsController implements Initializable {
 			showStudentInfo(student);
 		});
 		columnStudentInfo.setReorderable(false);
-		// Listener to selected student, 
-		tableStudents.getSelectionModel().selectedItemProperty().addListener(
-	            (observable, oldSelection, newSelection) -> {
-					if (newSelection != null && newSelection != oldSelection) {
-						// Reflesh student data if was update in database
-						refreshStudentFromDB(newSelection);
-		            	updateAnnotations(newSelection);
-						updateMatriculations(newSelection);
-					}
-				}
-	    );
+		
 	}
 	
 	// TABLE MATRICULATIONS
 	private void initializeTableMatriculationsNodes() {
+		// code
 		Utils.setCellValueFactory(columnMatriculationCode, "code");
 		columnMatriculationCode.setReorderable(false);
+		// date matriculation
 		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
 		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
 		columnMatriculationDate.setReorderable(false);
+		// status
 		Utils.setCellValueFactory(columnMatriculationStatus, "status");
 		columnMatriculationStatus.setReorderable(false);
+		// parcels
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
 				// Total of parcels ignoring matriculation tax (parcel 0)
 				List<Parcel> parcels = cellData.getValue().getParcels().stream()
 						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());
 				// Total of paid parcels = with status equals PAGA
-				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation()
-						.equalsIgnoreCase("PAGA")).collect(Collectors.toList()).size();
+				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation().equalsIgnoreCase("PAGA"))
+						.collect(Collectors.toList()).size();
 				// will show in table number of paid parcels from total
 				return new SimpleStringProperty(paidParcels + "/" + parcels.size());
-			}catch(IllegalStateException | IndexOutOfBoundsException e) {
-				// if the matriculation doenst have parcels will show just a line
+			} catch (IllegalStateException | IndexOutOfBoundsException e) {
+				// if the matriculation doesn't have parcels will show just a line
 				return new SimpleStringProperty("-");
 			}
 		});
 		columnMatriculationParcels.setReorderable(false);
-		// Listener to selected Matriculation
-		tableMatriculations.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldSelection, newSelection) -> {	
-					labelSelectedMatriculation.setText("");
-					if (newSelection != null) {
-						updateParcels(newSelection);
-						String matriculationCode = Integer.toString(newSelection.getCode());
-						setCurrentMatriculationId(matriculationCode);
-					}
-				});
 	}
 	
 	// TABLE PARCELS
@@ -364,11 +384,14 @@ public class ListStudentsController implements Initializable {
 			};
 	    });
 		columnParcelStatus.setReorderable(false);
+		// parcel number
 		Utils.setCellValueFactory(columnParcelParcel, "parcelNumber");
 		columnParcelParcel.setReorderable(false);
+		// date parcel
 		Utils.setCellValueFactory(columnParcelDate, "dateParcel");
 		Utils.formatTableColumnDate(columnParcelDate, "dd/MM/yyyy");
 		columnParcelDate.setReorderable(false);
+		// value
 		Utils.setCellValueFactory(columnParcelValue, "value");
 		Utils.formatTableColumnDoubleCurrency(columnParcelValue);
 		columnParcelValue.setReorderable(false);
@@ -376,7 +399,7 @@ public class ListStudentsController implements Initializable {
 	
 	// LIST VIEW ANNOTATIONS
 	private void initiliazeListViewAnnotations() {
-		// Will show the item inside the list in a hbox centered
+		// Will show the item inside the list in a HBox centered
 		listViewAnnotation.setCellFactory(param -> new ListCell<Annotation>() {
 		    @Override
 		    protected void updateItem(Annotation item, boolean empty) {
@@ -396,29 +419,11 @@ public class ListStudentsController implements Initializable {
 				}
 			}
 		});
-		// Listener to selected Annotation
-		listViewAnnotation.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldSelection, newSelection) -> {
-					try {
-						labelSelectedAnnotationDate.setText("");
-						textAreaAnnotation.setText("");
-						labelSelectedAnnotationCollaborator.setText("");
-						if (newSelection != null) {
-							SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
-							labelSelectedAnnotationDate.setText(sdf.format(newSelection.getDate()));
-							textAreaAnnotation.setText(newSelection.getDescription());
-							labelSelectedAnnotationCollaborator.setText(newSelection.getResponsibleCollaborator());
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
 	}
 	
 	// ====================================================
 	// ========== END OF INITIALIZE METHODS ===============
 	// ====================================================
-	
 	
 	// ====================================================
 	// ========= HANDLE BUTTONS ACTIONS ====================
@@ -484,37 +489,52 @@ public class ListStudentsController implements Initializable {
 		}
 	}
 	
-	// called when user click in info button in student table
+	
+	// ===========================
+	// == SHOW OTHERS SCREENS  ===
+	// ===========================
+	
 	private void showStudentInfo(Student student) {
 		try {
+			// refresh student data
+			DBUtil.refreshData(student);
+			// show screen of student informations
 			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 			mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 				controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
 				controller.setCurrentStudent(student);
-				// Reflesh student data
-				refreshStudentFromDB(student);
 			});
-		} catch (Exception e) {
+		} catch (DbException e) {
+			Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(), AlertType.ERROR,
+					(Stage) tableStudents.getScene().getWindow());
 			e.printStackTrace();
-		}
+		} catch (DbExceptioneEntityExcluded e) {
+			// Show a message that student has been deleted
+			Alerts.showAlert("DBExceptionEntityExcluded",
+					student.getId() + " - " + student.getName() + " foi deletado do banco de dados por alguém",
+					"DBExceptionEntityExcluded: " + e.getMessage(),
+					AlertType.ERROR, (Stage) tableStudents.getScene().getWindow());
+			// remove student deleted from table
+			tableStudents.getItems().remove(student);
+			e.printStackTrace();
+			// refresh tables and lists
+			tableStudents.refresh();
+			updateAnnotations(student);
+			updateMatriculations(student);
+		}		
 	}
 	
-	// called when user select a matriculation
-	private void setCurrentMatriculationId(String matriculationCode) {
-		labelSelectedMatriculation.setText("Matrícula: " + matriculationCode);
+	private void showMatriculationInfo(Matriculation matriculation) {
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
+			controller.setCurrentMatriculation(matriculation, FXMLPath.LIST_STUDENTS);
+		});
 	}
+	
+	// ========================
+	// === AUXILIAR METHODS ===
+	// ========================
 
-	// Refresh student data
-	public void refreshStudentFromDB(Student student) {
-		// he will try to find the student in db and then will refresh the data
-		DBUtil.refleshData(student);
-		// refresh tables and lists
-		tableStudents.refresh();
-		tableMatriculations.refresh();
-		tableParcels.refresh();
-		listViewAnnotation.refresh();		
-	}
-	
 	// This method can be called from others controller to select a status
 	public void selectStatusToFilter(String status) {
 		if (status != null) {
@@ -529,6 +549,87 @@ public class ListStudentsController implements Initializable {
 			}
 		}
 	}
+
+	private void filterStudents() {
+		// Auxiliar list to doenst interfery where all students are stored
+		List<Student> filteredList = new ArrayList<>();
+		filteredList = studentsList;
+		String totalStudentsText = "";
+		// Filter by status selected in UI
+		String statusSelected = ((RadioButton) filterStudentStatus.getSelectedToggle()).getText();
+		Map<String, String> statusMap = new HashMap<>();
+		statusMap.put("TODOS", null);
+		statusMap.put("ATIVOS", "ATIVO");
+		statusMap.put("AGUARDANDO", "AGUARDANDO");
+		statusMap.put("INATIVOS", "INATIVO");
+		// I use this to correspond with status stored in database
+		String statusToFilter = statusMap.get(statusSelected.toUpperCase());
+		if (statusToFilter != null) {
+			filteredList = filteredList.stream().filter(student -> student.getStatus().equalsIgnoreCase(statusToFilter))
+					.collect(Collectors.toList());
+			if (filteredList.size() == 1) {
+				if (statusSelected.charAt(statusSelected.length() - 1) == 's') {
+					statusSelected = statusSelected.substring(0, statusSelected.length() - 1);
+				}
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno "
+						+ statusSelected + ")";
+			} else {
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos "
+						+ statusSelected + ")";
+			}
+		} else {
+			if (filteredList.size() == 1) {
+				if (statusSelected.charAt(statusSelected.length() - 1) == 's') {
+					statusSelected = statusSelected.substring(0, statusSelected.length() - 1);
+				}
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " aluno)";
+			} else {
+				totalStudentsText = "(Total de: " + Utils.pointSeparator(filteredList.size()) + " alunos)";
+			}
+		}
+		// Filter by text in search bar
+		String textSearch = textFilter.getText();
+		String fieldFilter = comboBoxFieldFilter.getSelectionModel().getSelectedItem();
+		String filterTypeSelected = ((RadioButton) filterType.getSelectedToggle()).getText();
+		if (filterTypeSelected.equalsIgnoreCase("inicia com") && textSearch.length() > 0) {
+			filteredList = filteredList.stream()
+					.filter(student -> student.getValue(fieldFilter) != null
+							&& student.getValue(fieldFilter).toUpperCase().startsWith(textSearch.toUpperCase()))
+					.collect(Collectors.toList());
+		} else if (filterTypeSelected.equalsIgnoreCase("contém") && textSearch.length() > 0) {
+			filteredList = filteredList.stream()
+					.filter(student -> student.getValue(fieldFilter) != null
+							&& student.getValue(fieldFilter).toUpperCase().contains(textSearch.toUpperCase()))
+					.collect(Collectors.toList());
+		}
+		if (textSearch.length() > 0) {
+			labelTotalStudentsSearch.setText("Resultados: " + filteredList.size());
+		} else {
+			labelTotalStudentsSearch.setText(null);
+		}
+		// set total students to label
+		labelTotalStudents.setText(totalStudentsText);
+		// convert filteredList to Observable List and set in tableStudents
+		ObservableList<Student> filteredObsList = FXCollections.observableArrayList(filteredList);
+		tableStudents.setItems(filteredObsList);
+		tableStudents.refresh();
+		tableStudents.getSelectionModel().selectFirst();
+	}
+
+	// Get students with contacts loaded from Database
+	// and put in studentsList 
+	private void getStudentsFromDB() {
+		if(studentDao == null) {
+			throw new IllegalStateException("StudentDao service not initialized");
+		}
+		try {
+			studentsList = FXCollections.observableArrayList(this.studentDao.findAllWithContactsLoaded());
+			studentsList.sort((s1, s2) -> s1.getName().toUpperCase().compareTo(s2.getName().toUpperCase()));
+		} catch (DbException e) {
+			Alerts.showAlert("Erro ao carregar os alunos", "DBException", e.getMessage(), AlertType.ERROR, null);
+		}
+	}
+
 	
 	// ====================================================
 	// === START OF METHODS TO UPDATE TABLES AND LISTS ====
@@ -536,7 +637,7 @@ public class ListStudentsController implements Initializable {
 	
 	public void updateMatriculations(Student student) {
 		tableMatriculations.setItems(null);
-		// return if doesnt have any matriculation to show
+		// return if doesn't have any matriculation to show
 		if (student != null && student.getMatriculations() != null && student.getMatriculations().size() >= 0) {
 			// get matriculations from student and put in a ObservableList
 			ObservableList<Matriculation> matriculations = FXCollections.observableList(student.getMatriculations());
@@ -555,7 +656,7 @@ public class ListStudentsController implements Initializable {
 	
 	public void updateParcels(Matriculation matriculation) {
 		tableParcels.setItems(null);
-		// return if doesnt have any parcel to show
+		// return if doesn't have any parcel to show
 		if (matriculation != null && matriculation.getParcels() != null && matriculation.getParcels().size() >= 0) {
 			// get parcels from matriculation and put in a ObservableList
 			ObservableList<Parcel> parcels = FXCollections.observableList(matriculation.getParcels());

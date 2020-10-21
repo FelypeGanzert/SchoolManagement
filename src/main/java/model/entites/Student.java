@@ -18,6 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -93,6 +97,7 @@ public class Student extends Person{
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_student")
+	@Where(clause = "excluido is null")
 	private List<Contact> contacts = new ArrayList<>();
 
 	public int getAge(){
@@ -123,15 +128,19 @@ public class Student extends Person{
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Matriculation> matriculations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Annotation> annotations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Course> courses = new ArrayList<>();
 
 	public void addResponsavel(ResponsibleStudent responsibleStudent) {
@@ -175,5 +184,8 @@ public class Student extends Person{
 		}
 		return null;
 	}
+	
+	@Column (name = "excluido", columnDefinition = "date default null")
+	private Date excluded;
 
 }

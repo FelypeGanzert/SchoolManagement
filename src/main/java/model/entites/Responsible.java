@@ -18,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -94,6 +97,7 @@ public class Responsible extends Person {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_responsible")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Contact> contacts = new ArrayList<>();
 
 	public int getAge(){
@@ -119,9 +123,11 @@ public class Responsible extends Person {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<ResponsibleStudent> students = new ArrayList<>();;
 
 	@OneToMany(mappedBy = "responsible")
+	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Matriculation> matriculationsThatIsResponsible;
 	
 	public String getRelationship(Student student) {

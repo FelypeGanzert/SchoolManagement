@@ -139,7 +139,7 @@ public class PersonFormController implements Initializable {
 		// Hidden new registry message about CPF if the person already is in db
 		if (entity.getId() != null) {
 			// reflesh data
-			DBUtil.refleshData(entity);
+			DBUtil.refreshData(entity);
 			btnWithoutCPF.setVisible(false);
 			labelFindRegistryResponse.setVisible(false);
 		}
@@ -456,8 +456,8 @@ public class PersonFormController implements Initializable {
 				rsDao.insert(rs);
 			}
 			// Reflesh data of persons to get the relationship
-			DBUtil.refleshData(studentOfResponsible);
-			DBUtil.refleshData(responsible);
+			DBUtil.refreshData(studentOfResponsible);
+			DBUtil.refreshData(responsible);
 		}
 	}
 

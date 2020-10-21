@@ -1,5 +1,7 @@
 package model.entites;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,5 +34,8 @@ public class Contact {
 	
 	@Column (name = "descricao", columnDefinition = "varchar(30) default null")
 	private String description;
+	
+	@Column (name = "excluido", columnDefinition = "date default null")
+	private Date excluded;
 
 }
