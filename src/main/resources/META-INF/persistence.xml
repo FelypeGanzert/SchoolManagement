@@ -14,10 +14,8 @@
 
 			<property
 				name="javax.persistence.schema-generation.database.action"
-				value="drop-and-create" />
+				value="none" />
 				
-				<property name="javax.persistence.sql-load-script-source"
-				value="META-INF/dados-iniciais.sql" />
 				
 
 			<property name="hibernate.dialect"

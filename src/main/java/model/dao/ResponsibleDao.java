@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import db.DbException;
@@ -58,6 +59,10 @@ public class ResponsibleDao {
 		// Delete responsible if he doesnt have any other student
 		if(otherStudentsResponding.size() <= 0) {
 			responsible.setExcluded("S");
+			// Remove all contacts of responsible
+			Query query = manager.createNativeQuery("UPDATE contato c SET c.excluido = 'S' WHERE contact_id_responsible = ?");
+			query.setParameter(1, responsible.getId());
+			query.executeUpdate();
 			responsible = manager.merge(responsible);
 		}
 		if(openedTransaction) {

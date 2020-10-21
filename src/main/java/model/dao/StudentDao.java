@@ -55,11 +55,11 @@ public class StudentDao {
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
 		// Remove all contacts
-		query = manager.createNativeQuery("UPDATE contato c SET c.excluido = 'S' WHERE c.aluno_id = ?");
+		query = manager.createNativeQuery("UPDATE contato c SET c.excluido = 'S' WHERE contact_id_student = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
-		// Remove all coursess
-		query = manager.createNativeQuery("UPDATE cursos c SET c.excluido = 'S' WHERE c.aluno_id = ?");
+		// Remove all courses
+		query = manager.createNativeQuery("UPDATE cursos c SET c.excluido = 'S' WHERE aluno_id = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
 		// Get all code parcels of this student
