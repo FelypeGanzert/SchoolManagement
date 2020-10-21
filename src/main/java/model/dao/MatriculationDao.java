@@ -20,7 +20,6 @@ public class MatriculationDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		manager.getTransaction().begin();
-		;
 		manager.persist(matriculation);
 		manager.getTransaction().commit();
 	}
@@ -39,24 +38,28 @@ public class MatriculationDao {
 		if (manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Matriculation.class, id);
+		Matriculation m =  manager.find(Matriculation.class, id);
+		if(m != null && m.getExcluded() != null) {
+			return m;
+		} else {
+			return null;
+		}
 	}
 
 	public void delete(Matriculation matriculation) throws DbException {
 		if (manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		System.out.println("============================================================ Started here delelte matriculation");
 		manager.getTransaction().begin();
 		matriculation = manager.find(Matriculation.class, matriculation.getCode());
 		// Remove all parcels
-//		Query query = manager.createNativeQuery("DELETE FROM parcela p WHERE p.matricula_codigo = ?");
-//		query.setParameter(1, matriculation.getCode());
-//		query.executeUpdate();
+		Query query = manager.createNativeQuery("UPDATE parcela p SET p.excluido = 'S' WHERE p.matricula_codigo = ?");
+		query.setParameter(1, matriculation.getCode());
+		query.executeUpdate();
 		// Remove matriculation
-		manager.remove(matriculation);
+		matriculation.setExcluded("S");
+		matriculation = manager.merge(matriculation);
 		manager.getTransaction().commit();
-		System.out.println("============================================================ Ended here delelte matriculation");
 	}
 
 }

@@ -70,7 +70,7 @@ public class ResponsibleDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Responsible r = manager.find(Responsible.class, id);
-		if(r.getExcluded() != null) {
+		if(r != null && r.getExcluded() != null) {
 			return r;
 		} else {
 			return null;

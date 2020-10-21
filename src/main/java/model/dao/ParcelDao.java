@@ -36,7 +36,12 @@ public class ParcelDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Parcel.class, id);
+		Parcel p = manager.find(Parcel.class, id);
+		if(p != null && p.getExcluded() != null) {
+			return p;
+		} else {
+			return null;
+		}
 	}
 	
 	public void delete(Parcel parcel) throws DbException {
@@ -45,7 +50,8 @@ public class ParcelDao {
 		}
 		manager.getTransaction().begin();
 		parcel = manager.find(Parcel.class, parcel.getDocumentNumber());
-		manager.remove(parcel);
+		parcel.setExcluded("S");
+		parcel = manager.merge(parcel);
 		manager.getTransaction().commit();
 	}
 	
