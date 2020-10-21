@@ -46,4 +46,7 @@ public class ResponsibleStudent {
         this.responsible= responsible;
         this.relationship = relationship;
     }
+    
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
 }

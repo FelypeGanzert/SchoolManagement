@@ -57,6 +57,7 @@ public class ResponsibleDao {
 		manager.flush();
 		// Delete responsible if he doesnt have any other student
 		if(otherStudentsResponding.size() <= 0) {
+			responsible.setExcluded("S");
 			responsible = manager.merge(responsible);
 		}
 		if(openedTransaction) {
@@ -68,14 +69,19 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Responsible.class, id);
+		Responsible r = manager.find(Responsible.class, id);
+		if(r.getExcluded() != null) {
+			return r;
+		} else {
+			return null;
+		}
 	}
 	
 	public List<Responsible> findAll() throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r", Responsible.class);
+		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r where r.excluido is null", Responsible.class);
 		return query.getResultList();
 	}
 	
@@ -83,7 +89,7 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Responsible> query = manager.createQuery("SELECT s FROM Responsavel s where nome like :nome", Responsible.class);
+		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r where r.nome like :nome and r.excluido is null", Responsible.class);
 		query.setParameter("nome", name + "%");
 		return query.getResultList();
 	}
@@ -92,7 +98,7 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Responsible> query = manager.createQuery("SELECT s FROM Responsavel s where cpf = :cpf", Responsible.class);
+		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r where cpf = :cpf and r.excluido is null", Responsible.class);
 		query.setParameter("cpf", cpf);
 		try {
 			return query.getSingleResult();

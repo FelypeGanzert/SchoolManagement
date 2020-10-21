@@ -48,7 +48,12 @@ public class ResponsibleStudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(ResponsibleStudent.class, id);
+		ResponsibleStudent rs = manager.find(ResponsibleStudent.class, id);
+		if(rs.getExcluded() != null) {
+			return rs;
+		} else {
+			return null;
+		}
 	}
 
 	public void deleteById(Integer id) throws DbException {
@@ -58,7 +63,8 @@ public class ResponsibleStudentDao {
 		manager.getTransaction().begin();
 		ResponsibleStudent responsibleStudent = manager.find(ResponsibleStudent.class, id);
 		manager.refresh(responsibleStudent);
-		manager.remove(responsibleStudent);
+		responsibleStudent.setExcluded("S");
+		responsibleStudent = manager.merge(responsibleStudent);
 		manager.getTransaction().commit();
 	}
 
