@@ -117,15 +117,17 @@ public class InfoStudentController implements Initializable {
 		this.returnPath = FXMLPath.LIST_STUDENTS;
 	}
 	
-	// DEPENDENCES	
+	// ===== DEPENDENCES =====
+	
 	public void setCurrentStudent(Student student) {
 		this.student = student;
 		// Update UI with student informations
 		updateFormData();
-		updateTablesData();
+		updateAllTablesData();
 	}
 	
 	public void setReturn(String returnPath, String returnText) {
+		this.returnPath  = returnPath;
 		btnReturn.setText("Voltar para " + returnText);
 	}
 	
@@ -183,36 +185,39 @@ public class InfoStudentController implements Initializable {
 		labelDateCadastryAndModify.setText(dateCadastryAndModify);
 	}
 	
-	private void updateTablesData() {
-		try {
-			// Matriculations
-			if (student.getMatriculations() != null) {
-				matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
-				matriculationsList.sort((m1, m2) -> m2.getDateMatriculation().compareTo(m1.getDateMatriculation()));
-				tableMatriculations.setItems(matriculationsList);
-				tableMatriculations.refresh();
-			}
-			// Contacts
-			if (student.getContacts() != null) {
-				contactsList = FXCollections.observableArrayList(this.student.getContacts());
-				contactsList.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
-				tableContacts.setItems(contactsList);
-				tableContacts.refresh();
-			}
-			// Responsibles
-			if (student.getAllResponsibles() != null) {
-				responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
-				responsiblesList.sort((r1, r2) -> r2.getId().compareTo(r1.getId()));
-				tableResponsibles.setItems(responsiblesList);
-				tableResponsibles.refresh();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Alerts.showAlert("Erro ao carregar as informações do aluno em alguma das tabelas", "Erro",
-					e.getMessage(), AlertType.ERROR, null);
+	private void updateAllTablesData() {
+		updateTableMatriculation();
+		updateTableContacts();
+		updateTableResponsibles();
+	}
+	
+	private void updateTableMatriculation() {
+		if (student.getMatriculations() != null) {
+			matriculationsList = FXCollections.observableArrayList(this.student.getMatriculations());
+			matriculationsList.sort((m1, m2) -> m2.getDateMatriculation().compareTo(m1.getDateMatriculation()));
+			tableMatriculations.setItems(matriculationsList);
+			tableMatriculations.refresh();
 		}
 	}
 	
+	private void updateTableContacts() {
+		if (student.getContacts() != null) {
+			contactsList = FXCollections.observableArrayList(this.student.getContacts());
+			contactsList.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
+			tableContacts.setItems(contactsList);
+			tableContacts.refresh();
+		}
+	}
+
+	private void updateTableResponsibles() {
+		if (student.getAllResponsibles() != null) {
+			responsiblesList = FXCollections.observableArrayList(this.student.getAllResponsibles());
+			responsiblesList.sort((r1, r2) -> r2.getId().compareTo(r1.getId()));
+			tableResponsibles.setItems(responsiblesList);
+			tableResponsibles.refresh();
+		}
+	}
+
 	// ====================================================
 	// ======= END OF METHODS TO UPDATE DATA IN UI ========
 	// ====================================================
@@ -223,18 +228,13 @@ public class InfoStudentController implements Initializable {
 
 	// Return button
 	public void handleBtnReturn(ActionEvent event) {
-		try {
-			if(returnPath == FXMLPath.LIST_STUDENTS) {
-				Roots.listStudents((ListStudentsController controller) -> {
-					// Select this student
-					controller.selectStatusToFilter(student.getStatus());
-					controller.tableStudents.getSelectionModel().select(student);
-					controller.tableStudents.scrollTo(student);
-				});
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Alerts.showAlert("Erro ao retornar", "Erro", e.getMessage(), AlertType.ERROR, Utils.currentStage(event));
+		if (returnPath == FXMLPath.LIST_STUDENTS) {
+			Roots.listStudents((ListStudentsController controller) -> {
+				// Select this student
+				controller.selectStatusToFilter(student.getStatus());
+				controller.tableStudents.getSelectionModel().select(student);
+				controller.tableStudents.scrollTo(student);
+			});
 		}
 	}
 	
@@ -423,7 +423,7 @@ public class InfoStudentController implements Initializable {
 					contactDao.delete(contact);
 					// remove contact from student in memory and refresh tables in UI
 					student.getContacts().remove(contact);
-					updateTablesData();
+					updateTableContacts();
 					alertProcessing.close();
 				} catch (DbException e) {
 					Alerts.showAlert("Erro ao deletar contato", "DbException", e.getMessage(),
@@ -488,7 +488,7 @@ public class InfoStudentController implements Initializable {
 					ResponsibleDao responsibleDao = new ResponsibleDao(DBFactory.getConnection());
 					responsibleDao.deleteFromStudent(responsible, student);
 					// remove responsible from student in memory and refresh tables in UI
-					updateTablesData();
+					updateTableResponsibles();
 				} catch (DbException e) {
 					Alerts.showAlert("Erro ao deletar responsável", "DbException", e.getMessage(),
 							AlertType.ERROR, Utils.currentStage(event));
@@ -506,7 +506,7 @@ public class InfoStudentController implements Initializable {
 	// Called from others controllers
 	public void onDataChanged() {
 		updateFormData();
-		updateTablesData();
+		updateAllTablesData();
 	}
 
 }

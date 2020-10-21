@@ -185,7 +185,7 @@ public class Student extends Person{
 		return null;
 	}
 	
-	@Column (name = "excluido", columnDefinition = "date default null")
-	private Date excluded;
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
 
 }

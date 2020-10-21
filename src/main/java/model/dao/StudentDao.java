@@ -59,11 +59,11 @@ public class StudentDao {
 		query.setParameter(1, student.getId());
 		List<Integer> parcelsCode = (List<Integer>)query.getResultList();
 		// Remove all parcels
-		query = manager.createNativeQuery("DELETE FROM parcela p WHERE p.numero_documento IN (:codes)");
+		query = manager.createNativeQuery("UPDATE parcela p SET p.excluido = 'S' WHERE p.numero_documento IN (:codes)");
 		query.setParameter("codes", parcelsCode);
 		query.executeUpdate();
 		// Remove all matriculations from student
-		query = manager.createNativeQuery("DELETE FROM matricula m WHERE m.aluno_id = ?");
+		query = manager.createNativeQuery("UPDATE matricula m SET m.excluido = 'S' WHERE m.aluno_id = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
 		//manager.refresh(student);
@@ -74,7 +74,8 @@ public class StudentDao {
 		}
 		manager.flush();
 		// Remove student entity
-		manager.remove(student);
+		student.setExcluded("S");
+		student = manager.merge(student);
 		manager.getTransaction().commit();
 	}
 	
@@ -82,14 +83,19 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Student.class, id);
+		Student s = manager.find(Student.class, id);
+		if(s.getExcluded() != null) {
+			return s;
+		} else {
+			return null;
+		}
 	}
 	
 	public List<Student> findAll() throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.excluido is null", Student.class);
 		return query.getResultList();
 	}
 	
@@ -101,6 +107,7 @@ public class StudentDao {
         CriteriaQuery<Student> criteria = builder.createQuery(Student.class);
         criteria.distinct(true);
         Root<Student> root = criteria.from(Student.class);
+        criteria.select(root).where(builder.isNull(root.get("excluded")));
         // This will simulate a EAGER loading, solving the problem of n+1
         root.fetch("contacts", JoinType.LEFT);
         TypedQuery<Student> query = manager.createQuery(criteria);
@@ -111,7 +118,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where nome like :nome", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.nome like :nome and s.excluido is null", Student.class);
 		query.setParameter("nome", name + "%");
 		return query.getResultList();
 	}
@@ -120,7 +127,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where cpf = :cpf", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.cpf = :cpf and s.excluido is null", Student.class);
 		query.setParameter("cpf", cpf);
 		try {
 			return query.getSingleResult();

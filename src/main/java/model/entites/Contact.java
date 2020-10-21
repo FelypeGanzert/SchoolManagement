@@ -35,7 +35,7 @@ public class Contact {
 	@Column (name = "descricao", columnDefinition = "varchar(30) default null")
 	private String description;
 	
-	@Column (name = "excluido", columnDefinition = "date default null")
-	private Date excluded;
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
 
 }

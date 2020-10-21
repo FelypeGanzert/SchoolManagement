@@ -57,7 +57,7 @@ public class ResponsibleDao {
 		manager.flush();
 		// Delete responsible if he doesnt have any other student
 		if(otherStudentsResponding.size() <= 0) {
-			manager.remove(responsible);
+			responsible = manager.merge(responsible);
 		}
 		if(openedTransaction) {
 			manager.getTransaction().commit();

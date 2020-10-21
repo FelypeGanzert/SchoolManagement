@@ -673,7 +673,7 @@ public class ListStudentsController implements Initializable {
 	
 	public void updateAnnotations(Student student) {
 		listViewAnnotation.setItems(null);
-		// return if doenst have any annotation to show
+		// return if doens't have any annotation to show
 		if (student != null && student.getAnnotations() != null && student.getAnnotations().size() >= 0) {
 			// get annotations from student and put in a ObservableList
 			ObservableList<Annotation> annotations = FXCollections.observableList(student.getAnnotations());

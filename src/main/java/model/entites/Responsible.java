@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -97,7 +98,7 @@ public class Responsible extends Person {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="contact_id_responsible")
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Contact> contacts = new ArrayList<>();
 
 	public int getAge(){
@@ -179,4 +180,7 @@ public class Responsible extends Person {
 		}
 		return null;
 	}
+	
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
 }

@@ -65,5 +65,7 @@ public class Matriculation {
 	@NotFound(action=NotFoundAction.IGNORE)
 	private List<Parcel> parcels = new ArrayList<>();
 
-
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
+	
 }

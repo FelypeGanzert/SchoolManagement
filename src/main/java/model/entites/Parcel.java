@@ -104,4 +104,7 @@ public class Parcel {
 		return this.selected.get();
 	}
 	
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
+	
 }

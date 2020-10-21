@@ -25,24 +25,23 @@ public class DBUtil {
 		entity = new StudentDao(DBFactory.getConnection()).findById(entity.getId());
 		if (entity != null) {
 			DBFactory.getConnection().refresh(entity);
-		}
-		if (entity.getExcluded() != null) {
-			throw new DbExceptioneEntityExcluded("Entity has been deleted");
-		}
-	}
-
-	public static <T> void refreshData(Responsible entity) {
-		try {
-			entity = new ResponsibleDao(DBFactory.getConnection()).findById(entity.getId());
-			if (entity != null) {
-				DBFactory.getConnection().refresh(entity);
+			if (entity.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
 			}
-		} catch (Exception e) {
-			entity = null;
-			e.printStackTrace();
 		}
 	}
 
+	public static <T> void refreshData(Responsible entity) throws DbException, DbExceptioneEntityExcluded {
+		entity = new ResponsibleDao(DBFactory.getConnection()).findById(entity.getId());
+		if (entity != null) {
+			DBFactory.getConnection().refresh(entity);
+			if (entity.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
+			}
+		}
+	}
+
+	// still need to work in this
 	public static <T> void refreshData(ResponsibleStudent responsibleStudent) {
 		try {
 			responsibleStudent = new ResponsibleStudentDao(DBFactory.getConnection())
@@ -56,6 +55,7 @@ public class DBUtil {
 		}
 	}
 
+	// still need to work in this
 	public static <T> void refreshData(Matriculation matriculation) {
 		try {
 			int code = matriculation.getCode();
