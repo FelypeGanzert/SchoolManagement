@@ -25,7 +25,7 @@ public class AnnotationDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		manager.getTransaction().begin();;
+		manager.getTransaction().begin();
 		manager.persist(annotation);
 		manager.getTransaction().commit();
 	}
@@ -43,7 +43,12 @@ public class AnnotationDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Annotation.class, id);
+		Annotation a = manager.find(Annotation.class, id);
+		if(a != null && a.getExcluded() != null) {
+			return a;
+		} else {
+			return null;
+		}
 	}
 	
 	public void delete(Annotation annotation) throws DbException {
@@ -52,7 +57,8 @@ public class AnnotationDao {
 		}
 		manager.getTransaction().begin();
 		annotation = manager.find(Annotation.class, annotation.getId());
-		manager.remove(annotation);
+		annotation.setExcluded("S");
+		annotation = manager.merge(annotation);
 		manager.getTransaction().commit();
 	}
 	
@@ -64,7 +70,7 @@ public class AnnotationDao {
 		CriteriaQuery<Annotation> criteriaQuery = criteriaBuilder.createQuery(Annotation.class);
 		
 		Root<Annotation> root = criteriaQuery.from(Annotation.class);
-		criteriaQuery.select(root);
+		criteriaQuery.select(root).where(criteriaBuilder.isNull(root.get("excluded")));
 		
 		criteriaQuery.where(criteriaBuilder.equal(root.get("student"), student.getId()));
 		TypedQuery<Annotation> typedQuery = manager.createQuery(criteriaQuery);

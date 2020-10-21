@@ -18,8 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
@@ -128,19 +126,19 @@ public class Student extends Person{
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true
 	    )
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<ResponsibleStudent> responsibles = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Matriculation> matriculations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Annotation> annotations = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Course> courses = new ArrayList<>();
 
 	public void addResponsavel(ResponsibleStudent responsibleStudent) {

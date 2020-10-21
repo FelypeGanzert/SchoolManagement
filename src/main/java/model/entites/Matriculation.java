@@ -15,8 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -62,7 +61,7 @@ public class Matriculation {
 	private String status;
 	
 	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.ALL, orphanRemoval = true)
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Parcel> parcels = new ArrayList<>();
 
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")

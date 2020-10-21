@@ -43,7 +43,12 @@ public class CourseDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		return manager.find(Course.class, id);
+		Course c =  manager.find(Course.class, id);
+		if(c != null && c.getExcluded() != null) {
+			return c;
+		} else {
+			return null;
+		}
 	}
 	
 	public void delete(Course course) throws DbException {
@@ -52,7 +57,8 @@ public class CourseDao {
 		}
 		manager.getTransaction().begin();
 		course = manager.find(Course.class, course.getId());
-		manager.remove(course);
+		course.setExcluded("S");
+		course = manager.merge(course);
 		manager.getTransaction().commit();
 	}
 	
@@ -64,8 +70,7 @@ public class CourseDao {
 		CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
 		
 		Root<Course> root = criteriaQuery.from(Course.class);
-		criteriaQuery.select(root);
-		
+		criteriaQuery.select(root).where(criteriaBuilder.isNull(root.get("excluded")));
 		criteriaQuery.where(criteriaBuilder.equal(root.get("student"), student.getId()));
 		TypedQuery<Course> typedQuery = manager.createQuery(criteriaQuery);
 		List<Course> courses = typedQuery.getResultList();

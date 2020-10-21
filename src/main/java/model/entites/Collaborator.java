@@ -47,5 +47,8 @@ public class Collaborator {
 	
 	@Column(name = "senha_login", columnDefinition = "varchar(50) default null")
 	private String passwordLogin;
+	
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
 
 }

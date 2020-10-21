@@ -50,8 +50,20 @@ public class StudentDao {
 		manager.getTransaction().begin();
 		Student student = manager.find(Student.class, id);
 		manager.refresh(student);
+		// Remove all annotations from student
+		Query query = manager.createNativeQuery("UPDATE anotacoes a SET a.excluido = 'S' WHERE a.aluno_id = ?");
+		query.setParameter(1, student.getId());
+		query.executeUpdate();
+		// Remove all contacts
+		query = manager.createNativeQuery("UPDATE contato c SET c.excluido = 'S' WHERE c.aluno_id = ?");
+		query.setParameter(1, student.getId());
+		query.executeUpdate();
+		// Remove all coursess
+		query = manager.createNativeQuery("UPDATE cursos c SET c.excluido = 'S' WHERE c.aluno_id = ?");
+		query.setParameter(1, student.getId());
+		query.executeUpdate();
 		// Get all code parcels of this student
-		Query query = manager.createNativeQuery(
+		query = manager.createNativeQuery(
 				"SELECT p.numero_documento FROM parcela p \r\n" + 
 				"JOIN matricula m ON p.matricula_codigo = m.code\r\n" + 
 				"JOIN aluno a ON m.aluno_id = a.id\r\n" + 
@@ -66,7 +78,6 @@ public class StudentDao {
 		query = manager.createNativeQuery("UPDATE matricula m SET m.excluido = 'S' WHERE m.aluno_id = ?");
 		query.setParameter(1, student.getId());
 		query.executeUpdate();
-		//manager.refresh(student);
 		// remove all associations in ResponsibleStudent for this student
 		ResponsibleDao responsibleDao = new ResponsibleDao(DBFactory.getConnection());
 		for(Responsible ra : student.getAllResponsibles()) {

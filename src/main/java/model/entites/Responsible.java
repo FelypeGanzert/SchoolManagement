@@ -124,11 +124,11 @@ public class Responsible extends Person {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<ResponsibleStudent> students = new ArrayList<>();;
 
 	@OneToMany(mappedBy = "responsible")
-	@NotFound(action=NotFoundAction.IGNORE)
+	@Where(clause = "excluido is null")
 	private List<Matriculation> matriculationsThatIsResponsible;
 	
 	public String getRelationship(Student student) {

@@ -23,7 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "Cursos")
-@Table(name = "courses")
+@Table(name = "cursos")
 public class Course {
 	
 	@EqualsAndHashCode.Include
@@ -50,5 +50,7 @@ public class Course {
 	@Column (name = "carga_horaria", columnDefinition = "int default null")
 	private Integer courseLoad;
 		
-
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
+	
 }

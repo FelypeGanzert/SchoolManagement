@@ -43,5 +43,8 @@ public class Annotation {
 	
 	@Column(name = "colaborador_responsavel", columnDefinition = "varchar(50) default null")
 	private String responsibleCollaborator;
-
+	
+	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
+	private String excluded;
+	
 }
