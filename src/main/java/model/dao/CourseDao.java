@@ -44,7 +44,7 @@ public class CourseDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Course c =  manager.find(Course.class, id);
-		if(c != null && c.getExcluded() != null) {
+		if(c != null && c.getExcluded() == null) {
 			return c;
 		} else {
 			return null;

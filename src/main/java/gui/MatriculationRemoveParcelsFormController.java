@@ -124,10 +124,21 @@ public class MatriculationRemoveParcelsFormController implements Initializable{
 			}
 		}
 		// update parcel numbers using the first parcel selected has parameter
-		int firstParcelRemovedNumber = selectedParcels.get(0).getParcelNumber();
+		Integer firstParcelRemovedNumber = selectedParcels.get(0).getParcelNumber();
+		// check if the number is 0, if is zero we will desconsider
+		if(firstParcelRemovedNumber == 0) {
+			// check if there other removed parcel
+			if(selectedParcels.size() > 1) {
+				firstParcelRemovedNumber = selectedParcels.get(1).getParcelNumber();
+			} else {
+				firstParcelRemovedNumber = null;
+			}
+		}
 		for(int i = firstParcelRemovedIndexInMatriculation; i < matriculation.getParcels().size(); i++) {
-			 matriculation.getParcels().get(i).setParcelNumber(firstParcelRemovedNumber);
-			 firstParcelRemovedNumber++;
+			if(firstParcelRemovedNumber != null) {
+				 matriculation.getParcels().get(i).setParcelNumber(firstParcelRemovedNumber);
+				 firstParcelRemovedNumber++;
+			}
 		}
 		// Updated matriculation in DB
 		try {

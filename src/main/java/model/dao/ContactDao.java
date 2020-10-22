@@ -44,7 +44,7 @@ public class ContactDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Contact c = manager.find(Contact.class, id);
-		if(c != null && c.getExcluded() != null) {
+		if(c != null && c.getExcluded() == null) {
 			return c;
 		} else {
 			return null;

@@ -95,7 +95,7 @@ public class StudentDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Student s = manager.find(Student.class, id);
-		if(s != null && s.getExcluded() != null) {
+		if(s != null && s.getExcluded() == null) {
 			return s;
 		} else {
 			return null;
@@ -106,7 +106,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.excluido is null", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where excluido is null", Student.class);
 		return query.getResultList();
 	}
 	
@@ -129,7 +129,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.nome like :nome and s.excluido is null", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where nome like :nome and excluido is null", Student.class);
 		query.setParameter("nome", name + "%");
 		return query.getResultList();
 	}
@@ -138,7 +138,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where s.cpf = :cpf and s.excluido is null", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where cpf = :cpf and excluido is null", Student.class);
 		query.setParameter("cpf", cpf);
 		try {
 			return query.getSingleResult();

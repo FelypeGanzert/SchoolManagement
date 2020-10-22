@@ -37,7 +37,7 @@ public class ParcelDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Parcel p = manager.find(Parcel.class, id);
-		if(p != null && p.getExcluded() != null) {
+		if(p != null && p.getExcluded() == null) {
 			return p;
 		} else {
 			return null;

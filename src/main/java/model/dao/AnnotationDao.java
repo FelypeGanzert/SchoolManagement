@@ -44,7 +44,7 @@ public class AnnotationDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Annotation a = manager.find(Annotation.class, id);
-		if(a != null && a.getExcluded() != null) {
+		if(a != null && a.getExcluded() == null) {
 			return a;
 		} else {
 			return null;

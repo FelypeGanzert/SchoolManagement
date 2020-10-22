@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXTextArea;
 import db.DBFactory;
 import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Utils;
@@ -74,7 +75,11 @@ public class MatriculationInfoController implements Initializable{
 		});
 		// Add a tab to matriculation responsible if exists
 		if(matriculation.getResponsible() != null) {
-			DBUtil.refreshData(matriculation.getResponsible());
+			try {
+				DBUtil.refreshData(matriculation.getResponsible());
+			} catch (DbException | DbExceptioneEntityExcluded e) {
+				e.printStackTrace();
+			}
 			Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PERSON, "Responsável", tabPanePeople, 
 					(MatriculationInfoPerson controller) -> {
 				controller.setPerson(matriculation.getResponsible());

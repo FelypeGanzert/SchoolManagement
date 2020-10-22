@@ -39,7 +39,7 @@ public class MatriculationDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Matriculation m =  manager.find(Matriculation.class, id);
-		if(m != null && m.getExcluded() != null) {
+		if(m != null && m.getExcluded() == null) {
 			return m;
 		} else {
 			return null;
@@ -53,7 +53,7 @@ public class MatriculationDao {
 		manager.getTransaction().begin();
 		matriculation = manager.find(Matriculation.class, matriculation.getCode());
 		// Remove all parcels
-		Query query = manager.createNativeQuery("UPDATE parcela p SET p.excluido = 'S' WHERE p.matricula_codigo = ?");
+		Query query = manager.createNativeQuery("UPDATE parcela p SET excluido = 'S' WHERE p.matricula_codigo = ?");
 		query.setParameter(1, matriculation.getCode());
 		query.executeUpdate();
 		// Remove matriculation

@@ -49,7 +49,7 @@ public class ResponsibleStudentDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		ResponsibleStudent rs = manager.find(ResponsibleStudent.class, id);
-		if(rs != null && rs.getExcluded() != null) {
+		if(rs != null && rs.getExcluded() == null) {
 			return rs;
 		} else {
 			return null;

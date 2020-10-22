@@ -22,6 +22,7 @@ import animatefx.animation.ZoomIn;
 import db.DBFactory;
 import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
@@ -139,7 +140,11 @@ public class PersonFormController implements Initializable {
 		// Hidden new registry message about CPF if the person already is in db
 		if (entity.getId() != null) {
 			// reflesh data
-			DBUtil.refreshData(entity);
+			try {
+				DBUtil.refreshData(entity);
+			} catch (DbException | DbExceptioneEntityExcluded e) {
+				e.printStackTrace();
+			}
 			btnWithoutCPF.setVisible(false);
 			labelFindRegistryResponse.setVisible(false);
 		}
@@ -456,8 +461,12 @@ public class PersonFormController implements Initializable {
 				rsDao.insert(rs);
 			}
 			// Reflesh data of persons to get the relationship
-			DBUtil.refreshData(studentOfResponsible);
-			DBUtil.refreshData(responsible);
+			try {
+				DBUtil.refreshData(studentOfResponsible);
+				DBUtil.refreshData(responsible);
+			} catch (DbException | DbExceptioneEntityExcluded e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -489,6 +498,12 @@ public class PersonFormController implements Initializable {
 					person = responsibleDao.findByCPF(Constraints.getOnlyDigitsValue(textCPF));
 				}
 				if (person != null) {
+					// refresh data
+					try {
+						DBUtil.refreshData(person);
+					} catch (DbExceptioneEntityExcluded | DbException e) {
+						e.printStackTrace();
+					}
 					entity = person;
 					// update fields in UI according the student get from database
 					updateFormData();

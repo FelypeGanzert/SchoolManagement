@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
-import db.DBUtil;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
@@ -56,8 +55,6 @@ public class StudentCoursesController implements Initializable{
 	
 	public void setStudent(Student student) {
 		this.student = student;
-		// Refresh student data
-		DBUtil.refreshData(this.student);
 		updateForm();
 	}
 

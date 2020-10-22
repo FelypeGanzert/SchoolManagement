@@ -52,7 +52,7 @@ public class CollaboratorDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		Collaborator c = manager.find(Collaborator.class, id);
-		if(c != null && c.getExcluded() != null) {
+		if(c != null && c.getExcluded() == null) {
 			return c;
 		} else {
 			return null;
@@ -63,7 +63,7 @@ public class CollaboratorDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Collaborator> query = manager.createQuery("SELECT c FROM Colaborador c where c.excluido is null", Collaborator.class);
+		TypedQuery<Collaborator> query = manager.createQuery("SELECT c FROM Colaborador c where excluido is null", Collaborator.class);
 		return query.getResultList();
 	}
 	
@@ -71,7 +71,7 @@ public class CollaboratorDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<String> query = manager.createQuery("SELECT initials FROM Colaborador c where c.excluido is null", String.class);
+		TypedQuery<String> query = manager.createQuery("SELECT initials FROM Colaborador c where excluido is null", String.class);
 		return query.getResultList();
 	}
 	
