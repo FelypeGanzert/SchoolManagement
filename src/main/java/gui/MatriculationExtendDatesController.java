@@ -64,16 +64,17 @@ public class MatriculationExtendDatesController implements Initializable{
 	// ==========================
 
 	public void handleBtnSave(ActionEvent event) {
-		System.out.println("Clicked to save");
 		// Get on much months should add
 		int monthsToAdd = spinnerNumberOfMonths.getValue();
 		for(Parcel p : openParcels) {
-			// Get the data of parcel, add the monthsToAdd and set back to parcel
-			Date parcelDate = p.getDateParcel();
-			Calendar c = DateUtil.dateToCalendar(parcelDate);
-			c.add(Calendar.MONTH, monthsToAdd);
-			parcelDate = DateUtil.calendarToDate(c);
-			p.setDateParcel(parcelDate);
+			if(p.getDateParcel() != null) {
+				// Get the data of parcel, add the monthsToAdd and set back to parcel
+				Date parcelDate = p.getDateParcel();
+				Calendar c = DateUtil.dateToCalendar(parcelDate);
+				c.add(Calendar.MONTH, monthsToAdd);
+				parcelDate = DateUtil.calendarToDate(c);
+				p.setDateParcel(parcelDate);
+			}
 		}
 		// Save in DB
 		try {
