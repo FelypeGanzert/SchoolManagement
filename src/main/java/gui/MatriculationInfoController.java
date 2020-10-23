@@ -16,6 +16,7 @@ import db.DbException;
 import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
+import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.enums.MatriculationStatusEnum;
 import gui.util.enums.ParcelStatusEnum;
@@ -66,6 +67,7 @@ public class MatriculationInfoController implements Initializable{
 	// =====================
 	
 	public void setCurrentMatriculation(Matriculation matriculation, String returnPath) {
+		setReturnPath(returnPath);
 		this.matriculation = matriculation;
 		// Add a tab to student infos
 		updateForm();
@@ -94,7 +96,6 @@ public class MatriculationInfoController implements Initializable{
 						controller.setParcels(matriculation.getParcels());
 					});
 		}
-		setReturnPath(returnPath);
 	}
 	
 	private void setReturnPath(String returnPath) {
@@ -110,6 +111,10 @@ public class MatriculationInfoController implements Initializable{
 			}
 			btnReturn.setText("Voltar para " + firstName);
 		}
+		// Set text to return to list students
+		if(this.returnPath.equals(FXMLPath.LIST_STUDENTS)) {
+			btnReturn.setText("Voltar para " + "Alunos");
+		}
 	}
 	
 	// =========================
@@ -124,6 +129,18 @@ public class MatriculationInfoController implements Initializable{
 				mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 					controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
 					controller.setCurrentStudent(matriculation.getStudent());
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(returnPath.equals(FXMLPath.LIST_STUDENTS)) {
+			try {
+				Roots.listStudents((ListStudentsController controller) -> {
+					// Select this student
+					controller.selectStatusToFilter(matriculation.getStudent().getStatus());
+					controller.tableStudents.getSelectionModel().select(matriculation.getStudent());
+					controller.tableStudents.scrollTo(matriculation.getStudent());
 				});
 			} catch (Exception e) {
 				e.printStackTrace();
