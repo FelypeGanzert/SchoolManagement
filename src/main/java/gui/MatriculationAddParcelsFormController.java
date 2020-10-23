@@ -88,13 +88,13 @@ public class MatriculationAddParcelsFormController implements Initializable{
 			if (!textFirstParcelDate.validate()) {
 				return;
 			}
-			// today is before the first date
+			// check if today is before the first date
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date today = new Date();
-				if (today.compareTo(sdf.parse(textFirstParcelDate.getText())) >  0) {
+				if (DateUtil.compareTwoDates(today, sdf.parse(textFirstParcelDate.getText())) > 0) {
 					Alerts.showAlert("Inválido", "Data de pagamento inválida.",
-							"Só é possível adicionar uma parcela com vencimento a partir de um dia útil depois de hoje.",
+							"Só é possível adicionar uma parcela com vencimento a partir do dia de hoje.",
 							AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
@@ -459,9 +459,6 @@ public class MatriculationAddParcelsFormController implements Initializable{
 	private void setDefaultValuesToFields() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date today = new Date();
-		Calendar c = DateUtil.dateToCalendar(today);
-		c.add(Calendar.DAY_OF_MONTH, 1);
-		today = DateUtil.calendarToDate(c);
 		textFirstParcelDate.setText(sdf.format(today));
 	}
 

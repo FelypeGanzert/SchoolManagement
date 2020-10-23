@@ -152,11 +152,43 @@ public class MatriculationRegisterFormController implements Initializable{
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date today = new Date();
-				if (sdf.parse(textDate.getText()).compareTo(today) > 0) {
+				if (DateUtil.compareTwoDates(sdf.parse(textDate.getText()), today) > 0) {
 					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
 							"É impossível fazer uma matrícula no futuro.", AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
+				}
+			} catch (ParseException e) {
+				System.out.println("Erro durante conversão para verificar datas...");
+				e.printStackTrace();
+			}
+			// Check if date of tax is before today, this can't happen
+			try {
+				if(!textMatriculationTaxDate.getText().isEmpty()) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					Date today = new Date();
+					if (DateUtil.compareTwoDates(sdf.parse(textMatriculationTaxDate.getText()), today) < 0) {
+						Alerts.showAlert("Inválido", "Inválido: Data de vencimento da Taxa de Matrícula.",
+								"Não é possível realizar uma nova matrícula com data de vencimento no passado", AlertType.ERROR, Utils.currentStage(event));
+						// stop the method
+						return;
+					}	
+				}
+			} catch (ParseException e) {
+				System.out.println("Erro durante conversão para verificar datas...");
+				e.printStackTrace();
+			}		
+			// Check if date of first parcel is before today, this can't happen
+			try {
+				if(!textFirstParcelDate.getText().isEmpty()) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					Date today = new Date();
+					if (DateUtil.compareTwoDates(sdf.parse(textFirstParcelDate.getText()), today) < 0) {
+						Alerts.showAlert("Inválido", "Inválido: Data de vencimento da 1ª Parcela.",
+								"Não é possível realizar uma nova matrícula com data de vencimento no passado", AlertType.ERROR, Utils.currentStage(event));
+						// stop the method
+						return;
+					}	
 				}
 			} catch (ParseException e) {
 				System.out.println("Erro durante conversão para verificar datas...");

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,9 +46,11 @@ public class MatriculationInfoParcels implements Initializable{
 			try {
 				String situation = cellData.getValue().getSituation();
 				Parcel auxParcel = cellData.getValue();
-				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date())
-						&& auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
-					situation = "ATRASADA";
+				// check if date parcel is before today
+				if (auxParcel.getDateParcel() != null && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+					if(DateUtil.compareTwoDates(auxParcel.getDateParcel(), new Date()) < 0) {
+						situation = "ATRASADA";
+					}
 				}
 				return new SimpleStringProperty(situation);
 			} catch (IllegalStateException | IndexOutOfBoundsException e) {
@@ -94,8 +97,11 @@ public class MatriculationInfoParcels implements Initializable{
 			try {
 				String situation = cellData.getValue().getSituation();
 				Parcel auxParcel = cellData.getValue();
-				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date()) && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
-					situation = "ATRASADA";
+				// check if date parcel is before today
+				if (auxParcel.getDateParcel() != null && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+					if(DateUtil.compareTwoDates(auxParcel.getDateParcel(), new Date()) < 0) {
+						situation = "ATRASADA";
+					}
 				}
 				return new SimpleStringProperty(situation);
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {

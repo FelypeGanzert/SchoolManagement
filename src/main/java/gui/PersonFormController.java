@@ -25,6 +25,7 @@ import db.DbException;
 import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.DateUtil;
 import gui.util.FXMLPath;
 import gui.util.Utils;
 import gui.util.Validators;
@@ -332,14 +333,15 @@ public class PersonFormController implements Initializable {
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date today = new Date();
-				if (sdf.parse(textDateRegistry.getText()).compareTo(today) > 0) {
+				if (DateUtil.compareTwoDates(sdf.parse(textDateRegistry.getText()), today) > 0) {
 					Alerts.showAlert("Inválido", "A data de cadastro é posterior a data atual do computador.",
 							"É impossível fazer um cadastro no futuro.", AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;
 				}
+				// Check if birthDate if after today
 				if (textBirthDate.getText() != null && textBirthDate.getText().length() > 0) {
-					if (sdf.parse(textBirthDate.getText()).compareTo(today) > 0) {
+					if (DateUtil.compareTwoDates(sdf.parse(textBirthDate.getText()), today) > 0) {
 						Alerts.showAlert("Inválido",
 								"A data de nascimento do aluno é posterior a data atual do computador.",
 								"É impossível fazer um cadastro de um aluno que ainda nem nasceu.",

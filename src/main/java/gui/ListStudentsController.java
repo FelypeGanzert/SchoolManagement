@@ -25,6 +25,7 @@ import db.DbException;
 import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.DateUtil;
 import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
@@ -361,8 +362,11 @@ public class ListStudentsController implements Initializable {
 			try {
 				String situation = cellData.getValue().getSituation();
 				Parcel auxParcel = cellData.getValue();
-				if (auxParcel.getDateParcel() != null && auxParcel.getDateParcel().before(new Date()) && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
-					situation = "ATRASADA";
+				// check if date parcel is before today
+				if (auxParcel.getDateParcel() != null && auxParcel.getSituation().equalsIgnoreCase("ABERTA")) {
+					if(DateUtil.compareTwoDates(auxParcel.getDateParcel(), new Date()) < 0) {
+						situation = "ATRASADA";
+					}
 				}
 				return new SimpleStringProperty(situation);
 			}catch(IllegalStateException | IndexOutOfBoundsException e) {
