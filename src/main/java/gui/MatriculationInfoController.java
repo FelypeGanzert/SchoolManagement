@@ -67,8 +67,8 @@ public class MatriculationInfoController implements Initializable{
 	// =====================
 	
 	public void setCurrentMatriculation(Matriculation matriculation, String returnPath) {
-		setReturnPath(returnPath);
 		this.matriculation = matriculation;
+		setReturnPath(returnPath);
 		// Add a tab to student infos
 		updateForm();
 		Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PERSON, "Aluno", tabPanePeople, 
@@ -243,6 +243,26 @@ public class MatriculationInfoController implements Initializable{
 		}
 		Utils.loadView(this, true, FXMLPath.MATRICULATION_EXTEND_DATES, Utils.currentStage(event),
 				"Prolongar Vencimentos", false, (MatriculationExtendDatesController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
+	// Define Dates
+	public void handleBtnDefineDates(ActionEvent event) {
+		// Check if exists any open parcel
+		boolean exisitsOpenParcels = matriculation.getParcels().stream()
+				.anyMatch(p -> p.getSituation().equals(ParcelStatusEnum.ABERTA.toString()));
+		if (!exisitsOpenParcels) {
+			Alerts.showAlert("Nada para definir", "Nada para definir a data.",
+					"Não existe nenhuma parcela ABERTA ou ATRASADA para definir a data de vencimento",
+					AlertType.ERROR, Utils.currentStage(event));
+			// stop the method
+			return;
+		}
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_DEFINE_DATES, Utils.currentStage(event),
+				"Definir Datas de Vencimento", false, (MatriculationDefineDatesController controller) -> {
 					controller.setMatriculation(matriculation);
 					// We need to set this dependence to update here in the future
 					controller.setMatriculationInfoController(this);

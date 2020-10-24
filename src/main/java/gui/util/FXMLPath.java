@@ -27,6 +27,7 @@ public class FXMLPath {
 	public static final String MATRICULATION_ADD_PARCELS_FORM = "/gui/MatriculationAddParcelsForm.fxml";
 	public static final String MATRICULATION_REMOVE_PARCELS_FORM = "/gui/MatriculationRemoveParcelsForm.fxml";
 	public static final String MATRICULATION_EXTEND_DATES = "/gui/MatriculationExtendDates.fxml";
+	public static final String MATRICULATION_DEFINE_DATES = "/gui/MatriculationDefineDates.fxml";
 	// Person form and person find Registry
 	public static final String PERSON_FORM = "/gui/PersonForm.fxml";
 	public static final String PERSON_FORM_FIND_REGISTRY = "/gui/PersonFormFindRegistry.fxml";

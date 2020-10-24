@@ -293,7 +293,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton layoutX="620.0" layoutY="10.0" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Definir datas de vencimento" textFill="WHITE">
+                  <JFXButton layoutX="620.0" layoutY="10.0" onAction="#handleBtnDefineDates" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Definir datas de vencimento" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
