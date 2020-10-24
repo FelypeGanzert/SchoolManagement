@@ -7,7 +7,7 @@
 
 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationInfoParcels">
 	<children>
-		<TableView fx:id="tableParcels" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="1055.0" prefHeight="400.0" prefWidth="1055.0" VBox.vgrow="ALWAYS">
+		<TableView fx:id="tableParcels" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="1065.0" prefHeight="400.0" prefWidth="1065.0" VBox.vgrow="ALWAYS">
 			<columns>
             <TableColumn fx:id="columnParcelStatus" maxWidth="10.0" prefWidth="10.0" />
 				<TableColumn fx:id="columnDocumentNumber" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Nº Documento" />

@@ -27,6 +27,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -205,9 +206,15 @@ public class Utils {
 			return cell;
 		});
 	}
-
+	
 	public static <T> void initButtons(TableColumn<T, T> tableColumn, int size, String svgIcon, String className,
 			BiConsumer<T, ActionEvent> buttonAction) {
+		initButtons(tableColumn, size, svgIcon, className, buttonAction, null);
+		
+	}
+
+	public static <T> void initButtons(TableColumn<T, T> tableColumn, int size, String svgIcon, String className,
+			BiConsumer<T, ActionEvent> buttonAction, String tolltipText) {
 		final int COLUMN_ICON_SPACE = 20;
 		tableColumn.setMinWidth(size + COLUMN_ICON_SPACE);
 
@@ -217,6 +224,9 @@ public class Utils {
 				final TableCell<T, T> cell = new TableCell<T, T>() {
 					private final Button btn = Utils.createIconButton(svgIcon, size, className);
 					{
+						if(tolltipText != null) {
+							btn.setTooltip(new Tooltip(tolltipText));
+						}
 						btn.setOnAction((ActionEvent event) -> {
 							T data = getTableView().getItems().get(getIndex());
 							buttonAction.accept(data, event);

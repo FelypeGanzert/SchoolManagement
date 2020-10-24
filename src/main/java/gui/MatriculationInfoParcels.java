@@ -6,16 +6,22 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.util.DateUtil;
+import gui.util.FXMLPath;
+import gui.util.Icons;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
+import javafx.util.Callback;
 import model.entites.Parcel;
 
 public class MatriculationInfoParcels implements Initializable{
@@ -35,9 +41,17 @@ public class MatriculationInfoParcels implements Initializable{
 	@FXML private TableColumn<Parcel, String> columnPaymentReceivedBy;
 	@FXML private TableColumn<Parcel, Parcel> columnButton;
 	
+	private MatriculationInfoController matriculationInfoController;
+	private MatriculationInfoParcels currentMatriculationInfoParcels;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
+		currentMatriculationInfoParcels = this;
 		initializeTable();
+	}
+	
+	public void setMatriculationInfoController(MatriculationInfoController matriculationInfoController) {
+		this.matriculationInfoController = matriculationInfoController;
 	}
 
 	private void initializeTable() {
@@ -124,12 +138,60 @@ public class MatriculationInfoParcels implements Initializable{
 		Utils.setCellValueFactory(columnPaymentReceivedBy, "paymentReceivedBy");
 		columnPaymentReceivedBy.setReorderable(false);
 		// button
-		columnButton.setReorderable(false);
+		initButtons();
 	}
 
 	public void setParcels(List<Parcel> parcels) {
 		ObservableList<Parcel> parcelsObs = FXCollections.observableArrayList(parcels);
 		tableParcels.setItems(parcelsObs);
 		tableParcels.refresh();
+	}
+	
+	public void onDataChanged() {
+		if(matriculationInfoController != null) {
+			matriculationInfoController.onDataChanged();
+		} else {
+			tableParcels.refresh();
+		}
+	}
+	
+	private void initButtons() {
+		final int COLUMN_ICON_SPACE = 20;
+		columnButton.setMinWidth(Icons.SIZE + COLUMN_ICON_SPACE);
+		Callback<TableColumn<Parcel, Parcel>, TableCell<Parcel, Parcel>> cellFactory = new Callback<TableColumn<Parcel, Parcel>, TableCell<Parcel, Parcel>>() {
+			@Override
+			public TableCell<Parcel, Parcel> call(final TableColumn<Parcel, Parcel> param) {
+				final TableCell<Parcel, Parcel> cell = new TableCell<Parcel, Parcel>() {
+					@Override
+					public void updateItem(Parcel parcel, boolean empty) {
+						super.updateItem(parcel, empty);
+						Button btn = null;
+						Parcel currentParcel = this.getTableRow().getItem(); 
+						if (currentParcel != null) {
+							// Button to open Parcels (ABERTA)
+							if (currentParcel.getSituation().equalsIgnoreCase(ParcelStatusEnum.ABERTA.toString())) {
+								btn = Utils.createIconButton(Icons.MONEY_SOLID, Icons.SIZE, "greenIcon");
+								btn.setTooltip(new Tooltip("Baixar"));
+								btn.setOnAction((ActionEvent event) -> {
+									Utils.loadView(this, true, FXMLPath.MATRICULATION_PARCEL_PAYMENT,
+											Utils.currentStage(event), "Baixar Pagamento", false,
+											(MatriculationParcelPaymentController controller) -> {
+												controller.setParcel(currentParcel);
+												controller.setMatriculationInfoParcels(currentMatriculationInfoParcels);
+											});
+								});
+							}
+						}
+						if (empty || btn == null) {
+							setGraphic(null);
+						} else {
+							setGraphic(btn);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+		columnButton.setCellFactory(cellFactory);
 	}
 }

@@ -94,6 +94,7 @@ public class MatriculationInfoController implements Initializable{
 					(MatriculationInfoParcels controller) -> {
 						this.matriculationInfoParcels = controller; 
 						controller.setParcels(matriculation.getParcels());
+						controller.setMatriculationInfoController(this);
 					});
 		}
 	}

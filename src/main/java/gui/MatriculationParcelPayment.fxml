@@ -4,15 +4,16 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="500.0" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationParcelPaymentController">
    <children>
       <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
          <children>
@@ -33,58 +34,52 @@
          <children>
             <HBox spacing="20.0">
                <children>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER" spacing="5.0">
                      <children>
                         <Label minWidth="-Infinity" text="Código Matrícula:" />
-                        <JFXTextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                        <Label fx:id="labelMatriculationCode" layoutX="10.0" layoutY="14.0" minWidth="-Infinity" text="XXX">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="5.0">
                      <children>
                         <Label minWidth="-Infinity" text="Nº Documento:" />
-                        <JFXTextField editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                        <Label fx:id="labelParcelDocumentNumber" layoutX="10.0" layoutY="14.0" minWidth="-Infinity" text="XXXX">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0">
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" spacing="5.0">
                      <children>
                         <Label minWidth="-Infinity" text="Parcela:" />
-                        <JFXTextField editable="false" prefWidth="60.0" />
+                        <Label fx:id="labelParcelNumber" layoutX="10.0" layoutY="10.0" minWidth="-Infinity" text="XXX">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
                <children>
-                  <Label minWidth="-Infinity" text="ID Aluno:" />
-                  <JFXTextField editable="false" prefWidth="90.0" />
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label minWidth="-Infinity" text="Aluno:" />
-                        <JFXTextField editable="false" prefWidth="340.0" />
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox spacing="20.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label text="Valor:" />
-                        <JFXTextField editable="false" prefWidth="100.0" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
-                     <children>
-                        <Label text="Data:" />
-                        <JFXTextField editable="false" prefWidth="100.0" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="161.0" layoutY="10.0">
-                     <children>
-                        <Label text="Multa depois de:" />
-                        <JFXTextField editable="false" prefWidth="100.0" />
-                     </children>
-                  </HBox>
+                  <Label minWidth="-Infinity" text="Aluno:" />
+                  <Label fx:id="labelStudentId" layoutX="10.0" layoutY="10.0" minWidth="-Infinity" text="XXX">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="64.0" layoutY="10.0" minWidth="-Infinity" text="-" />
+                  <Label fx:id="labelStudentName" layoutX="118.0" layoutY="10.0" minWidth="-Infinity" text="NOME">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
                </children>
             </HBox>
          </children>
@@ -109,7 +104,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </Label>
-                  <CheckBox mnemonicParsing="false">
+                  <RadioButton fx:id="radioValueNormal" mnemonicParsing="false" selected="true">
                      <graphic>
                         <HBox>
                            <children>
@@ -123,7 +118,7 @@
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                    <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0">
+                                    <Label fx:id="labelValueNormal" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
@@ -136,8 +131,11 @@
                            </padding>
                         </HBox>
                      </graphic>
-                  </CheckBox>
-                  <CheckBox mnemonicParsing="false">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="value" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="radioValueWithFineDelay" layoutX="91.0" layoutY="25.0" mnemonicParsing="false" toggleGroup="$value">
                      <graphic>
                         <HBox>
                            <children>
@@ -151,7 +149,7 @@
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                    <Label alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0">
+                                    <Label fx:id="labelValueWithFineDelay" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
@@ -164,8 +162,8 @@
                            </padding>
                         </HBox>
                      </graphic>
-                  </CheckBox>
-                  <CheckBox mnemonicParsing="false">
+                  </RadioButton>
+                  <RadioButton fx:id="radioValueOther" layoutX="255.0" layoutY="25.0" mnemonicParsing="false" toggleGroup="$value">
                      <graphic>
                         <HBox>
                            <children>
@@ -179,7 +177,7 @@
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="textParcelValue2" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" promptText="outro" style="-fx-background-color: #fff;">
+                                    <TextField fx:id="textValueOther" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="70.0" promptText="outro" style="-fx-background-color: #fff;">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
@@ -192,7 +190,7 @@
                            </padding>
                         </HBox>
                      </graphic>
-                  </CheckBox>
+                  </RadioButton>
                </children>
                <padding>
                   <Insets bottom="15.0" top="15.0" />
@@ -207,13 +205,13 @@
                               <Insets bottom="5.0" top="5.0" />
                            </padding>
                         </Label>
-                        <JFXComboBox prefWidth="150.0" />
+                        <JFXComboBox fx:id="comboPaidWith" prefWidth="150.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <Label text="Data Pagamento:" />
-                        <JFXTextField alignment="CENTER" prefWidth="100.0" promptText="dd/mm/aaaa" />
+                        <JFXTextField fx:id="textDatePayment" alignment="CENTER" prefWidth="100.0" promptText="dd/mm/aaaa" />
                      </children>
                   </HBox>
                </children>
@@ -225,7 +223,7 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" spacing="30.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
                   <HBox>
                      <children>
@@ -234,7 +232,7 @@
                               <Insets bottom="5.0" top="5.0" />
                            </padding>
                         </Label>
-                        <JFXComboBox prefWidth="170.0" />
+                        <JFXComboBox fx:id="comboPaymentReceivedBy" prefWidth="170.0" />
                      </children>
                   </HBox>
                </children>

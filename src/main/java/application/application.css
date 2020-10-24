@@ -38,6 +38,9 @@
 .redIcon .button-icon{
     -fx-fill: #D00000;
 }
+.greenIcon .button-icon{
+	-fx-fill: #52b788;
+}
 /* modify svg path fill for hovered/pressed button */
 .grayIcon:pressed .button-icon,
 .grayIcon:hover .button-icon {
@@ -46,6 +49,10 @@
 .redIcon:pressed .button-icon,
 .redIcon:hover .button-icon {
     -fx-fill: #9d0208;
+}
+.green:pressed .button-icon,
+.green:hover .button-icon {
+    -fx-fill: #2d6a4f;
 }
 
 .icon-button:hover{

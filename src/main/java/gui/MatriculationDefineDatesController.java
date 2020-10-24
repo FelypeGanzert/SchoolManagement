@@ -89,7 +89,7 @@ public class MatriculationDefineDatesController implements Initializable{
 				Date today = new Date();
 				if (DateUtil.compareTwoDates(sdf.parse(textFirstParcelDate.getText()), today) < 0) {
 					Alerts.showAlert("Inválido", "Inválido: Data de vencimento da 1ª Parcela.",
-							"Não é possível mensalidades com data de vencimento no passado",
+							"Não é possível definir mensalidades com data de vencimento no passado",
 							AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
 					return;

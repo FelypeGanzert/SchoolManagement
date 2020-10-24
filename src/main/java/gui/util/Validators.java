@@ -6,7 +6,7 @@ public class Validators {
 	
 	public static RequiredFieldValidator getRequiredFieldValidator(){
 		RequiredFieldValidator validator = new RequiredFieldValidator();
-		validator.setMessage("Campo necessário");
+		validator.setMessage("é necessário");
 		return validator;
 	}
 
