@@ -93,12 +93,12 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="60.0" HBox.hgrow="ALWAYS">
                <children>
-                  <JFXTextField fx:id="textRelationship" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="PARENTESCO" styleClass="text-field-with-label" />
                   <JFXTextArea fx:id="textAreaObservation" labelFloat="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" promptText="OBSERVAÇÃO (opcional)" style="-fx-border-color: #777; -fx-border-width: 0px 0.5px 0px 0.5px;" styleClass="text-field-with-label">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </JFXTextArea>
+                  <JFXTextField fx:id="textRelationship" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="PARENTESCO" styleClass="text-field-with-label" />
                </children>
             </VBox>
 			</children>

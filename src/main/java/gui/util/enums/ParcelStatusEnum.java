@@ -3,7 +3,7 @@ package gui.util.enums;
 
 public enum ParcelStatusEnum {
 
-	CANCELADA("#F63C41"), ATRASADA("#FB6D4C"), ABERTA("#FFFFFF"), PAGA("#a2d6f9");
+	CANCELADA("#F63C41"), ATRASADA("#FFA36C"), ABERTA("#FFFFFF"), PAGA("#a2d6f9");
 
 	private String hexColor;
 

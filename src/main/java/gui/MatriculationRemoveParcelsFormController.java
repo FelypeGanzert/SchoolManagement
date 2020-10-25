@@ -120,7 +120,7 @@ public class MatriculationRemoveParcelsFormController implements Initializable{
 		int firstParcelRemovedIndexInMatriculation = matriculation.getParcels().indexOf(selectedParcels.get(0));
 		for(int i = 0; i < openParcels.size(); i++) {
 			if(openParcels.get(i).isSelected()) {
-				matriculation.getParcels().remove(openParcels.get(i));
+				openParcels.get(i).setExcluded("S");
 			}
 		}
 		// update parcel numbers using the first parcel selected has parameter
@@ -135,7 +135,7 @@ public class MatriculationRemoveParcelsFormController implements Initializable{
 			}
 		}
 		for(int i = firstParcelRemovedIndexInMatriculation; i < matriculation.getParcels().size(); i++) {
-			if(firstParcelRemovedNumber != null) {
+			if(firstParcelRemovedNumber != null && matriculation.getParcels().get(i).getExcluded() == null) {
 				 matriculation.getParcels().get(i).setParcelNumber(firstParcelRemovedNumber);
 				 firstParcelRemovedNumber++;
 			}

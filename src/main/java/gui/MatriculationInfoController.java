@@ -49,9 +49,16 @@ public class MatriculationInfoController implements Initializable{
 	@FXML private TextField txtParcelsSituation;
 	@FXML private TextField txtReason;
 	@FXML private JFXTextArea txtServiceContracted;
-	// Tab's
+	// Tabs
 	@FXML private TabPane tabPanePeople;
 	@FXML private TabPane tabPaneParcels;
+	// Buttons
+	@FXML private Button btnEditServiceContracted;
+	@FXML private Button btnAddParcels;
+	@FXML private JFXButton btnRemoveParcels;
+	@FXML private JFXButton btnExtendDates;
+	@FXML private JFXButton btnDefineDates;
+	@FXML private JFXButton btnDoAgreement;
 	
 	private Matriculation matriculation;
 	private String returnPath;
@@ -60,6 +67,7 @@ public class MatriculationInfoController implements Initializable{
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
+		setListeners();
 	}
 	
 	// =====================
@@ -293,14 +301,39 @@ public class MatriculationInfoController implements Initializable{
 			// will show in table number of paid parcels from total
 			txtParcelsSituation.setText(paidParcels + "/" + parcels.size());
 		}catch(IllegalStateException | IndexOutOfBoundsException e) {
-			// if the matriculation doenst have parcels will show just a line
+			// if the matriculation doesn't have parcels will show just a line
 			txtParcelsSituation.setText("-");
 		}
 	}
 	
+	private void setListeners() {
+		textStatus.textProperty().addListener((obs, oldValue, newValue) -> {
+			// Only able the buttons if matriculation is open (ABERTA)
+			if (!newValue.isEmpty() && newValue.equalsIgnoreCase(MatriculationStatusEnum.ABERTA.toString())) {
+				btnEditServiceContracted.setDisable(false);
+				btnAddParcels.setDisable(false);
+				btnRemoveParcels.setDisable(false);
+				btnExtendDates.setDisable(false);
+				btnDefineDates.setDisable(false);
+				btnDoAgreement.setDisable(false);
+			} else {
+				btnEditServiceContracted.setDisable(true);
+				btnAddParcels.setDisable(true);
+				btnRemoveParcels.setDisable(true);
+				btnExtendDates.setDisable(true);
+				btnDefineDates.setDisable(true);
+				btnDoAgreement.setDisable(true);
+			}
+		});
+	}
 	
 	// Called from others controllers
 	public void onDataChanged() {
+		try {
+			DBUtil.refreshData(matriculation);
+		} catch (DbException | DbExceptioneEntityExcluded e) {
+			e.printStackTrace();
+		}
 		updateForm();
 		matriculationInfoParcels.setParcels(matriculation.getParcels());
 	}

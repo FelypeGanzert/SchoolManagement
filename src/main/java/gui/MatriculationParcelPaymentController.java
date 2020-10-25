@@ -14,7 +14,9 @@ import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
 import db.DBFactory;
+import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.DateUtil;
 import gui.util.Utils;
@@ -72,6 +74,12 @@ public class MatriculationParcelPaymentController implements Initializable{
 	
 	public void setParcel(Parcel parcel) {
 		this.parcel = parcel;
+		// refresh data
+		try {
+			DBUtil.refreshData(this.parcel);
+		} catch (DbException | DbExceptioneEntityExcluded e) {
+			e.printStackTrace();
+		}
 		setParcelDataToForm();
 	}
 	
@@ -105,7 +113,14 @@ public class MatriculationParcelPaymentController implements Initializable{
 			System.out.println("Erro durante conversão para verificar datas...");
 			e.printStackTrace();
 		}
-		getFormData();
+		try {
+			getFormData();
+		} catch(IllegalStateException e) {
+			Alerts.showAlert("Erro", "Algo não está certo.",
+					e.getMessage(),
+					AlertType.ERROR, Utils.currentStage(event));
+			return;
+		}		
 		parcel.setSituation(ParcelStatusEnum.PAGA.toString());
 		// Save in DB
 		try {
@@ -207,9 +222,11 @@ public class MatriculationParcelPaymentController implements Initializable{
 		if (radioValueWithFineDelay.isSelected()) {
 			parcel.setValuePaid(parcel.getValueWithFineDelay());
 		}
-		// value paid
+		// value paid: other
 		if (value.getSelectedToggle().equals(radioValueOther)) {
-			System.out.println("Other value selected");
+			if(textValueOther.getText().isEmpty()) {
+				throw new IllegalStateException("Foi selecionado que foi pago outro valor, porém não foi inserido nenhum valor.");
+			}
 			Double valueOther = textToDouble(textValueOther.getText());
 			parcel.setValuePaid(valueOther);
 		}
