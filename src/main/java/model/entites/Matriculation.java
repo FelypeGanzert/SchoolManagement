@@ -63,6 +63,10 @@ public class Matriculation {
 	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Where(clause = "excluido is null")
 	private List<Parcel> parcels = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "matriculation", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Where(clause = "excluido is null")
+	private List<Parcel> agreements = new ArrayList<>();
 
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;
