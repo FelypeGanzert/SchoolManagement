@@ -3,12 +3,19 @@ package gui;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import db.DBFactory;
+import db.DBUtil;
+import db.DbException;
+import db.DbExceptioneEntityExcluded;
+import gui.util.Alerts;
 import gui.util.DateUtil;
 import gui.util.FXMLPath;
 import gui.util.Icons;
 import gui.util.Utils;
+import gui.util.enums.MatriculationStatusEnum;
 import gui.util.enums.ParcelStatusEnum;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,12 +23,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.util.Callback;
+import model.dao.ParcelDao;
 import model.entites.Parcel;
 
 public class MatriculationInfoParcels implements Initializable{
@@ -167,7 +178,8 @@ public class MatriculationInfoParcels implements Initializable{
 						super.updateItem(parcel, empty);
 						Button btn = null;
 						Parcel currentParcel = this.getTableRow().getItem(); 
-						if (currentParcel != null) {
+						if (currentParcel != null && 
+								currentParcel.getMatriculation().getStatus().equalsIgnoreCase(MatriculationStatusEnum.ABERTA.toString())) {
 							// Button to open Parcels (ABERTA)
 							if (currentParcel.getSituation().equalsIgnoreCase(ParcelStatusEnum.ABERTA.toString())) {
 								btn = Utils.createIconButton(Icons.MONEY_SOLID, Icons.SIZE, "greenIcon");
@@ -179,6 +191,44 @@ public class MatriculationInfoParcels implements Initializable{
 												controller.setParcel(currentParcel);
 												controller.setMatriculationInfoParcels(currentMatriculationInfoParcels);
 											});
+								});
+							}
+							// Button to paid Parcels (PAGA)
+							if (currentParcel.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString())) {
+								btn = Utils.createIconButton(Icons.REDO_SOLID, Icons.SIZE, "redIcon");
+								btn.setTooltip(new Tooltip("Anular"));
+								btn.setOnAction((ActionEvent event) -> {
+									// Confirmation to cancel payment
+									Alert alert = new Alert(AlertType.CONFIRMATION);
+									alert.setTitle("Anular pagamento");
+									alert.setHeaderText("Desfazer o pagamento da parcela " + currentParcel.getParcelNumber() + " ? ");
+									alert.setContentText("O status da parccela irá voltar para ABERTA e os dados do pagamento serão excluídos");
+									alert.initOwner(Utils.currentStage(event));
+									Optional<ButtonType> result =alert.showAndWait();
+									if (result.isPresent() && result.get() == ButtonType.OK) {
+										Alert alertProcessing = Alerts.showProcessingScreen(Utils.currentStage(event));
+										try {
+											// refresh data
+											DBUtil.refreshData(currentParcel);
+											// reset payment informations
+											currentParcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+											currentParcel.setDatePayment(null);
+											currentParcel.setValuePaid(null);
+											currentParcel.setPaidWith(null);
+											currentParcel.setPaymentReceivedBy(null);
+											// update parcel in db
+											ParcelDao parcelDao = new ParcelDao(DBFactory.getConnection());
+											parcelDao.update(currentParcel);
+											// Update info parcels screen
+											currentMatriculationInfoParcels.onDataChanged();
+										} catch (DbException e) {
+											Alerts.showAlert("Erro ao deletar cancelar pagamento", "DbException", e.getMessage(),
+													AlertType.ERROR, Utils.currentStage(event));
+										} catch (DbExceptioneEntityExcluded e) {
+											e.printStackTrace();
+										}
+										alertProcessing.close();
+									}
 								});
 							}
 						}

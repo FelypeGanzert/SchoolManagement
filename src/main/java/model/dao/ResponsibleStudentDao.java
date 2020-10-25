@@ -5,6 +5,7 @@ import javax.persistence.Query;
 
 import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import model.entites.ResponsibleStudent;
 
 public class ResponsibleStudentDao {
@@ -31,7 +32,11 @@ public class ResponsibleStudentDao {
 		query = manager.createNativeQuery("SELECT ra.id FROM responsavel_aluno ra WHERE ra.responsavel_id = ? AND ra.aluno_id = ?");
 		Integer id = query.getFirstResult();
 		responsibleStudent.setId(id);
-		DBUtil.refreshData(responsibleStudent);
+		try {
+			DBUtil.refreshData(responsibleStudent);
+		} catch (DbException | DbExceptioneEntityExcluded e) {
+			e.printStackTrace();
+		}
 		manager.getTransaction().commit();
 	}
 

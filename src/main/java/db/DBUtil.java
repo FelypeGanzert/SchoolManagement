@@ -1,10 +1,12 @@
 package db;
 
 import model.dao.MatriculationDao;
+import model.dao.ParcelDao;
 import model.dao.ResponsibleDao;
 import model.dao.ResponsibleStudentDao;
 import model.dao.StudentDao;
 import model.entites.Matriculation;
+import model.entites.Parcel;
 import model.entites.Person;
 import model.entites.Responsible;
 import model.entites.ResponsibleStudent;
@@ -41,33 +43,37 @@ public class DBUtil {
 		}
 	}
 
-	// still need to work in this
-	public static <T> void refreshData(ResponsibleStudent responsibleStudent) {
-		try {
-			responsibleStudent = new ResponsibleStudentDao(DBFactory.getConnection())
-					.findById(responsibleStudent.getId());
-			if (responsibleStudent != null) {
-				DBFactory.getConnection().refresh(responsibleStudent);
+	public static <T> void refreshData(ResponsibleStudent responsibleStudent) throws DbException, DbExceptioneEntityExcluded {
+		responsibleStudent = new ResponsibleStudentDao(DBFactory.getConnection())
+				.findById(responsibleStudent.getId());
+		if (responsibleStudent != null) {
+			DBFactory.getConnection().refresh(responsibleStudent);
+			if (responsibleStudent.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
 			}
-		} catch (Exception e) {
-			responsibleStudent = null;
-			e.printStackTrace();
 		}
 	}
 
-	// still need to work in this
-	public static <T> void refreshData(Matriculation matriculation) {
-		try {
-			int code = matriculation.getCode();
-			DBFactory.getConnection().detach(matriculation);
-			matriculation = new MatriculationDao(DBFactory.getConnection()).findById(code);
-			if (matriculation != null) {
-				DBFactory.getConnection().refresh(matriculation);
+	public static <T> void refreshData(Matriculation matriculation) throws DbException, DbExceptioneEntityExcluded {
+		matriculation = new MatriculationDao(DBFactory.getConnection())
+				.findById(matriculation.getCode());
+		if (matriculation != null) {
+			DBFactory.getConnection().refresh(matriculation);
+			if (matriculation.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
 			}
-		} catch (Exception e) {
-			matriculation = null;
-			e.printStackTrace();
 		}
 	}
 
+	public static <T> void refreshData(Parcel parcel) throws DbException, DbExceptioneEntityExcluded {
+		parcel = new ParcelDao(DBFactory.getConnection())
+				.findById(parcel.getDocumentNumber());
+		if (parcel != null) {
+			DBFactory.getConnection().refresh(parcel);
+			if (parcel.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
+			}
+		}
+	}
+	
 }
