@@ -3,9 +3,11 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -21,6 +23,7 @@ import gui.util.Alerts;
 import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.Validators;
+import gui.util.enums.MatriculationStatusEnum;
 import gui.util.enums.ParcelStatusEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -114,14 +117,27 @@ public class MatriculationParcelPaymentController implements Initializable{
 			e.printStackTrace();
 		}
 		try {
+			// Get form data and parse payment to parcel
 			getFormData();
+			parcel.setSituation(ParcelStatusEnum.PAGA.toString());
 		} catch(IllegalStateException e) {
 			Alerts.showAlert("Erro", "Algo não está certo.",
 					e.getMessage(),
 					AlertType.ERROR, Utils.currentStage(event));
 			return;
 		}		
-		parcel.setSituation(ParcelStatusEnum.PAGA.toString());
+		// Check if all parcels are paid, if this happen we will change matriculation status to completed
+		List<Parcel> parcelsNotPaid = new ArrayList<>();
+		parcelsNotPaid = parcel.getMatriculation().getParcels().stream()
+		.filter(p -> !p.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString()))
+		.collect(Collectors.toList());
+		if(parcelsNotPaid.size() == 0) {
+			Alerts.showAlert("Matrícula concluída", "Matrícula CONCLUÍDA",
+					"Todas as parcelas da matrícula foram pagas, portanto o status da matrícula foi alterado para CONCLUIDA.",
+					AlertType.INFORMATION,
+					Utils.currentStage(event));
+			parcel.getMatriculation().setStatus(MatriculationStatusEnum.CONCLUIDA.toString());
+		}
 		// Save in DB
 		try {
 			ParcelDao parcelDao = new ParcelDao(DBFactory.getConnection());
