@@ -13,6 +13,7 @@ public class FXMLPath {
 	// AnnotationForm, Info Student
 	public static final String ANNOTATION = "/gui/Annotation.fxml";
 	public static final String INFO_STUDENT = "/gui/InfoStudent.fxml";
+	public static final String INFO_RESPONSIBLE = "/gui/InfoResponsible.fxml";
 	// Student Info: StatusForm, Courses, CoursesForm
 	public static final String STUDENT_STATUS_FORM = "/gui/StudentStatusForm.fxml";
 	public static final String STUDENT_COURSES = "/gui/StudentCourses.fxml";

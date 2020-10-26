@@ -52,8 +52,6 @@ public class ListResponsiblesController implements Initializable {
 	@FXML protected TableView<Student> tableStudents;
 	@FXML private TableColumn<Student, Integer> columnStudentCode;
 	@FXML private TableColumn<Student, String> columnStudentName;
-	@FXML private TableColumn<Student, String> columnStudentStatus;
-	@FXML private TableColumn<Student, String> columnStudentContact1;
 	@FXML private TableColumn<Student, Student> columnStudentInfo;
 	
 	private ResponsibleDao responsibleDao;
@@ -180,7 +178,7 @@ public class ListResponsiblesController implements Initializable {
 		columnResponsibleContact1.setReorderable(false);
 		// Add info button to responsible and when clicked will show informations of that student
 		Utils.initButtons(columnResponsibleInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (responsible, event) -> {
-			System.out.println("Responsible info clicked");
+			showResponsibleInfo(responsible);
 		});
 		columnResponsibleInfo.setReorderable(false);
 	}
@@ -192,27 +190,7 @@ public class ListResponsiblesController implements Initializable {
 		columnStudentCode.setReorderable(false);
 		Utils.setCellValueFactory(columnStudentName, "name");
 		columnStudentName.setReorderable(false);
-		// student status
-		Utils.setCellValueFactory(columnStudentStatus, "status");
-		columnStudentStatus.setReorderable(false);
-		// we need this verification because can happen of students doesn't have any
-		// contact number
-		columnStudentContact1.setCellValueFactory(cellData -> {
-			try {
-				if (!(cellData.getValue().getContacts() == null)) {
-					String numberFormated = Constraints
-							.formatNumberContact(cellData.getValue().getContacts().get(0).getNumber());
-					return new SimpleStringProperty(numberFormated);
-				} else {
-					return new SimpleStringProperty("-");
-				}
-			} catch (IllegalStateException | IndexOutOfBoundsException e) {
-				return new SimpleStringProperty("-");
-			}
-		});
-		columnStudentContact1.setReorderable(false);
-		// Add info button to student and when clicked will show informations of that
-		// student
+		// Add info button to student and when clicked will show informations of that student
 		Utils.initButtons(columnStudentInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon", (student, event) -> {
 			showStudentInfo(student);
 		});
@@ -228,6 +206,33 @@ public class ListResponsiblesController implements Initializable {
 	// == SHOW OTHERS SCREENS  ===
 	// ===========================
 	
+	private void showResponsibleInfo(Responsible responsible) {
+		try {
+			// refresh responsible data
+			DBUtil.refreshData(responsible);
+			// show screen of responsible informations
+			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+			mainView.setContent(FXMLPath.INFO_RESPONSIBLE, (InfoResponsibleController controller) -> {
+				controller.setReturn(FXMLPath.LIST_RESPONSIBLES, "Responsáveis");
+				controller.setCurrentResponsible(responsible);
+			});
+		} catch (DbException e) {
+			Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(), AlertType.ERROR,
+					(Stage) tableStudents.getScene().getWindow());
+			e.printStackTrace();
+		} catch (DbExceptioneEntityExcluded e) {
+			// Show a message that student has been deleted
+			Alerts.showAlert("DBExceptionoEntityExcluded",
+					responsible.getId() + " - " + responsible.getName() + " foi deletado do banco de dados por alguém",
+					"DBExceptionEntityExcluded: " + e.getMessage(),
+					AlertType.ERROR, (Stage) tableStudents.getScene().getWindow());
+			// remove student deleted from table
+			tableResponsibles.getItems().remove(responsible);
+			tableResponsibles.refresh();
+			e.printStackTrace();
+		}		
+	}
+	
 	private void showStudentInfo(Student student) {
 		try {
 			// refresh student data
@@ -237,6 +242,7 @@ public class ListResponsiblesController implements Initializable {
 			mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 				controller.setReturn(FXMLPath.LIST_RESPONSIBLES, "Responsáveis");
 				controller.setCurrentStudent(student);
+				controller.setCurrentResponsible(tableResponsibles.getSelectionModel().getSelectedItem());
 			});
 		} catch (DbException e) {
 			Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(), AlertType.ERROR,

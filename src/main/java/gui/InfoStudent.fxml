@@ -21,7 +21,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1270.0" prefHeight="700.0" prefWidth="1270.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InfoStudentController">
    <content>
-      <GridPane hgap="15.0" minHeight="620.0" minWidth="1200.0" prefHeight="620.0" prefWidth="1200.0" vgap="10.0">
+      <GridPane hgap="15.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1250.0" vgap="10.0">
         <columnConstraints>
           <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -309,7 +309,7 @@
                               <Insets bottom="10.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <TableView fx:id="tableContacts" maxHeight="-Infinity" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tableContacts" maxHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="columnContactNumber" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: center-right;" text="Número" />
                               <TableColumn fx:id="columnContactDescription" maxWidth="1.7976931348623157E308" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: center-left;" text="Descrição" />
@@ -397,10 +397,11 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView fx:id="tableResponsibles" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tableResponsibles" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="columnResponsibleName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" style="-fx-alignment: center-left;" text="Nome" />
+                        <TableColumn fx:id="columnResponsibleName" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0" style="-fx-alignment: center-left;" text="Nome" />
                         <TableColumn fx:id="columnResponsibleRelationship" maxWidth="120.0" minWidth="120.0" prefWidth="12.0" style="-fx-alignment: center;" text="Parentesco" />
+                        <TableColumn fx:id="columnResponsibleInfo" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                         <TableColumn fx:id="columnResponsibleEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                         <TableColumn fx:id="columnResponsibleRemove" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                      </columns>

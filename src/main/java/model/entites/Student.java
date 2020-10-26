@@ -140,6 +140,15 @@ public class Student extends Person{
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Where(clause = "excluido is null")
 	private List<Course> courses = new ArrayList<>();
+	
+	public String getRelationship(Responsible responsible) {
+		for(ResponsibleStudent rs : responsibles) {
+			if(rs.getResponsible().equals(responsible) && rs.getStudent().equals(this)) {
+				return rs.getRelationship();
+			}
+		}
+		return null;
+	}
 
 	public void addResponsavel(ResponsibleStudent responsibleStudent) {
 		this.responsibles.add(responsibleStudent);

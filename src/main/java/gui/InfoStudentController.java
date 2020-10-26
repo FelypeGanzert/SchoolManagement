@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import com.jfoenix.controls.JFXButton;
 
 import db.DBFactory;
+import db.DBUtil;
 import db.DbException;
+import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.FXMLPath;
@@ -97,11 +99,13 @@ public class InfoStudentController implements Initializable {
 	@FXML public TableView<Responsible> tableResponsibles;
 	@FXML private TableColumn<Responsible, String> columnResponsibleName;
 	@FXML private TableColumn<Responsible, String> columnResponsibleRelationship;
+	@FXML private TableColumn<Responsible, Responsible> columnResponsibleInfo;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleEdit;
 	@FXML private TableColumn<Responsible, Responsible> columnResponsibleRemove;
 	@FXML private Button btnAddResponsible;
 	
 	private Student student;
+	private Responsible responsibleToReturn;
 	private String returnPath;	
 
 	private ObservableList<Matriculation> matriculationsList;
@@ -124,6 +128,11 @@ public class InfoStudentController implements Initializable {
 		// Update UI with student informations
 		updateFormData();
 		updateAllTablesData();
+	}
+	
+	// This is need if we want return to responsible info screen
+	public void setCurrentResponsible(Responsible responsibleToReturn) {
+		this.responsibleToReturn = responsibleToReturn;
 	}
 	
 	public void setReturn(String returnPath, String returnText) {
@@ -237,7 +246,40 @@ public class InfoStudentController implements Initializable {
 			});
 		}
 		if (returnPath == FXMLPath.LIST_RESPONSIBLES) {
-			Roots.listResponsibles((ListResponsiblesController controller) -> {});
+			Roots.listResponsibles((ListResponsiblesController controller) -> {
+				try {
+					DBUtil.refreshData(responsibleToReturn);
+					controller.tableResponsibles.scrollTo(responsibleToReturn);
+					controller.tableResponsibles.getSelectionModel().select(responsibleToReturn);
+				} catch (DbException | DbExceptioneEntityExcluded e) {
+					e.printStackTrace();
+				}
+				
+			});
+		}
+		if (returnPath == FXMLPath.INFO_RESPONSIBLE) {
+			try {
+				// refresh responsible data
+				DBUtil.refreshData(responsibleToReturn);
+				// show screen of responsible informations
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				mainView.setContent(FXMLPath.INFO_RESPONSIBLE, (InfoResponsibleController controller) -> {
+					controller.setReturn(FXMLPath.LIST_RESPONSIBLES, "Responsáveis");
+					controller.setCurrentResponsible(responsibleToReturn);
+				});
+			} catch (DbException e) {
+				Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(), AlertType.ERROR,
+						Utils.currentStage(event));
+				e.printStackTrace();
+				Roots.listResponsibles();
+			} catch (DbExceptioneEntityExcluded e) {
+				// Show a message that responsible has been deleted
+				Alerts.showAlert("DBExceptionEntityExcluded",
+						responsibleToReturn.getId() + " - " +responsibleToReturn.getName() + " foi deletado do banco de dados por alguém",
+						"DBExceptionEntityExcluded: " + e.getMessage(),
+						AlertType.ERROR, Utils.currentStage(event));
+				Roots.listResponsibles();
+			}		
 		}
 	}
 	
@@ -454,6 +496,43 @@ public class InfoStudentController implements Initializable {
 			}
 		});
 		columnResponsibleRelationship.setReorderable(false);
+		// Info button
+		Utils.initButtons(columnResponsibleInfo, Icons.SIZE, Icons.INFO_CIRCLE_SOLID, "grayIcon",
+				(responsible, event) -> {
+					try {
+						// refresh responsible data
+						DBUtil.refreshData(responsible);
+						// show screen of responsible informations
+						MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+						mainView.setContent(FXMLPath.INFO_RESPONSIBLE, (InfoResponsibleController controller) -> {
+							String studentFirstName;
+							if (student.getName().contains(" ")) {
+								studentFirstName = student.getName().substring(0, student.getName().indexOf(" "));
+							} else {
+								studentFirstName = student.getName();
+							}
+							controller.setReturn(FXMLPath.INFO_STUDENT, studentFirstName);
+							controller.setCurrentResponsible(responsible);
+							controller.setCurrentStudent(student);
+						});
+					} catch (DbException e) {
+						Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(),
+								AlertType.ERROR, Utils.currentStage(event));
+						e.printStackTrace();
+					} catch (DbExceptioneEntityExcluded e) {
+						// Show a message that student has been deleted
+						Alerts.showAlert("DBExceptionEntityExcluded", 
+								responsible.getId() + " - " + responsible.getName()
+									+ " foi deletado do banco de dados por alguém",
+								"DBExceptionEntityExcluded: " + e.getMessage(), AlertType.ERROR,
+								Utils.currentStage(event));
+						// remove student deleted from table
+						tableResponsibles.getItems().remove(responsible);
+						tableResponsibles.refresh();
+						e.printStackTrace();
+					}
+				});
+		columnResponsibleEdit.setReorderable(false);
 		// Edit button
 		Utils.initButtons(columnResponsibleEdit, Icons.SIZE, Icons.PEN_SOLID, "grayIcon", (responsible, event) -> {
 			Utils.loadView(this, true, FXMLPath.PERSON_FORM, Utils.currentStage(event), "Editar responsável", false,

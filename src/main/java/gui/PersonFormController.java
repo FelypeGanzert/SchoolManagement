@@ -90,6 +90,7 @@ public class PersonFormController implements Initializable {
 	private boolean isEntityFromAnotherTable;
 
 	private InfoStudentController infoStudentController;
+	private InfoResponsibleController infoResponsibleController;
 
 	private final String DEFAULT_CITY = "Lapa";
 	private final String DEFAULT_UF = "PR";
@@ -182,11 +183,15 @@ public class PersonFormController implements Initializable {
 		}
 	}
 
-	// Called from another controller
-	// We will need the infoStudentController to return to that screen if user saves
-	// the Person
+	// Called from another controller We will need the
+	//  infoStudentController or infoResponsibleController 
+	// to return to that screen if user saves the Person
 	public void setInfoStudentController(InfoStudentController infoStudentController) {
 		this.infoStudentController = infoStudentController;
+	}
+	
+	public void setInfoResponsibleController(InfoResponsibleController infoResponsibleController) {
+		this.infoResponsibleController = infoResponsibleController;
 	}
 
 	// This will verify if we need a student or resposible dao
@@ -366,9 +371,12 @@ public class PersonFormController implements Initializable {
 			// Redirect to info of student
 			if (this.infoStudentController != null) {
 				// if already has an infoStudentController we have come from a info Student
-				// screen,
-				// so we just update that screen
+				// screen, so we just update that screen
 				this.infoStudentController.onDataChanged();
+			} else if (this.infoResponsibleController != null) {
+				// if already has an infoResponsibleController we have come from a info Responsile
+				// screen, so we just update that screen
+				this.infoResponsibleController.onDataChanged();
 			} else {
 				// Get mainViewController from Globe
 				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");

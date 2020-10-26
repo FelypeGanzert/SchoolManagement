@@ -35,6 +35,7 @@ public class ContactFormController implements Initializable {
 	private Person person;
 	// Screen that can call this form
 	private InfoStudentController infoStudent;
+	private InfoResponsibleController infoResponsible;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -61,6 +62,14 @@ public class ContactFormController implements Initializable {
 		}
 	}
 	
+	public void setDependences(Contact contact, Person person, InfoResponsibleController infoResponsible) {
+		this.contact = contact;
+		this.person = person;
+		this.infoResponsible = infoResponsible;
+		if(this.contact.getId() != null) {
+			this.updateForm();
+		}
+	}
 	
 	public void handleBtnCancel(ActionEvent event) {
 		Utils.currentStage(event).close();
@@ -91,6 +100,11 @@ public class ContactFormController implements Initializable {
 					infoStudent.onDataChanged();
 					infoStudent.tableContacts.getSelectionModel().select(contact);
 					infoStudent.tableContacts.scrollTo(contact);
+				}
+				if(infoResponsible != null) {
+					infoResponsible.onDataChanged();
+					infoResponsible.tableContacts.getSelectionModel().select(contact);
+					infoResponsible.tableContacts.scrollTo(contact);
 				}
 				Utils.currentStage(event).close();
 			} catch (DbException e) {

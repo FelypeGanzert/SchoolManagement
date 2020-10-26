@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import model.dao.MatriculationDao;
 import model.entites.Matriculation;
 import model.entites.Parcel;
+import model.entites.Responsible;
 import model.entites.Student;
 import sharedData.Globe;
 
@@ -120,8 +121,19 @@ public class MatriculationInfoController implements Initializable{
 			}
 			btnReturn.setText("Voltar para " + firstName);
 		}
+		// Set text to return to responsible
+		if (this.returnPath.equals(FXMLPath.INFO_RESPONSIBLE)) {
+			Responsible responsible = matriculation.getResponsible();
+			String firstName;
+			if (responsible.getName().contains(" ")) {
+				firstName = responsible.getName().substring(0, responsible.getName().indexOf(" "));
+			} else {
+				firstName = responsible.getName();
+			}
+			btnReturn.setText("Voltar para " + firstName);
+		}
 		// Set text to return to list students
-		if(this.returnPath.equals(FXMLPath.LIST_STUDENTS)) {
+		if (this.returnPath.equals(FXMLPath.LIST_STUDENTS)) {
 			btnReturn.setText("Voltar para " + "Alunos");
 		}
 	}
@@ -138,6 +150,17 @@ public class MatriculationInfoController implements Initializable{
 				mainView.setContent(FXMLPath.INFO_STUDENT, (InfoStudentController controller) -> {
 					controller.setReturn(FXMLPath.LIST_STUDENTS, "Alunos");
 					controller.setCurrentStudent(matriculation.getStudent());
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(returnPath.equals(FXMLPath.INFO_RESPONSIBLE)) {
+			try {
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				mainView.setContent(FXMLPath.INFO_RESPONSIBLE, (InfoResponsibleController controller) -> {
+					controller.setReturn(FXMLPath.LIST_RESPONSIBLES, "Responsáveis");
+					controller.setCurrentResponsible(matriculation.getResponsible());
 				});
 			} catch (Exception e) {
 				e.printStackTrace();

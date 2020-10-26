@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1270.0" prefHeight="700.0" prefWidth="1270.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InfoStudentController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1270.0" prefHeight="700.0" prefWidth="1270.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InfoResponsibleController">
    <content>
       <GridPane hgap="15.0" minHeight="620.0" minWidth="1200.0" prefHeight="620.0" prefWidth="1200.0" vgap="10.0">
         <columnConstraints>
@@ -52,7 +52,7 @@
                   </HBox>
                   <HBox alignment="CENTER">
                      <children>
-                        <Label fx:id="labelStudentName" textFill="WHITE">
+                        <Label fx:id="labelResponsibleName" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -99,13 +99,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                            <children>
                               <Label text="NOME:" />
-                              <TextField fx:id="textName" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                           <children>
-                              <Label text="RA (antigo):" />
-                              <TextField fx:id="textOldRA" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                              <TextField fx:id="textName" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
                            </children>
                         </HBox>
                      </children>
