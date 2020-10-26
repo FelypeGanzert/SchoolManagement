@@ -96,7 +96,7 @@ public class CourseFormController implements Initializable{
 		updateForm();
 	}
 	
-	// Update Ui with course information
+	// Update UI with course information
 	public void updateForm() {
 		textCourseName.setText(course.getName());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

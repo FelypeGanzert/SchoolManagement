@@ -236,6 +236,9 @@ public class InfoStudentController implements Initializable {
 				controller.tableStudents.scrollTo(student);
 			});
 		}
+		if (returnPath == FXMLPath.LIST_RESPONSIBLES) {
+			Roots.listResponsibles((ListResponsiblesController controller) -> {});
+		}
 	}
 	
 	// Edit student

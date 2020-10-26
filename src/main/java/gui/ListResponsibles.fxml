@@ -17,11 +17,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="567.0" prefWidth="1262.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane minHeight="-Infinity" prefWidth="1235.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ListResponsiblesController">
 	<content>
-		<GridPane alignment="CENTER" minHeight="400.0" minWidth="1250.0" prefHeight="400.0" prefWidth="1250.0">
+		<GridPane alignment="CENTER" minHeight="400.0" minWidth="-Infinity" prefHeight="400.0">
 			<columnConstraints>
-				<ColumnConstraints hgrow="ALWAYS" maxWidth="560.0" minWidth="560.0" prefWidth="560.0" />
+				<ColumnConstraints hgrow="ALWAYS" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" />
 				<ColumnConstraints hgrow="ALWAYS" />
 			</columnConstraints>
 			<rowConstraints>
@@ -29,13 +29,15 @@
 				<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-						<HBox alignment="CENTER_LEFT" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);" GridPane.columnSpan="2">
+						<HBox alignment="CENTER_LEFT" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" spacing="20.0" style="-fx-background-color: rgb(64,89,169);" GridPane.columnSpan="2">
 							<children>
 								<Label text="RESPONSÁVEIS" textFill="WHITE">
 									<font>
 										<Font name="System Bold" size="25.0" />
 									</font>
 								</Label>
+                  <Label fx:id="labelTotalStudents" textFill="WHITE" />
+                  <Label fx:id="labelTotalResponsibles" textFill="WHITE" />
 							</children>
 							<padding>
 								<Insets left="20.0" right="20.0" />
@@ -50,7 +52,7 @@
 										<Image url="@../png_icons/search.png" />
 									</image>
 								</ImageView>
-								<JFXTextField maxWidth="350.0" minWidth="250.0" prefWidth="300.0" promptText="Filtrar" />
+								<JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="300.0" promptText="Filtrar" />
 							</children>
 							<padding>
 								<Insets left="20.0" right="20.0" />
@@ -60,25 +62,25 @@
 							<children>
 								<Label text="Tipo do Filtro:" />
 								<JFXRadioButton text="contém">
-									<toggleGroup>
-										<ToggleGroup fx:id="tipo_filtro" />
-									</toggleGroup>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="filterType" />
+                           </toggleGroup>
 								</JFXRadioButton>
-								<JFXRadioButton selected="true" text="inicia com" toggleGroup="$tipo_filtro" />
+								<JFXRadioButton selected="true" text="inicia com" toggleGroup="$filterType" />
+                        <Label fx:id="labelTotalResponsiblesSearch" />
 							</children>
 							<padding>
 								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
 							</padding>
 						</HBox>
-						<TableView prefHeight="200.0" VBox.vgrow="ALWAYS">
+						<TableView fx:id="tableResponsibles" prefHeight="200.0" VBox.vgrow="ALWAYS">
 							<placeholder>
-								<Label text="Não há alunos matriculados" />
+								<Label text="Não há responsáveis matriculados" />
 							</placeholder>
 							<columns>
-								<TableColumn maxWidth="350.0" minWidth="300.0" prefWidth="300.0" text="Nome" />
-								<TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Alunos" />
-								<TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Contato 1" />
-								<TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+								<TableColumn fx:id="columnResponsibleName" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" style="-fx-alignment: center-left;" text="Nome" />
+								<TableColumn fx:id="columnResponsibleContact1" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" style="-fx-alignment: center;" text="Contato 1" />
+								<TableColumn fx:id="columnResponsibleInfo" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
 							</columns>
 							<VBox.margin>
 								<Insets bottom="20.0" left="20.0" right="20.0" />
@@ -89,7 +91,7 @@
                   <Insets top="20.0" />
                </padding>
 				</VBox>
-            <VBox prefHeight="421.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="680.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
@@ -111,16 +113,16 @@
                         <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <TableView VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tableStudents" VBox.vgrow="ALWAYS">
                      <placeholder>
                         <Label text="Não há alunos matriculados" />
                      </placeholder>
                      <columns>
-                        <TableColumn maxWidth="80.0" minWidth="80.0" text="Código" />
-                        <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Nome" />
-                        <TableColumn maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Situação" />
-                        <TableColumn maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Contato 1" />
-                        <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                        <TableColumn fx:id="columnStudentCode" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Código" />
+                        <TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" style="-fx-alignment: center-left;" text="Nome" />
+                        <TableColumn fx:id="columnStudentStatus" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Situação" />
+                        <TableColumn fx:id="columnStudentContact1" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" style="-fx-alignment: center;" text="Contato 1" />
+                        <TableColumn fx:id="columnStudentInfo" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
                      </columns>
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
