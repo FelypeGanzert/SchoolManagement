@@ -272,7 +272,6 @@ public class MatriculationRegisterFormController implements Initializable{
 		matriculation.setServiceContracted(textAreaServiceContracted.getText().trim());
 		// responsible for the matriculation
 		if(comboBoxResponsible.getSelectionModel().getSelectedItem() != null) {
-			System.out.println("Responsible is not null");
 			matriculation.setResponsible(comboBoxResponsible.getSelectionModel().getSelectedItem());
 		}
 		// ========== PARCELS ==============

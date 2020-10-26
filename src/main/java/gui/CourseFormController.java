@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;
 
@@ -19,8 +20,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.util.StringConverter;
 import model.dao.CourseDao;
 import model.entites.Course;
+import model.entites.Matriculation;
 import model.entites.Student;
 
 public class CourseFormController implements Initializable{
@@ -30,6 +33,7 @@ public class CourseFormController implements Initializable{
 	@FXML private JFXTextField textEndDate;
 	@FXML private JFXTextField textProfessor;
 	@FXML private JFXTextField textCourseLoad;
+	@FXML private JFXComboBox<Matriculation> comboBoxMatriculation;
 	
 	private Course course;
 	private Student student;
@@ -53,12 +57,42 @@ public class CourseFormController implements Initializable{
 		Constraints.setTextFieldIntegerYear(textCourseLoad);
 		Constraints.setTextFieldMaxLength(textCourseLoad, 5);
 	}
-	
+
 	// DEPENDENCES
 	public void setDependences(Course course, Student student, StudentCoursesController studentCourses) {
 		this.course = course;
 		this.student = student;
 		this.studentCourses = studentCourses;
+		// comboBox: associated matriculation
+		comboBoxMatriculation.getItems().add(null);
+		comboBoxMatriculation.getItems().addAll(student.getMatriculations());
+		// show only the code and date of the matriculation in comboBox
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		comboBoxMatriculation.setConverter(new StringConverter<Matriculation>() {
+			@Override
+			public String toString(Matriculation object) {
+				if(object != null) {
+					return object.getCode() + " - " + sdf.format(object.getDateMatriculation());	
+				} else {
+					return null;
+				}
+			}
+			@Override
+			public Matriculation fromString(String string) {
+				return null;
+			}
+		});
+		// select matriculation of current course
+		Matriculation selectedMatriculation = null;
+		if(this.course.getMatriculationCode() != null) {
+			for(Matriculation m : student.getMatriculations()) {
+				if(m.getCode() == this.course.getMatriculationCode()) {
+					selectedMatriculation = m;
+					break;
+				}
+			}
+		}
+		comboBoxMatriculation.getSelectionModel().select(selectedMatriculation);
 		updateForm();
 	}
 	
@@ -141,6 +175,12 @@ public class CourseFormController implements Initializable{
 			// professor and courseLoad
 			course.setProfessor(textProfessor.getText());
 			course.setCourseLoad(Utils.tryParseToInt(textCourseLoad.getText()));
+			// associated matriculation
+			if(comboBoxMatriculation.getSelectionModel().getSelectedItem() != null) {
+				course.setMatriculationCode(comboBoxMatriculation.getSelectionModel().getSelectedItem().getCode());
+			} else {
+				course.setMatriculationCode(null);
+			}
 			// Save in DB
 			try {
 				CourseDao courseDao = new CourseDao(DBFactory.getConnection());

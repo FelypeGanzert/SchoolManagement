@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 
 import db.DBFactory;
 import db.DbException;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.dao.CourseDao;
 import model.entites.Course;
+import model.entites.Matriculation;
 import model.entites.Student;
 import sharedData.Globe;
 
@@ -42,8 +44,10 @@ public class StudentCoursesController implements Initializable{
 	@FXML private TableColumn<Course, Date> columnEndDate;
 	@FXML private TableColumn<Course, String> columnProfessor;
 	@FXML private TableColumn<Course, String> columnCourseLoad;
+	@FXML private TableColumn<Course, Integer> columnMatriculationCode;
 	@FXML private TableColumn<Course, Course> columnEdit;
 	@FXML private TableColumn<Course, Course> columnDelete;
+	@FXML private JFXTextArea textAreaMatriculationServiceContracted;
 	
 	private Student student;
 	private ObservableList<Course> courses;
@@ -51,6 +55,21 @@ public class StudentCoursesController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		initializeTableCourses();
+		// Listeners to selected course
+		tableCourses.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue != null) {
+				Course selectedCourse = newValue;
+				if(selectedCourse.getMatriculationCode() != null) {
+					// we will try to find a corresponding matriculation code on student
+					for(Matriculation m : selectedCourse.getStudent().getMatriculations()) {
+						if(m.getCode() == selectedCourse.getMatriculationCode()) {
+							textAreaMatriculationServiceContracted.setText(m.getServiceContracted());
+							break;
+						}
+					}
+				}
+			}
+		});
 	}
 	
 	public void setStudent(Student student) {
@@ -109,6 +128,8 @@ public class StudentCoursesController implements Initializable{
 						controller.setDependences(course, student, this);
 					});
 		});
+		columnCourseName.setReorderable(false);
+		Utils.setCellValueFactory(columnMatriculationCode, "matriculationCode");
 		columnEdit.setReorderable(false);
 		// Delete course button
 		Utils.initButtons(columnDelete, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (course, event) -> {
@@ -151,7 +172,7 @@ public class StudentCoursesController implements Initializable{
 		// Course
 		if (student.getCourses() != null) {
 			courses = FXCollections.observableArrayList(student.getCourses());
-			courses.sort((s1, s2) -> s2.getStartDate().compareTo(s1.getEndDate()));
+			courses.sort((s1, s2) -> s2.getStartDate().compareTo(s1.getStartDate()));
 			tableCourses.setItems(courses);
 			tableCourses.refresh();
 		}

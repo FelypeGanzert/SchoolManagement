@@ -49,6 +49,9 @@ public class Course {
 	
 	@Column (name = "carga_horaria", columnDefinition = "int default null")
 	private Integer courseLoad;
+	
+	@Column (name = "matriculation_code", columnDefinition = "int default null")
+	private Integer matriculationCode;
 		
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;

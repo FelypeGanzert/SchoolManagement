@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -15,29 +16,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true"
-	maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefHeight="457.0" prefWidth="856.0"
-	xmlns="http://javafx.com/javafx/11.0.1"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="gui.StudentCoursesController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="856.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StudentCoursesController">
 	<content>
-		<VBox alignment="TOP_CENTER" minWidth="800.0" prefHeight="356.0"
-			prefWidth="800.0">
+		<VBox alignment="TOP_CENTER" minWidth="800.0" prefHeight="356.0" prefWidth="800.0">
 			<children>
 				<HBox spacing="20.0" style="-fx-background-color: #0077b6;">
 					<padding>
 						<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 					</padding>
 					<children>
-						<JFXButton fx:id="btnReturn" onAction="#handleBtnReturn"
-							ripplerFill="#06416f"
-							style="-fx-background-color: #1167B1; -fx-cursor: hand;"
-							text="VOLTAR PARA ???" textFill="#fffdfd">
+						<JFXButton fx:id="btnReturn" onAction="#handleBtnReturn" ripplerFill="#06416f" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="VOLTAR PARA ???" textFill="#fffdfd">
 							<graphic>
-								<ImageView fitHeight="30.0" fitWidth="30.0"
-									pickOnBounds="true" preserveRatio="true"
-									style="-fx-cursor: hand;">
+								<ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
 									<image>
 										<Image url="@../png_icons/back_white.png" />
 									</image>
@@ -58,24 +48,20 @@
 						</HBox>
 					</children>
 				</HBox>
-				<VBox maxWidth="900.0" spacing="30.0" VBox.vgrow="ALWAYS">
+				<VBox maxWidth="1050.0" spacing="30.0" VBox.vgrow="ALWAYS">
 					<children>
 						<GridPane>
 							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES"
-									minWidth="10.0" prefWidth="100.0" />
-								<ColumnConstraints hgrow="SOMETIMES"
-									maxWidth="-Infinity" minWidth="-Infinity" />
+								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints minHeight="10.0"
-									prefHeight="30.0" vgrow="SOMETIMES" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
 								<HBox spacing="15.0" GridPane.halignment="CENTER">
 									<children>
-										<Label fx:id="labelStudentName"
-											text="Felype Aurélio Ganzert">
+										<Label fx:id="labelStudentName" text="Felype Aurélio Ganzert">
 											<font>
 												<Font name="System Bold" size="18.0" />
 											</font>
@@ -85,15 +71,9 @@
 										<Insets bottom="15.0" top="15.0" />
 									</padding>
 								</HBox>
-								<JFXButton fx:id="btnAddCourse" alignment="CENTER"
-									onAction="#handleBtnAddCourse" ripplerFill="#102151"
-									style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;"
-									text="adicionar" textAlignment="CENTER" textFill="WHITE"
-									GridPane.columnIndex="1">
+								<JFXButton fx:id="btnAddCourse" alignment="CENTER" onAction="#handleBtnAddCourse" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="adicionar" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1">
 									<graphic>
-										<ImageView fitHeight="29.0" fitWidth="55.0"
-											pickOnBounds="true" preserveRatio="true" scaleX="0.7"
-											scaleY="0.7">
+										<ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7">
 											<image>
 												<Image url="@../png_icons/add_white.png" />
 											</image>
@@ -110,30 +90,25 @@
 								<Label text="Não há nenhum curso registrado" />
 							</placeholder>
 							<columns>
-								<TableColumn fx:id="columnCourseName"
-									minWidth="150.0" prefWidth="75.0"
-									style="-fx-alignment: center-left;" text="Curso" />
-								<TableColumn fx:id="columnStartDate"
-									maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
-									style="-fx-alignment: center;" text="Início" />
-								<TableColumn fx:id="columnEndDate" maxWidth="100.0"
-									minWidth="100.0" prefWidth="100.0"
-									style="-fx-alignment: center;" text="Término" />
-								<TableColumn fx:id="columnProfessor"
-									maxWidth="200.0" minWidth="200.0" prefWidth="200.0"
-									style="-fx-alignment: center;" text="Professor" />
-								<TableColumn fx:id="columnCourseLoad"
-									maxWidth="100.0" minWidth="100.0" prefWidth="100.0"
-									style="-fx-alignment: center;" text="Carga Horária" />
-								<TableColumn fx:id="columnEdit" maxWidth="30.0"
-									minWidth="30.0" prefWidth="30.0" />
-								<TableColumn fx:id="columnDelete" maxWidth="30.0"
-									minWidth="30.0" prefWidth="30.0" />
+								<TableColumn fx:id="columnCourseName" minWidth="150.0" prefWidth="75.0" style="-fx-alignment: center-left;" text="Curso" />
+								<TableColumn fx:id="columnStartDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Início" />
+								<TableColumn fx:id="columnEndDate" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Término" />
+								<TableColumn fx:id="columnProfessor" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" style="-fx-alignment: center;" text="Professor" />
+								<TableColumn fx:id="columnCourseLoad" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Carga Horária" />
+                        <TableColumn fx:id="columnMatriculationCode" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Matrícula" />
+								<TableColumn fx:id="columnEdit" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+								<TableColumn fx:id="columnDelete" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
 							</columns>
 							<columnResizePolicy>
 								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 							</columnResizePolicy>
 						</TableView>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" spacing="20.0">
+                     <children>
+                        <Label text="Serviço Contratado da Matrícula:" />
+                        <JFXTextArea fx:id="textAreaMatriculationServiceContracted" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
 					</children>
 					<padding>
 						<Insets bottom="40.0" left="20.0" right="20.0" top="40.0" />

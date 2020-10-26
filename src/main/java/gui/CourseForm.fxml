@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -28,7 +29,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <padding>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
                   <JFXTextField fx:id="textCourseName" labelFloat="true" prefWidth="350.0" promptText="Curso" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
@@ -36,7 +37,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <padding>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
                   <JFXTextField fx:id="textStartDate" labelFloat="true" promptText="Início" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
@@ -45,11 +46,24 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <padding>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
                   <JFXTextField fx:id="textProfessor" labelFloat="true" prefWidth="250.0" promptText="Professor" styleClass="text-field-with-label" />
                   <JFXTextField fx:id="textCourseLoad" labelFloat="true" prefWidth="100.0" promptText="Carga Horária" styleClass="text-field-with-label" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="216.0" spacing="20.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Label text="Referente a Matrícula:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="comboBoxMatriculation" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" spacing="30.0">
