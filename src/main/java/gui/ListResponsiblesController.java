@@ -100,14 +100,26 @@ public class ListResponsiblesController implements Initializable {
 			TableRow<Responsible> row = new TableRow<>();
 			row.setOnMouseClicked(mouseEvent -> {
 				if(mouseEvent.getClickCount() == 2 && !row.isEmpty()){
-	               System.out.println("Double click to show responsible info");
+	               showResponsibleInfo(row.getItem());
 	            }
+			});
+			return row;
+		});
+		// Listener to double click in student to show informations
+		tableStudents.setRowFactory(tv -> {
+			TableRow<Student> row = new TableRow<>();
+			row.setOnMouseClicked(mouseEvent -> {
+				if (mouseEvent.getClickCount() == 2 && !row.isEmpty()) {
+					showStudentInfo(row.getItem());
+				}
 			});
 			return row;
 		});
 		// Listener to selected responsible of table
 		tableResponsibles.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {
+					// show students of responsible
+					tableStudents.setItems(null);
 					if (newSelection != null) {
 						Responsible responsible = newSelection;
 						// refresh responsible data
@@ -131,8 +143,6 @@ public class ListResponsiblesController implements Initializable {
 						} finally {
 							// refresh table
 							tableResponsibles.refresh();
-							// show students of responsible
-							tableStudents.setItems(null);
 							if (responsible != null && responsible.getAllStudents() != null && responsible.getAllStudents().size() >= 0) {
 								// get students from responsible and put in a ObservableList
 								ObservableList<Student> students = FXCollections.observableList(responsible.getAllStudents());
@@ -141,11 +151,10 @@ public class ListResponsiblesController implements Initializable {
 								// set students to table in UI
 								tableStudents.setItems(students);
 							}
-							// refresh table
-							tableStudents.refresh();
-							
 						}
 					}
+					// refresh table
+					tableStudents.refresh();
 				});
 	}
 

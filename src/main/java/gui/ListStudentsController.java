@@ -177,6 +177,10 @@ public class ListStudentsController implements Initializable {
 		// Listener to selected student of table
 		tableStudents.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {
+					System.out.println("===================");
+					tableMatriculations.setItems(null);
+					tableParcels.setItems(null);
+					listViewAnnotation.setItems(null);
 					if (newSelection != null) {
 						Student student = newSelection;
 						// refresh student data
