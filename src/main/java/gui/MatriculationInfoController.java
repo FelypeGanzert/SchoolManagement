@@ -2,6 +2,7 @@ package gui;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import db.DBUtil;
 import db.DbException;
 import db.DbExceptioneEntityExcluded;
 import gui.util.Alerts;
+import gui.util.DateUtil;
 import gui.util.FXMLPath;
 import gui.util.Roots;
 import gui.util.Utils;
@@ -295,6 +297,31 @@ public class MatriculationInfoController implements Initializable{
 		}
 		Utils.loadView(this, true, FXMLPath.MATRICULATION_DEFINE_DATES, Utils.currentStage(event),
 				"Definir Datas de Vencimento", false, (MatriculationDefineDatesController controller) -> {
+					controller.setMatriculation(matriculation);
+					// We need to set this dependence to update here in the future
+					controller.setMatriculationInfoController(this);
+				});
+	}
+	
+	// Agreement
+	public void handleBtnAgreement(ActionEvent event) {
+		// Check if exists any late parcel
+		Date now = new Date();
+		boolean exisitsLateParcels = matriculation.getParcels().stream()
+				.anyMatch(p -> {
+					return p.getSituation().equalsIgnoreCase("ABERTA") &&
+							p.getDateParcel() != null &&
+							DateUtil.compareTwoDates(p.getDateParcel(), now) < 0;
+				});
+		if (!exisitsLateParcels) {
+			Alerts.showAlert("Nada para fazer acordo", "Não existem parcelas ATRASADAS",
+					"Só é possível fazer acordo de parcelas ATRASADAS.", AlertType.ERROR,
+					Utils.currentStage(event));
+			// stop the method
+			return;
+		}
+		Utils.loadView(this, true, FXMLPath.MATRICULATION_PARCELS_AGREEMENT, Utils.currentStage(event),
+				"Acordo", false, (MatriculationParcelsAgreementController controller) -> {
 					controller.setMatriculation(matriculation);
 					// We need to set this dependence to update here in the future
 					controller.setMatriculationInfoController(this);

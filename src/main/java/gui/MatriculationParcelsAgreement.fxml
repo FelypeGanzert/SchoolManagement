@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationRemoveParcelsFormController">
+<VBox minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MatriculationParcelsAgreementController">
    <children>
       <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
          <children>
@@ -55,7 +55,7 @@
                         <TableColumn fx:id="columnDocumentNumber" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Nº Documento" />
                         <TableColumn fx:id="columnParcelNumber" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Parcela" />
                         <TableColumn fx:id="columnValue" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Valor" />
-                        <TableColumn fx:id="ColumnValueWithFineDelay" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Com Multa" />
+                        <TableColumn fx:id="columnValueWithFineDelay" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Com Multa" />
                         <TableColumn fx:id="columnDateParcel" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Vencimento" />
                      </columns>
                      <columnResizePolicy>
@@ -69,7 +69,7 @@
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
                         <Label minWidth="-Infinity" text="Fazer o acordo sobre o" />
-                        <JFXComboBox editable="true" minWidth="-Infinity" prefWidth="130.0" promptText="Valor com Multa" />
+                        <JFXComboBox fx:id="comboBoxValueToConsider" editable="true" minWidth="-Infinity" prefWidth="130.0" promptText="Valor com Multa" />
                      </children>
                   </HBox>
                   <VBox alignment="TOP_CENTER" minHeight="-Infinity" spacing="10.0">
@@ -92,7 +92,7 @@
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                                    <TextField fx:id="textEntryValue" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                        <padding>
                                           <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                        </padding>
@@ -118,7 +118,7 @@
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </padding>
                               </Label>
-                              <TextField alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff;" text="19.868,00">
+                              <TextField fx:id="textAgreementValue" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff;">
                                  <padding>
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </padding>
@@ -129,11 +129,14 @@
                            </children>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                     </padding>
                   </VBox>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0">
                      <children>
                         <Label minWidth="-Infinity" text="Parcelar em quantos meses?" />
-                        <Spinner fx:id="spinnerParcelsDueDate" prefHeight="30.0" prefWidth="80.0" />
+                        <Spinner fx:id="spinnerNumberOfParcels" prefHeight="30.0" prefWidth="80.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #dee2e6;">
@@ -149,7 +152,7 @@
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </padding>
                               </Label>
-                              <TextField alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
+                              <TextField fx:id="textParcelsAgreementValue" alignment="CENTER_RIGHT" editable="false" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff;">
                                  <padding>
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                  </padding>
@@ -161,16 +164,19 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                  <HBox spacing="10.0">
                      <children>
                         <Label text="Vencimento da 1ª Parcela do acordo:" />
                         <JFXTextField fx:id="textFirstParcelDate" alignment="CENTER" prefWidth="80.0" promptText="dd/mm/aaaa" />
                      </children>
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" minHeight="-Infinity" spacing="10.0">
                      <children>
                         <Label minWidth="-Infinity" text="Vencimento das demais parcelas todo dia:" />
-                        <Spinner fx:id="spinnerParcelsDueDate1" prefHeight="30.0" prefWidth="80.0" />
+                        <Spinner fx:id="spinnerParcelsDueDate" prefHeight="30.0" prefWidth="80.0" />
                      </children>
                   </HBox>
                </children>

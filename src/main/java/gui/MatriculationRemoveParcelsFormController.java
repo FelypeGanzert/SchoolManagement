@@ -98,7 +98,7 @@ public class MatriculationRemoveParcelsFormController implements Initializable{
 	// ==========================
 
 	public void handleBtnSave(ActionEvent event) {
-		// check if there is any selected parcel, this cant happen
+		// check if there 0 selected parcel, this cant happen
 		List<Parcel> selectedParcels = openParcels.stream().filter(p -> p.isSelected()).collect(Collectors.toList());
 		if(selectedParcels.size() <= 0) {
 			Alerts.showAlert("Nada para remover", "Nada selecionado.",

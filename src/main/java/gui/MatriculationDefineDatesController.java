@@ -89,8 +89,8 @@ public class MatriculationDefineDatesController implements Initializable{
 				Date today = new Date();
 				if (DateUtil.compareTwoDates(sdf.parse(textFirstParcelDate.getText()), today) < 0) {
 					Alerts.showAlert("Inválido", "Inválido: Data de vencimento da 1ª Parcela.",
-							"Não é possível definir mensalidades com data de vencimento no passado",
-							AlertType.ERROR, Utils.currentStage(event));
+							"Não é possível definir mensalidades com data de vencimento no passado", AlertType.ERROR,
+							Utils.currentStage(event));
 					// stop the method
 					return;
 				}
@@ -99,28 +99,29 @@ public class MatriculationDefineDatesController implements Initializable{
 			System.out.println("Erro durante conversão para verificar datas...");
 			e.printStackTrace();
 		}
-			// parcels due date
-			Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
-			// first parcel date
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Date firstParcelDate = null;
-			try {
-				firstParcelDate = sdf.parse(textFirstParcelDate.getText());
-			} catch (ParseException e) {
-				e.printStackTrace();
+		// parcels due date
+		Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
+		// first parcel date
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date firstParcelDate = null;
+		try {
+			firstParcelDate = sdf.parse(textFirstParcelDate.getText());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// change date of parcels
+		for (Parcel p : openParcels) {
+			// date
+			p.setDateParcel(firstParcelDate);
+			// add a month to first date parcel, and change the day to the user has set if i
+			// == 1
+			if (firstParcelDate != null) {
+				Calendar c = DateUtil.dateToCalendar(firstParcelDate);
+				c.add(Calendar.MONTH, 1);
+				c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
+				firstParcelDate = DateUtil.calendarToDate(c);
 			}
-			// change date of parcels
-			for(Parcel p : openParcels) {
-				// date
-				p.setDateParcel(firstParcelDate);
-				// add a month to first date parcel, and change the day to the user has set if i == 1
-				if(firstParcelDate != null) {
-					Calendar c = DateUtil.dateToCalendar(firstParcelDate);
-					c.add(Calendar.MONTH, 1);
-					c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
-					firstParcelDate = DateUtil.calendarToDate(c);
-				}
-			}
+		}
 		// Save in DB
 		try {
 			MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
