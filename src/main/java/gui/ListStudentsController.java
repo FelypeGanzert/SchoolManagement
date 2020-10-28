@@ -532,10 +532,27 @@ public class ListStudentsController implements Initializable {
 	}
 	
 	private void showMatriculationInfo(Matriculation matriculation) {
-		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
-		mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
-			controller.setCurrentMatriculation(matriculation, FXMLPath.LIST_STUDENTS);
-		});
+		try {
+			DBUtil.refreshData(matriculation);	
+			MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+			mainView.setContent(FXMLPath.MATRICULATION_INFO, (MatriculationInfoController controller) -> {
+				controller.setCurrentMatriculation(matriculation, FXMLPath.LIST_STUDENTS);
+			});
+		} catch (DbException e) {
+			Alerts.showAlert("DBException", "DBException - excessão no banco de dados", e.getMessage(), AlertType.ERROR,
+					(Stage) tableStudents.getScene().getWindow());
+			e.printStackTrace();
+		} catch (DbExceptioneEntityExcluded e) {
+			// Show a message that matriculation has been deleted
+			Alerts.showAlert("DBExceptionEntityExcluded",
+					"Matrícula #" + matriculation.getCode() + " foi deletada do banco de dados por alguém",
+					"DBExceptionEntityExcluded: " + e.getMessage(),
+					AlertType.ERROR, (Stage) tableStudents.getScene().getWindow());
+			// remove student deleted from table
+			tableStudents.getSelectionModel().clearSelection();
+			tableStudents.getSelectionModel().select(matriculation.getStudent());
+			tableStudents.refresh();			
+		}	
 	}
 	
 	// ========================

@@ -1,10 +1,14 @@
 package gui;
 
+import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -21,6 +25,7 @@ import gui.util.Constraints;
 import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.Validators;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,6 +39,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.util.Callback;
 import model.dao.MatriculationDao;
 import model.entites.Matriculation;
 import model.entites.Parcel;
@@ -62,6 +68,9 @@ public class MatriculationParcelsAgreementController implements Initializable{
 	private MatriculationInfoController matriculationInfoController; 
 	private ObservableList<Parcel> lateParcels;
 	
+	private Double totalValue;
+	
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		initializeFields();
@@ -75,6 +84,8 @@ public class MatriculationParcelsAgreementController implements Initializable{
 	}
 	
 	private void initializeFields() {
+		// entry value
+		Constraints.setTextFieldDoubleMoney(textEntryValue);
 		// first parcel date: required and have to be a valid date
 		RequiredFieldValidator requiredValidator = Validators.getRequiredFieldValidator();
 		RegexValidator dateValidator = new RegexValidator("Inválido");
@@ -88,13 +99,22 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		comboBoxValueToConsider.getSelectionModel().selectFirst();
 		// === SPINNER ===
 		// IntegerSpinnerValueFactory(int min, int max, int initialValue, int amountToStepBy)
-		spinnerNumberOfParcels.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1, 1));
+		spinnerNumberOfParcels.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1, 1));
 		spinnerParcelsDueDate.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 25, 1, 1));
 	}
 	
 	private void initializeTable() {
 		columnSelected.setCellValueFactory(cellData -> cellData.getValue().getSelected());
 		columnSelected.setCellFactory(CheckBoxTableCell.forTableColumn(columnSelected));
+		columnSelected.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
+
+		    @Override
+		    public ObservableValue<Boolean> call(Integer param) {
+		        //System.out.println("Parcel "+lateParcels.get(param).getParcelNumber()+" changed value to " +lateParcels.get(param).isSelected());
+		    	updateTotalValue();
+		        return lateParcels.get(param).getSelected();
+		    }
+		}));
 		columnSelected.setReorderable(false);
 		// document number
 		Utils.setCellValueFactory(columnDocumentNumber, "documentNumber");
@@ -232,6 +252,75 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		    });
 		    return row ;
 		});
+		// Listener to value to consider comboBox
+		comboBoxValueToConsider.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				updateTotalValue();
+			}
+		});
+		// Listener to entry value
+		textEntryValue.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				updateTotalValue();
+			}
+		});
+		// Listener to number of parcels
+		spinnerNumberOfParcels.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				updateParcelsValue();
+			}
+		});
+	}
+	
+	// ============================
+	// ==== AUXILIAR METHODS ======
+	// ============================
+	
+	public void updateTotalValue() {
+		String valueToConsider = comboBoxValueToConsider.getSelectionModel().getSelectedItem();
+		Double entryValue = 0.0;
+		if(!textEntryValue.getText().isEmpty()) {
+			entryValue = textToDouble(textEntryValue.getText());
+		}
+		totalValue = 0.0;
+		if (valueToConsider.equalsIgnoreCase("Valor normal")) {
+			for(Parcel p : lateParcels) {
+				if(p.isSelected()) {
+					totalValue += p.getValue();
+				}
+			}
+		} else if (valueToConsider.equalsIgnoreCase("Valor com multa")) {
+			for(Parcel p : lateParcels) {
+				if(p.isSelected()) {
+					totalValue += p.getValueWithFineDelay();
+				}
+			}
+		}
+		totalValue -= entryValue;
+		textAgreementValue.setText(doubleToTextField(totalValue));
+		updateParcelsValue();
+	}
+	
+	public void updateParcelsValue() {
+		Integer numberOfParcels = spinnerNumberOfParcels.getValue();
+		Double parcelsValue = totalValue / numberOfParcels;
+		System.out.println(parcelsValue);
+		textParcelsAgreementValue.setText(doubleToTextField(roundValue(parcelsValue)));
+	}
+	
+	private String doubleToTextField(Double value) {
+		return String.format("%.2f", value).replace(".", ",");
+	}
+	
+	private Double textToDouble(String valueText) {
+		return Double.valueOf(valueText.replace(",", "."));
+	}
+	
+	private Double roundValue(double value) {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+		DecimalFormat df = new DecimalFormat("0.0", symbols);
+		df.setRoundingMode(RoundingMode.HALF_UP);
+		return Double.valueOf(df.format(value));
 	}
 		
 }
