@@ -104,6 +104,10 @@ public class Parcel {
 		return this.selected.get();
 	}
 	
+	@ManyToOne
+	@JoinColumn(name = "acordo_codigo")
+	private Agreement agreement;
+	
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;
 	

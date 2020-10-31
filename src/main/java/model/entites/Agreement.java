@@ -50,6 +50,10 @@ public class Agreement {
 	@OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Where(clause = "excluido is null")
 	private List<AgreementParcel> parcels = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Where(clause = "excluido is null")
+	private List<Parcel> normalParcels = new ArrayList<>();
 
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;

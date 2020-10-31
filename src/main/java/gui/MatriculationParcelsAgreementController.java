@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,7 @@ import gui.util.Constraints;
 import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.Validators;
+import gui.util.enums.ParcelStatusEnum;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,8 +43,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.util.Callback;
 import model.dao.MatriculationDao;
+import model.entites.Agreement;
+import model.entites.AgreementParcel;
+import model.entites.Collaborator;
 import model.entites.Matriculation;
 import model.entites.Parcel;
+import sharedData.Globe;
 
 public class MatriculationParcelsAgreementController implements Initializable{
 
@@ -197,9 +203,73 @@ public class MatriculationParcelsAgreementController implements Initializable{
 			return;
 		}
 		// =========================================
-		// ====== LOGIC TO MAKE A AGREEMENT ========
-		// ============ IN PROGRESS ================
+		// ====== LOGIC TO CREATE A AGREEMENT ======
 		// =========================================
+		// create a new agreement
+		Agreement agreement = new Agreement();
+		matriculation.getAgreements().add(agreement);
+		agreement.setMatriculation(matriculation);
+		// change situation of selected parcels to ACORDO (agreement)
+		// and  vinculate parcels of matriculation with the agreement
+		selectedParcels.forEach(p -> {
+			p.setSituation(ParcelStatusEnum.ACORDO.toString());
+			p.setAgreement(agreement);
+			agreement.getNormalParcels().add(p);
+		});
+		// agreement infos
+		agreement.setDateAgreement(new Date());
+		agreement.setAgreementBy(Globe.getGlobe().getItem(Collaborator.class, "currentUser").getInitials());
+		// === parcel of entry value
+		boolean hasEntryValue = false;
+		if(!textEntryValue.getText().isEmpty()) {
+			Double entryValue = textToDouble(textEntryValue.getText());
+			if(entryValue > 0) {
+				hasEntryValue = true;
+				AgreementParcel entryParcel = new AgreementParcel();
+				entryParcel.setAgreement(agreement);
+				agreement.getParcels().add(entryParcel);
+				entryParcel.setDateParcel(new Date());
+				entryParcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+				entryParcel.setValue(entryValue);
+				entryParcel.setParcelNumber(1);
+			}
+		}
+		// === other parcels
+		// parcels due date
+		Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
+		// number of parcels
+		Integer numberOfParcels = spinnerNumberOfParcels.getValue();
+		// first parcel date
+		Date firstParcelDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			firstParcelDate = sdf.parse(textFirstParcelDate.getText());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// create parcels and add to matriculation
+		Double parcelValue = textToDouble(textParcelsAgreementValue.getText());
+		int parcelNumber = 1;
+		if(hasEntryValue) {
+			parcelNumber = 2;
+		}
+		for (int i = parcelNumber; i < (numberOfParcels + parcelNumber); i++) {
+			AgreementParcel parcel = new AgreementParcel();
+			parcel.setAgreement(agreement);
+			agreement.getParcels().add(parcel);
+			// number
+			parcel.setParcelNumber(i);
+			// date
+			parcel.setDateParcel(firstParcelDate);
+			// add a month to first date parcel, and change the day to 
+			Calendar c = DateUtil.dateToCalendar(firstParcelDate);
+			c.add(Calendar.MONTH, 1);
+			c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
+			firstParcelDate = DateUtil.calendarToDate(c);
+			// value
+			parcel.setValue(parcelValue);
+			parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+		}
 		// Updated matriculation in DB
 		try {
 			MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
