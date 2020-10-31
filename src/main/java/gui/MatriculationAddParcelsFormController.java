@@ -177,7 +177,10 @@ public class MatriculationAddParcelsFormController implements Initializable{
 			Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
 			// number of the last parcel already in matriculation
 			Integer lastNumber = 0;
-			Parcel lastParcel = matriculation.getParcels().get(matriculation.getParcels().size() -1);
+			Parcel lastParcel = null;
+			if(matriculation.getParcels() != null &&  matriculation.getParcels().size() > 0) {
+				lastParcel = matriculation.getParcels().get(matriculation.getParcels().size() -1);
+			};
 			if(lastParcel != null) {
 				lastNumber = lastParcel.getParcelNumber();
 			};

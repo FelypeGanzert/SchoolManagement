@@ -3,7 +3,9 @@ package gui;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import model.dao.MatriculationDao;
+import model.entites.Agreement;
 import model.entites.Matriculation;
 import model.entites.Parcel;
 import model.entites.Responsible;
@@ -67,6 +70,7 @@ public class MatriculationInfoController implements Initializable{
 	private String returnPath;
 	
 	private MatriculationInfoParcels matriculationInfoParcels;
+	private Map<Agreement, MatriculationInfoParcelsAgreement> infoParcelsAgreement = new LinkedHashMap<>();
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
@@ -108,6 +112,7 @@ public class MatriculationInfoController implements Initializable{
 						controller.setMatriculationInfoController(this);
 					});
 		}
+		updateAgreements();
 	}
 	
 	private void setReturnPath(String returnPath) {
@@ -386,6 +391,22 @@ public class MatriculationInfoController implements Initializable{
 		}
 		updateForm();
 		matriculationInfoParcels.setParcels(matriculation.getParcels());
+		updateAgreements();
 	}
-
+	
+	// update agreements tab
+	private void updateAgreements() {
+		matriculation.getAgreements().forEach(a -> {
+			if (infoParcelsAgreement.containsKey(a)) {
+				infoParcelsAgreement.get(a).setAgreement(a);
+			} else {
+				Utils.addTab(this, FXMLPath.MATRICULATION_INFO_PARCELS_AGREEMENT, ("Acordo #" + a.getCode()),
+						tabPaneParcels, (MatriculationInfoParcelsAgreement controller) -> {
+							infoParcelsAgreement.put(a, controller);
+							controller.setAgreement(a);
+							controller.setMatriculationInfoController(this);
+						});
+			}
+		});
+	}
 }

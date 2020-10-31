@@ -25,6 +25,7 @@ public class FXMLPath {
 	public static final String MATRICULATION_SERVICE_CONTRACTED_FORM = "/gui/MatriculationServiceContractedForm.fxml";
 	public static final String MATRICULATION_INFO_PERSON = "/gui/MatriculationInfoPerson.fxml";
 	public static final String MATRICULATION_INFO_PARCELS = "/gui/MatriculationInfoParcels.fxml";
+	public static final String MATRICULATION_INFO_PARCELS_AGREEMENT = "/gui/MatriculationInfoParcelsAgreement.fxml";
 	public static final String MATRICULATION_PARCEL_PAYMENT = "/gui/MatriculationParcelPayment.fxml";
 	public static final String MATRICULATION_ADD_PARCELS_FORM = "/gui/MatriculationAddParcelsForm.fxml";
 	public static final String MATRICULATION_REMOVE_PARCELS_FORM = "/gui/MatriculationRemoveParcelsForm.fxml";

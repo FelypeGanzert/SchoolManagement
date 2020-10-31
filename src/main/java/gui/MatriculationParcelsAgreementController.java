@@ -235,40 +235,42 @@ public class MatriculationParcelsAgreementController implements Initializable{
 			}
 		}
 		// === other parcels
-		// parcels due date
-		Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
-		// number of parcels
-		Integer numberOfParcels = spinnerNumberOfParcels.getValue();
-		// first parcel date
-		Date firstParcelDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			firstParcelDate = sdf.parse(textFirstParcelDate.getText());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		// create parcels and add to matriculation
 		Double parcelValue = textToDouble(textParcelsAgreementValue.getText());
-		int parcelNumber = 1;
-		if(hasEntryValue) {
-			parcelNumber = 2;
-		}
-		for (int i = parcelNumber; i < (numberOfParcels + parcelNumber); i++) {
-			AgreementParcel parcel = new AgreementParcel();
-			parcel.setAgreement(agreement);
-			agreement.getParcels().add(parcel);
-			// number
-			parcel.setParcelNumber(i);
-			// date
-			parcel.setDateParcel(firstParcelDate);
-			// add a month to first date parcel, and change the day to 
-			Calendar c = DateUtil.dateToCalendar(firstParcelDate);
-			c.add(Calendar.MONTH, 1);
-			c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
-			firstParcelDate = DateUtil.calendarToDate(c);
-			// value
-			parcel.setValue(parcelValue);
-			parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+		if (parcelValue > 0.0) {
+			// parcels due date
+			Integer parcelsDueDate = spinnerParcelsDueDate.getValue();
+			// number of parcels
+			Integer numberOfParcels = spinnerNumberOfParcels.getValue();
+			// first parcel date
+			Date firstParcelDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				firstParcelDate = sdf.parse(textFirstParcelDate.getText());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			// create parcels and add to matriculation
+			int parcelNumber = 1;
+			if (hasEntryValue) {
+				parcelNumber = 2;
+			}
+			for (int i = parcelNumber; i < (numberOfParcels + parcelNumber); i++) {
+				AgreementParcel parcel = new AgreementParcel();
+				parcel.setAgreement(agreement);
+				agreement.getParcels().add(parcel);
+				// number
+				parcel.setParcelNumber(i);
+				// date
+				parcel.setDateParcel(firstParcelDate);
+				// add a month to first date parcel, and change the day to
+				Calendar c = DateUtil.dateToCalendar(firstParcelDate);
+				c.add(Calendar.MONTH, 1);
+				c.set(Calendar.DAY_OF_MONTH, parcelsDueDate);
+				firstParcelDate = DateUtil.calendarToDate(c);
+				// value
+				parcel.setValue(parcelValue);
+				parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+			}
 		}
 		// Updated matriculation in DB
 		try {

@@ -1,10 +1,12 @@
 package db;
 
 import model.dao.MatriculationDao;
+import model.dao.ParcelAgreementDao;
 import model.dao.ParcelDao;
 import model.dao.ResponsibleDao;
 import model.dao.ResponsibleStudentDao;
 import model.dao.StudentDao;
+import model.entites.AgreementParcel;
 import model.entites.Matriculation;
 import model.entites.Parcel;
 import model.entites.Person;
@@ -67,6 +69,17 @@ public class DBUtil {
 
 	public static <T> void refreshData(Parcel parcel) throws DbException, DbExceptioneEntityExcluded {
 		parcel = new ParcelDao(DBFactory.getConnection())
+				.findById(parcel.getDocumentNumber());
+		if (parcel != null) {
+			DBFactory.getConnection().refresh(parcel);
+			if (parcel.getExcluded() != null) {
+				throw new DbExceptioneEntityExcluded("Entity has been deleted");
+			}
+		}
+	}
+	
+	public static <T> void refreshData(AgreementParcel parcel) throws DbException, DbExceptioneEntityExcluded {
+		parcel = new ParcelAgreementDao(DBFactory.getConnection())
 				.findById(parcel.getDocumentNumber());
 		if (parcel != null) {
 			DBFactory.getConnection().refresh(parcel);
