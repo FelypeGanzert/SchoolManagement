@@ -56,6 +56,14 @@ public class MatriculationDao {
 		Query query = manager.createNativeQuery("UPDATE parcela p SET excluido = 'S' WHERE p.matricula_codigo = ?");
 		query.setParameter(1, matriculation.getCode());
 		query.executeUpdate();
+		// Remove all agreement parcels
+		query = manager.createNativeQuery("UPDATE parcela_acordo p SET excluido = 'S' WHERE p.matricula_codigo = ?");
+		query.setParameter(1, matriculation.getCode());
+		query.executeUpdate();
+		// Remove all agreement
+		query = manager.createNativeQuery("UPDATE acordo a SET excluido = 'S' WHERE a.matricula_codigo = ?");
+		query.setParameter(1, matriculation.getCode());
+		query.executeUpdate();
 		// Remove matriculation
 		matriculation.setExcluded("S");
 		matriculation = manager.merge(matriculation);

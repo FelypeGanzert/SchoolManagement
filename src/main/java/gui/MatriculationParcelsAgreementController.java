@@ -232,6 +232,7 @@ public class MatriculationParcelsAgreementController implements Initializable{
 				entryParcel.setSituation(ParcelStatusEnum.ABERTA.toString());
 				entryParcel.setValue(entryValue);
 				entryParcel.setParcelNumber(1);
+				entryParcel.setMatriculation(matriculation);
 			}
 		}
 		// === other parcels
@@ -270,6 +271,7 @@ public class MatriculationParcelsAgreementController implements Initializable{
 				// value
 				parcel.setValue(parcelValue);
 				parcel.setSituation(ParcelStatusEnum.ABERTA.toString());
+				parcel.setMatriculation(matriculation);
 			}
 		}
 		// Updated matriculation in DB
@@ -376,7 +378,6 @@ public class MatriculationParcelsAgreementController implements Initializable{
 	public void updateParcelsValue() {
 		Integer numberOfParcels = spinnerNumberOfParcels.getValue();
 		Double parcelsValue = totalValue / numberOfParcels;
-		System.out.println(parcelsValue);
 		textParcelsAgreementValue.setText(doubleToTextField(roundValue(parcelsValue)));
 	}
 	

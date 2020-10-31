@@ -46,9 +46,11 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 	@FXML private TableColumn<AgreementParcel, AgreementParcel> columnButton;
 	
 	private MatriculationInfoController matriculationInfoController;
+	private MatriculationInfoParcelsAgreement currentMatriculationInfoParcelsAgreement;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
+		currentMatriculationInfoParcelsAgreement = this;
 		initializeTable();
 	}
 	
@@ -59,6 +61,11 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 	public void handleBtnCancelAgreement(ActionEvent event) {
 		// ========== TO DO ========
 		System.out.println("Clicked to cancel agreement");
+	}
+	
+	public void handleBtnPrint(ActionEvent event) {
+		// ========== TO DO ========
+		System.out.println("Clicked to print agreement contract");
 	}
 
 	private void initializeTable() {
@@ -182,12 +189,11 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 								btn = Utils.createIconButton(Icons.MONEY_SOLID, Icons.SIZE, "greenIcon");
 								btn.setTooltip(new Tooltip("Baixar"));
 								btn.setOnAction((ActionEvent event) -> {
-									Utils.loadView(this, true, FXMLPath.MATRICULATION_PARCEL_PAYMENT,
+									Utils.loadView(this, true, FXMLPath.MATRICULATION_AGREEMENT_PARCEL_PAYMENT,
 											Utils.currentStage(event), "Baixar Pagamento", false,
-											(MatriculationParcelPaymentController controller) -> {
-												// ============ TO DO =======
-												//controller.setParcel(currentParcel);
-												//controller.setMatriculationInfoParcels(currentMatriculationInfoParcels);
+											(MatriculationAgreementParcelPaymentController controller) -> {
+												controller.setParcel(currentParcel);
+												controller.setMatriculationInfoParcelsAgreement(currentMatriculationInfoParcelsAgreement);
 											});
 								});
 							}

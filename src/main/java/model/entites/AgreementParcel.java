@@ -38,8 +38,12 @@ public class AgreementParcel {
 	private Agreement agreement;
 	
 	@OneToOne
-	@JoinColumn(name = "parcel_number")
+	@JoinColumn(name = "parcela_normal_numero")
 	private Parcel parcel;
+	
+	@OneToOne
+	@JoinColumn(name = "matricula_codigo")
+	private Matriculation matriculation;
 	
 	@Column(name = "parcela_numero", columnDefinition = "int default null")
 	private Integer parcelNumber;
