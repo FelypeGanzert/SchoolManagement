@@ -41,6 +41,9 @@ public class Agreement {
 	@JoinColumn(name="matricula_codigo")
 	private Matriculation matriculation;
 	
+	@Column(name="valor_para_considerar", columnDefinition = "varchar(30) default null")
+	private String valueToConsider;
+	
 	@Column(name="data_acordo", columnDefinition = "date default null")
 	private Date dateAgreement;
 

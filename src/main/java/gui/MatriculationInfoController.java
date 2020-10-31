@@ -315,12 +315,13 @@ public class MatriculationInfoController implements Initializable{
 		boolean exisitsLateParcels = matriculation.getParcels().stream()
 				.anyMatch(p -> {
 					return p.getSituation().equalsIgnoreCase("ABERTA") &&
+							p.getAgreement() == null &&
 							p.getDateParcel() != null &&
 							DateUtil.compareTwoDates(p.getDateParcel(), now) < 0;
 				});
 		if (!exisitsLateParcels) {
 			Alerts.showAlert("Nada para fazer acordo", "Não existem parcelas ATRASADAS",
-					"Só é possível fazer acordo de parcelas ATRASADAS.", AlertType.ERROR,
+					"Só é possível fazer acordo de parcelas ATRASADAS que não são de acordos anteriores.", AlertType.ERROR,
 					Utils.currentStage(event));
 			// stop the method
 			return;

@@ -32,8 +32,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import model.dao.CollaboratorDao;
 import model.dao.ParcelAgreementDao;
+import model.entites.Agreement;
 import model.entites.AgreementParcel;
 import model.entites.Collaborator;
+import model.entites.Parcel;
 import sharedData.Globe;
 
 public class MatriculationAgreementParcelPaymentController implements Initializable{
@@ -119,11 +121,73 @@ public class MatriculationAgreementParcelPaymentController implements Initializa
 					e.getMessage(),
 					AlertType.ERROR, Utils.currentStage(event));
 			return;
-		}		
-		// ========= TO DO ================
-		// Check if total paid value of agreement is equal to one normal parcel
-		// if this happen we should change normal parcel situation to paid (PAGA
-		// ========= TO DO ===============
+		}
+		// check how many parcels are paid, the total number of parcels and total value paid
+		Agreement agreement = parcel.getAgreement();
+		int totalParcels = 0;
+		int paidParcels = 0;
+		Double totalValuePaid = 0.0;
+		totalParcels = agreement.getParcels().size();
+		for(AgreementParcel p : agreement.getParcels()) {
+			if(p.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString())) {
+				paidParcels++;
+				totalValuePaid += p.getValuePaid();
+			}
+		};
+		// If every parcel are paid, we should take all normalParcel linked with agreement and
+		// change situation to paid (PAGA)
+		if(paidParcels == totalParcels) {
+			for(Parcel p : agreement.getNormalParcels()) {
+				if(p.getSituation().equalsIgnoreCase(ParcelStatusEnum.ACORDO.toString())) {
+					// value paid
+					if(agreement.getValueToConsider().equalsIgnoreCase("Valor com multa")) {
+						p.setValuePaid(p.getValueWithFineDelay());
+					} else if(agreement.getValueToConsider().equalsIgnoreCase("Valor normal")) {
+						p.setValuePaid(p.getValue());
+					}
+					// paid with, date payment, payment received by
+					p.setPaidWith(" - ");
+					p.setDatePayment(parcel.getDatePayment());
+					p.setPaymentReceivedBy("ACORDO #" + agreement.getCode());
+					p.setSituation(ParcelStatusEnum.PAGA.toString());
+				}
+			};
+		} else {
+			// we will set normal parcel situation to paid according to total value paid on agreement
+			boolean parcelWasPaid; // flag
+			for (Parcel p : agreement.getNormalParcels()) {
+				if (p.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString())) {
+					totalValuePaid = totalValuePaid - p.getValuePaid();
+				}
+				if(!p.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString())) {
+					parcelWasPaid = false;
+					// value paid
+					if(agreement.getValueToConsider().equalsIgnoreCase("Valor com multa")) {
+						if(totalValuePaid >= p.getValueWithFineDelay()) {
+							p.setValuePaid(p.getValueWithFineDelay());
+							totalValuePaid = totalValuePaid - p.getValuePaid();
+							parcelWasPaid = true;
+							
+						}
+					} else if(agreement.getValueToConsider().equalsIgnoreCase("Valor normal")) {
+						if(totalValuePaid >= p.getValue()) {
+							p.setValuePaid(p.getValue());
+							totalValuePaid = totalValuePaid - p.getValuePaid();
+							parcelWasPaid = true;
+						}
+					}
+					if(parcelWasPaid) {
+						// paid with, date payment, payment received by
+						p.setPaidWith(" - ");
+						p.setDatePayment(parcel.getDatePayment());
+						p.setPaymentReceivedBy("ACORDO #" + agreement.getCode());
+						p.setSituation(ParcelStatusEnum.PAGA.toString());
+					} else {
+						break;
+					}
+				}
+			};
+		}
 		// Save in DB
 		try {
 			ParcelAgreementDao parcelAgreementDao = new ParcelAgreementDao(DBFactory.getConnection());

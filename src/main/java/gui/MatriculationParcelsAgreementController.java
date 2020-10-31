@@ -82,11 +82,6 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		initializeFields();
 		initializeTable();
 		setListeners();
-		// To do in listeners:
-		// update total value if value to consider change
-		// show total value
-		// update total value according to the entry value
-		// show value of each parcel when number of parcels changed
 	}
 	
 	private void initializeFields() {
@@ -113,7 +108,6 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		columnSelected.setCellValueFactory(cellData -> cellData.getValue().getSelected());
 		columnSelected.setCellFactory(CheckBoxTableCell.forTableColumn(columnSelected));
 		columnSelected.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
-
 		    @Override
 		    public ObservableValue<Boolean> call(Integer param) {
 		        //System.out.println("Parcel "+lateParcels.get(param).getParcelNumber()+" changed value to " +lateParcels.get(param).isSelected());
@@ -154,6 +148,7 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		Date now = new Date();
 		parcels = parcels.stream().filter(p -> {
 			return p.getSituation().equalsIgnoreCase("ABERTA") &&
+					p.getAgreement() == null &&
 					p.getDateParcel() != null &&
 					DateUtil.compareTwoDates(p.getDateParcel(), now) < 0;
 		}).collect(Collectors.toList());
@@ -209,6 +204,7 @@ public class MatriculationParcelsAgreementController implements Initializable{
 		Agreement agreement = new Agreement();
 		matriculation.getAgreements().add(agreement);
 		agreement.setMatriculation(matriculation);
+		agreement.setValueToConsider(comboBoxValueToConsider.getSelectionModel().getSelectedItem());
 		// change situation of selected parcels to ACORDO (agreement)
 		// and  vinculate parcels of matriculation with the agreement
 		selectedParcels.forEach(p -> {
