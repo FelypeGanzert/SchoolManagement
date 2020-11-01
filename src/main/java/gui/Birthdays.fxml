@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BirthdaysController">
 	<content>
 		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
@@ -42,7 +42,7 @@
 								<HBox alignment="CENTER" spacing="10.0">
 									<children>
 										<Label text="Mês:" />
-										<JFXComboBox minWidth="-Infinity" prefWidth="150.0" />
+										<JFXComboBox fx:id="comboBoxMonth" minWidth="-Infinity" prefWidth="150.0" />
 									</children>
 									<padding>
 										<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -54,13 +54,13 @@
 										<HBox spacing="15.0">
 											<children>
 												<JFXRadioButton text="Todos">
-													<toggleGroup>
-														<ToggleGroup fx:id="status_aluno" />
-													</toggleGroup>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="studentStatus" />
+                                       </toggleGroup>
 												</JFXRadioButton>
-												<JFXRadioButton selected="true" text="Ativos" toggleGroup="$status_aluno" />
-												<JFXRadioButton text="Aguardando" toggleGroup="$status_aluno" />
-												<JFXRadioButton text="Inativos" toggleGroup="$status_aluno" />
+												<JFXRadioButton selected="true" text="Ativos" toggleGroup="$studentStatus" />
+												<JFXRadioButton text="Aguardando" toggleGroup="$studentStatus" />
+												<JFXRadioButton text="Inativos" toggleGroup="$studentStatus" />
 											</children>
 										</HBox>
 									</children>
@@ -74,12 +74,12 @@
 										<HBox spacing="15.0">
 											<children>
 												<JFXRadioButton selected="true" text="Todos">
-													<toggleGroup>
-														<ToggleGroup fx:id="sexo_aluno" />
-													</toggleGroup>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="studentGender" />
+                                       </toggleGroup>
 												</JFXRadioButton>
-												<JFXRadioButton text="Feminino" toggleGroup="$sexo_aluno" />
-												<JFXRadioButton text="Masculino" toggleGroup="$sexo_aluno" />
+												<JFXRadioButton text="Feminino" toggleGroup="$studentGender" />
+												<JFXRadioButton text="Masculino" toggleGroup="$studentGender" />
 											</children>
 										</HBox>
 									</children>
@@ -89,7 +89,7 @@
 								</HBox>
 								<HBox alignment="CENTER">
 									<children>
-										<JFXButton ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="PROCURAR" textFill="WHITE">
+										<JFXButton onAction="#handleBtnFind" ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="PROCURAR" textFill="WHITE">
 											<font>
 												<Font name="System Bold" size="16.0" />
 											</font>
@@ -107,20 +107,20 @@
 								</HBox>
 								<HBox alignment="CENTER">
 									<children>
-										<Label text="total de aniversariantes no mês escolhido" />
+										<Label fx:id="labelTotalResults" />
 									</children>
                            <padding>
                               <Insets bottom="5.0" top="5.0" />
                            </padding>
 								</HBox>
-								<TableView maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" VBox.vgrow="ALWAYS">
+								<TableView fx:id="tableBirthdays" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" VBox.vgrow="ALWAYS">
 									<placeholder>
 										<Label text="Não há aniversariantes" />
 									</placeholder>
 									<columns>
-										<TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Dia" />
-										<TableColumn maxWidth="80.0" minWidth="80.0" text="Sexo" />
-										<TableColumn maxWidth="400.0" minWidth="-Infinity" prefWidth="350.0" text="Aluno" />
+										<TableColumn fx:id="columnDay" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" style="-fx-alignment: center;" text="Dia" />
+										<TableColumn fx:id="columnGender" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Sexo" />
+										<TableColumn fx:id="columnName" maxWidth="400.0" minWidth="-Infinity" prefWidth="350.0" style="-fx-alignment: center-left;" text="Aluno" />
 									</columns>
 									<columnResizePolicy>
 										<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -128,7 +128,7 @@
 								</TableView>
 								<HBox alignment="CENTER">
 									<children>
-										<JFXButton ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="IMPRIMIR" textFill="WHITE">
+										<JFXButton onAction="#handleBtnPrint" ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="IMPRIMIR" textFill="WHITE">
 											<font>
 												<Font name="System Bold" size="16.0" />
 											</font>
