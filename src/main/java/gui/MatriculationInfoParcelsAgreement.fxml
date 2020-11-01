@@ -17,7 +17,7 @@
          <children>
             <HBox spacing="10.0">
                <children>
-                  <JFXButton onAction="#handleBtnPrint" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Imprimir" textFill="WHITE">
+                  <JFXButton fx:id="btnPrint" onAction="#handleBtnPrint" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Imprimir" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -32,7 +32,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton onAction="#handleBtnCancelAgreement" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Cancelar Acordo" textFill="WHITE">
+                  <JFXButton fx:id="btnCancelAgreement" onAction="#handleBtnCancelAgreement" ripplerFill="#03344d" style="-fx-background-color: #1167B1; -fx-cursor: hand;" text="Anular Acordo" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>

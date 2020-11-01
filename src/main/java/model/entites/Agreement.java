@@ -58,6 +58,9 @@ public class Agreement {
 	@Where(clause = "excluido is null")
 	private List<Parcel> normalParcels = new ArrayList<>();
 
+	@Column (name = "cancelado", columnDefinition = "boolean default null")
+	private boolean canceled;
+	
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;
 	

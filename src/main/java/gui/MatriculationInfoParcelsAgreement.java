@@ -3,8 +3,14 @@ package gui;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
+
+import db.DBFactory;
+import db.DbException;
+import gui.util.Alerts;
 import gui.util.DateUtil;
 import gui.util.FXMLPath;
 import gui.util.Icons;
@@ -17,19 +23,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.util.Callback;
+import model.dao.MatriculationDao;
 import model.entites.Agreement;
 import model.entites.AgreementParcel;
 import model.entites.Parcel;
 
 public class MatriculationInfoParcelsAgreement implements Initializable{
 	
+	@FXML private JFXButton btnCancelAgreement;
+	@FXML private JFXButton btnPrint;
 	@FXML private Label labelDate;
 	@FXML private Label labelAgreementBy;
 	@FXML private Label labelNormalParcels;
@@ -45,6 +57,7 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 	@FXML private TableColumn<AgreementParcel, String> columnPaymentReceivedBy;
 	@FXML private TableColumn<AgreementParcel, AgreementParcel> columnButton;
 	
+	private Agreement agreement;
 	private MatriculationInfoController matriculationInfoController;
 	private MatriculationInfoParcelsAgreement currentMatriculationInfoParcelsAgreement;
 	
@@ -59,8 +72,43 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 	}
 	
 	public void handleBtnCancelAgreement(ActionEvent event) {
-		// ========== TO DO ========
-		System.out.println("Clicked to cancel agreement");
+		// Confirmation to cancel agreement
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Anular acordo");
+		alert.setHeaderText("Tem certeza que deseja anular o acordo #" + agreement.getCode() + " ? ");
+		alert.setContentText("Todas as parcelas desse acordo que não estiverem com o status igual a " +
+				"PAGA serão desvinculadas desse acordo.");
+		alert.initOwner(Utils.currentStage(event));
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			agreement.setCanceled(true);
+			// unlinks agreement from normal parel that are not paid
+			for(Parcel p : agreement.getNormalParcels()){
+				if(!p.getSituation().equalsIgnoreCase(ParcelStatusEnum.PAGA.toString())) {
+					p.setSituation(ParcelStatusEnum.ABERTA.toString());
+					p.setAgreement(null);
+				}
+			}
+			// set situation to all open parcels (from agreement) to canceled
+			for(AgreementParcel p : agreement.getParcels()) {
+				if(p.getSituation().equals(ParcelStatusEnum.ABERTA.toString())) {
+					p.setSituation(ParcelStatusEnum.CANCELADA.toString());					
+				}
+			}
+			// Updated matriculation in DB
+			try {
+				MatriculationDao matriculationDao = new MatriculationDao(DBFactory.getConnection());
+				// Update matriculation with the agreement created
+				if (agreement.getMatriculation().getCode() != null) {
+					matriculationDao.update(agreement.getMatriculation());
+				}
+				this.onDataChanged();
+			} catch (DbException e) {
+				Alerts.showAlert("Erro de conexão com o banco de dados", "DBException", e.getMessage(), AlertType.ERROR,
+						Utils.currentStage(event));
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void handleBtnPrint(ActionEvent event) {
@@ -145,6 +193,7 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 	}
 
 	public void setAgreement(Agreement agreement) {
+		this.agreement = agreement;
 		// agreement info
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		labelDate.setText(sdf.format(agreement.getDateAgreement()));
@@ -159,6 +208,14 @@ public class MatriculationInfoParcelsAgreement implements Initializable{
 		ObservableList<AgreementParcel> parcelsObs = FXCollections.observableArrayList(agreement.getParcels());
 		tableParcels.setItems(parcelsObs);
 		tableParcels.refresh();
+		// disable buttons if agreement is canceled
+		if(agreement.isCanceled()) {
+			btnCancelAgreement.setDisable(true);
+			btnPrint.setDisable(true);
+		} else  {
+			btnCancelAgreement.setDisable(false);
+			btnPrint.setDisable(false);
+		}
 	}
 	
 	public void onDataChanged() {

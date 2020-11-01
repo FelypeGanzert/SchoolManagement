@@ -189,7 +189,7 @@ public class MatriculationParcelsAgreementController implements Initializable{
 			System.out.println("Erro durante conversão para verificar datas...");
 			e.printStackTrace();
 		}
-		// check if there 0 selected parcel, this cant happen
+		// check if there 0 selected parcel, this can't happen
 		List<Parcel> selectedParcels = lateParcels.stream().filter(p -> p.isSelected()).collect(Collectors.toList());
 		if(selectedParcels.size() <= 0) {
 			Alerts.showAlert("Nada para acordar", "Nada selecionado.",
