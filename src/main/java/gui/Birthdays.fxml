@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<GridPane minHeight="-Infinity" minWidth="-Infinity">
+			<columnConstraints>
+				<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="450.0" />
+				<ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+			</columnConstraints>
+			<rowConstraints>
+				<RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+			</rowConstraints>
+			<children>
+				<Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="cake" />
+				<VBox minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1">
+					<children>
+						<HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);" VBox.vgrow="NEVER">
+							<children>
+								<Label text="ANIVERSARIANTES" textFill="WHITE">
+									<font>
+										<Font name="System Bold" size="25.0" />
+									</font>
+								</Label>
+							</children>
+							<padding>
+								<Insets left="20.0" right="20.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER_LEFT" spacing="10.0" VBox.vgrow="SOMETIMES">
+							<children>
+								<Label text="Mês:" />
+								<JFXComboBox minWidth="-Infinity" prefWidth="150.0" />
+							</children>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+							<padding>
+								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER_LEFT" spacing="25.0" VBox.vgrow="NEVER">
+							<children>
+								<Label minWidth="-Infinity" text="Alunos:" />
+                        <HBox spacing="15.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXRadioButton text="Todos">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="status_aluno" />
+                                 </toggleGroup>
+                              </JFXRadioButton>
+                              <JFXRadioButton selected="true" text="Ativos" toggleGroup="$status_aluno" />
+                              <JFXRadioButton text="Aguardando">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="status_aluno1" />
+                                 </toggleGroup>
+                              </JFXRadioButton>
+                              <JFXRadioButton text="Inativos" toggleGroup="$status_aluno1" />
+                           </children>
+                        </HBox>
+							</children>
+							<padding>
+								<Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER_LEFT" spacing="25.0" VBox.vgrow="NEVER">
+							<children>
+								<Label text="Sexo:" />
+                        <HBox spacing="15.0">
+                           <children>
+      								<JFXRadioButton selected="true" text="Todos">
+      									<toggleGroup>
+      										<ToggleGroup fx:id="sexo_aluno" />
+      									</toggleGroup>
+      								</JFXRadioButton>
+      								<JFXRadioButton text="Feminino" toggleGroup="$sexo_aluno" />
+      								<JFXRadioButton text="Masculino" toggleGroup="$sexo_aluno" />
+                           </children>
+                        </HBox>
+							</children>
+							<padding>
+								<Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER" VBox.vgrow="NEVER">
+							<children>
+								<JFXButton ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="PROCURAR" textFill="WHITE">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<HBox.margin>
+										<Insets />
+									</HBox.margin>
+									<padding>
+										<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+									</padding>
+								</JFXButton>
+							</children>
+							<padding>
+								<Insets bottom="10.0" top="10.0" />
+							</padding>
+						</HBox>
+						<HBox alignment="CENTER" VBox.vgrow="NEVER">
+							<children>
+								<Label text="total de aniversariantes no mês escolhido" />
+							</children>
+						</HBox>
+						<TableView minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" VBox.vgrow="ALWAYS">
+							<placeholder>
+								<Label text="Não há aniversariantes" />
+							</placeholder>
+							<columns>
+								<TableColumn maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Dia" />
+								<TableColumn maxWidth="80.0" minWidth="80.0" text="Sexo" />
+								<TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="350.0" text="Aluno" />
+							</columns>
+							<VBox.margin>
+								<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+							</VBox.margin>
+							<columnResizePolicy>
+								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+							</columnResizePolicy>
+						</TableView>
+						<HBox alignment="CENTER" VBox.vgrow="NEVER">
+							<children>
+								<JFXButton ripplerFill="#172d68" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="IMPRIMIR" textFill="WHITE">
+									<font>
+										<Font name="System Bold" size="16.0" />
+									</font>
+									<HBox.margin>
+										<Insets />
+									</HBox.margin>
+									<padding>
+										<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+									</padding>
+								</JFXButton>
+							</children>
+							<padding>
+								<Insets bottom="10.0" top="10.0" />
+							</padding>
+						</HBox>
+					</children>
+				</VBox>
+			</children>
+		</GridPane>
+	</content>
+</ScrollPane>
