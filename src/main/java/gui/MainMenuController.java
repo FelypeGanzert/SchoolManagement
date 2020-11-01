@@ -17,7 +17,6 @@ public class MainMenuController implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
 	}
 	
 	public void hadleBtnShowListStudents(ActionEvent event) {
@@ -26,6 +25,10 @@ public class MainMenuController implements Initializable {
 
 	public void handleBtnShowListResponsibles(ActionEvent event) {
 		Roots.listResponsibles();
+	}
+	
+	public void handleBtnBirthdays(ActionEvent event){
+		Roots.birthdays();
 	}
 
 }

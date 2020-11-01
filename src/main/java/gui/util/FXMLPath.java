@@ -38,5 +38,7 @@ public class FXMLPath {
 	public static final String PERSON_FORM_FIND_REGISTRY = "/gui/PersonFormFindRegistry.fxml";
 	// Contact Form
 	public static final String CONTACT_FORM = "/gui/ContactForm.fxml";
+	// Birthdays
+	public static final String BIRTHDAYS = "/gui/Birthdays.fxml";
 
 }

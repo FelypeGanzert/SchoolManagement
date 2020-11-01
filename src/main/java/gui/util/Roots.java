@@ -49,4 +49,14 @@ public class Roots {
 		mainView.setContent(FXMLPath.MAIN_MENU, initializingAction);
 	}
 
+	// Birthdays
+	public static <T> void birthdays() {
+		birthdays(x -> {});
+	}
+	public static <T> void birthdays(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.BIRTHDAYS, initializingAction);
+	}
+
 }
