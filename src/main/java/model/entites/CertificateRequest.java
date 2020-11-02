@@ -22,7 +22,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity(name = "certificado_pedido")
 @Table(name = "certificado_pedido")
-public class CertificateResquest {
+public class CertificateRequest {
 	
 	@EqualsAndHashCode.Include
 	@Id
