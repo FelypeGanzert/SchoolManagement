@@ -42,5 +42,7 @@ public class FXMLPath {
 	public static final String BIRTHDAYS = "/gui/Birthdays.fxml";
 	// Certificates
 	public static final String CERTIFICATES_MENU = "/gui/CertificatesMenu.fxml";
+	public static final String CERTIFICATES_REQUESTS = "/gui/CertificatesRequests.fxml";
+	public static final String CERTIFICATES_ALL_STUDENTS = "/gui/CertificatesAllStudents.fxml";
 
 }

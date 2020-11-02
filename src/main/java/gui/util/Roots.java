@@ -59,7 +59,7 @@ public class Roots {
 		mainView.setContent(FXMLPath.BIRTHDAYS, initializingAction);
 	}
 
-	// === Certificates
+	// === Certificates ====
 	public static <T> void certificatesMenu() {
 		certificatesMenu(x -> {});
 	}
@@ -67,6 +67,24 @@ public class Roots {
 		// Get mainvViewController from Globe to set content in
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.CERTIFICATES_MENU, initializingAction);
+	}
+	
+	public static <T> void certificatesRequests() {
+		certificatesRequests(x -> {});
+	}
+	public static <T> void certificatesRequests(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.CERTIFICATES_REQUESTS, initializingAction);
+	}
+	
+	public static <T> void certificatesAllStudents() {
+		certificatesAllStudents(x -> {});
+	}
+	public static <T> void certificatesAllStudents(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.CERTIFICATES_ALL_STUDENTS, initializingAction);
 	}
 
 }

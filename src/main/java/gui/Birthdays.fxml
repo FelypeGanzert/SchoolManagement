@@ -18,7 +18,7 @@
 	<content>
 		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
-				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);">
+				<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" style="-fx-background-color: rgb(64,89,169);">
 					<children>
 						<Label text="ANIVERSARIANTES" textFill="WHITE">
 							<font>
