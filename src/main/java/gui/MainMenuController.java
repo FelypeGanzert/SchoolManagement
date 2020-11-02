@@ -30,5 +30,9 @@ public class MainMenuController implements Initializable {
 	public void handleBtnBirthdays(ActionEvent event){
 		Roots.birthdays();
 	}
+	
+	public void handleBtnCertificates(ActionEvent event) {
+		Roots.certificatesMenu();
+	}
 
 }

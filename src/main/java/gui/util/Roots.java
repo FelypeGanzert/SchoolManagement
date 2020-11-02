@@ -59,4 +59,14 @@ public class Roots {
 		mainView.setContent(FXMLPath.BIRTHDAYS, initializingAction);
 	}
 
+	// === Certificates
+	public static <T> void certificatesMenu() {
+		certificatesMenu(x -> {});
+	}
+	public static <T> void certificatesMenu(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.CERTIFICATES_MENU, initializingAction);
+	}
+
 }

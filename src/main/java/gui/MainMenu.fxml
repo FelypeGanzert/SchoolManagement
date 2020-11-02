@@ -25,6 +25,11 @@
                   <Font size="21.0" />
                </font>
             </JFXButton>
+            <JFXButton layoutX="192.0" layoutY="214.0" onAction="#handleBtnCertificates" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Certificados" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </JFXButton>
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

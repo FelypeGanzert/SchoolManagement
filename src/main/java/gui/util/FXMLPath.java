@@ -40,5 +40,7 @@ public class FXMLPath {
 	public static final String CONTACT_FORM = "/gui/ContactForm.fxml";
 	// Birthdays
 	public static final String BIRTHDAYS = "/gui/Birthdays.fxml";
+	// Certificates
+	public static final String CERTIFICATES_MENU = "/gui/CertificatesMenu.fxml";
 
 }
