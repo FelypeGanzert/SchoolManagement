@@ -20,8 +20,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity(name = "certificado_pedido")
-@Table(name = "certificado_pedido")
+@Entity(name = "certificado_historico")
+@Table(name = "certificado_historico")
 public class CertificateHistoric {
 	
 	@EqualsAndHashCode.Include
@@ -38,7 +38,7 @@ public class CertificateHistoric {
 	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
 	private Date startDate;
 	
-	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
+	@Column (name = "data_termino", columnDefinition = "DATETIME default null")
 	private Date endDate;
 	
 	@Column (name = "carga_horaria", columnDefinition = "int default null")

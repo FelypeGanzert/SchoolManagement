@@ -38,7 +38,7 @@ public class CertificateRequest {
 	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
 	private Date startDate;
 	
-	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
+	@Column (name = "data_termino", columnDefinition = "DATETIME default null")
 	private Date endDate;
 	
 	@Column (name = "carga_horaria", columnDefinition = "int default null")
