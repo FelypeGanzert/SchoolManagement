@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
+			<children>
+				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
+					<children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../png_icons/back_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+      						<Label text="HISTÓRICO DE EMISSÃO" textFill="WHITE">
+      							<font>
+      								<Font name="System Bold" size="25.0" />
+      							</font>
+      						</Label>
+                     </children>
+                  </HBox>
+					</children>
+					<padding>
+						<Insets left="20.0" right="20.0" />
+					</padding>
+				</HBox>
+            <HBox alignment="CENTER_LEFT" maxWidth="1200.0" spacing="25.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../png_icons/search.png" />
+                           </image>
+                        </ImageView>
+                        <JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="250.0" promptText="Filtrar por nome" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="20.0">
+                     <children>
+                        <Label text="Tipo do Filtro:" />
+                        <JFXRadioButton style="-fx-cursor: hand;" text="contém">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="filterType" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton selected="true" style="-fx-cursor: hand;" text="inicia com" toggleGroup="$filterType" />
+                        <Label fx:id="labelTotalStudentsSearch">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <JFXButton alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
+                           </padding>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+				<HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
+                    <columns>
+                      <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Código" />
+                      <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Aluno" />
+                        <TableColumn maxWidth="400.0" minWidth="400.0" prefWidth="400.0" text="Curso" />
+                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Início" />
+                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Término" />
+                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Carga Horária" />
+                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Data Emissão" />
+                    </columns>
+                  </TableView>
+               </children>
+				</HBox>
+			</children>
+		</VBox>
+	</content>
+</ScrollPane>
