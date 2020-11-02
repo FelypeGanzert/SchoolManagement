@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CertificatesMenuController">
 	<content>
 		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
@@ -28,7 +28,7 @@
 				</HBox>
 				<HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
+                  <Button mnemonicParsing="false" onAction="#handleBtnRequests" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
                      <graphic>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" spacing="15.0">
                            <children>
@@ -37,11 +37,20 @@
                                     <Image url="@../png_icons/notification_white.png" />
                                  </image>
                               </ImageView>
-                              <Label minWidth="-Infinity" text="SOLICITAÇÕES (XX)" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="16.0" />
-                                 </font>
-                              </Label>
+                              <HBox alignment="CENTER" spacing="5.0">
+                                 <children>
+                                    <Label minWidth="-Infinity" text="SOLICITAÇÕES" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="labelOpenRequests" layoutX="75.0" layoutY="10.0" minWidth="-Infinity" text="(XX)" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -49,7 +58,7 @@
                         </VBox>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
+                  <Button mnemonicParsing="false" onAction="#handleBtnAllStudents" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
                      <graphic>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" spacing="15.0">
                            <children>
@@ -70,7 +79,7 @@
                         </VBox>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" prefWidth="230.0" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
+                  <Button mnemonicParsing="false" onAction="#handleBtnHistoric" prefWidth="230.0" style="-fx-background-color: #187BCD; -fx-cursor: hand;">
                      <graphic>
                         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="250.0" spacing="15.0">
                            <children>

@@ -86,5 +86,14 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.CERTIFICATES_ALL_STUDENTS, initializingAction);
 	}
+	
+	public static <T> void certificatesHistoric() {
+		certificatesHistoric(x -> {});
+	}
+	public static <T> void certificatesHistoric(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.CERTIFICATES_HISTORIC, initializingAction);
+	}
 
 }

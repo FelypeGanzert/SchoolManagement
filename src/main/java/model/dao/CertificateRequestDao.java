@@ -68,9 +68,9 @@ public class CertificateRequestDao {
 	}
 	
 	public int getNumberOfOpenRequests() {
-		TypedQuery<Integer> q = DBFactory.getConnection()
-				.createQuery("SELECT COUNT(id) FROM certificado_pedido WHERE excluido IS NULL", Integer.class);
-		int numberOfOpenRequests = q.getSingleResult();
+		TypedQuery<Long> q = DBFactory.getConnection()
+				.createQuery("SELECT COUNT(id) FROM certificado_pedido WHERE excluido IS NULL", Long.class);
+		int numberOfOpenRequests = (int) (long) q.getSingleResult();
 		return numberOfOpenRequests;
 	}
 }
