@@ -76,6 +76,15 @@ public class StudentCoursesController implements Initializable{
 		this.student = student;
 		updateForm();
 	}
+	
+	public void handleBtnCertificateRequest(ActionEvent event) {
+		// load view to add a new certificate request
+		Utils.loadView(this, true, FXMLPath.CERTIFICATES_REQUEST_FORM, Utils.currentStage(event),
+				"Solicitar Certificado", false,
+				(CertificateRequestFormController controller) -> {
+					controller.setDependences(student);
+				});
+	}
 
 	public void handleBtnAddCourse(ActionEvent event) {
 		Utils.loadView(this, true, FXMLPath.COURSE_FORM, Utils.currentStage(event), "Adicionar curso", false,

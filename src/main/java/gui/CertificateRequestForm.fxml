@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CertificateRequestFormController">
    <children>
       <VBox minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -55,7 +55,7 @@
                   <Label prefWidth="400.0" text="O Certificado irá sair exatamente de acordo com as informações inseridas aqui, portanto NÃO USE ABREVIAÇÕES e em caso de dúvida cheque com alguém com mais autoridade para saber o que deve ser inserido" textAlignment="JUSTIFY" wrapText="true" />
                </children>
             </VBox>
-            <VBox minHeight="-Infinity" minWidth="-Infinity">
+            <VBox minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
                <children>
                   <VBox alignment="CENTER" minHeight="-Infinity" prefHeight="120.0" style="-fx-border-color: #5f5f5f; -fx-border-width: 1px 1px 0px 1px;">
                      <padding>
@@ -67,7 +67,7 @@
                               <Label minWidth="-Infinity" text="Curso:" />
                            </children>
                         </HBox>
-                        <JFXTextArea>
+                        <JFXTextArea fx:id="textCourse">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -79,19 +79,19 @@
                         <HBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="10.0">
                            <children>
                               <Label text="Início:" />
-                              <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                              <JFXTextField fx:id="textStartDate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" spacing="10.0">
                            <children>
                               <Label minWidth="-Infinity" text="Término:" />
-                              <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                              <JFXTextField fx:id="textEndDate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                               <Label minWidth="-Infinity" text="Carga Horária:" />
-                              <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                              <JFXTextField fx:id="textCourseLoad" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                            </children>
                         </HBox>
                      </children>
@@ -101,7 +101,7 @@
                   </HBox>
                </children>
                <padding>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
                </padding>
             </VBox>
             <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" minWidth="-Infinity" spacing="30.0">

@@ -60,7 +60,7 @@
                         </HBox>
                         <HBox spacing="20.0">
                            <children>
-      								<JFXButton alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Solicitar Emissão de Certificado" textAlignment="CENTER" textFill="WHITE">
+      								<JFXButton alignment="CENTER" onAction="#handleBtnCertificateRequest" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Solicitar Emissão de Certificado" textAlignment="CENTER" textFill="WHITE">
       									<font>
       										<Font size="15.0" />
       									</font>

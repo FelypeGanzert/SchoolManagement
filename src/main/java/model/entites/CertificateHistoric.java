@@ -29,11 +29,14 @@ public class CertificateHistoric {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column (name = "aluno_codigo", columnDefinition = "int default null")
-	private Integer studentCode;
+	@Column (name = "aluno_id", columnDefinition = "int default null")
+	private Integer studentId;
 	
 	@Column (name = "aluno_nome", columnDefinition = "varchar(50) default null")
 	private String studentName;
+	
+	@Column (name = "curso", columnDefinition = "text default null")
+	private String course;
 	
 	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
 	private Date startDate;
