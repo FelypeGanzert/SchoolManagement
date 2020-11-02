@@ -9,10 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -50,41 +47,43 @@
 				</HBox>
 				<VBox maxWidth="1050.0" spacing="30.0" VBox.vgrow="ALWAYS">
 					<children>
-						<GridPane>
-							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-							</columnConstraints>
-							<rowConstraints>
-								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-							</rowConstraints>
-							<children>
-								<HBox spacing="15.0" GridPane.halignment="CENTER">
-									<children>
-										<Label fx:id="labelStudentName" text="Felype Aurélio Ganzert">
+                  <HBox>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                           <children>
+										<Label fx:id="labelStudentName" text="Aluno" HBox.hgrow="ALWAYS">
 											<font>
 												<Font name="System Bold" size="18.0" />
 											</font>
 										</Label>
-									</children>
-									<padding>
-										<Insets bottom="15.0" top="15.0" />
-									</padding>
-								</HBox>
-								<JFXButton fx:id="btnAddCourse" alignment="CENTER" onAction="#handleBtnAddCourse" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="adicionar" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1">
-									<graphic>
-										<ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7">
-											<image>
-												<Image url="@../png_icons/add_white.png" />
-											</image>
-										</ImageView>
-									</graphic>
-									<font>
-										<Font size="15.0" />
-									</font>
-								</JFXButton>
-							</children>
-						</GridPane>
+                           </children>
+                        </HBox>
+                        <HBox spacing="20.0">
+                           <children>
+      								<JFXButton alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Solicitar Emissão de Certificado" textAlignment="CENTER" textFill="WHITE">
+      									<font>
+      										<Font size="15.0" />
+      									</font>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
+      								</JFXButton>
+                              <JFXButton fx:id="btnAddCourse1" alignment="CENTER" onAction="#handleBtnAddCourse" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="adicionar" textAlignment="CENTER" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7">
+                                       <image>
+                                          <Image url="@../png_icons/add_white.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
 						<TableView fx:id="tableCourses" VBox.vgrow="ALWAYS">
 							<placeholder>
 								<Label text="Não há nenhum curso registrado" />
