@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import db.DBFactory;
 import db.DbException;
 import model.entites.CertificateRequest;
 
@@ -64,5 +65,12 @@ public class CertificateRequestDao {
 		}
 		TypedQuery<CertificateRequest> query = manager.createQuery("SELECT cr FROM certificao_pedido cr where excluido is null ORDER BY data_pedido DESC", CertificateRequest.class);
 		return query.getResultList();
+	}
+	
+	public int getNumberOfOpenRequests() {
+		TypedQuery<Integer> q = DBFactory.getConnection()
+				.createQuery("SELECT COUNT(id) FROM certificado_pedido WHERE excluido IS NULL", Integer.class);
+		int numberOfOpenRequests = q.getSingleResult();
+		return numberOfOpenRequests;
 	}
 }
