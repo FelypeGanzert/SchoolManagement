@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 
 import db.DBFactory;
 import db.DbException;
@@ -47,6 +48,8 @@ public class StudentCoursesController implements Initializable{
 	@FXML private TableColumn<Course, Integer> columnMatriculationCode;
 	@FXML private TableColumn<Course, Course> columnEdit;
 	@FXML private TableColumn<Course, Course> columnDelete;
+	@FXML private JFXTextField textDay;
+	@FXML private JFXTextField textHour;
 	@FXML private JFXTextArea textAreaMatriculationServiceContracted;
 	
 	private Student student;
@@ -59,6 +62,8 @@ public class StudentCoursesController implements Initializable{
 		tableCourses.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if(newValue != null) {
 				Course selectedCourse = newValue;
+				textDay.setText(selectedCourse.getDay());
+				textHour.setText(selectedCourse.getHour());
 				if(selectedCourse.getMatriculationCode() != null) {
 					// we will try to find a corresponding matriculation code on student
 					for(Matriculation m : selectedCourse.getStudent().getMatriculations()) {

@@ -3,6 +3,7 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -14,6 +15,7 @@ import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.event.ActionEvent;
@@ -29,9 +31,11 @@ import model.entites.Student;
 public class CourseFormController implements Initializable{
 
 	@FXML private JFXTextField textCourseName;
+	@FXML private JFXTextField textProfessor;
 	@FXML private JFXTextField textStartDate;
 	@FXML private JFXTextField textEndDate;
-	@FXML private JFXTextField textProfessor;
+	@FXML private JFXTextField textDay;
+	@FXML private JFXTextField textHour;
 	@FXML private JFXTextField textCourseLoad;
 	@FXML private JFXComboBox<Matriculation> comboBoxMatriculation;
 	
@@ -44,7 +48,7 @@ public class CourseFormController implements Initializable{
 		// Constraints: name, professor
 		textCourseName.setValidators(Validators.getRequiredFieldValidator());
 		Constraints.setTextFieldMaxLength(textCourseName, 50);
-		Constraints.setTextFieldMaxLength(textProfessor, 50);
+		Constraints.setTextFieldMaxLength(textProfessor, 30);
 		// Date Validator: start and end
 		RegexValidator dateValidator = new RegexValidator("Inválido");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
@@ -56,6 +60,9 @@ public class CourseFormController implements Initializable{
 		// Constraints: Course Load
 		Constraints.setTextFieldIntegerYear(textCourseLoad);
 		Constraints.setTextFieldMaxLength(textCourseLoad, 5);
+		// constraints: day and hour
+		Constraints.setTextFieldMaxLength(textDay, 30);
+		Constraints.setTextFieldMaxLength(textHour, 30);
 	}
 
 	// DEPENDENCES
@@ -111,6 +118,8 @@ public class CourseFormController implements Initializable{
 		if(course.getCourseLoad() != null) {
 			textCourseLoad.setText(Integer.toString(course.getCourseLoad()));			
 		}
+		textDay.setText(course.getDay());
+		textHour.setText(course.getHour());
 	}
 	
 	public void handleBtnCancel(ActionEvent event) {
@@ -143,16 +152,20 @@ public class CourseFormController implements Initializable{
 				if(course.getStartDate() != null && course.getEndDate() != null) {
 					if(course.getStartDate().compareTo(course.getEndDate()) > 0) {
 						Alerts.showAlert("Inválido", "A data de término é anterior a data de início.",
-								"É impossível o aluno ter terminado um curso antes de ter iniciado.",
+								"É impossível o aluno ter terminado o curso antes de ter iniciado",
 								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
 						return;
 					}
 				}
-				// Check if start/end date is after of 'today', this can't happen...
+				// start and end date: must be in the past or one month in future in the max
+				Date oneMonthInFuture = new Date();
+				Calendar c = DateUtil.dateToCalendar(oneMonthInFuture);
+				c.add(Calendar.MONTH, 1);
+				oneMonthInFuture = DateUtil.calendarToDate(c);
 				if(course.getStartDate() != null) {
-					if(course.getStartDate().compareTo(new Date()) > 0) {
-						Alerts.showAlert("Inválido", "A data de início é posterior a data atual do computador.",
+					if(course.getStartDate().compareTo(oneMonthInFuture) > 0) {
+						Alerts.showAlert("Inválido", "A data de início é 1 mês posterior à data atual.",
 								"Você não pode fazer o registro de algo que ainda não aconteceu.",
 								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
@@ -160,8 +173,8 @@ public class CourseFormController implements Initializable{
 					}
 				}
 				if(course.getEndDate() != null) {
-					if(course.getEndDate().compareTo(new Date()) > 0) {
-						Alerts.showAlert("Inválido", "A data de término é posterior a data atual do computador.",
+					if(course.getEndDate().compareTo(oneMonthInFuture) > 0) {
+						Alerts.showAlert("Inválido", "A data de término é 1 mês posterior à data atual.l.",
 								"Você não pode fazer o registro de algo que ainda não aconteceu.",
 								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
@@ -175,6 +188,9 @@ public class CourseFormController implements Initializable{
 			// professor and courseLoad
 			course.setProfessor(textProfessor.getText());
 			course.setCourseLoad(Utils.tryParseToInt(textCourseLoad.getText()));
+			// day and hour
+			course.setDay(textDay.getText());
+			course.setHour(textHour.getText());
 			// associated matriculation
 			if(comboBoxMatriculation.getSelectionModel().getSelectedItem() != null) {
 				course.setMatriculationCode(comboBoxMatriculation.getSelectionModel().getSelectedItem().getCode());
