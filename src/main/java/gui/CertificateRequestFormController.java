@@ -3,6 +3,7 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -16,6 +17,7 @@ import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.DateUtil;
 import gui.util.Utils;
 import gui.util.Validators;
 import javafx.event.ActionEvent;
@@ -90,10 +92,15 @@ public class CertificateRequestFormController implements Initializable{
 					return;
 				}
 			}
-			// Check if start/end date is after of 'today', this can't happen...
+			// start: must be in the past
+			// end: must be in the past or one month in future in the max
+			Date oneMonthInFuture = new Date();
+			Calendar c = DateUtil.dateToCalendar(oneMonthInFuture);
+			c.add(Calendar.MONTH, 1);
+			oneMonthInFuture = DateUtil.calendarToDate(c);
 			if (startDate != null) {
 				if (startDate.compareTo(new Date()) > 0) {
-					Alerts.showAlert("Inválido", "A data de início é posterior a data atual do computador.",
+					Alerts.showAlert("Inválido", "A data de início é 1 posterior a data atual.",
 							"Você não pode fazer a solicitação de algo que ainda não aconteceu.", AlertType.ERROR,
 							Utils.currentStage(event));
 					// stop the method
@@ -101,8 +108,8 @@ public class CertificateRequestFormController implements Initializable{
 				}
 			}
 			if(endDate != null) {
-				if(endDate.compareTo(new Date()) > 0) {
-					Alerts.showAlert("Inválido", "A data de término é posterior a data atual do computador.",
+				if(endDate.compareTo(oneMonthInFuture) > 0) {
+					Alerts.showAlert("Inválido", "A data de término é 1 mês posterior a data atual.",
 							"Você não pode fazer a solicitação de algo que ainda não aconteceu.",
 							AlertType.ERROR, Utils.currentStage(event));
 					// stop the method
