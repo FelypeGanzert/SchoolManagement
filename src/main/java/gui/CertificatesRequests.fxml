@@ -21,7 +21,7 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
 					<children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
@@ -49,17 +49,17 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
-                  <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tableRequests" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Código" />
-                      <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Nome" />
-                        <TableColumn maxWidth="350.0" minWidth="350.0" prefWidth="350.0" text="Curso" />
-                        <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Início" />
-                        <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Término" />
-                        <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Carga Horária" />
-                        <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Solicitado em" />
-                        <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-                        <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                      <TableColumn fx:id="columnStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Código" />
+                      <TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" style="-fx-alignment: center;" text="Nome" />
+                        <TableColumn fx:id="columnCourse" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" style="-fx-alignment: center;" text="Curso" />
+                        <TableColumn fx:id="columnStartDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Início" />
+                        <TableColumn fx:id="columnEndDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Término" />
+                        <TableColumn fx:id="columnCourseLoad" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Carga Horária" />
+                        <TableColumn fx:id="columnRequestDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Solicitado em" />
+                        <TableColumn fx:id="columnAddToPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
+                        <TableColumn fx:id="columnRemoveRequest" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
                     </columns>
                   </TableView>
                </children>
@@ -70,7 +70,7 @@
                      <children>
                         <VBox alignment="CENTER" spacing="5.0" style="-fx-background-color: #023e8a;">
                            <children>
-                              <Label minWidth="-Infinity" text="Nome do aluno" textFill="WHITE" />
+                              <Label fx:id="labelSelectedStudentName" minWidth="-Infinity" text="Nome do aluno" textFill="WHITE" />
                               <Label layoutX="20.0" layoutY="15.0" minWidth="-Infinity" text="Matrículas" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
@@ -81,12 +81,12 @@
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </padding>
                         </VBox>
-                        <TableView minWidth="-Infinity" prefWidth="320.0">
+                        <TableView fx:id="tableMatriculations" minWidth="-Infinity" prefWidth="320.0">
                           <columns>
-                            <TableColumn maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ID" />
-                            <TableColumn maxWidth="80.0" minWidth="80.0" text="Data" />
-                              <TableColumn maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Situação" />
-                              <TableColumn maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="90.0" text="Parcelas" />
+                            <TableColumn fx:id="columnMatriculationCode" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
+                            <TableColumn fx:id="columnMatriculationDate" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Data" />
+                              <TableColumn fx:id="columnMatriculationStatus" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Situação" />
+                              <TableColumn fx:id="columnMatriculationParcels" maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Parcelas" />
                           </columns>
                         </TableView>
                      </children>
@@ -105,11 +105,11 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </VBox>
-                        <TableView minWidth="-Infinity" prefWidth="350.0">
+                        <TableView fx:id="tablePrint" minWidth="-Infinity" prefWidth="350.0">
                            <columns>
-                              <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Código" />
-                              <TableColumn maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" text="Nome" />
-                              <TableColumn maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
+                              <TableColumn fx:id="columnPrintStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Código" />
+                              <TableColumn fx:id="columnPrintStudentName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" text="Nome" />
+                              <TableColumn fx:id="columnPrintRemoveFromPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
                            </columns>
                         </TableView>
                      </children>
@@ -126,7 +126,7 @@
                                     <Label minWidth="-Infinity" text="Curso:" />
                                  </children>
                               </HBox>
-                              <JFXTextArea>
+                              <JFXTextArea fx:id="textCourse">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -138,13 +138,13 @@
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <Label text="Início:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textStartDate" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" spacing="10.0">
                                  <children>
                                     <Label text="Término:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textEndDate" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -157,13 +157,13 @@
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <Label text="Carga Horária:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textCourseLoad" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <Label text="Data de Emissão:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textPrintDate" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -176,13 +176,13 @@
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <Label text="Ata:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textRecordNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" spacing="10.0">
                                  <children>
                                     <Label text="Página:" />
-                                    <JFXTextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                                    <JFXTextField fx:id="textRecordPageNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -192,7 +192,7 @@
                         </HBox>
                         <HBox alignment="CENTER">
                            <children>
-                              <JFXButton fx:id="btnRegister" alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="GERAR" textAlignment="CENTER" textFill="WHITE">
+                              <JFXButton alignment="CENTER" onAction="#handleBtnPrint" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="GERAR" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>

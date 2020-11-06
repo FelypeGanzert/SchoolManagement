@@ -63,7 +63,7 @@ public class CertificateRequestDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<CertificateRequest> query = manager.createQuery("SELECT cr FROM certificao_pedido cr where excluido is null ORDER BY data_pedido DESC", CertificateRequest.class);
+		TypedQuery<CertificateRequest> query = manager.createQuery("SELECT cr FROM certificado_pedido cr where excluido is null ORDER BY data_pedido DESC, aluno_nome ASC", CertificateRequest.class);
 		return query.getResultList();
 	}
 	

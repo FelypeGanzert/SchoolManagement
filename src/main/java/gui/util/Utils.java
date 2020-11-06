@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -22,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -247,6 +249,42 @@ public class Utils {
 			}
 		};
 		tableColumn.setCellFactory(cellFactory);
+	}
+	
+	public static <T> Callback<TableColumn<T, String>, TableCell<T, String>> getWrappingCellFactory() {
+		Callback<TableColumn<T, String>, TableCell<T, String>> WRAPPING_CELL_FACTORY;
+		WRAPPING_CELL_FACTORY = new Callback<TableColumn<T, String>, TableCell<T, String>>() {
+			@Override
+			public TableCell<T, String> call(TableColumn<T, String> param) {
+				TableCell<T, String> tableCell = new TableCell<T, String>() {
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						if (item == getItem()) {
+							return;
+						}
+						super.updateItem(item, empty);
+						if (item == null) {
+							super.setText(null);
+							super.setGraphic(null);
+						} else {
+							super.setText(null);
+							Label l = new Label(item);
+							l.setWrapText(true);
+							// l.setAlignment(Pos.CENTER_LEFT);
+							VBox box = new VBox(l);
+							box.setAlignment(Pos.CENTER_LEFT);
+							l.heightProperty().addListener((observable, oldValue, newValue) -> {
+								box.setPrefHeight(newValue.doubleValue() + 7);
+								Platform.runLater(() -> this.getTableRow().requestLayout());
+							});
+							super.setGraphic(box);
+						}
+					}
+				};
+				return tableCell;
+			}
+		};
+		return WRAPPING_CELL_FACTORY;
 	}
 
 	// To Buttons
