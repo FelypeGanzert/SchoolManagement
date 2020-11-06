@@ -165,7 +165,7 @@ public class CourseFormController implements Initializable{
 				oneMonthInFuture = DateUtil.calendarToDate(c);
 				if(course.getStartDate() != null) {
 					if(course.getStartDate().compareTo(oneMonthInFuture) > 0) {
-						Alerts.showAlert("Inválido", "A data de início é 1 mês posterior à data atual.",
+						Alerts.showAlert("Inválido", "A data de início é 1 mês posterior a data atual.",
 								"Você não pode fazer o registro de algo que ainda não aconteceu.",
 								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method
@@ -174,7 +174,7 @@ public class CourseFormController implements Initializable{
 				}
 				if(course.getEndDate() != null) {
 					if(course.getEndDate().compareTo(oneMonthInFuture) > 0) {
-						Alerts.showAlert("Inválido", "A data de término é 1 mês posterior à data atual.l.",
+						Alerts.showAlert("Inválido", "A data de término é 1 mês posterior a data atual.",
 								"Você não pode fazer o registro de algo que ainda não aconteceu.",
 								AlertType.ERROR, Utils.currentStage(event));
 						// stop the method

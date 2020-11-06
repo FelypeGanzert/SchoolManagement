@@ -62,7 +62,6 @@ public class CertificatesRequestsController implements Initializable{
 	private CertificateRequestDao requestDao;
 	private List<CertificateRequest> requestsList;
 	
-	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Initialize tables
