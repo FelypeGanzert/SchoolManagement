@@ -38,13 +38,19 @@ public class Course {
 	@Column (name = "nome", columnDefinition = "varchar(50) default null")
 	private String name;
 	
+	@Column (name = "dia", columnDefinition = "varchar(30) default null")
+	private String day;
+	
+	@Column (name = "horario", columnDefinition = "varchar(30) default null")
+	private String hour;
+	
 	@Column (name = "data_inicio", columnDefinition = "DATETIME default null")
 	private Date startDate;
 	
 	@Column (name = "data_fim", columnDefinition = "DATETIME default null")
 	private Date endDate;
 	
-	@Column (name = "professor", columnDefinition = "varchar(50) default null")
+	@Column (name = "professor", columnDefinition = "varchar(30) default null")
 	private String professor;
 	
 	@Column (name = "carga_horaria", columnDefinition = "int default null")
