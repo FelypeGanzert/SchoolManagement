@@ -62,19 +62,4 @@ public class AnnotationDao {
 		manager.getTransaction().commit();
 	}
 	
-	public List<Annotation> findAllFromStudent(Student student) throws DbException{
-		if(manager == null) {
-			throw new DbException("DB Connection not instantiated");
-		}
-	    CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
-		CriteriaQuery<Annotation> criteriaQuery = criteriaBuilder.createQuery(Annotation.class);
-		
-		Root<Annotation> root = criteriaQuery.from(Annotation.class);
-		criteriaQuery.select(root).where(criteriaBuilder.isNull(root.get("excluded")));
-		
-		criteriaQuery.where(criteriaBuilder.equal(root.get("student"), student.getId()));
-		TypedQuery<Annotation> typedQuery = manager.createQuery(criteriaQuery);
-		List<Annotation> annotations = typedQuery.getResultList();
-		return annotations;
-	}
 }

@@ -2,18 +2,20 @@ package test;
 
 import java.text.SimpleDateFormat;
 
-import gui.util.Alerts;
-import javafx.scene.control.Alert;
+import db.DBFactory;
+import db.DbException;
+import model.dao.MatriculationDao;
 import model.entites.Annotation;
+import model.entites.Matriculation;
 
 public class Tests {
 
 	public static void main(String[] args) {
 		
 
-		Alert alertProcessing = Alerts.showProcessingScreen(null);
+		//Alert alertProcessing = Alerts.showProcessingScreen(null);
 		
-//		DBFactory.setUnits("localhost");
+		DBFactory.setUnits("localhost");
 //		DBFactory.getConnection();
 //		try {
 //			AnnotationDao annotationDao = new AnnotationDao(DBFactory.getConnection());
@@ -32,6 +34,16 @@ public class Tests {
 //		value = value.replaceFirst("(\\d{3})(\\d)", "$1.$2");
 //		value = value.replaceFirst("(\\d{3})(\\d)", "$1-$2");
 //		System.out.println(value);
+		
+		MatriculationDao mDao = new MatriculationDao(DBFactory.getConnection());
+		try {
+			for(Matriculation m : mDao.findAllFromStudent(151)) {
+				System.out.println("Matricula #" + m.getCode() + ", with " + m.getParcels().size() + " parcels.");
+			}
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

@@ -4,13 +4,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import db.DbException;
 import model.entites.Contact;
-import model.entites.Student;
 
 public class ContactDao {
 	
@@ -62,18 +58,13 @@ public class ContactDao {
 		manager.getTransaction().commit();
 	}
 	
-	public List<Contact> findAllFromStudent(Student student) throws DbException{
+	public List<Contact> findAllFromStudent(int studentId) throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-	    CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
-		CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
-		
-		Root<Contact> root = criteriaQuery.from(Contact.class);
-		criteriaQuery.select(root).where(criteriaBuilder.isNull(root.get("excluded")));		
-		criteriaQuery.where(criteriaBuilder.equal(root.get("student"), student.getId()));
-		TypedQuery<Contact> typedQuery = manager.createQuery(criteriaQuery);
-		List<Contact> contacts = typedQuery.getResultList();
-		return contacts;
+		TypedQuery<Contact> query = manager.createQuery(
+				"SELECT c FROM Contato c where excluido is null and contact_id_student = :studentId", Contact.class);
+		query.setParameter("studentId", studentId);
+		return query.getResultList();
 	}
 }

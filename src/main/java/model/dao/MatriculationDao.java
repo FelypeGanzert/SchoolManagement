@@ -1,7 +1,10 @@
 package model.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import db.DbException;
 import model.entites.Matriculation;
@@ -68,6 +71,16 @@ public class MatriculationDao {
 		matriculation.setExcluded("S");
 		matriculation = manager.merge(matriculation);
 		manager.getTransaction().commit();
+	}
+	
+	public List<Matriculation> findAllFromStudent(int studentId) throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}
+		TypedQuery<Matriculation> query = manager.createQuery(
+				"SELECT m FROM Matricula m where excluido is null and aluno_id = :studentId", Matriculation.class);
+		query.setParameter("studentId", studentId);
+		return query.getResultList();
 	}
 
 }

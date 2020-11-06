@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -13,6 +14,7 @@ import db.DbException;
 import gui.util.Alerts;
 import gui.util.Roots;
 import gui.util.Utils;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +24,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.dao.CertificateRequestDao;
+import model.dao.MatriculationDao;
 import model.entites.CertificateRequest;
 import model.entites.Matriculation;
+import model.entites.Parcel;
 
 public class CertificatesRequestsController implements Initializable{
 
@@ -60,15 +64,17 @@ public class CertificatesRequestsController implements Initializable{
 	@FXML private JFXTextField textRecordPageNumber;
 	
 	private CertificateRequestDao requestDao;
+	private MatriculationDao matriculationDao;
 	private List<CertificateRequest> requestsList;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		// Initialize tables
 		initializeTableRequests();
-		//initializeTableMatriculations();
-		//initiliazeTablePrint();
-		initRequestDao();
+		initializeTableMatriculations();
+		initiliazeTablePrint();
+		addListeners();
+		initDaos();
 		getRequestsFromDB();
 	}
 	
@@ -93,11 +99,7 @@ public class CertificatesRequestsController implements Initializable{
 	// ============================
 	// ===== AUXILIAR METHODS =====
 	// ============================
-	
-	public void initRequestDao() {
-		this.requestDao = new CertificateRequestDao(DBFactory.getConnection());
-	}
-	
+		
 	// get requests from database and put in ui
 	public void getRequestsFromDB() {
 		if(requestDao == null) {
@@ -115,7 +117,12 @@ public class CertificatesRequestsController implements Initializable{
 	// === START INIT METHODS ===
 	// ==========================
 
-	// Requests
+	public void initDaos() {
+		this.requestDao = new CertificateRequestDao(DBFactory.getConnection());
+		this.matriculationDao = new MatriculationDao(DBFactory.getConnection());
+	}
+	
+	//  table Requests
 	public void initializeTableRequests() {
 		// student info: id, name
 		Utils.setCellValueFactory(columnStudentId, "studentId");
@@ -141,9 +148,67 @@ public class CertificatesRequestsController implements Initializable{
 		Utils.setCellValueFactory(columnCourseLoad, "courseLoad");
 		columnCourseLoad.setReorderable(false);
 		// buttons
-		// ========== TODO
+		// ========== TODO: buttons in
 		// columnAddToPrint
 		// columnRemoveRequest
+	}
+	
+	// table matriculations
+	private void initializeTableMatriculations() {
+		// code
+		Utils.setCellValueFactory(columnMatriculationCode, "code");
+		columnMatriculationCode.setReorderable(false);
+		// date matriculation
+		Utils.setCellValueFactory(columnMatriculationDate, "dateMatriculation");
+		Utils.formatTableColumnDate(columnMatriculationDate, "dd/MM/yyyy");
+		columnMatriculationDate.setReorderable(false);
+		// status
+		Utils.setCellValueFactory(columnMatriculationStatus, "status");
+		columnMatriculationStatus.setReorderable(false);
+		// parcels
+		columnMatriculationParcels.setCellValueFactory(cellData -> {
+			try {
+				// Total of parcels ignoring matriculation tax (parcel 0)
+				List<Parcel> parcels = cellData.getValue().getParcels().stream()
+						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());
+				// Total of paid parcels = with status equals PAGA
+				int paidParcels = parcels.stream().filter(parcel -> parcel.getSituation().equalsIgnoreCase("PAGA"))
+						.collect(Collectors.toList()).size();
+				// will show in table number of paid parcels from total
+				return new SimpleStringProperty(paidParcels + "/" + parcels.size());
+			} catch (IllegalStateException | IndexOutOfBoundsException e) {
+				// if the matriculation doesn't have parcels will show just a line
+				return new SimpleStringProperty("-");
+			}
+		});
+		columnMatriculationParcels.setReorderable(false);
+	}
+	
+	// table print
+	public void initiliazeTablePrint() {
+		// student info: id, name
+		Utils.setCellValueFactory(columnStudentId, "studentId");
+		columnStudentId.setReorderable(false);
+		Utils.setCellValueFactory(columnStudentName, "studentName");
+		columnStudentName.setReorderable(false);
+		// TODO: button to columnPrintRemoveFromPrint
+	}
+	
+	public void addListeners() {
+		// Listener to selected student of table
+		tableRequests.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldSelection, newSelection) -> {
+					tableMatriculations.setItems(null);
+					if (newSelection != null) {
+						List<Matriculation> matriculations;
+						try {
+							matriculations = matriculationDao.findAllFromStudent(newSelection.getStudentId());
+							tableMatriculations.setItems(FXCollections.observableArrayList(matriculations));
+						} catch (DbException e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 	// ==========================

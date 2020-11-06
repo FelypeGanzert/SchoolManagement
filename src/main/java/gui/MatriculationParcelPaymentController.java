@@ -220,7 +220,9 @@ public class MatriculationParcelPaymentController implements Initializable{
 		// === VALUE PAID ===
 		// value paid: normal
 		labelValueNormal.setText(doubleToTextField(parcel.getValue()));
-		labelValueWithFineDelay.setText(doubleToTextField(parcel.getValueWithFineDelay()));
+		if(parcel.getValueWithFineDelay() != null) {
+			labelValueWithFineDelay.setText(doubleToTextField(parcel.getValueWithFineDelay()));
+		}
 		labelMatriculationCode.setText(Integer.toString(parcel.getMatriculation().getCode()));
 		labelParcelDocumentNumber.setText(Integer.toString(parcel.getDocumentNumber()));
 		labelParcelNumber.setText(Integer.toString(parcel.getParcelNumber()));
