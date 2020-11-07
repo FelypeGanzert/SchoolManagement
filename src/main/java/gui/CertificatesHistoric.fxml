@@ -70,7 +70,7 @@
                   </VBox>
                   <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <Label text="Filtrar por data entre:" />
+                        <Label text="Filtrar por data de emissão entre:" />
                         <HBox spacing="10.0">
                            <children>
                               <JFXTextField fx:id="textStartDate" alignment="CENTER" prefWidth="75.0" promptText="de" />
@@ -96,7 +96,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton minWidth="-Infinity" onAction="#handleBtnClearFilter" prefHeight="40.0" ripplerFill="#ae0606" style="-fx-cursor: hand; -fx-border-color: red;" text="LIMPAR FILTRO" textAlignment="JUSTIFY">
+                              <JFXButton fx:id="btnClearFilter" minWidth="-Infinity" onAction="#handleBtnClearFilter" prefHeight="40.0" ripplerFill="#ae0606" style="-fx-cursor: hand; -fx-border-color: red;" text="LIMPAR FILTRO" textAlignment="JUSTIFY" visible="false">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -110,7 +110,7 @@
                               </JFXButton>
                            </children>
                         </HBox>
-                        <Label fx:id="labelFilterResults" text="x resultados" />
+                        <Label fx:id="labelFilterResults" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">

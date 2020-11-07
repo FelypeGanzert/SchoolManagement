@@ -87,6 +87,7 @@ public class CertificatesAllStudentsController implements Initializable{
 	@FXML private JFXTextField textRecordNumber;
 	@FXML private JFXTextField textRecordPageNumber;
 	
+	private CertificateHistoricDao certificateDao;
 	private StudentDao studentDao;
 	// List to store all students from database
 	private ObservableList<Student> studentsList;
@@ -111,6 +112,7 @@ public class CertificatesAllStudentsController implements Initializable{
 		// Add listeners to components
 		addListeners();
 		// Update tableView to show students data
+		initDaos();
 		getStudentsFromDB();
 		filterStudents();
 		addFieldsConstraints();
@@ -150,11 +152,21 @@ public class CertificatesAllStudentsController implements Initializable{
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			// Change time of print date
+			SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
+			Date now = new Date();
+			String nowTime = time.format(now);
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fullDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			try {
+				printDate = fullDate.parse(date.format(printDate) + " " + nowTime);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 			Integer courseLoad = Utils.tryParseToInt(textCourseLoad.getText());
 			Integer recordNumber = Utils.tryParseToInt(textRecordNumber.getText());
 			Integer recordPageNumber = Utils.tryParseToInt(textRecordPageNumber.getText());
 			// Save certificatePrinted in DB
-			CertificateHistoricDao certificateDao = new CertificateHistoricDao(DBFactory.getConnection());
 			List<Student> studentsDone = new ArrayList<>();
 			for(Student s : tablePrint.getItems()) {
 				// Create a new certificate to add to historic
@@ -176,10 +188,12 @@ public class CertificatesAllStudentsController implements Initializable{
 							s.getName() + "[ERRO: " + e.getMessage() + "]", AlertType.ERROR, Utils.currentStage(event));
 				}
 			}
-			// remove sucessfull certificates from table Print
+			// remove successful certificates from table Print
 			tablePrint.getItems().removeAll(studentsDone);
 			updateLabelNumberToPrint();
-			System.out.println("DONE! Certificates added to historic");
+			Alerts.showAlert("Concluído", "Sucesso!",
+					"Os certificados foram emitidos e adicionados ao histórico. Aguarde, logo será exibido o certificado.",
+					AlertType.INFORMATION, Utils.currentStage(event));
 		}
 	}
 
@@ -259,6 +273,10 @@ public class CertificatesAllStudentsController implements Initializable{
 	// ======== START OF INITIALIZE METHODS ===============
 	// ====================================================
 
+	private void initDaos() {
+		this.certificateDao = new CertificateHistoricDao(DBFactory.getConnection());
+	}
+	
 	// TABLE STUDENTS
 	private void initializeTableStudents() {
 		// column of status will show a color according StudentStatusEnum

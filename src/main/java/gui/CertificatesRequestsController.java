@@ -1,7 +1,9 @@
 package gui;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import model.dao.CertificateHistoricDao;
 import model.dao.CertificateRequestDao;
 import model.dao.MatriculationDao;
+import model.entites.CertificateHistoric;
 import model.entites.CertificateRequest;
 import model.entites.Matriculation;
 import model.entites.Parcel;
@@ -74,6 +78,7 @@ public class CertificatesRequestsController implements Initializable{
 	
 	private CertificateRequestDao requestDao;
 	private MatriculationDao matriculationDao;
+	private CertificateHistoricDao certificateDao;
 	private List<CertificateRequest> requestsList;
 	
 	@Override
@@ -103,13 +108,73 @@ public class CertificatesRequestsController implements Initializable{
 	// Print Certificates
 	public void handleBtnPrint(ActionEvent event) {
 		if(tablePrint.getItems() == null || tablePrint.getItems().size() == 0) {
-			Alerts.showAlert("Erro!", "Nada selecionado.", "Não foi selecionado nenhuma solicitação.",
-					AlertType.ERROR, Utils.currentStage(event));
+			Alerts.showAlert("Erro!", "Nada selecionado.", "Não foi selecionado nenhuma solicitação.", AlertType.ERROR,
+					Utils.currentStage(event));
 			return;
 		}
-		if(textCourse.validate() && textStartDate.validate() && textEndDate.validate() &&
-				textCourseLoad.validate() && textPrintDate.validate()) {
-			System.out.println("Clicked to print and every field is valid");
+		if (textCourse.validate() && textStartDate.validate() && textEndDate.validate() && textCourseLoad.validate()
+				&& textPrintDate.validate()) {
+			// get data from UI
+			String course = textCourse.getText();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			Date printDate = null;
+			try {
+				startDate = sdf.parse(textStartDate.getText());
+				endDate = sdf.parse(textEndDate.getText());
+				printDate = sdf.parse(textPrintDate.getText());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			// Change time of print date
+			SimpleDateFormat time = new SimpleDateFormat ("HH:mm:ss");
+			Date now = new Date();
+			String nowTime = time.format(now);
+			SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fullDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			try {
+				printDate = fullDate.parse(date.format(printDate) + " " + nowTime);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			Integer courseLoad = Utils.tryParseToInt(textCourseLoad.getText());
+			Integer recordNumber = Utils.tryParseToInt(textRecordNumber.getText());
+			Integer recordPageNumber = Utils.tryParseToInt(textRecordPageNumber.getText());
+			// Save certificatePrinted in DB
+			List<CertificateRequest> requestsDone = new ArrayList<>();
+			for (CertificateRequest r : tablePrint.getItems()) {
+				// Create a new certificate to add to historic
+				CertificateHistoric certificate = new CertificateHistoric();
+				certificate.setCourse(course);
+				certificate.setStudentName(r.getStudentName());
+				certificate.setStartDate(startDate);
+				certificate.setEndDate(endDate);
+				certificate.setPrintDate(printDate);
+				certificate.setCourseLoad(courseLoad);
+				certificate.setRecordNumber(recordNumber);
+				certificate.setRecordPageNumber(recordPageNumber);
+				try {
+					// add to certificate historic
+					certificateDao.insert(certificate);
+					requestsDone.add(r);
+					// remove from requests
+					requestDao.delete(r);
+				} catch (DbException e) {
+					e.printStackTrace();
+					Alerts.showAlert(
+							"ERRO!", "DBException", "Não foi possível salvar no banco de dados o certificado do "
+									+ r.getStudentName() + "[ERRO: " + e.getMessage() + "]",
+							AlertType.ERROR, Utils.currentStage(event));
+				}
+			}
+			// remove successful certificates from table Print
+			tablePrint.getItems().removeAll(requestsDone);
+			tableRequests.getItems().removeAll(requestsDone);
+			updateLabelNumberToPrint();
+			Alerts.showAlert("Concluído", "Sucesso!",
+					"Os certificados foram emitidos e adicionados ao histórico. Aguarde, logo será exibido o certificado.",
+					AlertType.INFORMATION, Utils.currentStage(event));
 		}
 	}
 
@@ -141,6 +206,7 @@ public class CertificatesRequestsController implements Initializable{
 	private void initDaos() {
 		this.requestDao = new CertificateRequestDao(DBFactory.getConnection());
 		this.matriculationDao = new MatriculationDao(DBFactory.getConnection());
+		this.certificateDao = new CertificateHistoricDao(DBFactory.getConnection());
 	}
 	
 	//  table Requests
