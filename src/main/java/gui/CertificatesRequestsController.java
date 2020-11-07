@@ -25,13 +25,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import model.dao.AnnotationDao;
 import model.dao.CertificateRequestDao;
 import model.dao.MatriculationDao;
 import model.entites.CertificateRequest;
@@ -103,7 +102,7 @@ public class CertificatesRequestsController implements Initializable{
 	
 	// Print Certificates
 	public void handleBtnPrint(ActionEvent event) {
-		if(textStartDate.validate() && textEndDate.validate() &&
+		if(textCourse.validate() && textStartDate.validate() && textEndDate.validate() &&
 				textCourseLoad.validate() && textPrintDate.validate()) {
 			System.out.println("Clicked to print and every field is valid");
 		}
@@ -282,10 +281,12 @@ public class CertificatesRequestsController implements Initializable{
 	}
 	
 	private void addFieldsConstraints() {
+		// course
+		textCourse.setValidators(Validators.getRequiredFieldValidator());
 		// Date Validator: start, end and print date (all required)
 		RegexValidator dateValidator = new RegexValidator("Inválido");
 		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
-		// tstart
+		// start
 		textStartDate.setValidators(Validators.getRequiredFieldValidator());
 		textStartDate.setValidators(dateValidator);
 		// end

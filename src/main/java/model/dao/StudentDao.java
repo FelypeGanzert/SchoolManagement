@@ -106,7 +106,7 @@ public class StudentDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where excluido is null", Student.class);
+		TypedQuery<Student> query = manager.createQuery("SELECT s FROM Aluno s where excluido is null ORDER BY nome, id", Student.class);
 		return query.getResultList();
 	}
 	
