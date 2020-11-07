@@ -47,35 +47,70 @@
 				</HBox>
             <HBox alignment="CENTER_LEFT" maxWidth="1200.0" spacing="25.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                  <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../png_icons/search.png" />
-                           </image>
-                        </ImageView>
-                        <JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="250.0" promptText="Filtrar por nome" />
+                        <JFXTextField fx:id="textFilter" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Filtrar por nome" />
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <Label text="Tipo do Filtro:" />
+                              <JFXRadioButton style="-fx-cursor: hand;" text="contém">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="filterType" />
+                                 </toggleGroup>
+                              </JFXRadioButton>
+                              <JFXRadioButton selected="true" style="-fx-cursor: hand;" text="inicia com" toggleGroup="$filterType" />
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="20.0">
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <Label text="Tipo do Filtro:" />
-                        <JFXRadioButton style="-fx-cursor: hand;" text="contém">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="filterType" />
-                           </toggleGroup>
-                        </JFXRadioButton>
-                        <JFXRadioButton selected="true" style="-fx-cursor: hand;" text="inicia com" toggleGroup="$filterType" />
-                        <Label fx:id="labelTotalStudentsSearch">
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </Label>
+                        <Label text="Filtrar por data entre:" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <JFXTextField alignment="CENTER" prefWidth="75.0" promptText="de" />
+                              <Label text="-" />
+                              <JFXTextField alignment="CENTER" prefWidth="75.0" promptText="até" />
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <HBox spacing="15.0">
+                           <children>
+                              <JFXButton minWidth="-Infinity" prefHeight="40.0" ripplerFill="#0773a4" style="-fx-border-color: rgb(64,89,169); -fx-cursor: hand;" text="FILTRAR" textAlignment="JUSTIFY">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png_icons/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton minWidth="-Infinity" prefHeight="40.0" ripplerFill="#ae0606" style="-fx-cursor: hand; -fx-border-color: red;" text="LIMPAR FILTRO" textAlignment="JUSTIFY">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png_icons/delete_red.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <Label text="x resultados" />
+                     </children>
+                  </VBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton alignment="CENTER" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton alignment="CENTER" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -97,13 +132,13 @@
                <children>
                   <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Código" />
                       <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Aluno" />
-                        <TableColumn maxWidth="400.0" minWidth="400.0" prefWidth="400.0" text="Curso" />
+                        <TableColumn maxWidth="370.0" minWidth="370.0" prefWidth="370.0" text="Curso" />
                         <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Início" />
                         <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Término" />
                         <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Carga Horária" />
                         <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Data Emissão" />
+                        <TableColumn maxWidth="80.0" minWidth="80.0" text="Ata/Pg" />
                     </columns>
                   </TableView>
                </children>

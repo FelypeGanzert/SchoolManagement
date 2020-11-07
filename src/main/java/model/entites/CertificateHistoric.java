@@ -50,6 +50,24 @@ public class CertificateHistoric {
 	@Column (name = "data_emissao", columnDefinition = "DATETIME default null")
 	private Date printDate;
 	
+	@Column (name = "ata_numero", columnDefinition = "int default null")
+	private Integer recordNumber;
+	
+	@Column (name = "ata_numero_pagina", columnDefinition = "int default null")
+	private Integer recordPageNumber;
+	
+	public String getFullRecordPath() {
+		String full = "";
+		if(recordNumber != null) {
+			full += recordNumber;
+		}
+		full += " / ";
+		if(recordPageNumber != null) {
+			full += recordPageNumber;
+		}
+		return full;
+	}
+	
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;
 	

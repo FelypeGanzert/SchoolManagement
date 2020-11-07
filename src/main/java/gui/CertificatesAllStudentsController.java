@@ -127,6 +127,11 @@ public class CertificatesAllStudentsController implements Initializable{
 
 	// Print Certificates
 	public void handleBtnPrint(ActionEvent event) {
+		if(tablePrint.getItems() == null || tablePrint.getItems().size() == 0) {
+			Alerts.showAlert("Erro!", "Nada selecionado.", "Não foi selecionado nenhum aluno.",
+					AlertType.ERROR, Utils.currentStage(event));
+			return;
+		}
 		if (textCourse.validate() && textStartDate.validate() && textEndDate.validate() && textCourseLoad.validate()
 				&& textPrintDate.validate()) {
 			System.out.println("Clicked to print and every field is valid");
