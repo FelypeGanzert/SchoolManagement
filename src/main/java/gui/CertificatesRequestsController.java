@@ -4,6 +4,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -22,9 +23,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import model.dao.AnnotationDao;
 import model.dao.CertificateRequestDao;
 import model.dao.MatriculationDao;
 import model.entites.CertificateRequest;
@@ -177,7 +181,24 @@ public class CertificatesRequestsController implements Initializable{
 			}
 		}, "Incluir");
 		Utils.initButtons(columnRemoveRequest, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (request, event) -> {
-			System.out.println("Clicked to remove");
+			// Confirmation to delete request
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Deletar solicitação");
+			alert.setHeaderText("Deletar a solicitação do aluno #" + request.getStudentId() + " ?");
+			alert.setContentText("Isso erá excluir a solicitação do curso: " + request.getCourse());
+			alert.initOwner(Utils.currentStage(event));
+			Optional<ButtonType> result =alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				// remove from tables in UI
+				tableRequests.getItems().remove(request);
+				tablePrint.getItems().remove(request);
+				/// remove from database
+				try {
+					requestDao.delete(request);
+				} catch (DbException e) {
+					e.printStackTrace();
+				}
+			}
 		}, "Excluir");
 	}
 	
