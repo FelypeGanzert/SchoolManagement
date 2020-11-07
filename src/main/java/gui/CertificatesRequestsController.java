@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,6 +13,7 @@ import com.jfoenix.controls.JFXTextField;
 import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.Icons;
 import gui.util.Roots;
 import gui.util.Utils;
 import javafx.beans.property.SimpleStringProperty;
@@ -54,6 +56,7 @@ public class CertificatesRequestsController implements Initializable{
 	@FXML private TableColumn<CertificateRequest, Integer> columnPrintStudentId;
 	@FXML private TableColumn<CertificateRequest, String> columnPrintStudentName;
 	@FXML private TableColumn<CertificateRequest, CertificateRequest> columnPrintRemoveFromPrint;
+	@FXML private Label labelNumberToPrint;
 	// certificate infos
 	@FXML private JFXTextArea textCourse;
 	@FXML private JFXTextField textStartDate;
@@ -76,6 +79,9 @@ public class CertificatesRequestsController implements Initializable{
 		addListeners();
 		initDaos();
 		getRequestsFromDB();
+		// default value to print date: today
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		textPrintDate.setText(sdf.format(new Date()));
 	}
 	
 	// =====================
@@ -148,9 +154,31 @@ public class CertificatesRequestsController implements Initializable{
 		Utils.setCellValueFactory(columnCourseLoad, "courseLoad");
 		columnCourseLoad.setReorderable(false);
 		// buttons
-		// ========== TODO: buttons in
-		// columnAddToPrint
-		// columnRemoveRequest
+		Utils.initButtons(columnAddToPrint, Icons.SIZE, Icons.ARROW_DOWN, "greenIcon", (request, event) -> {
+			if(!tablePrint.getItems().contains(request)) {
+				// add to table to print
+				tablePrint.getItems().add(request);
+				updateLabelNumberToPrint();
+				// set text fields: course
+				textCourse.setText(request.getCourse());
+				// start and end date
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				textStartDate.setText(sdf.format(request.getStartDate()));
+				textEndDate.setText(sdf.format(request.getEndDate()));
+				// course load
+				if(request.getCourseLoad() != null) {
+					textCourseLoad.setText(Integer.toString(request.getCourseLoad()));
+				} else {
+					textCourseLoad.setText("");
+				}
+			} else {
+				Alerts.showAlert("Já incluso", "Já foi incluso.",
+						"Essa solicitação já foi adicionada na lista para impressão.", AlertType.WARNING, Utils.currentStage(event));
+			}
+		}, "Incluir");
+		Utils.initButtons(columnRemoveRequest, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (request, event) -> {
+			System.out.println("Clicked to remove");
+		}, "Excluir");
 	}
 	
 	// table matriculations
@@ -187,11 +215,16 @@ public class CertificatesRequestsController implements Initializable{
 	// table print
 	public void initiliazeTablePrint() {
 		// student info: id, name
-		Utils.setCellValueFactory(columnStudentId, "studentId");
+		Utils.setCellValueFactory(columnPrintStudentId, "studentId");
 		columnStudentId.setReorderable(false);
-		Utils.setCellValueFactory(columnStudentName, "studentName");
+		columnPrintStudentName.setCellFactory(Utils.getWrappingCellFactory());
+		Utils.setCellValueFactory(columnPrintStudentName, "studentName");
 		columnStudentName.setReorderable(false);
-		// TODO: button to columnPrintRemoveFromPrint
+		// button
+		Utils.initButtons(columnPrintRemoveFromPrint, Icons.SIZE, Icons.BAN, "redIcon", (request, event) -> {
+			tablePrint.getItems().remove(request);
+			updateLabelNumberToPrint();
+		}, "Remover");
 	}
 	
 	public void addListeners() {
@@ -209,6 +242,14 @@ public class CertificatesRequestsController implements Initializable{
 						}
 					}
 				});
+	}
+	
+	private void updateLabelNumberToPrint() {
+		if(tablePrint.getItems() == null || tablePrint.getItems().size() == 0) {
+			labelNumberToPrint.setText("");
+		} else {
+			labelNumberToPrint.setText("(" + Integer.toString(tablePrint.getItems().size()) + ")");
+		}
 	}
 
 	// ==========================
