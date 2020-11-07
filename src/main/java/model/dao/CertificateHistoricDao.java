@@ -62,7 +62,7 @@ public class CertificateHistoricDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<CertificateHistoric> query = manager.createQuery("SELECT cr FROM certificao_pedido cr where excluido is null ORDER BY aluno_nome ASC, data_emissao DESC", CertificateHistoric.class);
+		TypedQuery<CertificateHistoric> query = manager.createQuery("SELECT cr FROM certificado_historico cr where excluido is null ORDER BY aluno_nome ASC", CertificateHistoric.class);
 		return query.getResultList();
 	}
 }

@@ -51,15 +51,15 @@
                <children>
                   <TableView fx:id="tableRequests" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="150.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="columnStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Código" />
-                      <TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" style="-fx-alignment: center;" text="Nome" />
-                        <TableColumn fx:id="columnCourse" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" style="-fx-alignment: center;" text="Curso" />
-                        <TableColumn fx:id="columnStartDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Início" />
-                        <TableColumn fx:id="columnEndDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Término" />
-                        <TableColumn fx:id="columnCourseLoad" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Carga Horária" />
-                        <TableColumn fx:id="columnRequestDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Solicitado em" />
-                        <TableColumn fx:id="columnAddToPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
-                        <TableColumn fx:id="columnRemoveRequest" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
+                      <TableColumn fx:id="columnStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" style="-fx-alignment: center;" text="Código" />
+                      <TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" resizable="false" style="-fx-alignment: center;" text="Nome" />
+                        <TableColumn fx:id="columnCourse" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" resizable="false" style="-fx-alignment: center;" text="Curso" />
+                        <TableColumn fx:id="columnStartDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Início" />
+                        <TableColumn fx:id="columnEndDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Término" />
+                        <TableColumn fx:id="columnCourseLoad" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Carga Horária" />
+                        <TableColumn fx:id="columnRequestDate" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Solicitado em" />
+                        <TableColumn fx:id="columnAddToPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" style="-fx-alignment: center;" />
+                        <TableColumn fx:id="columnRemoveRequest" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" style="-fx-alignment: center;" />
                     </columns>
                   </TableView>
                </children>
@@ -86,10 +86,10 @@
                         </VBox>
                         <TableView fx:id="tableMatriculations" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="330.0">
                           <columns>
-                            <TableColumn fx:id="columnMatriculationCode" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
-                            <TableColumn fx:id="columnMatriculationDate" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Data" />
-                              <TableColumn fx:id="columnMatriculationStatus" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Situação" />
-                              <TableColumn fx:id="columnMatriculationParcels" maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="90.0" style="-fx-alignment: center;" text="Parcelas" />
+                            <TableColumn fx:id="columnMatriculationCode" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" resizable="false" style="-fx-alignment: center;" text="ID" />
+                            <TableColumn fx:id="columnMatriculationDate" maxWidth="80.0" minWidth="80.0" resizable="false" style="-fx-alignment: center;" text="Data" />
+                              <TableColumn fx:id="columnMatriculationStatus" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Situação" />
+                              <TableColumn fx:id="columnMatriculationParcels" maxWidth="1.7976931348623157E308" minWidth="90.0" prefWidth="90.0" resizable="false" style="-fx-alignment: center;" text="Parcelas" />
                           </columns>
                         </TableView>
                      </children>
@@ -115,9 +115,9 @@
                         </HBox>
                         <TableView fx:id="tablePrint" minWidth="-Infinity" prefWidth="370.0">
                            <columns>
-                              <TableColumn fx:id="columnPrintStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Código" />
-                              <TableColumn fx:id="columnPrintStudentName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" text="Nome" />
-                              <TableColumn fx:id="columnPrintRemoveFromPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-alignment: center;" />
+                              <TableColumn fx:id="columnPrintStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" resizable="false" style="-fx-alignment: center;" text="Código" />
+                              <TableColumn fx:id="columnPrintStudentName" maxWidth="1.7976931348623157E308" minWidth="250.0" prefWidth="250.0" resizable="false" text="Nome" />
+                              <TableColumn fx:id="columnPrintRemoveFromPrint" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" style="-fx-alignment: center;" />
                            </columns>
                         </TableView>
                      </children>

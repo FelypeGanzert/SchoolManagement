@@ -122,7 +122,7 @@ public class CertificatesRequestsController implements Initializable{
 	// ============================
 		
 	// get requests from database and put in ui
-	public void getRequestsFromDB() {
+	private void getRequestsFromDB() {
 		if(requestDao == null) {
 			throw new IllegalStateException("RequestDao service not initialized");
 		}
@@ -138,13 +138,13 @@ public class CertificatesRequestsController implements Initializable{
 	// === START INIT METHODS ===
 	// ==========================
 
-	public void initDaos() {
+	private void initDaos() {
 		this.requestDao = new CertificateRequestDao(DBFactory.getConnection());
 		this.matriculationDao = new MatriculationDao(DBFactory.getConnection());
 	}
 	
 	//  table Requests
-	public void initializeTableRequests() {
+	private void initializeTableRequests() {
 		// student info: id, name
 		Utils.setCellValueFactory(columnStudentId, "studentId");
 		columnStudentId.setReorderable(false);
@@ -191,6 +191,7 @@ public class CertificatesRequestsController implements Initializable{
 						"Essa solicitação já foi adicionada na lista para impressão.", AlertType.WARNING, Utils.currentStage(event));
 			}
 		}, "Incluir");
+		columnAddToPrint.setReorderable(false);
 		Utils.initButtons(columnRemoveRequest, Icons.SIZE, Icons.TRASH_SOLID, "redIcon", (request, event) -> {
 			// Confirmation to delete request
 			Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -211,6 +212,7 @@ public class CertificatesRequestsController implements Initializable{
 				}
 			}
 		}, "Excluir");
+		columnRemoveRequest.setReorderable(false);
 	}
 	
 	// table matriculations
@@ -245,21 +247,22 @@ public class CertificatesRequestsController implements Initializable{
 	}
 	
 	// table print
-	public void initiliazeTablePrint() {
+	private void initiliazeTablePrint() {
 		// student info: id, name
 		Utils.setCellValueFactory(columnPrintStudentId, "studentId");
-		columnStudentId.setReorderable(false);
+		columnPrintStudentId.setReorderable(false);
 		columnPrintStudentName.setCellFactory(Utils.getWrappingCellFactory());
 		Utils.setCellValueFactory(columnPrintStudentName, "studentName");
-		columnStudentName.setReorderable(false);
+		columnPrintStudentName.setReorderable(false);
 		// button
 		Utils.initButtons(columnPrintRemoveFromPrint, Icons.SIZE, Icons.BAN, "redIcon", (request, event) -> {
 			tablePrint.getItems().remove(request);
 			updateLabelNumberToPrint();
 		}, "Remover");
+		columnPrintRemoveFromPrint.setReorderable(false);
 	}
 	
-	public void addListeners() {
+	private void addListeners() {
 		// Listener to selected student of table
 		tableRequests.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldSelection, newSelection) -> {

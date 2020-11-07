@@ -22,7 +22,7 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
 					<children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
@@ -31,13 +31,18 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
       						<Label text="HISTÓRICO DE EMISSÃO" textFill="WHITE">
       							<font>
       								<Font name="System Bold" size="25.0" />
       							</font>
       						</Label>
+                        <Label fx:id="labelTotalCertificates" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
 					</children>
@@ -68,9 +73,9 @@
                         <Label text="Filtrar por data entre:" />
                         <HBox spacing="10.0">
                            <children>
-                              <JFXTextField alignment="CENTER" prefWidth="75.0" promptText="de" />
+                              <JFXTextField fx:id="textStartDate" alignment="CENTER" prefWidth="75.0" promptText="de" />
                               <Label text="-" />
-                              <JFXTextField alignment="CENTER" prefWidth="75.0" promptText="até" />
+                              <JFXTextField fx:id="textEndDate" alignment="CENTER" prefWidth="75.0" promptText="até" />
                            </children>
                         </HBox>
                      </children>
@@ -79,7 +84,7 @@
                      <children>
                         <HBox spacing="15.0">
                            <children>
-                              <JFXButton minWidth="-Infinity" prefHeight="40.0" ripplerFill="#0773a4" style="-fx-border-color: rgb(64,89,169); -fx-cursor: hand;" text="FILTRAR" textAlignment="JUSTIFY">
+                              <JFXButton minWidth="-Infinity" onAction="#handleBtnFilter" prefHeight="40.0" ripplerFill="#0773a4" style="-fx-border-color: rgb(64,89,169); -fx-cursor: hand;" text="FILTRAR" textAlignment="JUSTIFY">
                                  <graphic>
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -91,7 +96,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton minWidth="-Infinity" prefHeight="40.0" ripplerFill="#ae0606" style="-fx-cursor: hand; -fx-border-color: red;" text="LIMPAR FILTRO" textAlignment="JUSTIFY">
+                              <JFXButton minWidth="-Infinity" onAction="#handleBtnClearFilter" prefHeight="40.0" ripplerFill="#ae0606" style="-fx-cursor: hand; -fx-border-color: red;" text="LIMPAR FILTRO" textAlignment="JUSTIFY">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -105,12 +110,12 @@
                               </JFXButton>
                            </children>
                         </HBox>
-                        <Label text="x resultados" />
+                        <Label fx:id="labelFilterResults" text="x resultados" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton alignment="CENTER" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton alignment="CENTER" onAction="#handleBtnPrintReport" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -130,15 +135,15 @@
                   <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
-                  <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
+                  <TableView fx:id="tableHistoric" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn maxWidth="300.0" minWidth="300.0" prefWidth="300.0" text="Aluno" />
-                        <TableColumn maxWidth="370.0" minWidth="370.0" prefWidth="370.0" text="Curso" />
-                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Início" />
-                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Término" />
-                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Carga Horária" />
-                        <TableColumn maxWidth="95.0" minWidth="95.0" prefWidth="95.0" text="Data Emissão" />
-                        <TableColumn maxWidth="80.0" minWidth="80.0" text="Ata/Pg" />
+                      <TableColumn fx:id="columnStudentName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" resizable="false" text="Aluno" />
+                        <TableColumn fx:id="columnCourse" maxWidth="370.0" minWidth="370.0" prefWidth="370.0" resizable="false" style="-fx-alignment: center;" text="Curso" />
+                        <TableColumn fx:id="columnStartDate" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" resizable="false" style="-fx-alignment: center;" text="Início" />
+                        <TableColumn fx:id="columnEndDate" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" resizable="false" style="-fx-alignment: center;" text="Término" />
+                        <TableColumn fx:id="columnCourseLoad" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" resizable="false" style="-fx-alignment: center;" text="Carga Horária" />
+                        <TableColumn fx:id="columnPrintDate" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" resizable="false" style="-fx-alignment: center;" text="Data Emissão" />
+                        <TableColumn fx:id="columnFullRecordPath" maxWidth="80.0" minWidth="80.0" resizable="false" style="-fx-alignment: center;" text="Ata/Pg" />
                     </columns>
                   </TableView>
                </children>

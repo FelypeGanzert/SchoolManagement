@@ -29,9 +29,6 @@ public class CertificateHistoric {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column (name = "aluno_id", columnDefinition = "int default null")
-	private Integer studentId;
-	
 	@Column (name = "aluno_nome", columnDefinition = "varchar(50) default null")
 	private String studentName;
 	
