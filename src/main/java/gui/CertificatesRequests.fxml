@@ -66,11 +66,14 @@
 				</HBox>
             <HBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1200.0" spacing="15.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="300.0">
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="330.0">
                      <children>
                         <VBox alignment="CENTER" spacing="5.0" style="-fx-background-color: #023e8a;">
                            <children>
-                              <Label fx:id="labelSelectedStudentName" minWidth="-Infinity" text="Nome do aluno" textFill="WHITE" />
+                              <Label fx:id="labelSelectedStudentName" textFill="WHITE">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font></Label>
                               <Label layoutX="20.0" layoutY="15.0" minWidth="-Infinity" text="Matrículas" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
@@ -81,7 +84,7 @@
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </padding>
                         </VBox>
-                        <TableView fx:id="tableMatriculations" minWidth="-Infinity" prefWidth="330.0">
+                        <TableView fx:id="tableMatriculations" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="330.0">
                           <columns>
                             <TableColumn fx:id="columnMatriculationCode" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: center;" text="ID" />
                             <TableColumn fx:id="columnMatriculationDate" maxWidth="80.0" minWidth="80.0" style="-fx-alignment: center;" text="Data" />
@@ -207,7 +210,7 @@
                               </JFXButton>
                            </children>
                            <padding>
-                              <Insets bottom="5.0" top="10.0" />
+                              <Insets bottom="5.0" top="15.0" />
                            </padding>
                         </HBox>
                      </children></VBox>

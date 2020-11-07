@@ -10,13 +10,16 @@ import java.util.stream.Collectors;
 
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RegexValidator;
 
 import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Icons;
 import gui.util.Roots;
 import gui.util.Utils;
+import gui.util.Validators;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -81,6 +84,7 @@ public class CertificatesRequestsController implements Initializable{
 		initializeTableMatriculations();
 		initiliazeTablePrint();
 		addListeners();
+		addFieldsConstraints();
 		initDaos();
 		getRequestsFromDB();
 		// default value to print date: today
@@ -99,7 +103,10 @@ public class CertificatesRequestsController implements Initializable{
 	
 	// Print Certificates
 	public void handleBtnPrint(ActionEvent event) {
-		System.out.println("Clicked to print");
+		if(textStartDate.validate() && textEndDate.validate() &&
+				textCourseLoad.validate() && textPrintDate.validate()) {
+			System.out.println("Clicked to print and every field is valid");
+		}
 	}
 
 	// =====================
@@ -256,6 +263,7 @@ public class CertificatesRequestsController implements Initializable{
 					if (newSelection != null) {
 						List<Matriculation> matriculations;
 						try {
+							labelSelectedStudentName.setText(newSelection.getStudentName());
 							matriculations = matriculationDao.findAllFromStudent(newSelection.getStudentId());
 							tableMatriculations.setItems(FXCollections.observableArrayList(matriculations));
 						} catch (DbException e) {
@@ -271,6 +279,33 @@ public class CertificatesRequestsController implements Initializable{
 		} else {
 			labelNumberToPrint.setText("(" + Integer.toString(tablePrint.getItems().size()) + ")");
 		}
+	}
+	
+	private void addFieldsConstraints() {
+		// Date Validator: start, end and print date (all required)
+		RegexValidator dateValidator = new RegexValidator("Inválido");
+		dateValidator.setRegexPattern("^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$");
+		// tstart
+		textStartDate.setValidators(Validators.getRequiredFieldValidator());
+		textStartDate.setValidators(dateValidator);
+		// end
+		textEndDate.setValidators(Validators.getRequiredFieldValidator());
+		textEndDate.setValidators(dateValidator);
+		// print date
+		textPrintDate.setValidators(Validators.getRequiredFieldValidator());
+		textPrintDate.setValidators(dateValidator);
+		Constraints.setTextFieldMaxLength(textStartDate, 10);
+		Constraints.setTextFieldMaxLength(textEndDate, 10);
+		Constraints.setTextFieldMaxLength(textPrintDate, 10);
+		// Constraints: Course Load
+		textCourseLoad.setValidators(Validators.getRequiredFieldValidator());
+		Constraints.setTextFieldIntegerYear(textCourseLoad);
+		Constraints.setTextFieldMaxLength(textCourseLoad, 5);
+		// Constraints: record number and page number
+		Constraints.setTextFieldInteger(textRecordNumber);
+		Constraints.setTextFieldInteger(textRecordPageNumber);
+		Constraints.setTextFieldMaxLength(textRecordNumber, 6);
+		Constraints.setTextFieldMaxLength(textRecordPageNumber, 6);
 	}
 
 	// ==========================
