@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainMenuController">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainMenuController">
    <content>
-      <VBox alignment="CENTER" prefHeight="322.0" prefWidth="533.0" spacing="20.0">
+      <VBox alignment="CENTER" spacing="20.0">
          <children>
             <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
                <font>
@@ -31,6 +31,11 @@
                </font>
             </JFXButton>
             <JFXButton layoutX="208.0" layoutY="246.0" onAction="#handleBtnStudentsPresence" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Chamada" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </JFXButton>
+            <JFXButton layoutX="219.0" layoutY="290.0" onAction="#handleBtnParcelPayment" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Baixar Parcela" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>

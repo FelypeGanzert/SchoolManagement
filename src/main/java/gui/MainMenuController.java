@@ -38,6 +38,10 @@ public class MainMenuController implements Initializable {
 	public void handleBtnStudentsPresence(ActionEvent event) {
 		Roots.studentsPresenceForm();
 	}
+	
+	public void handleBtnParcelPayment(ActionEvent event) {
+		Roots.parcelPaymentByDocumentNumber();
+	}
 
 
 }

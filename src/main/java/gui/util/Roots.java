@@ -108,4 +108,16 @@ public class Roots {
 		mainView.setContent(FXMLPath.STUDENTS_PRESENCE_FORM, initializingAction);
 	}
 
+	// === Certificates ====
+	public static <T> void parcelPaymentByDocumentNumber() {
+		parcelPaymentByDocumentNumber(x -> {
+		});
+	}
+
+	public static <T> void parcelPaymentByDocumentNumber(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.PARCEL_PAYMENT_BY_DOCUMENT_NUMBER, initializingAction);
+	}
+
 }

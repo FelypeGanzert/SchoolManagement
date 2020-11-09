@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParcelPaymentByDocumentNumberController">
 	<content>
 		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
@@ -35,14 +35,14 @@
                <children>
                   <VBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <JFXTextField fx:id="textDocumentNumber" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" promptText="Número do Documento" />
+                        <JFXTextField fx:id="textDocumentNumber" maxWidth="300.0" minWidth="150.0" prefWidth="150.0" promptText="Número do Documento" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
                         <HBox alignment="CENTER" spacing="15.0">
                            <children>
-                              <JFXButton minWidth="-Infinity" onAction="#handleBtnFind" prefHeight="40.0" ripplerFill="#0773a4" style="-fx-border-color: rgb(64,89,169); -fx-cursor: hand;" text="PROCURAR" textAlignment="JUSTIFY">
+                              <JFXButton fx:id="btnFind" defaultButton="true" minWidth="-Infinity" onAction="#handleBtnFind" prefHeight="40.0" ripplerFill="#0773a4" style="-fx-border-color: rgb(64,89,169); -fx-cursor: hand;" text="PROCURAR" textAlignment="JUSTIFY">
                                  <graphic>
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -54,7 +54,7 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </JFXButton>
-                              <Label fx:id="labelError" text="Não encontrado parcela com número: XXXX" textFill="#b20606">
+                              <Label fx:id="labelError" minWidth="400.0" text="Não encontrado parcela com número: XXXX" textFill="#b20606">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
