@@ -20,7 +20,6 @@ import gui.util.Constraints;
 import gui.util.DateUtil;
 import gui.util.Roots;
 import gui.util.Utils;
-import gui.util.Validators;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

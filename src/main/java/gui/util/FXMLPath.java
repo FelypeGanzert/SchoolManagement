@@ -46,5 +46,7 @@ public class FXMLPath {
 	public static final String CERTIFICATES_ALL_STUDENTS = "/gui/CertificatesAllStudents.fxml";
 	public static final String CERTIFICATES_HISTORIC = "/gui/CertificatesHistoric.fxml";
 	public static final String CERTIFICATES_REQUEST_FORM = "/gui/CertificateRequestForm.fxml";
+	// Students Presence
+	public static final String STUDENTS_PRESENCE_FORM = "/gui/StudentsPresenceForm.fxml";
 
 }

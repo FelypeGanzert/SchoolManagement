@@ -34,5 +34,10 @@ public class MainMenuController implements Initializable {
 	public void handleBtnCertificates(ActionEvent event) {
 		Roots.certificatesMenu();
 	}
+	
+	public void handleBtnStudentsPresence(ActionEvent event) {
+		Roots.studentsPresenceForm();
+	}
+
 
 }

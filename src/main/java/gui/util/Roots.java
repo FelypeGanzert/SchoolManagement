@@ -95,5 +95,17 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.CERTIFICATES_HISTORIC, initializingAction);
 	}
+	
+	// === Certificates ====
+	public static <T> void studentsPresenceForm() {
+		studentsPresenceForm(x -> {
+		});
+	}
+
+	public static <T> void studentsPresenceForm(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.STUDENTS_PRESENCE_FORM, initializingAction);
+	}
 
 }
