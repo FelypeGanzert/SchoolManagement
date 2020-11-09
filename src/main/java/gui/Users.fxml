@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
+			<children>
+				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
+					<children>
+                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../png_icons/back_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+      						<Label text="Colaboradores" textFill="WHITE">
+      							<font>
+      								<Font name="System Bold" size="25.0" />
+      							</font>
+      						</Label>
+                        <Label fx:id="labelTotalCertificates" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+					</children>
+					<padding>
+						<Insets left="20.0" right="20.0" />
+					</padding>
+				</HBox>
+            <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <JFXButton alignment="CENTER" onAction="#handleBtnAdd" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Novo Cadastro" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../png_icons/add_white.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+            				<HBox alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <TableView fx:id="tableCollaborators" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn fx:id="columnName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" resizable="false" text="Nome" />
+                                </columns>
+                              </TableView>
+                           </children>
+            				</HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" spacing="25.0">
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label minWidth="-Infinity" style="-fx-border-color: rgb(64,89,169); -fx-border-width: 0px 0px 3px 0px;" text="Informações do Colaborador">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="NOME:" />
+                                    <TextField fx:id="textName" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
+                                 <children>
+                                    <Label text="ABREVIAÇÃO:" />
+                                    <TextField fx:id="textInitials" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="CPF:" />
+                                    <TextField fx:id="textCPF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="SEXO:" />
+                                    <TextField fx:id="textGender" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="NASCIMENTO:" />
+                                    <TextField fx:id="textBirthDate" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                    <TextField fx:id="textAge" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="ESTADO CIVIL:" />
+                                    <TextField fx:id="textCivilStatus" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="RG:" />
+                                    <TextField fx:id="textRG" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="EMAIL:" />
+                                    <TextField fx:id="textEmail" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="ENDEREÇO:" />
+                                    <TextField fx:id="textAdress" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="BAIRRO:" />
+                                    <TextField fx:id="textNeighborhood" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="REFERÊNCIA:" />
+                                          <TextField fx:id="textAdressReference" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
+                                    <Label text="CIDADE:" />
+                                    <TextField fx:id="textCity" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="UF:" />
+                                    <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" text="PR" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="30.0" layoutY="259.0" spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="CARGO:" />
+                                          <TextField fx:id="textResponsibility" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0" />
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="NÚMERO DE CONTATO:" />
+                                          <TextField fx:id="textContact" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="30.0" layoutY="285.0" spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="LOGIN:" />
+                                          <TextField fx:id="textLogin" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="SENHA:" />
+                                          <TextField fx:id="textPassword" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                           <children>
+                              <JFXButton alignment="CENTER" layoutX="241.0" layoutY="10.0" onAction="#handleBtnChangeAutorizations" prefHeight="40.0" ripplerFill="#0e6f0f" style="-fx-background-color: #fff; -fx-border-color: #36a139; -fx-cursor: hand;" text="Editar Autorizações" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </JFXButton>
+                              <JFXButton alignment="CENTER" onAction="#handleBtnEdit" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Editar Informações" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </JFXButton>
+                              <JFXButton alignment="CENTER" layoutX="509.0" layoutY="10.0" onAction="#handleBtnEditLogin" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Alterar Login/Senha" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </JFXButton>
+                              <JFXButton alignment="CENTER" layoutX="501.0" layoutY="10.0" onAction="#handleBtnDelete" prefHeight="40.0" ripplerFill="#800909" style="-fx-background-color: #fff; -fx-border-color: red; -fx-cursor: hand;" text="Excluir" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+			</children>
+		</VBox>
+	</content>
+</ScrollPane>
