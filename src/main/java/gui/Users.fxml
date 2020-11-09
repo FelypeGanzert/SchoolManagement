@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -20,15 +19,6 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
 					<children>
-                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
-                           <image>
-                              <Image url="@../png_icons/back_white.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
       						<Label text="Colaboradores" textFill="WHITE">
@@ -52,7 +42,7 @@
                <children>
                   <VBox spacing="10.0">
                      <children>
-                        <HBox alignment="CENTER_RIGHT">
+                        <HBox alignment="BOTTOM_LEFT">
                            <children>
                               <JFXButton alignment="CENTER" onAction="#handleBtnAdd" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Novo Cadastro" textAlignment="CENTER" textFill="WHITE">
                                  <font>
@@ -187,7 +177,7 @@
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
                                     <Label text="UF:" />
-                                    <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" text="PR" />
+                                    <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
                                  </children>
                               </HBox>
                            </children>
@@ -199,7 +189,7 @@
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
                                           <Label text="CARGO:" />
-                                          <TextField fx:id="textResponsibility" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                          <TextField fx:id="textPost" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
                                        </children>
                                     </HBox>
                                  </children>

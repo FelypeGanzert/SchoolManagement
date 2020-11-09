@@ -1,5 +1,7 @@
 package model.entites;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,11 +35,41 @@ public class Collaborator {
 	@Column(name = "sigla", columnDefinition = "varchar(50) default null")
 	private String initials;
 	
+	@Column (name = "cpf", columnDefinition = "varchar(50) default null")
+	private String cpf;
+	
+	@Column (name = "rg", columnDefinition = "varchar(50) default null")
+	private String rg;
+	
+	@Column (name = "data_nascimento", columnDefinition = "DATETIME default null")
+	private Date dateBirth;
+	
+	@Column (name = "sexo", columnDefinition = "varchar(20) default null")
+	private String gender;
+	
+	@Column (name = "estado_civil", columnDefinition = "varchar(20) default null")
+	private String civilStatus;
+	
+	@Column (name = "endereco", columnDefinition = "varchar(50) default null")
+	private String adress;
+	
+	@Column (name = "bairro", columnDefinition = "varchar(50) default null")
+	private String neighborhood;
+	
+	@Column (name = "cidade", columnDefinition = "varchar(50) default null")
+	private String city;
+	
+	@Column (name = "uf", columnDefinition = "varchar(20) default null")
+	private String uf;
+	
+	@Column (name = "local_referencia", columnDefinition = "varchar(50) default null")
+	private String adressReference;
+	
+	@Column (name = "email", columnDefinition = "varchar(50) default null")
+	private String email;
+	
 	@Column(name = "numero_contato", columnDefinition = "varchar(50) default null")
 	private String contactNumber;
-	
-	@Column(name = "email", columnDefinition = "varchar(50) default null")
-	private String email;
 	
 	@Column(name = "cargo", columnDefinition = "varchar(50) default null")
 	private String post;
