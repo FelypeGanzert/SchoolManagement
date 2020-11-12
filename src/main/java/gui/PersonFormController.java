@@ -738,7 +738,6 @@ public class PersonFormController implements Initializable {
 
 	// get form Data and put inside entity
 	public void getFormData() {
-		// comboBoxRegisteredBy STILL HAVE TO BE IMPLEMENTED
 		entity.setName(textName.getText().trim());
 		entity.setEmail(textEmail.getText());
 		entity.setSendEmail(checkBoxSendEmail.isSelected());

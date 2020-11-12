@@ -46,10 +46,10 @@ public class Responsible extends Person {
 	@Column (name = "nome", columnDefinition = "varchar(50) default null")
 	private String name;
 	
-	@Column (name = "cpf", columnDefinition = "varchar(50) default null")
+	@Column (name = "cpf", columnDefinition = "varchar(20) default null")
 	private String cpf;
 	
-	@Column (name = "rg", columnDefinition = "varchar(50) default null")
+	@Column (name = "rg", columnDefinition = "varchar(20) default null")
 	private String rg;
 	
 	@Column (name = "data_nascimento", columnDefinition = "DATETIME default null")

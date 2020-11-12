@@ -6,32 +6,32 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import db.DbException;
-import model.entites.Collaborator;
+import model.entites.Posts;
 
-public class CollaboratorDao {
+public class PostsDao {
 	
 	EntityManager manager;
 	
-	public CollaboratorDao(EntityManager manager) {
+	public PostsDao(EntityManager manager) {
 		// He needs a Connection to acess the database
 		this.manager = manager;
 	}
 	
-	public void insert(Collaborator collaborator) throws DbException {
+	public void insert(Posts post) throws DbException {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
 		manager.getTransaction().begin();;
-		manager.persist(collaborator);
+		manager.persist(post);
 		manager.getTransaction().commit();
 	}
 	
-	public void update(Collaborator collaborator) throws DbException {
+	public void update(Posts post) throws DbException {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
 		manager.getTransaction().begin();;
-		collaborator = manager.merge(collaborator);
+		post = manager.merge(post);
 		manager.getTransaction().commit();
 	}
 	
@@ -40,38 +40,38 @@ public class CollaboratorDao {
 			throw new DbException("DB Connection not instantiated");
 		}
 		manager.getTransaction().begin();
-		Collaborator collaborator = manager.find(Collaborator.class, id);
-		manager.refresh(collaborator);
-		collaborator.setExcluded("S");
-		collaborator = manager.merge(collaborator);
+		Posts post = manager.find(Posts.class, id);
+		manager.refresh(post);
+		post.setExcluded("S");
+		post = manager.merge(post);
 		manager.getTransaction().commit();
 	}
 	
-	public Collaborator findById(Integer id) throws DbException {
+	public Posts findById(Integer id) throws DbException {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		Collaborator c = manager.find(Collaborator.class, id);
-		if(c != null && c.getExcluded() == null) {
-			return c;
+		Posts p = manager.find(Posts.class, id);
+		if(p != null && p.getExcluded() == null) {
+			return p;
 		} else {
 			return null;
 		}
 	}
 	
-	public List<Collaborator> findAll() throws DbException{
+	public List<Posts> findAll() throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<Collaborator> query = manager.createQuery("SELECT c FROM Colaborador c where excluido is null ORDER BY nome", Collaborator.class);
+		TypedQuery<Posts> query = manager.createQuery("SELECT c FROM Cargos c where excluido is null", Posts.class);
 		return query.getResultList();
 	}
 	
-	public List<String> findAllInitials() throws DbException{
+	public List<String> findAllPosts() throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}
-		TypedQuery<String> query = manager.createQuery("SELECT initials FROM Colaborador c where excluido is null ORDER BY nome", String.class);
+		TypedQuery<String> query = manager.createQuery("SELECT post FROM Cargos c where excluido is null", String.class);
 		return query.getResultList();
 	}
 	

@@ -91,7 +91,8 @@ public class LoginController implements Initializable {
         criteriaQuery.select(root);
         Predicate userPredicate = criteriaBuilder.equal(root.get("userLogin"), user);
         Predicate passwordPredicate = criteriaBuilder.equal(root.get("passwordLogin"), password);
-        criteriaQuery.where(criteriaBuilder.and(userPredicate, passwordPredicate));
+        Predicate excludedPredicate = criteriaBuilder.isNull(root.get("excluded"));
+        criteriaQuery.where(criteriaBuilder.and(userPredicate, passwordPredicate, excludedPredicate));
         // Try to find a correspondent result
 		TypedQuery<Collaborator> typedQuery = entityManager.createQuery(criteriaQuery);
 		Collaborator collaborator = typedQuery.getSingleResult();

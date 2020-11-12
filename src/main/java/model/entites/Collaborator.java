@@ -1,6 +1,8 @@
 package model.entites;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,13 +34,13 @@ public class Collaborator {
 	@Column(name = "nome", columnDefinition = "varchar(50) default null")
 	private String name;
 	
-	@Column(name = "sigla", columnDefinition = "varchar(50) default null")
+	@Column(name = "sigla", columnDefinition = "varchar(30) default null")
 	private String initials;
 	
-	@Column (name = "cpf", columnDefinition = "varchar(50) default null")
+	@Column (name = "cpf", columnDefinition = "varchar(20) default null")
 	private String cpf;
 	
-	@Column (name = "rg", columnDefinition = "varchar(50) default null")
+	@Column (name = "rg", columnDefinition = "varchar(20) default null")
 	private String rg;
 	
 	@Column (name = "data_nascimento", columnDefinition = "DATETIME default null")
@@ -74,13 +76,29 @@ public class Collaborator {
 	@Column(name = "cargo", columnDefinition = "varchar(50) default null")
 	private String post;
 	
-	@Column(name = "usuario_login", columnDefinition = "varchar(50) default null")
+	@Column(name = "usuario_login", columnDefinition = "varchar(30) default null")
 	private String userLogin;
 	
-	@Column(name = "senha_login", columnDefinition = "varchar(50) default null")
+	@Column(name = "senha_login", columnDefinition = "varchar(30) default null")
 	private String passwordLogin;
 	
 	@Column (name = "excluido", columnDefinition = "varchar(1) default null")
 	private String excluded;
+	
+	public int getAge(){
+		if (dateBirth == null) {
+			return 0;
+		}
+		Calendar dateOfBirth = new GregorianCalendar();
+		dateOfBirth.setTime(this.dateBirth);
+		// Hour now
+		Calendar today = Calendar.getInstance();
+		int age = today.get(Calendar.YEAR) - dateOfBirth.get(Calendar.YEAR);
+		dateOfBirth.add(Calendar.YEAR, age);
+		if (today.before(dateOfBirth)) {
+			age--;
+		}
+		return age;
+	}
 
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UsersNewController">
+	<children>
+      <HBox alignment="CENTER" style="-fx-background-color: #0077b6;">
+         <children>
+            <Label text="Colaborador" textFill="WHITE">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="10.0" right="10.0" top="15.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <VBox spacing="35.0">
+         <children>
+      		<HBox prefWidth="200.0" spacing="20.0">
+      			<children>
+                  <JFXTextField fx:id="textName" labelFloat="true" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" promptText="NOME" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textInitials" labelFloat="true" layoutX="10.0" layoutY="30.0" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="ABREVIAÇÃO" styleClass="text-field-with-label" />
+      			</children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+      		</HBox>
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="textCPF" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="110.0" promptText="CPF" styleClass="text-field-with-label" />
+                  <JFXComboBox fx:id="comboBoxGender" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="SEXO" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textBirthDate" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="90.0" promptText="NASCIMENTO" styleClass="text-field-with-label" />
+                  <JFXComboBox fx:id="comboBoxCivilStatus" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="ESTADO CIVIL" styleClass="text-field-with-label" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="textRG" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="90.0" promptText="RG" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textEmail" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" promptText="EMAIL (opcional)" styleClass="text-field-with-label" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="textAdress" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" promptText="ENDEREÇO" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textNeighborhood" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0" promptText="BAIRRO" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="textCity" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="CIDADE" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textUF" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="UF" style="-fx-alignment: center;" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textAdressReference" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="250.0" promptText="LOCAL DE REFERÊNCIA (opcional)" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="290.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXComboBox fx:id="comboBoxPost" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="CARGO" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textContactNumber" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="300.0" promptText="NÚMERO DE CONTATO" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox fx:id="HBoxLoginInfo" alignment="CENTER_LEFT" layoutX="10.0" layoutY="350.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="textUserLogin" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="LOGIN" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
+                  <JFXTextField fx:id="textUserPassword" labelFloat="true" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="SENHA" styleClass="text-field-with-label" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </padding>
+      </VBox>
+		<HBox alignment="CENTER_RIGHT" spacing="50.0">
+			<children>
+				<JFXButton fx:id="btnSave" onAction="#handleBtnSave" ripplerFill="#136b52" style="-fx-background-color: #3ab795; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
+					<padding>
+						<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+					</padding>
+					<font>
+						<Font name="System Bold" size="16.0" />
+					</font>
+				</JFXButton>
+				<JFXButton fx:id="btnCancel" onAction="#handleBtnCancel" ripplerFill="#b51b12" style="-fx-background-color: #ee6055; -fx-cursor: hand;" text="CANCELAR" textFill="WHITE">
+					<padding>
+						<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+					</padding>
+					<font>
+						<Font name="System Bold" size="16.0" />
+					</font>
+				</JFXButton>
+			</children>
+			<VBox.margin>
+				<Insets top="10.0" />
+			</VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </padding>
+		</HBox>
+	</children>
+</VBox>

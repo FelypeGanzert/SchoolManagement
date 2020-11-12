@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UsersController">
 	<content>
 		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
@@ -65,8 +65,11 @@
                            <children>
                               <TableView fx:id="tableCollaborators" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="columnName" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" resizable="false" text="Nome" />
+                                  <TableColumn fx:id="columnName" maxWidth="1.7976931348623157E308" minWidth="300.0" prefWidth="-1.0" text="Nome" />
                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
                               </TableView>
                            </children>
             				</HBox>
@@ -164,20 +167,20 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
-                                       <children>
-                                          <Label text="REFERÊNCIA:" />
-                                          <TextField fx:id="textAdressReference" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
-                                       </children>
-                                    </HBox>
                                     <Label text="CIDADE:" />
                                     <TextField fx:id="textCity" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <Label text="UF:" />
+                                          <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_LEFT" spacing="5.0">
                                  <children>
-                                    <Label text="UF:" />
-                                    <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                    <Label text="REFERÊNCIA:" />
+                                    <TextField fx:id="textAdressReference" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
                                  </children>
                               </HBox>
                            </children>
@@ -233,7 +236,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" spacing="20.0">
                            <children>
-                              <JFXButton alignment="CENTER" layoutX="241.0" layoutY="10.0" onAction="#handleBtnChangeAutorizations" prefHeight="40.0" ripplerFill="#0e6f0f" style="-fx-background-color: #fff; -fx-border-color: #36a139; -fx-cursor: hand;" text="Editar Autorizações" textAlignment="CENTER">
+                              <JFXButton fx:id="btnChangeAutorizations" alignment="CENTER" layoutX="241.0" layoutY="10.0" onAction="#handleBtnChangeAutorizations" prefHeight="40.0" ripplerFill="#0e6f0f" style="-fx-background-color: #fff; -fx-border-color: #36a139; -fx-cursor: hand;" text="Editar Autorizações" textAlignment="CENTER" visible="false">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -241,7 +244,7 @@
                                     <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                                  </padding>
                               </JFXButton>
-                              <JFXButton alignment="CENTER" onAction="#handleBtnEdit" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Editar Informações" textAlignment="CENTER" textFill="WHITE">
+                              <JFXButton fx:id="btnEdit" alignment="CENTER" onAction="#handleBtnEdit" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Editar Informações" textAlignment="CENTER" textFill="WHITE" visible="false">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -249,15 +252,7 @@
                                     <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                                  </padding>
                               </JFXButton>
-                              <JFXButton alignment="CENTER" layoutX="509.0" layoutY="10.0" onAction="#handleBtnEditLogin" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Alterar Login/Senha" textAlignment="CENTER" textFill="WHITE">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-                                 </padding>
-                              </JFXButton>
-                              <JFXButton alignment="CENTER" layoutX="501.0" layoutY="10.0" onAction="#handleBtnDelete" prefHeight="40.0" ripplerFill="#800909" style="-fx-background-color: #fff; -fx-border-color: red; -fx-cursor: hand;" text="Excluir" textAlignment="CENTER">
+                              <JFXButton fx:id="btnDelete" alignment="CENTER" layoutX="501.0" layoutY="10.0" onAction="#handleBtnDelete" prefHeight="40.0" ripplerFill="#800909" style="-fx-background-color: #fff; -fx-border-color: red; -fx-cursor: hand;" text="Excluir" textAlignment="CENTER" visible="false">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

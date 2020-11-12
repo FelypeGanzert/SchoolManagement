@@ -42,6 +42,10 @@ public class MainMenuController implements Initializable {
 	public void handleBtnParcelPayment(ActionEvent event) {
 		Roots.parcelPaymentByDocumentNumber();
 	}
+	
+	public void handleBtnUsers(ActionEvent event) {
+		Roots.users();
+	}
 
 
 }
