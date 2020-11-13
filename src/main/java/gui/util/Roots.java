@@ -152,5 +152,15 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.REGULARIZE_CPF_STUDENTS, initializingAction);
 	}
-		
+	
+	public static <T> void regularizeCPFResponsibles() {
+		regularizeCPFResponsibles(x -> {
+		});
+	}
+
+	public static <T> void regularizeCPFResponsibles(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.REGULARIZE_CPF_RESPONSIBLES, initializingAction);
+	}
 }

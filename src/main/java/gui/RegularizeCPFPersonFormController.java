@@ -36,6 +36,7 @@ public class RegularizeCPFPersonFormController implements Initializable {
 	private ResponsibleDao responsibleDao;
 	
 	private RegularizeCPFStudentsController studentsScreen; 
+	private RegularizeCPFResponsiblesController responsiblesScreen; 
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
@@ -55,6 +56,10 @@ public class RegularizeCPFPersonFormController implements Initializable {
 	
 	public void setRegularizeCPFStudentsController(RegularizeCPFStudentsController studentsScreen) {
 		this.studentsScreen = studentsScreen;
+	}
+	
+	public void setRegularizeCPFResponsiblesController(RegularizeCPFResponsiblesController responsiblesScreen) {
+		this.responsiblesScreen = responsiblesScreen;
 	}
 	
 	private void defineEntitiesDaos() {
@@ -103,6 +108,9 @@ public class RegularizeCPFPersonFormController implements Initializable {
 		// update screen that have called this and closed this
 		if(studentsScreen != null) {
 			studentsScreen.removeStudent((Student) entity);
+		}
+		if(responsiblesScreen != null) {
+			responsiblesScreen.removeResponsible((Responsible) entity);
 		}
 		Utils.currentStage(event).close();
 	}

@@ -36,7 +36,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import model.dao.StudentDao;
-import model.entites.Collaborator;
 import model.entites.Person;
 import model.entites.Student;
 import sharedData.Globe;

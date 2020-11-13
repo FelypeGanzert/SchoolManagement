@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegularizeCPFResponsiblesController">
+	<content>
+		<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity">
+			<children>
+				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
+					<children>
+                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../png_icons/back_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+      						<Label text="RESPONSÁVEIS" textFill="WHITE">
+      							<font>
+      								<Font name="System Bold" size="25.0" />
+      							</font>
+      						</Label>
+                     </children>
+                  </HBox>
+					</children>
+					<padding>
+						<Insets left="20.0" right="20.0" />
+					</padding>
+				</HBox>
+            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" spacing="15.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="501.0" spacing="15.0">
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="29.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../png_icons/search.png" />
+                                 </image>
+                              </ImageView>
+                              <JFXTextField fx:id="textFilter" maxWidth="350.0" minWidth="250.0" prefWidth="300.0" promptText="Filtrar" />
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <Label text="Tipo do Filtro:" />
+                              <JFXRadioButton text="contém">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="filterType" />
+                                 </toggleGroup>
+                              </JFXRadioButton>
+                              <JFXRadioButton selected="true" text="inicia com" toggleGroup="$filterType" />
+                              <Label fx:id="labelTotalResponsiblesSearch" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <TableView fx:id="tableResponsibles" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" VBox.vgrow="ALWAYS">
+                           <placeholder>
+                              <Label text="Não há responsáveis matriculados" />
+                           </placeholder>
+                           <columns>
+                              <TableColumn fx:id="columnResponsibleName" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" style="-fx-alignment: center-left;" text="Nome" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </VBox>
+                  <VBox fx:id="VBoxInfos" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" spacing="25.0">
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label minWidth="-Infinity" style="-fx-border-color: rgb(64,89,169); -fx-border-width: 0px 0px 3px 0px;" text="Informações">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="NOME:" />
+                                    <TextField fx:id="textName" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="CPF:" />
+                                    <TextField fx:id="textCPF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="RG:" />
+                                    <TextField fx:id="textRG" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="30.0" layoutY="136.0" spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="SEXO:" />
+                                    <TextField fx:id="textGender" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="NASCIMENTO:" />
+                                    <TextField fx:id="textBirthDate" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                    <TextField fx:id="textAge" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="70.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="ENDEREÇO:" />
+                                    <TextField fx:id="textAdress" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="BAIRRO:" />
+                                    <TextField fx:id="textNeighborhood" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="CIDADE:" />
+                                    <TextField fx:id="textCity" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="UF:" />
+                                    <TextField fx:id="textUF" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" style="-fx-background-color: #fff; -fx-border-color: #525252; -fx-border-width: 0px 0px 1px 0px;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="20.0">
+                           <children>
+                              <JFXButton fx:id="btnEdit" alignment="CENTER" onAction="#handleBtnEdit" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Adicionar CPF" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                 </padding>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+			</children>
+		</VBox>
+	</content>
+</ScrollPane>

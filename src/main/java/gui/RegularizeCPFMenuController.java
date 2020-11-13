@@ -18,7 +18,7 @@ public class RegularizeCPFMenuController implements Initializable {
 	}
 	
 	public void handleBtnResponsibles(ActionEvent event) {
-		System.out.println("===== responsibles");
+		Roots.regularizeCPFResponsibles();
 	}
 	
 }
