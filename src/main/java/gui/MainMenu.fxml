@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -10,41 +11,58 @@
    <content>
       <VBox alignment="CENTER" spacing="20.0">
          <children>
-            <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton onAction="#handleBtnShowListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton onAction="#handleBtnBirthdays" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Aniversariantes" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="192.0" layoutY="214.0" onAction="#handleBtnCertificates" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Certificados" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="208.0" layoutY="246.0" onAction="#handleBtnStudentsPresence" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Chamada" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="219.0" layoutY="290.0" onAction="#handleBtnParcelPayment" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Baixar Parcela" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
-            <JFXButton layoutX="52.0" layoutY="355.0" onAction="#handleBtnUsers" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Usuários" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </JFXButton>
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <JFXButton onAction="#handleBtnShowListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton onAction="#handleBtnRegularizeCPFMenu" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Regularizar CPF" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <JFXButton onAction="#handleBtnBirthdays" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Aniversariantes" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton onAction="#handleBtnCertificates" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Certificados" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton onAction="#handleBtnStudentsPresence" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Chamada" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <JFXButton onAction="#handleBtnParcelPayment" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Baixar Parcela" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton onAction="#handleBtnUsers" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Usuários" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

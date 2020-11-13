@@ -64,7 +64,7 @@
             								<Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
             							</padding>
             						</HBox>
-            						<TableView fx:id="tableResponsibles" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" VBox.vgrow="ALWAYS">
+            						<TableView fx:id="tableResponsibles" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="520.0" VBox.vgrow="ALWAYS">
             							<placeholder>
             								<Label text="Não há responsáveis matriculados" />
             							</placeholder>

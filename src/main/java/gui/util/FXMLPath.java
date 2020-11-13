@@ -53,5 +53,7 @@ public class FXMLPath {
 	// Users
 	public static final String USERS = "/gui/Users.fxml";
 	public static final String USERS_NEW = "/gui/UsersNew.fxml";
+	// Certificates
+	public static final String REGULARIZE_CPF_MENU = "/gui/RegularizeCPFMenu.fxml";
 
 }

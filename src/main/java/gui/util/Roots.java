@@ -96,7 +96,6 @@ public class Roots {
 		mainView.setContent(FXMLPath.CERTIFICATES_HISTORIC, initializingAction);
 	}
 	
-	// === Certificates ====
 	public static <T> void studentsPresenceForm() {
 		studentsPresenceForm(x -> {
 		});
@@ -108,7 +107,6 @@ public class Roots {
 		mainView.setContent(FXMLPath.STUDENTS_PRESENCE_FORM, initializingAction);
 	}
 
-	// === Certificates ====
 	public static <T> void parcelPaymentByDocumentNumber() {
 		parcelPaymentByDocumentNumber(x -> {
 		});
@@ -131,4 +129,17 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.USERS, initializingAction);
 	}
+	
+	// === Persons Without CPF ====
+	public static <T> void regularizeCPFMenu() {
+		regularizeCPFMenu(x -> {
+		});
+	}
+
+	public static <T> void regularizeCPFMenu(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.REGULARIZE_CPF_MENU, initializingAction);
+	}
+		
 }
