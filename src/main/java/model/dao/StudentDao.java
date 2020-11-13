@@ -134,6 +134,14 @@ public class StudentDao {
 		return query.getResultList();
 	}
 	
+	public List<Student> findAllWithoutCPF() throws DbException{
+		if(manager == null) {
+			throw new DbException("DB Connection not instantiated");
+		}
+		TypedQuery<Student> query = manager.createQuery("SELECT S FROM Aluno S where excluido is null AND cpf is null ORDER BY nome, id", Student.class);
+		return query.getResultList();
+	}
+	
 	public Student findByCPF(String cpf) throws DbException{
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");

@@ -3,6 +3,7 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import gui.util.Roots;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
@@ -13,7 +14,7 @@ public class RegularizeCPFMenuController implements Initializable {
 	}
 
 	public void handleBtnStudents(ActionEvent event) {
-		System.out.println("=== students");
+		Roots.regularizeCPFStudents();
 	}
 	
 	public void handleBtnResponsibles(ActionEvent event) {
