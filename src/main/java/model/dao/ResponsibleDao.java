@@ -122,7 +122,7 @@ public class ResponsibleDao {
 		if(manager == null) {
 			throw new DbException("DB Connection not instantiated");
 		}			
-		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r where cpf = :cpf and excluido is null", Responsible.class);
+		TypedQuery<Responsible> query = manager.createQuery("SELECT r FROM Responsavel r where cpf is not null and cpf = :cpf and excluido is null", Responsible.class);
 		query.setParameter("cpf", cpf);
 		try {
 			return query.getSingleResult();

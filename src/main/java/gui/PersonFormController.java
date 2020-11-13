@@ -139,6 +139,10 @@ public class PersonFormController implements Initializable {
 	// Called from another controllers
 	public void setPersonEntity(Person entity) {
 		this.entity = entity;
+		// remove validators from cpf if entity has come from a different entity
+		if(isEntityFromAnotherTable) {
+			removeCPFValidators();
+		}
 		// Hidden new registry message about CPF if the person already is in db
 		if (entity.getId() != null) {
 			// reflesh data
@@ -149,13 +153,14 @@ public class PersonFormController implements Initializable {
 			}
 			btnWithoutCPF.setVisible(false);
 			labelFindRegistryResponse.setVisible(false);
+			removeCPFValidators();
 		}
 		// put entity data in fields of UI
 		updateFormData();
 		// If the entity is already in db (has an id) and doesn't have a cpf, we show
 		// a message informing the user about this problem
 		if(entity.getId() != null && entity.getCpf() == null) {
-			registryWithoutCPF();
+			removeCPFValidators();
 			Alerts.showAlert("CPF não informado", "O cadastro se encontra em pré-registro. É necessário atualizar o CPF dessa pessoa.",
 					"Não esqueça de atualizar o CPF na tela inicial, ele é uma informação essencial.",
 					AlertType.ERROR, null);
@@ -292,16 +297,14 @@ public class PersonFormController implements Initializable {
 		// Show message to user remember to update the CPF in future
 		labelFindRegistryResponse.setText("Será feito um pré-registro sem o CPF. NÃO SE ESQUEÇA de atualizar o CPF dessa pessoa no futuro.");
 		new Shake(labelFindRegistryResponse).play();
-		registryWithoutCPF();
+		removeCPFValidators();
 		// Show name field
 		textName.setVisible(true);
 		textName.requestFocus();
 	}
 
-	public void registryWithoutCPF() {
-		// Remove all Validators from cpf, clear and disable field
-		RegexValidator cpfValidator = new RegexValidator("Inválido");
-		cpfValidator.setRegexPattern("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
+	public void removeCPFValidators() {
+		// Remove all Validators from cpf
 		textCPF.getValidators().clear();
 		textCPF.setDisable(true);
 	}
@@ -696,7 +699,11 @@ public class PersonFormController implements Initializable {
 		if (entity.getSendEmail() != null) {
 			checkBoxSendEmail.setSelected(entity.getSendEmail());
 		}
-		textCPF.setText(entity.getCpf());
+		if(entity.getCpf() != null) {
+			textCPF.setText(entity.getCpf());
+		} else {
+			textCPF.setText("");
+		}
 		textRG.setText(entity.getRg());
 		textNeighborhood.setText(entity.getNeighborhood());
 		textAdress.setText(entity.getAdress());
@@ -741,7 +748,9 @@ public class PersonFormController implements Initializable {
 		entity.setName(textName.getText().trim());
 		entity.setEmail(textEmail.getText());
 		entity.setSendEmail(checkBoxSendEmail.isSelected());
-		entity.setCpf(Constraints.getOnlyDigitsValue(textCPF));
+		if(textCPF.getText().length() > 0) {
+			entity.setCpf(Constraints.getOnlyDigitsValue(textCPF));
+		}
 		entity.setRg(Constraints.getOnlyDigitsValue(textRG));
 		entity.setNeighborhood(textNeighborhood.getText());
 		entity.setAdress(textAdress.getText());
