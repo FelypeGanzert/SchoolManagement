@@ -3,7 +3,6 @@ package gui;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.persistence.NoResultException;
@@ -29,7 +28,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import model.dao.CollaboratorDao;
-import model.dao.PostsDao;
 import model.entites.Collaborator;
 import sharedData.Globe;
 
@@ -48,7 +46,7 @@ public class UsersNewController implements Initializable {
 	@FXML private JFXTextField textCity;
 	@FXML private JFXTextField textUF;
 	@FXML private JFXTextField textAdressReference;
-	@FXML private JFXComboBox<String> comboBoxPost;
+	@FXML private JFXTextField textPost;
 	@FXML private JFXTextField textContactNumber;
 	@FXML private HBox HBoxLoginInfo;
 	@FXML private JFXTextField textUserLogin;
@@ -204,24 +202,17 @@ public class UsersNewController implements Initializable {
 		Constraints.setTextFieldMaxLength(textNeighborhood, 50);
 		Constraints.setTextFieldMaxLength(textAdressReference, 50);
 		Constraints.setTextFieldMaxLength(textContactNumber, 50);
-		Constraints.setTextFieldMaxLength(textCity, 50);
+		Constraints.setTextFieldMaxLength(textCity, 50);;
+		Constraints.setTextFieldMaxLength(textPost, 50);
 		Constraints.setTextFieldMaxLength(textBirthDate, 10);
 		Constraints.setTextFieldMaxLength(textUserLogin, 30);
 		Constraints.setTextFieldMaxLength(textUserPassword, 30);
 		// ComboBox: civilStatus, gender, post
 		comboBoxCivilStatus.getItems().addAll(CivilStatusEnum.values());
 		comboBoxGender.getItems().addAll(GenderEnum.values());
-		try {
-			// Get all initials from the collaborators in db
-			List<String> posts = new PostsDao(DBFactory.getConnection()).findAllPosts();
-			comboBoxPost.getItems().addAll(posts);
-		} catch (DbException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void setDefaultValuesToFields(){
-		comboBoxPost.getSelectionModel().selectFirst();
 		comboBoxCivilStatus.getSelectionModel().selectFirst();
 		comboBoxGender.getSelectionModel().selectFirst();
 		textCity.setText(DEFAULT_CITY);
@@ -243,6 +234,7 @@ public class UsersNewController implements Initializable {
 		textAdressReference.setText(collaborator.getAdressReference());
 		textCity.setText(collaborator.getCity());
 		textUF.setText(collaborator.getUf());
+		textPost.setText(collaborator.getPost());
 		textContactNumber.setText(collaborator.getContactNumber());
 		// birthDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -256,16 +248,6 @@ public class UsersNewController implements Initializable {
 		if (collaborator.getCivilStatus() != null) {
 			comboBoxCivilStatus.getSelectionModel()
 					.select(CivilStatusEnum.fromFullCivilStatus(collaborator.getCivilStatus()));
-		}
-		if(collaborator.getPost() != null) {
-			// Check if the post of the collaborator is already in the comboBox,
-			// If the post isn't in, them we put inside and select that
-			if(comboBoxPost.getItems().contains(collaborator.getPost())) {
-				comboBoxPost.getSelectionModel().select(collaborator.getPost());
-			} else {
-				comboBoxPost.getItems().add(collaborator.getPost());;
-				comboBoxPost.getSelectionModel().select(collaborator.getPost());
-			}
 		}
 		textUserLogin.setText(collaborator.getUserLogin());
 		textUserPassword.setText(collaborator.getPasswordLogin());
@@ -282,6 +264,7 @@ public class UsersNewController implements Initializable {
 		collaborator.setAdressReference(textAdressReference.getText());
 		collaborator.setCity(textCity.getText());
 		collaborator.setUf(textUF.getText());
+		collaborator.setPost(textPost.getText());
 		collaborator.setContactNumber(textContactNumber.getText());
 		// birthDate
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -295,7 +278,6 @@ public class UsersNewController implements Initializable {
 		// Combo Box's
 		collaborator.setGender(comboBoxGender.getSelectionModel().getSelectedItem().getfullGender());
 		collaborator.setCivilStatus(comboBoxCivilStatus.getSelectionModel().getSelectedItem().getFullCivilStatus());
-		collaborator.setPost(comboBoxPost.getSelectionModel().getSelectedItem());
 		// Login infos
 		collaborator.setUserLogin(textUserLogin.getText());
 		collaborator.setPasswordLogin(textUserPassword.getText());

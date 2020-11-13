@@ -66,7 +66,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="290.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <JFXComboBox fx:id="comboBoxPost" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="CARGO" styleClass="text-field-with-label" />
+                  <JFXTextField fx:id="textPost" labelFloat="true" layoutX="280.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="250.0" promptText="CARGO" styleClass="text-field-with-label" />
                   <JFXTextField fx:id="textContactNumber" labelFloat="true" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="300.0" promptText="NÚMERO DE CONTATO" styleClass="text-field-with-label" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

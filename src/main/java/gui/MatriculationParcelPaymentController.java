@@ -222,6 +222,8 @@ public class MatriculationParcelPaymentController implements Initializable{
 		labelValueNormal.setText(doubleToTextField(parcel.getValue()));
 		if(parcel.getValueWithFineDelay() != null) {
 			labelValueWithFineDelay.setText(doubleToTextField(parcel.getValueWithFineDelay()));
+		} else {
+			radioValueWithFineDelay.setDisable(true);
 		}
 		labelMatriculationCode.setText(Integer.toString(parcel.getMatriculation().getCode()));
 		labelParcelDocumentNumber.setText(Integer.toString(parcel.getDocumentNumber()));
