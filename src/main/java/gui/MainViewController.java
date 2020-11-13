@@ -43,9 +43,13 @@ public class MainViewController implements Initializable {
 		this.content.setFitToWidth(true);
 		// Set the name of currentUser to label
 		Collaborator currentUser =  Globe.getGlobe().getItem(Collaborator.class, "currentUser");
-		this.labelCurrentUser.setText(currentUser.getName());
+		updateLabelCurrentUser(currentUser.getName());
 		// Defines main menu as content
 		setContent(FXMLPath.MAIN_MENU, x -> {});
+	}
+	
+	public void updateLabelCurrentUser(String text) {
+		this.labelCurrentUser.setText(text);
 	}
 	
 	public void handleBtnHome(ActionEvent event) {

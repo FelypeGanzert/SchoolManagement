@@ -79,7 +79,7 @@ public class UsersNewController implements Initializable {
 	public void setCollaborator(Collaborator collaborator) {
 		this.collaborator = collaborator;
 		// Show Login infos if collaborator is the current user or if doesn't is in db
-		if (collaborator == currentUser || collaborator.getId() == null) {
+		if (collaborator.equals(currentUser) || collaborator.getId() == null) {
 			isAbleToChangeLoginInfo = true;
 			HBoxLoginInfo.setVisible(true);
 		} else {
@@ -120,18 +120,19 @@ public class UsersNewController implements Initializable {
 				// check if doens't exist a user already using the user login name
 				String userLogin = textUserLogin.getText();
 				try {
-				Query query = DBFactory.getConnection().createQuery("select 1 from Colaborador c where c.userLogin = :user AND c.userLogin != :currentUser");
-				query.setParameter("user", userLogin);
-				query.setParameter("currentUser", collaborator.getUserLogin());
-				boolean alreadyExists = (query.getSingleResult() != null);
-				if(alreadyExists) {
-					Alerts.showAlert("ERRO", "Login já em uso", "Alguém já está usando esse login", AlertType.ERROR,
-							Utils.currentStage(event));
-					return;
-				}
-				} catch(NoResultException e) {
+					Query query = DBFactory.getConnection().createQuery(
+							"select 1 from Colaborador c where c.userLogin = :user AND c.userLogin != :currentUser");
+					query.setParameter("user", userLogin);
+					query.setParameter("currentUser", collaborator.getUserLogin());
+					boolean alreadyExists = (query.getSingleResult() != null);
+					if (alreadyExists) {
+						Alerts.showAlert("ERRO", "Login já em uso", "Alguém já está usando esse login", AlertType.ERROR,
+								Utils.currentStage(event));
+						return;
+					}
+				} catch (NoResultException e) {
 					System.out.println("Ok! Doenst exists any user with this login");
-				}  catch(Exception e) {
+				} catch (Exception e) {
 					System.out.println("Some error have occured");
 					e.printStackTrace();
 				}
@@ -147,6 +148,12 @@ public class UsersNewController implements Initializable {
 			// update users screen
 			if (this.usersController != null) {
 				this.usersController.onDataChanged();
+			}
+			// update user's name if we changed the current user info
+			if(collaborator.equals(currentUser)) {
+				MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+				mainView.updateLabelCurrentUser(currentUser.getName());
+				
 			}
 			// Finally, if everything occurs fine, we close this form
 			Utils.currentStage(event).close();
