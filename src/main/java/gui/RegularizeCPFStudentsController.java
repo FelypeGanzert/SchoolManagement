@@ -17,6 +17,7 @@ import com.jfoenix.controls.JFXTextField;
 import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
+import gui.util.FXMLPath;
 import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.enums.StudentStatusEnum;
@@ -35,6 +36,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import model.dao.StudentDao;
+import model.entites.Collaborator;
 import model.entites.Person;
 import model.entites.Student;
 import sharedData.Globe;
@@ -107,7 +109,11 @@ public class RegularizeCPFStudentsController implements Initializable{
 	}
 	
 	public void handleBtnEdit(ActionEvent event) {
-		System.out.println("Clicked to edit");
+		Utils.loadView(this, true, FXMLPath.REGULARIZE_CPF_PERSON_FORM, Utils.currentStage(event), "Regularizar CPF", false,
+				(RegularizeCPFPersonFormController controller) -> {
+					controller.setPersonEntity(tableStudents.getSelectionModel().getSelectedItem());
+					controller.setRegularizeCPFStudentsController(this);
+				});
 	}
 
 	// =====================
@@ -274,5 +280,10 @@ public class RegularizeCPFStudentsController implements Initializable{
 	// ========== END OF INITIALIZE METHODS ===============
 	// ====================================================
 
+	public void removeStudent(Student student) {
+		tableStudents.getItems().remove(student);
+		tableStudents.refresh();
+	}
+	
 
 }
