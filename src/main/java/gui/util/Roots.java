@@ -185,7 +185,7 @@ public class Roots {
 	public static <T> void parcelsOverdueModel1(Consumer<T> initializingAction) {
 		// Get mainvViewController from Globe to set content in
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
-		mainView.setContent(FXMLPath.PARCELS_OVERDUE_ALL, initializingAction);
+		mainView.setContent(FXMLPath.PARCELS_OVERDUE_MODEL1, initializingAction);
 	}
 
 	

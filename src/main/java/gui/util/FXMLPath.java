@@ -35,7 +35,7 @@ public class FXMLPath {
 	public static final String MATRICULATION_PARCELS_AGREEMENT = "/gui/MatriculationParcelsAgreement.fxml";
 	// Overdue Parcels
 	public static final String PARCELS_OVERDUE_MENU = "/gui/ParcelsOverdueMenu.fxml";
-	public static final String PARCELS_OVERDUE_ALL = "/gui/ParcelsOverdueAll.fxml";
+	public static final String PARCELS_OVERDUE_MODEL1 = "/gui/ParcelsOverdueModel1.fxml";
 	
 	// Parcel payment by document number
 	public static final String PARCEL_PAYMENT_BY_DOCUMENT_NUMBER = "/gui/ParcelPaymentByDocumentNumber.fxml";
