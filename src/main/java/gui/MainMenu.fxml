@@ -61,7 +61,12 @@
                         <Font size="21.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="321.0" layoutY="10.0" onAction="#handleBtnTest" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="#Teste#" textFill="WHITE">
+                  <JFXButton layoutX="321.0" layoutY="10.0" onAction="#handleBtnParcelsOverdue" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Parcelas Atrasadas" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="388.0" layoutY="10.0" onAction="#handleBtnTest" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="#Teste#" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>

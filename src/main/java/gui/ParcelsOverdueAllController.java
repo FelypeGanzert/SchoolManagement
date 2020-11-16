@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import db.DBFactory;
 import db.DbException;
+import gui.util.Roots;
 import gui.util.Utils;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,7 +58,7 @@ public class ParcelsOverdueAllController implements Initializable{
 	}
 	
     public void handleBtnReturn(ActionEvent event) {
-    	System.out.println("Clicked to return");
+    	Roots.parcelsOverdueMenu();
     }
  
     private void getDataFromDB() {

@@ -51,8 +51,12 @@ public class MainMenuController implements Initializable {
 		Roots.regularizeCPFMenu();
 	}
 	
+	public void handleBtnParcelsOverdue(ActionEvent event) {
+		Roots.parcelsOverdueMenu();
+	}
+	
 	public void handleBtnTest(ActionEvent event) {
-		Roots.parcelsOverdueAll();
+		System.out.println("Test");
 	}
 	
 }
