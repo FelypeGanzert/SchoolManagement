@@ -113,9 +113,9 @@
                         <Label fx:id="labelFilterResults" />
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                      <children>
-                        <JFXButton alignment="CENTER" onAction="#handleBtnPrintReport" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton alignment="CENTER" minWidth="-Infinity" onAction="#handleBtnPrintReport" prefHeight="40.0" ripplerFill="#102151" style="-fx-background-color: rgb(64,89,169); -fx-cursor: hand;" text="Imprimir Relatório" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="15.0" />
                            </font>

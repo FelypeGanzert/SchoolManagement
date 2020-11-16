@@ -163,4 +163,19 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.REGULARIZE_CPF_RESPONSIBLES, initializingAction);
 	}
+	
+	// === Overdue Parcels
+	
+	public static <T> void parcelsOverdueAll() {
+		parcelsOverdueAll(x -> {
+		});
+	}
+
+	public static <T> void parcelsOverdueAll(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.PARCELS_OVERDUE_ALL, initializingAction);
+	}
+
+	
 }
