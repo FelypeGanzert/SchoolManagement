@@ -18,7 +18,7 @@ public class ParcelsOverdueMenuController implements Initializable {
 	}
 	
 	public void handleBtnModel2(ActionEvent event) {
-		System.out.println("Clicked to show model 2");
+		Roots.parcelsOverdueModel2();
 	}
 
 }

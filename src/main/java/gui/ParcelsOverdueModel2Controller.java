@@ -9,24 +9,30 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import db.DBFactory;
 import db.DbException;
+import gui.util.DateUtil;
+import gui.util.FXMLPath;
 import gui.util.Roots;
 import gui.util.Utils;
+import gui.util.enums.ParcelStatusEnum;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.dao.ParcelDao;
+import model.entites.Matriculation;
 import model.entites.Parcel;
+import model.entites.Student;
 
-public class ParcelsOverdueAllController implements Initializable{
+public class ParcelsOverdueModel2Controller implements Initializable{
 
     @FXML private Label labelTotalCertificates;
     @FXML private Label labelNumberOfStudents;
@@ -34,25 +40,22 @@ public class ParcelsOverdueAllController implements Initializable{
     @FXML private Label labelSumNormalValue;
     @FXML private Label labelSumValueWithFineDelay;
     @FXML private Label labelResumeParcelsStudents;
-    @FXML private TableView<Parcel> tableParcels;
-    @FXML private TableColumn<Parcel, Number> columnStudentId;
-    @FXML private TableColumn<Parcel, String> columnStudentName;
-    @FXML private TableColumn<Parcel, Number> columnMatriculationCode;
-    @FXML private TableColumn<Parcel, Integer> columnDocumentNumber;
-    @FXML private TableColumn<Parcel, String> columnParcelNumber;
-    @FXML private TableColumn<Parcel, Double> columnValue;
-    @FXML private TableColumn<Parcel, Date> columnDateParcel;
-    @FXML private TableColumn<Parcel, Date> columnDateFineDelay;
-    @FXML private TableColumn<Parcel, Double> columnValueWithFineDelay;
+    @FXML private TableView<Student> tableStudents;
+    @FXML private TableColumn<Student, Number> columnStudentId;
+    @FXML private TableColumn<Student, String> columnStudentName;
+    @FXML private TableColumn<Student, Number> columnNumberOfLateParcels;
+	@FXML private TabPane tabPaneParcels;
 
     private List<Parcel> parcels;
+    private Set<Student> students = new HashSet<>();
    	
 	@Override
 	public void initialize(URL url, ResourceBundle resources) {
 		initializeTable();
 		getDataFromDB();
 		if(parcels != null) {
-			tableParcels.setItems(FXCollections.observableArrayList(parcels));
+			parcels.forEach(p -> students.add(p.getMatriculation().getStudent()));
+			tableStudents.setItems(FXCollections.observableArrayList(students));
 		}
 		calculateNumberInfos();
 	}
@@ -117,7 +120,6 @@ public class ParcelsOverdueAllController implements Initializable{
     	labelNumberOfStudents.setText(Integer.toString(numberOfStudents.size()));
     	labelSumNormalValue.setText(Utils.formatCurrentMoney(sumNormalValue, Utils.DINHEIRO_REAL));
     	labelSumValueWithFineDelay.setText(Utils.formatCurrentMoney(sumValueWithFineDelay, Utils.DINHEIRO_REAL));
-    	System.out.println(numberOfParcelsForStudent);
     	numberOfParcelsForStudent.forEach((k,v) -> {
     		if(numberOfStudentsForParcel.get(v) == null) {
     			numberOfStudentsForParcel.put(v, 1);
@@ -128,83 +130,50 @@ public class ParcelsOverdueAllController implements Initializable{
     	});
     	String studentsForParcel = "";
     	for (Map.Entry<Integer, Integer> entry : numberOfStudentsForParcel.entrySet()) {
-    		studentsForParcel = studentsForParcel + entry.getKey() + ": " + entry.getValue() + " alunos  |  ";
+    		studentsForParcel = studentsForParcel + entry.getKey() + ": " + entry.getValue() + " | ";
     	}
     	labelResumeParcelsStudents.setText(studentsForParcel);
     }
    
 	private void initializeTable() {
 		// student id
-		columnStudentId.setCellValueFactory(cellData -> {
-			try {
-				if (cellData.getValue().getMatriculation() != null &&
-						cellData.getValue().getMatriculation().getStudent() != null) {
-					return new SimpleIntegerProperty(cellData.getValue().getMatriculation().getStudent().getId());
-				}
-				return new SimpleIntegerProperty();
-			} catch (Exception e) {
-				return new SimpleIntegerProperty();
-			}
-		});
+		Utils.setCellValueFactory(columnStudentId, "id");
 		columnStudentId.setReorderable(false);
 		// student name
-		columnStudentName.setCellValueFactory(cellData -> {
-			try {
-				if (cellData.getValue().getMatriculation() != null &&
-						cellData.getValue().getMatriculation().getStudent() != null) {
-					return new SimpleStringProperty(cellData.getValue().getMatriculation().getStudent().getName());
-				}
-				return new SimpleStringProperty();
-			} catch (Exception e) {
-				return new SimpleStringProperty();
-			}
-		});
+		Utils.setCellValueFactory(columnStudentName, "name");
 		columnStudentName.setReorderable(false);
-		// matriculation code
-		columnMatriculationCode.setCellValueFactory(cellData -> {
+		// number of late parcels
+		columnNumberOfLateParcels.setCellValueFactory(cellData -> {
 			try {
-				if (cellData.getValue().getMatriculation() != null) {
-					return new SimpleIntegerProperty(cellData.getValue().getMatriculation().getCode());
+				Date now = new Date();
+				Integer count = 0;
+				if (cellData.getValue().getMatriculations() != null) {
+					for (Matriculation m : cellData.getValue().getMatriculations()) {
+						List<Parcel> overdueParcels = m.getParcels().stream().filter(p -> p.getSituation().equalsIgnoreCase(ParcelStatusEnum.ABERTA.toString()) &&
+								DateUtil.compareTwoDates(p.getDateParcel(), now) < 0).collect(Collectors.toList());
+						count += overdueParcels.size();
+					}
+					return new SimpleIntegerProperty(count);
 				}
 				return new SimpleIntegerProperty();
 			} catch (Exception e) {
 				return new SimpleIntegerProperty();
 			}
 		});
-		columnMatriculationCode.setReorderable(false);
-		// document number
-		Utils.setCellValueFactory(columnDocumentNumber, "documentNumber");
-		columnDocumentNumber.setReorderable(false);
-		// parcel number
-		columnParcelNumber.setCellValueFactory(cellData -> {
-			try {
-				if (cellData.getValue().getMatriculation() != null) {
-					String output = cellData.getValue().getParcelNumber() + "/" +
-							cellData.getValue().getMatriculation().getParcels().size();
-					return new SimpleStringProperty(output);
-				}
-				return new SimpleStringProperty("-");
-			} catch (Exception e) {
-				return new SimpleStringProperty("-");
-			}
-		});
-		columnParcelNumber.setReorderable(false);
-		// value
-		Utils.setCellValueFactory(columnValue, "value");
-		Utils.formatTableColumnDoubleCurrency(columnValue);
-		columnValue.setReorderable(false);
-		// date parcel
-		Utils.setCellValueFactory(columnDateParcel, "dateParcel");
-		Utils.formatTableColumnDate(columnDateParcel, "dd/MM/yyyy");
-		columnDateParcel.setReorderable(false);
-		// date fine delay
-		Utils.setCellValueFactory(columnDateFineDelay, "dateFineDelay");
-		Utils.formatTableColumnDate(columnDateFineDelay, "dd/MM/yyyy");
-		columnDateFineDelay.setReorderable(false);
-		// value with fine delay
-		Utils.setCellValueFactory(columnValueWithFineDelay, "valueWithFineDelay");
-		Utils.formatTableColumnDoubleCurrency(columnValueWithFineDelay);
-		columnValueWithFineDelay.setReorderable(false);
+		// listener
+		// Listener to selected student of table
+		tableStudents.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldSelection, newSelection) -> {
+					if(newSelection != null) {
+						tabPaneParcels.getTabs().clear();
+						for(Matriculation m : newSelection.getMatriculations()) {
+							Utils.addTab(this, FXMLPath.PARCELS_OVERDUE_INFO_PARCELS, "#" + m.getCode(), tabPaneParcels,
+									(ParcelsOverdueInfoParcels controller) -> {
+										controller.setParcels(m.getParcels());
+									});
+						}
+					}
+				});
 	}
-
+	
 }

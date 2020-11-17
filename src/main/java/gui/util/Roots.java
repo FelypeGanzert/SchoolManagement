@@ -187,6 +187,17 @@ public class Roots {
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.PARCELS_OVERDUE_MODEL1, initializingAction);
 	}
+	
+	public static <T> void parcelsOverdueModel2() {
+		parcelsOverdueModel2(x -> {
+		});
+	}
+
+	public static <T> void parcelsOverdueModel2(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.PARCELS_OVERDUE_MODEL2, initializingAction);
+	}
 
 	
 }
