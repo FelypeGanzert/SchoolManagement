@@ -18,6 +18,7 @@ import gui.util.FXMLPath;
 import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.enums.ParcelStatusEnum;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -44,6 +45,7 @@ public class ParcelsOverdueModel2Controller implements Initializable{
     @FXML private TableColumn<Student, Number> columnStudentId;
     @FXML private TableColumn<Student, String> columnStudentName;
     @FXML private TableColumn<Student, Number> columnNumberOfLateParcels;
+    @FXML private TableColumn<Student, Number> columnTotalValueWithFineDelay;
 	@FXML private TabPane tabPaneParcels;
 
     private List<Parcel> parcels;
@@ -160,6 +162,33 @@ public class ParcelsOverdueModel2Controller implements Initializable{
 				return new SimpleIntegerProperty();
 			}
 		});
+		columnNumberOfLateParcels.setReorderable(false);
+		// Total Value With FineDelay
+		columnTotalValueWithFineDelay.setCellValueFactory(cellData -> {
+			try {
+				if (cellData.getValue().getMatriculations() != null) {
+					Date now = new Date();
+					Double total = 0.0;
+					for (Matriculation m : cellData.getValue().getMatriculations()) {
+						List<Parcel> overdueParcels = m.getParcels().stream().filter(p -> p.getSituation().equalsIgnoreCase(ParcelStatusEnum.ABERTA.toString()) &&
+								DateUtil.compareTwoDates(p.getDateParcel(), now) < 0).collect(Collectors.toList());
+						for(Parcel p : overdueParcels) {
+							if(p.getValueWithFineDelay() != null) {
+								total += p.getValueWithFineDelay();
+							} else if(p.getValue() != null) {
+								total += p.getValue();
+							}
+						}
+					}
+					return new SimpleDoubleProperty(total);
+				}
+				return new SimpleDoubleProperty();
+			} catch (Exception e) {
+				return new SimpleDoubleProperty();
+			}
+		});
+		Utils.formatTableColumnNumberCurrency(columnTotalValueWithFineDelay);
+		columnTotalValueWithFineDelay.setReorderable(false);
 		// listener
 		// Listener to selected student of table
 		tableStudents.getSelectionModel().selectedItemProperty()

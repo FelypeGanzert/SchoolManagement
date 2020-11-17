@@ -209,6 +209,27 @@ public class Utils {
 		});
 	}
 	
+	public static <T> void formatTableColumnNumberCurrency(TableColumn<T, Number> tableColumn) {
+		tableColumn.setCellFactory(column -> {
+			TableCell<T, Number> cell = new TableCell<T, Number>() {
+				@Override
+				protected void updateItem(Number item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setText(null);
+					} else {
+						if(item instanceof Double) {
+							setText(formatCurrentMoney((Double) item, DINHEIRO_REAL));
+						} else {
+							setText(item.toString());
+						}
+					}
+				}
+			};
+			return cell;
+		});
+	}
+	
 	public static <T> void initButtons(TableColumn<T, T> tableColumn, int size, String svgIcon, String className,
 			BiConsumer<T, ActionEvent> buttonAction) {
 		initButtons(tableColumn, size, svgIcon, className, buttonAction, null);

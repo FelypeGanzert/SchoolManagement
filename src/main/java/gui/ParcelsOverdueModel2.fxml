@@ -114,11 +114,12 @@
                   </VBox>
                   <HBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" spacing="15.0">
                      <children>
-                        <TableView fx:id="tableStudents" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="560.0" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="tableStudents" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="710.0" HBox.hgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="columnStudentId" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center;" text="Aluno" />
                               <TableColumn fx:id="columnStudentName" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" text="Nome do Aluno" />
                               <TableColumn fx:id="columnNumberOfLateParcels" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: center;" text="Parcelas em Atraso" />
+                              <TableColumn fx:id="columnTotalValueWithFineDelay" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" style="-fx-alignment: center_right;" text="Total c/ Multa" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
