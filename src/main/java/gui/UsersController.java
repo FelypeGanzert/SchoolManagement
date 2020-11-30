@@ -13,6 +13,7 @@ import db.DBFactory;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
+import gui.util.Roots;
 import gui.util.Utils;
 import gui.util.enums.CivilStatusEnum;
 import gui.util.enums.GenderEnum;
@@ -209,5 +210,11 @@ public class UsersController implements Initializable {
 	public void onDataChanged() {
 		getDataFromDB();
 	}
+	
+
+	public void handleBtnReturn(ActionEvent event) {
+		Roots.usersMenu();
+	}
+	
 
 }

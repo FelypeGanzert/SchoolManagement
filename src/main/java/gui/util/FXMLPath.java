@@ -57,6 +57,7 @@ public class FXMLPath {
 	// Students Presence
 	public static final String STUDENTS_PRESENCE_FORM = "/gui/StudentsPresenceForm.fxml";
 	// Users
+	public static final String USERS_MENU = "/gui/UsersMenu.fxml";
 	public static final String USERS = "/gui/Users.fxml";
 	public static final String USERS_NEW = "/gui/UsersNew.fxml";
 	// Certificates

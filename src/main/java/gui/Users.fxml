@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,6 +20,15 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" spacing="15.0" style="-fx-background-color: rgb(64,89,169);">
 					<children>
+                  <Button mnemonicParsing="false" onAction="#handleBtnReturn" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@../png_icons/back_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
       						<Label text="Colaboradores" textFill="WHITE">

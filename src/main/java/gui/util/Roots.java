@@ -119,6 +119,18 @@ public class Roots {
 	}
 
 	// === Users ====
+	
+	public static <T> void usersMenu() {
+		usersMenu(x -> {
+		});
+	}
+
+	public static <T> void usersMenu(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.USERS_MENU, initializingAction);
+	}
+	
 	public static <T> void users() {
 		users(x -> {
 		});
@@ -128,6 +140,17 @@ public class Roots {
 		// Get mainvViewController from Globe to set content in
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
 		mainView.setContent(FXMLPath.USERS, initializingAction);
+	}
+	
+	public static <T> void usersSchedules() {
+		usersSchedules(x -> {
+		});
+	}
+
+	public static <T> void usersSchedules(Consumer<T> initializingAction) {
+		// Get mainvViewController from Globe to set content in
+		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
+		mainView.setContent(FXMLPath.USERS_MENU, initializingAction);
 	}
 	
 	// === Persons Without CPF ====

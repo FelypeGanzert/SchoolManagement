@@ -44,7 +44,7 @@ public class MainMenuController implements Initializable {
 	}
 	
 	public void handleBtnUsers(ActionEvent event) {
-		Roots.users();
+		Roots.usersMenu();
 	}
 	
 	public void handleBtnRegularizeCPFMenu(ActionEvent event) {
