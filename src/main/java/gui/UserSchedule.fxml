@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserScheduleController">
    <children>
       <GridPane fx:id="grid">
         <columnConstraints>
@@ -80,37 +80,37 @@
                </padding></Label>
             <Label text="MANHÃ" GridPane.columnIndex="1">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
             <Label text="TARDE" GridPane.columnIndex="2">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
             <Label text="NOITE" GridPane.columnIndex="3">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="System Bold" size="14.0" />
                </font></Label>
-            <TextArea fx:id="textSegundaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextArea fx:id="textSegundaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <TextArea fx:id="textSegundaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <TextArea fx:id="textTercaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextArea fx:id="textTercaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextArea fx:id="textTercaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <TextArea fx:id="textQuartaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextArea fx:id="textQuartaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextArea fx:id="textQuartaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <TextArea fx:id="textQuintaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextArea fx:id="textQuintaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <TextArea fx:id="textQuintaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <TextArea fx:id="textSextaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextArea fx:id="textSextaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <TextArea fx:id="textSextaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <TextArea fx:id="textSabadoManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextArea fx:id="textSabadoTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <TextArea fx:id="textSabadoNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-            <TextArea fx:id="textDomingoManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextArea fx:id="textDomingoTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-            <TextArea fx:id="textDomingoNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <TextArea fx:id="textSegundaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="textSegundaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextArea fx:id="textSegundaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextArea fx:id="textTercaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="textTercaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea fx:id="textTercaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextArea fx:id="textQuartaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextArea fx:id="textQuartaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextArea fx:id="textQuartaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextArea fx:id="textQuintaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextArea fx:id="textQuintaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextArea fx:id="textQuintaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextArea fx:id="textSextaManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextArea fx:id="textSextaTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextArea fx:id="textSextaNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <TextArea fx:id="textSabadoManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextArea fx:id="textSabadoTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <TextArea fx:id="textSabadoNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+            <TextArea fx:id="textDomingoManha" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextArea fx:id="textDomingoTarde" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <TextArea fx:id="textDomingoNoite" maxHeight="-Infinity" prefHeight="80.0" prefWidth="220.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
          </children>
       </GridPane>
    </children>

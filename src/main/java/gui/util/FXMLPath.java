@@ -60,6 +60,8 @@ public class FXMLPath {
 	public static final String USERS_MENU = "/gui/UsersMenu.fxml";
 	public static final String USERS = "/gui/Users.fxml";
 	public static final String USERS_NEW = "/gui/UsersNew.fxml";
+	public static final String USER_SCHEDULE = "/gui/UserSchedule.fxml";
+	public static final String USERS_SCHEDULE_VIEW = "/gui/UsersScheduleView.fxml";
 	// Certificates
 	public static final String REGULARIZE_CPF_MENU = "/gui/RegularizeCPFMenu.fxml";
 	public static final String REGULARIZE_CPF_PERSON_FORM = "/gui/RegularizeCPFPersonForm.fxml";

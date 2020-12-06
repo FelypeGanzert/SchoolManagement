@@ -3,7 +3,6 @@ package model.dao;
 import javax.persistence.EntityManager;
 
 import db.DbException;
-import model.entites.Annotation;
 import model.entites.CollaboratorSchedule;
 
 public class CollaboratorScheduleDao {

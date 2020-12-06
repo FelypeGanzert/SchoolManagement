@@ -18,7 +18,7 @@ public class UsersMenuController implements Initializable {
 	}
 	
 	public void handleBtnUsersSchedules(ActionEvent event) {
-		Roots.usersSchedules();
+		Roots.usersSchedules((UsersScheduleViewController controller) -> {});
 	}
 	
 }

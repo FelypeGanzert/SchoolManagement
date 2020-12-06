@@ -150,7 +150,7 @@ public class Roots {
 	public static <T> void usersSchedules(Consumer<T> initializingAction) {
 		// Get mainvViewController from Globe to set content in
 		MainViewController mainView = Globe.getGlobe().getItem(MainViewController.class, "mainViewController");
-		mainView.setContent(FXMLPath.USERS_MENU, initializingAction);
+		mainView.setContent(FXMLPath.USERS_SCHEDULE_VIEW, initializingAction);
 	}
 	
 	// === Persons Without CPF ====
