@@ -13,6 +13,7 @@ import db.DbException;
 import gui.util.Alerts;
 import gui.util.FXMLPath;
 import gui.util.Roots;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,12 +70,19 @@ public class UsersScheduleViewController implements Initializable {
 		// select the first collaborator
 		comboBoxCollaborator.getSelectionModel().selectFirst();
 	}
+	
+	public void handleBtnEdit(ActionEvent event) {
+		Utils.loadView(this, true, FXMLPath.USER_SCHEDULE_EDIT, Utils.currentStage(event), "Horários", false, (UserScheduleEditController controller) -> {
+			controller.setCollaborator(comboBoxCollaborator.getSelectionModel().getSelectedItem());
+			controller.setUsersScheduleViewController(this);
+		});
+	}
 
 	public void handleBtnReturn(ActionEvent event) {
 		Roots.usersMenu();
 	}
 	
-	private void showCollaboratorSchedule(Collaborator collaborator) {
+	public void showCollaboratorSchedule(Collaborator collaborator) {
 		// Show Collaborator Schedule
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPath.USER_SCHEDULE));

@@ -13,12 +13,12 @@
          <children>
             <HBox alignment="CENTER" spacing="20.0">
                <children>
-                  <JFXButton onAction="#handleBtnShowListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
+                  <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton onAction="#hadleBtnShowListStudents" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Alunos" textFill="WHITE">
+                  <JFXButton onAction="#handleBtnShowListResponsibles" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Lista Responsáveis" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -56,12 +56,12 @@
                         <Font size="21.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton onAction="#handleBtnUsers" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Usuários" textFill="WHITE">
+                  <JFXButton layoutX="321.0" layoutY="10.0" onAction="#handleBtnParcelsOverdue" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Parcelas Atrasadas" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="321.0" layoutY="10.0" onAction="#handleBtnParcelsOverdue" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Parcelas Atrasadas" textFill="WHITE">
+                  <JFXButton onAction="#handleBtnUsers" style="-fx-background-color: #4297d2; -fx-cursor: hand;" text="Usuários" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>

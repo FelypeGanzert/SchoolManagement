@@ -324,8 +324,6 @@ public class ListStudentsController implements Initializable {
 		columnStudentInfo.setReorderable(false);
 		
 	}
-	
-	private Integer test = 0;
 	// TABLE MATRICULATIONS
 	private void initializeTableMatriculationsNodes() {
 		// code
@@ -341,7 +339,6 @@ public class ListStudentsController implements Initializable {
 		// parcels
 		columnMatriculationParcels.setCellValueFactory(cellData -> {
 			try {
-				System.out.println("############################ - " + test);
 				// Total of parcels ignoring matriculation tax (parcel 0)
 				List<Parcel> parcels = cellData.getValue().getParcels().stream()
 						.filter(parcel -> parcel.getParcelNumber() != 0).collect(Collectors.toList());

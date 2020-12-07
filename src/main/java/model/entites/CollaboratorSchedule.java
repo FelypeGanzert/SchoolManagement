@@ -30,6 +30,6 @@ public class CollaboratorSchedule {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="cronograma_id")
-	private List<ScheduleDay> days = new ArrayList<>();
+	private List<ScheduleDay> days = new ArrayList<>();	
 	
 }

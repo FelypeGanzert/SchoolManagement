@@ -64,6 +64,7 @@ public class StudentCoursesController implements Initializable{
 				Course selectedCourse = newValue;
 				textDay.setText(selectedCourse.getDay());
 				textHour.setText(selectedCourse.getHour());
+				textAreaMatriculationServiceContracted.setText("");
 				if(selectedCourse.getMatriculationCode() != null) {
 					// we will try to find a corresponding matriculation code on student
 					for(Matriculation m : selectedCourse.getStudent().getMatriculations()) {
